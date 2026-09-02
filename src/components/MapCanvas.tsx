@@ -20,17 +20,11 @@ import {
 const pmtiles = new Protocol();
 let protokolTerpasang = false;
 
-/**
- * Ortho, DTM, dan kontur belum tentu sudah selesai di-tiling.
- * URL yang masih berisi contoh dianggap belum ada,
- * sehingga peta tetap tampil dengan basemap biasa.
- */
 const siap = (url?: string) =>
   !!url &&
   !url.includes('contoh.id') &&
   (url.startsWith('http') || url.startsWith('/'));
 
-/* Status ketersediaan data */
 const ADA_ORTHO = siap(ORTHO);
 
 const ADA_DTM = {
@@ -43,6 +37,14 @@ const ADA_KONTUR = {
   foto: siap(KONTUR.foto.url)
 };
 
+/**
+ * ==========================
+ * BASEMAP CONTROL
+ * ==========================
+ *
+ * Icon tetap satu.
+ * Klik icon → muncul pilihan 6 basemap.
+ */
 class BasemapControl implements maplibregl.IControl {
   private container: HTMLDivElement;
   private current: Basemap;
@@ -59,79 +61,137 @@ class BasemapControl implements maplibregl.IControl {
 
   onAdd() {
     this.container.className =
-      'maplibregl-ctrl maplibregl-ctrl-group';
+      'maplibregl-ctrl basemap-control';
 
-    const select =
-      document.createElement('select');
+    const button =
+      document.createElement('button');
 
-    select.title = 'Basemap';
-    select.setAttribute(
+    button.type = 'button';
+    button.title = 'Basemap';
+    button.setAttribute(
       'aria-label',
       'Basemap'
     );
 
-    select.style.height = '32px';
-    select.style.minWidth = '150px';
-    select.style.padding = '0 8px';
-    select.style.border = '0';
-    select.style.cursor = 'pointer';
-    select.style.background = 'white';
-    select.style.fontSize = '12px';
+    button.innerHTML = '🗺️';
+
+    const panel =
+      document.createElement('div');
+
+    panel.className =
+      'basemap-panel';
+
+    panel.style.display = 'none';
 
     const pilihan: {
       id: Basemap;
       label: string;
+      icon: string;
     }[] = [
       {
         id: 'osm',
-        label: 'OSM'
+        label: 'OSM',
+        icon: '🌍'
       },
       {
         id: 'esri',
-        label: 'Esri World Imagery'
+        label: 'Esri',
+        icon: '🛰️'
       },
       {
         id: 'ortho',
-        label: 'Orthophoto'
+        label: 'Orthophoto',
+        icon: '📷'
       },
       {
         id: 'google-hybrid',
-        label: 'Google Hybrid'
+        label: 'Google Hybrid',
+        icon: '🗺️'
       },
       {
         id: 'google-streets',
-        label: 'Google Streets'
+        label: 'Google Streets',
+        icon: '🚗'
       },
       {
         id: 'opentopo',
-        label: 'OpenTopo'
+        label: 'OpenTopo',
+        icon: '⛰️'
       }
     ];
 
     for (const p of pilihan) {
-      const option =
-        document.createElement('option');
+      const item =
+        document.createElement('button');
 
-      option.value = p.id;
-      option.textContent = p.label;
+      item.type = 'button';
+
+      item.className =
+        'basemap-item';
+
+      item.dataset.basemap = p.id;
+
+      item.innerHTML = `
+        <span class="basemap-item-icon">
+          ${p.icon}
+        </span>
+
+        <span class="basemap-item-label">
+          ${p.label}
+        </span>
+      `;
 
       if (p.id === this.current) {
-        option.selected = true;
+        item.classList.add(
+          'active'
+        );
       }
 
-      select.appendChild(option);
+      item.onclick = (e) => {
+        e.stopPropagation();
+
+        this.current = p.id;
+
+        for (
+          const child
+          of panel.querySelectorAll(
+            '.basemap-item'
+          )
+        ) {
+          child.classList.remove(
+            'active'
+          );
+        }
+
+        item.classList.add(
+          'active'
+        );
+
+        panel.style.display =
+          'none';
+
+        this.onChange(p.id);
+      };
+
+      panel.appendChild(item);
     }
 
-    select.onchange = () => {
-      const value =
-        select.value as Basemap;
+    button.onclick = (e) => {
+      e.stopPropagation();
 
-      this.current = value;
-
-      this.onChange(value);
+      panel.style.display =
+        panel.style.display === 'none'
+          ? 'grid'
+          : 'none';
     };
 
-    this.container.appendChild(select);
+    this.container.appendChild(
+      button
+    );
+
+    this.container.appendChild(
+      panel
+    );
 
     return this.container;
   }
