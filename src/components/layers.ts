@@ -18,10 +18,18 @@ export type DefLayer = {
 };
 
 export const LAYERS: DefLayer[] = [
-  { id: 'aoi_trace', nama: 'AOI trace (ROW 26 m)', sumber: 'aoi_trace', tipe: 'fill',
-    warna: '#A79BEB', opasitas: 0.16, bawaan: true, grup: 'Rencana trace' },
-  { id: 'trace', nama: 'As jalan rencana', sumber: 'trace', tipe: 'line',
-    warna: '#93A3B3', garis: true, lebar: 2, dash: [4, 2], bawaan: true, grup: 'Rencana trace' },
+{ 
+  id: 'trace_g',
+  nama: 'Trace G',
+  sumber: 'trace_g',
+  tipe: 'line',
+  warna: '#93A3B3',
+  garis: true,
+  lebar: 2,
+  dash: [4, 2],
+  bawaan: true,
+  grup: 'Rencana trace'
+},
 
   { id: 'sawah', nama: 'Sawah', sumber: 'sawah', tipe: 'fill', warna: '#6FC7A4', opasitas: 0.42, grup: 'Tutupan lahan' },
   { id: 'hutan', nama: 'Hutan', sumber: 'hutan', tipe: 'fill', warna: '#2C7F6B', opasitas: 0.5, grup: 'Tutupan lahan' },
