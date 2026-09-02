@@ -1,0 +1,35 @@
+{
+  "name": "dppt-bojonegoro",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "db:schema": "tsx scripts/skema.mts",
+    "user:add": "tsx scripts/tambah-pengguna.mts",
+    "import": "tsx scripts/import-geojson.mts"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.658.0",
+    "@aws-sdk/s3-request-presigner": "^3.658.0",
+    "bcryptjs": "^2.4.3",
+    "maplibre-gl": "^4.7.1",
+    "next": "^15.0.3",
+    "next-auth": "^5.0.0-beta.25",
+    "pg": "^8.13.1",
+    "pmtiles": "^3.2.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "zod": "^3.23.8",
+    "zustand": "^5.0.1"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/node": "^22.20.1",
+    "@types/pg": "^8.11.10",
+    "@types/react": "^18.3.12",
+    "tsx": "^4.19.2",
+    "typescript": "^5.6.3"
+  }
+}
