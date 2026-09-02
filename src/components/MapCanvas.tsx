@@ -43,12 +43,6 @@ const ADA_KONTUR = {
   foto: siap(KONTUR.foto.url)
 };
 
-/**
- * Kontrol pergantian basemap.
- *
- * Urutan:
- * ortho → osm → none → ortho
- */
 class BasemapControl implements maplibregl.IControl {
   private container: HTMLDivElement;
   private current: Basemap;
@@ -67,26 +61,77 @@ class BasemapControl implements maplibregl.IControl {
     this.container.className =
       'maplibregl-ctrl maplibregl-ctrl-group';
 
-    const button = document.createElement('button');
+    const select =
+      document.createElement('select');
 
-    button.type = 'button';
-    button.title = 'Basemap';
-    button.setAttribute('aria-label', 'Basemap');
-    button.innerHTML = '🗺️';
+    select.title = 'Basemap';
+    select.setAttribute(
+      'aria-label',
+      'Basemap'
+    );
 
-    button.onclick = () => {
-      const next: Basemap =
-        this.current === 'ortho'
-          ? 'osm'
-          : this.current === 'osm'
-            ? 'none'
-            : 'ortho';
+    select.style.height = '32px';
+    select.style.minWidth = '150px';
+    select.style.padding = '0 8px';
+    select.style.border = '0';
+    select.style.cursor = 'pointer';
+    select.style.background = 'white';
+    select.style.fontSize = '12px';
 
-      this.current = next;
-      this.onChange(next);
+    const pilihan: {
+      id: Basemap;
+      label: string;
+    }[] = [
+      {
+        id: 'osm',
+        label: 'OSM'
+      },
+      {
+        id: 'esri',
+        label: 'Esri World Imagery'
+      },
+      {
+        id: 'ortho',
+        label: 'Orthophoto'
+      },
+      {
+        id: 'google-hybrid',
+        label: 'Google Hybrid'
+      },
+      {
+        id: 'google-streets',
+        label: 'Google Streets'
+      },
+      {
+        id: 'opentopo',
+        label: 'OpenTopo'
+      }
+    ];
+
+    for (const p of pilihan) {
+      const option =
+        document.createElement('option');
+
+      option.value = p.id;
+      option.textContent = p.label;
+
+      if (p.id === this.current) {
+        option.selected = true;
+      }
+
+      select.appendChild(option);
+    }
+
+    select.onchange = () => {
+      const value =
+        select.value as Basemap;
+
+      this.current = value;
+
+      this.onChange(value);
     };
 
-    this.container.appendChild(button);
+    this.container.appendChild(select);
 
     return this.container;
   }
@@ -95,7 +140,6 @@ class BasemapControl implements maplibregl.IControl {
     this.container.remove();
   }
 }
-
 export default function MapCanvas() {
   const ref = useRef<HTMLDivElement>(null);
   const mapRef = useRef<MLMap | null>(null);
@@ -126,22 +170,58 @@ export default function MapCanvas() {
       protokolTerpasang = true;
     }
 
-    /**
-     * ==========================
-     * SOURCES
-     * ==========================
-     */
     const sources: any = {
-      osm: {
-        type: 'raster',
-        tiles: [
-          'https://tile.openstreetmap.org/{z}/{x}/{y}.png'
-        ],
-        tileSize: 256,
-        maxzoom: 19,
-        attribution: '© OpenStreetMap'
-      }
-    };
+  osm: {
+    type: 'raster',
+    tiles: [
+      'https://tile.openstreetmap.org/{z}/{x}/{y}.png'
+    ],
+    tileSize: 256,
+    maxzoom: 19,
+    attribution: '© OpenStreetMap'
+  },
+
+  esri: {
+    type: 'raster',
+    tiles: [
+      'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
+    ],
+    tileSize: 256,
+    maxzoom: 19,
+    attribution: '© Esri'
+  },
+
+  'google-hybrid': {
+    type: 'raster',
+    tiles: [
+      'https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}'
+    ],
+    tileSize: 256,
+    maxzoom: 20,
+    attribution: '© Google'
+  },
+
+  'google-streets': {
+    type: 'raster',
+    tiles: [
+      'https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}'
+    ],
+    tileSize: 256,
+    maxzoom: 20,
+    attribution: '© Google'
+  },
+
+  opentopo: {
+    type: 'raster',
+    tiles: [
+      'https://a.tile.opentopomap.org/{z}/{x}/{y}.png'
+    ],
+    tileSize: 256,
+    maxzoom: 17,
+    attribution:
+      '© OpenTopoMap (CC-BY-SA)'
+  }
+};
 
     if (ADA_ORTHO) {
       sources.ortho = {
@@ -189,50 +269,92 @@ export default function MapCanvas() {
       };
     }
 
-    /**
-     * ==========================
-     * INITIAL LAYERS
-     * ==========================
-     */
-    const layersAwal: any[] = [
-      {
-        id: 'bg',
-        type: 'background',
-        paint: {
-          'background-color': '#0E1720'
-        }
-      },
-
-      {
-        id: 'bm-osm',
-        type: 'raster',
-        source: 'osm',
-
-        layout: {
-          visibility: ADA_ORTHO
-            ? 'none'
-            : 'visible'
-        },
-
-        paint: {
-          'raster-saturation': -0.5
-        }
-      }
-    ];
-
-    if (ADA_ORTHO) {
-      layersAwal.push({
-        id: 'bm-ortho',
-        type: 'raster',
-        source: 'ortho'
-      });
+   const layersAwal: any[] = [
+  {
+    id: 'bg',
+    type: 'background',
+    paint: {
+      'background-color': '#0E1720'
     }
+  },
 
-    /**
-     * ==========================
-     * MAP
-     * ==========================
-     */
+  {
+    id: 'bm-osm',
+    type: 'raster',
+    source: 'osm',
+    layout: {
+      visibility:
+        basemap === 'osm'
+          ? 'visible'
+          : 'none'
+    },
+    paint: {
+      'raster-saturation': -0.5
+    }
+  },
+
+  {
+    id: 'bm-esri',
+    type: 'raster',
+    source: 'esri',
+    layout: {
+      visibility:
+        basemap === 'esri'
+          ? 'visible'
+          : 'none'
+    }
+  },
+
+  {
+    id: 'bm-google-hybrid',
+    type: 'raster',
+    source: 'google-hybrid',
+    layout: {
+      visibility:
+        basemap === 'google-hybrid'
+          ? 'visible'
+          : 'none'
+    }
+  },
+
+  {
+    id: 'bm-google-streets',
+    type: 'raster',
+    source: 'google-streets',
+    layout: {
+      visibility:
+        basemap === 'google-streets'
+          ? 'visible'
+          : 'none'
+    }
+  },
+
+  {
+    id: 'bm-opentopo',
+    type: 'raster',
+    source: 'opentopo',
+    layout: {
+      visibility:
+        basemap === 'opentopo'
+          ? 'visible'
+          : 'none'
+    }
+  }
+];
+
+   if (ADA_ORTHO) {
+  layersAwal.push({
+    id: 'bm-ortho',
+    type: 'raster',
+    source: 'ortho',
+    layout: {
+      visibility:
+        basemap === 'ortho'
+          ? 'visible'
+          : 'none'
+    }
+  });
+}
     const map = new maplibregl.Map({
       container: ref.current,
 
@@ -1091,74 +1213,87 @@ export default function MapCanvas() {
   };
 
   /**
-   * ==========================
-   * BASEMAP
-   * ==========================
-   */
-  useEffect(() => {
+ * ==========================
+ * BASEMAP
+ * ==========================
+ */
+useEffect(() => {
+  const map = mapRef.current;
 
-    const map =
-      mapRef.current;
+  if (!map?.isStyleLoaded()) {
+    return;
+  }
 
-    if (
-      !map?.isStyleLoaded()
-    ) {
-      return;
+  const basemapLayers: {
+    id: string;
+    basemap: Basemap;
+  }[] = [
+    {
+      id: 'bm-osm',
+      basemap: 'osm'
+    },
+    {
+      id: 'bm-esri',
+      basemap: 'esri'
+    },
+    {
+      id: 'bm-google-hybrid',
+      basemap: 'google-hybrid'
+    },
+    {
+      id: 'bm-google-streets',
+      basemap: 'google-streets'
+    },
+    {
+      id: 'bm-opentopo',
+      basemap: 'opentopo'
+    },
+    {
+      id: 'bm-ortho',
+      basemap: 'ortho'
+    }
+  ];
+
+  for (const item of basemapLayers) {
+    if (!map.getLayer(item.id)) {
+      continue;
     }
 
-    /**
-     * Orthophoto
-     */
-    if (
-      map.getLayer(
-        'bm-ortho'
-      )
-    ) {
-      map.setLayoutProperty(
-        'bm-ortho',
-        'visibility',
-        basemap === 'ortho'
-          ? 'visible'
-          : 'none'
-      );
-    }
-
-    /**
-     * OSM
-     */
     map.setLayoutProperty(
-      'bm-osm',
+      item.id,
       'visibility',
-
-      basemap === 'osm' ||
-      (
-        basemap === 'ortho' &&
-        !ADA_ORTHO
-      )
+      item.basemap === basemap
         ? 'visible'
         : 'none'
     );
+  }
 
+  /**
+   * Orthophoto belum tersedia.
+   */
+  if (
+    basemap === 'ortho' &&
+    !ADA_ORTHO
+  ) {
     /**
-     * Kalau ortho belum tersedia,
-     * fallback ke OSM.
+     * Fallback ke OSM.
      */
     if (
-      basemap === 'ortho' &&
-      !ADA_ORTHO
+      map.getLayer('bm-osm')
     ) {
-      beriPesan(
-        'Orthophoto belum tersedia — isi NEXT_PUBLIC_TILES_ORTHO di .env setelah tiling selesai.'
+      map.setLayoutProperty(
+        'bm-osm',
+        'visibility',
+        'visible'
       );
     }
 
-  }, [basemap]);
+    beriPesan(
+      'Orthophoto belum tersedia — isi NEXT_PUBLIC_TILES_ORTHO di .env setelah tiling selesai.'
+    );
+  }
 
-  /**
-   * ==========================
-   * DTM
-   * ==========================
-   */
+}, [basemap, beriPesan]);
   useEffect(() => {
 
     const map =
