@@ -22,7 +22,7 @@ const LAYER = new Set([
 ]);
 
 const GITHUB_RAW_BASE =
-  'https://raw.githubusercontent.com/kusumarumy/web_timorleste/main/public/data';
+  'https://raw.githubusercontent.com/kusumarumy/sipetak-bojonegoro/main/data/wgs84';
 
 export async function GET(
   _req: Request,
