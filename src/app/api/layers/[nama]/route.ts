@@ -5,8 +5,7 @@ import { auth } from '@/lib/auth';
  * Mapping ID layer aplikasi → nama file GeoJSON di GitHub.
  */
 const LAYER_FILES: Record<string, string> = {
-  aoi_trace: 'aoi_trace.geojson',
-  trace: 'trace.geojson',
+  trace: 'traseg.geojson',
 
   sawah: 'sawah.geojson',
   hutan: 'hutan.geojson',
