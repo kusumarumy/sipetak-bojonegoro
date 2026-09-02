@@ -88,7 +88,7 @@ const toggleTema = () => {
     <div className="head-brand-text">
 
       <span className="head-eyebrow">
-        SIPETAK BOJONEGORO
+        DPPT BOJONEGORO
       </span>
 
       <strong>
