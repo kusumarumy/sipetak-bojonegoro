@@ -2,24 +2,27 @@ import { NextResponse } from 'next/server';
 import { auth } from '@/lib/auth';
 
 /**
- * Layer GeoJSON statis yang diizinkan.
- * Data layer ini berada di GitHub, bukan di Supabase.
+ * Mapping ID layer aplikasi → nama file GeoJSON di GitHub.
  */
-const LAYER = new Set([
-  'aoi_trace',
-  'trace',
-  'sawah',
-  'hutan',
-  'permukiman',
-  'makam',
-  'sungai',
-  'rel_ka',
-  'jalan',
-  'sutet',
-  'sutet_titik',
-  'pipa_exxon',
-  'pipa_gresik_semarang',
-]);
+const LAYER_FILES: Record<string, string> = {
+  aoi_trace: 'aoi_trace.geojson',
+  trace: 'trace.geojson',
+
+  sawah: 'sawah.geojson',
+  hutan: 'hutan.geojson',
+  permukiman: 'pemukiman.geojson',
+  makam: 'pemakaman.geojson',
+
+  sungai: 'sungai.geojson',
+  rel_ka: 'rel_kereta.geojson',
+  jalan: 'jalan.geojson',
+
+  sutet: 'kabel_sutet.geojson',
+  sutet_titik: 'tiang_sutet.geojson',
+
+  pipa_exxon: 'pipa_exxon.geojson',
+  pipa_gresik_semarang: 'pipa_gresik_semarang.geojson',
+};
 
 const GITHUB_RAW_BASE =
   'https://raw.githubusercontent.com/kusumarumy/sipetak-bojonegoro/main/data/wgs84';
@@ -36,12 +39,14 @@ export async function GET(
 
   const { nama } = await params;
 
-  // Pastikan hanya layer yang sudah kita izinkan yang dapat diminta
-  if (!LAYER.has(nama)) {
+  // Pastikan layer memang terdaftar
+  const file = LAYER_FILES[nama];
+
+  if (!file) {
     return new NextResponse('Layer tidak dikenal', { status: 404 });
   }
 
-  const url = `${GITHUB_RAW_BASE}/${nama}.geojson`;
+  const url = `${GITHUB_RAW_BASE}/${file}`;
 
   try {
     const response = await fetch(url, {
@@ -52,7 +57,7 @@ export async function GET(
 
     if (!response.ok) {
       return new NextResponse(
-        `GeoJSON layer "${nama}" tidak ditemukan di GitHub`,
+        `GeoJSON layer "${file}" tidak ditemukan di GitHub`,
         { status: 404 }
       );
     }
