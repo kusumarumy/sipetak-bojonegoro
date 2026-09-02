@@ -137,7 +137,6 @@ function peranNama(id: Peran) {
           <p>
            Dokumen Perencanaan Pengadaan Tanah Jalur Lingkar Selatan Kabupaten Bojonegoro
             <br />
-            Data bersifat rahasia dan terbatas.
           </p>
         </header>
 

@@ -7,7 +7,7 @@ import 'maplibre-gl/dist/maplibre-gl.css';
 export const metadata: Metadata = {
   title: 'DPPT Bojonegoro — Pendataan Bidang Tanah',
   description:
-    'DDokumen Perencanaan Pengadaan Tanah Jalur Lingkar Selatan Kabupaten Bojonegoro',
+    'Dokumen Perencanaan Pengadaan Tanah Jalur Lingkar Selatan Kabupaten Bojonegoro',
   robots: {
     index: false,
     follow: false,
