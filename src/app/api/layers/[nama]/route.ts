@@ -1,24 +1,17 @@
 import { NextResponse } from 'next/server';
 import { auth } from '@/lib/auth';
 
-/**
- * Mapping ID layer aplikasi → nama file GeoJSON di GitHub.
- */
 const LAYER_FILES: Record<string, string> = {
   trace: 'traseg.geojson',
-
   sawah: 'sawah.geojson',
   hutan: 'hutan.geojson',
   permukiman: 'pemukiman.geojson',
   makam: 'pemakaman.geojson',
-
   sungai: 'sungai.geojson',
   rel_ka: 'rel_kereta.geojson',
   jalan: 'jalan.geojson',
-
   sutet: 'kabel_sutet.geojson',
   sutet_titik: 'tiang_sutet.geojson',
-
   pipa_exxon: 'pipa_exxon.geojson',
   pipa_gresik_semarang: 'pipa_gresik_semarang.geojson',
 };
@@ -37,8 +30,6 @@ export async function GET(
   }
 
   const { nama } = await params;
-
-  // Pastikan layer memang terdaftar
   const file = LAYER_FILES[nama];
 
   if (!file) {
