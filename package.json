@@ -8,7 +8,8 @@
     "start": "next start",
     "db:schema": "tsx scripts/skema.mts",
     "user:add": "tsx scripts/tambah-pengguna.mts",
-    "import": "tsx scripts/import-geojson.mts"
+    "import": "tsx scripts/import-geojson.mts",
+    "reproyeksi": "tsx scripts/reproyeksi.mts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.658.0",
