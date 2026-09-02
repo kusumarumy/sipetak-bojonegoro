@@ -351,7 +351,7 @@ export default function MapCanvas() {
 
       /**
        * ==========================
-       * LAYERS
+       * LAYERS GEOJSON
        * ==========================
        */
       for (const L of LAYERS) {
@@ -431,6 +431,9 @@ export default function MapCanvas() {
               'line-width':
                 L.lebar ?? 2,
 
+              'line-opacity':
+                L.opasitas ?? 1,
+
               ...(L.dash
                 ? {
                     'line-dasharray':
@@ -468,6 +471,78 @@ export default function MapCanvas() {
             }
           });
         }
+      }
+
+      /**
+       * =====================================================
+       * TRACE G — HALO / HIGHLIGHT
+       * =====================================================
+       *
+       * Trace G adalah trase utama.
+       * Halo dibuat di bawah garis utama supaya tetap
+       * terbaca di atas basemap dan layer lain.
+       */
+      if (
+        map.getSource('trace_g') &&
+        map.getLayer('trace_g')
+      ) {
+
+        map.addLayer(
+          {
+            id: 'trace_g_halo',
+
+            type: 'line',
+
+            source: 'trace_g',
+
+            layout: {
+              visibility:
+                layerAktif.trace_g
+                  ? 'visible'
+                  : 'none'
+            },
+
+            paint: {
+              'line-color': '#FFFFFF',
+
+              'line-width': [
+                '+',
+                [
+                  'coalesce',
+                  [
+                    'to-number',
+                    LAYERS.find(
+                      (l) => l.id === 'trace_g'
+                    )?.lebar ?? 4
+                  ],
+                  4
+                ],
+                4
+              ],
+
+              'line-opacity': 0.95
+            }
+          },
+          'trace_g'
+        );
+
+        /**
+         * Trace G harus selalu berada paling atas.
+         */
+        map.moveLayer('trace_g');
+
+        /**
+         * Pastikan halo tepat di bawah Trace G.
+         */
+        map.moveLayer(
+          'trace_g_halo',
+          'trace_g'
+        );
+
+        /**
+         * Trace G kembali dipindahkan ke atas.
+         */
+        map.moveLayer('trace_g');
       }
 
       /**
@@ -602,6 +677,27 @@ export default function MapCanvas() {
       });
 
       /**
+       * =====================================================
+       * TRACE G DIJAGA PALING ATAS
+       * =====================================================
+       *
+       * Karena bidang ditambahkan setelah Trace G,
+       * kita pindahkan kembali Trace G ke atas.
+       */
+      if (
+        map.getLayer('trace_g_halo') &&
+        map.getLayer('trace_g')
+      ) {
+        map.moveLayer(
+          'trace_g_halo'
+        );
+
+        map.moveLayer(
+          'trace_g'
+        );
+      }
+
+      /**
        * Tema
        */
       warnaiTema(map);
@@ -612,7 +708,7 @@ export default function MapCanvas() {
       pasangInteraksi(map);
 
       /**
-       * Zoom ke trace
+       * Zoom ke Trace G
        */
       zoomKeTrace(map);
     });
@@ -721,7 +817,7 @@ export default function MapCanvas() {
 
     /**
      * ==========================
-     * POPUP
+     * POPUP BIDANG
      * ==========================
      */
     map.on(
@@ -892,7 +988,7 @@ export default function MapCanvas() {
 
   /**
    * ==========================
-   * ZOOM KE TRACE
+   * ZOOM KE TRACE G
    * ==========================
    */
   const zoomKeTrace = (
@@ -900,9 +996,17 @@ export default function MapCanvas() {
   ) => {
 
     fetch(
-      '/api/layers/trace'
+      '/api/layers/trace_g'
     )
-      .then((r) => r.json())
+      .then((r) => {
+        if (!r.ok) {
+          throw new Error(
+            `Trace G HTTP ${r.status}`
+          );
+        }
+
+        return r.json();
+      })
       .then((fc) => {
 
         if (
@@ -914,15 +1018,56 @@ export default function MapCanvas() {
         const b =
           new maplibregl.LngLatBounds();
 
+        /**
+         * Menangani:
+         * - LineString
+         * - MultiLineString
+         * - Polygon
+         * - MultiPolygon
+         */
+        const tambahKoordinat = (
+          coords: any
+        ) => {
+
+          if (
+            !Array.isArray(coords)
+          ) {
+            return;
+          }
+
+          if (
+            coords.length >= 2 &&
+            typeof coords[0] === 'number' &&
+            typeof coords[1] === 'number'
+          ) {
+            b.extend(
+              coords as [
+                number,
+                number
+              ]
+            );
+
+            return;
+          }
+
+          for (
+            const c of coords
+          ) {
+            tambahKoordinat(c);
+          }
+        };
+
         for (
           const f
           of fc.features
         ) {
-          for (
-            const c
-            of f.geometry.coordinates
+
+          if (
+            f.geometry?.coordinates
           ) {
-            b.extend(c as any);
+            tambahKoordinat(
+              f.geometry.coordinates
+            );
           }
         }
 
@@ -931,12 +1076,18 @@ export default function MapCanvas() {
             b,
             {
               padding: 70,
-              duration: 900
+              duration: 900,
+              maxZoom: 14.5
             }
           );
         }
       })
-      .catch(() => {});
+      .catch((err) => {
+        console.warn(
+          'Gagal zoom Trace G:',
+          err
+        );
+      });
   };
 
   /**
@@ -1109,7 +1260,7 @@ export default function MapCanvas() {
         'hillshade-exaggeration':
           0.45
       }
-    }, LAYERS[0].id);
+    });
 
     /**
      * Terrain
@@ -1149,6 +1300,23 @@ export default function MapCanvas() {
       pitch: 52,
       duration: 850
     });
+
+    /**
+     * Trace G harus tetap paling atas
+     * setelah hillshade dibuat.
+     */
+    if (
+      map.getLayer('trace_g_halo') &&
+      map.getLayer('trace_g')
+    ) {
+      map.moveLayer(
+        'trace_g_halo'
+      );
+
+      map.moveLayer(
+        'trace_g'
+      );
+    }
 
   }, [dtm, exag]);
 
@@ -1257,6 +1425,42 @@ export default function MapCanvas() {
       }
     }
 
+    /**
+     * Trace G mempunyai halo sendiri.
+     * Halo harus mengikuti checkbox Trace G.
+     */
+    if (
+      map.getLayer('trace_g_halo')
+    ) {
+      map.setLayoutProperty(
+        'trace_g_halo',
+        'visibility',
+        layerAktif.trace_g
+          ? 'visible'
+          : 'none'
+      );
+    }
+
+    /**
+     * Pastikan Trace G tetap paling atas.
+     */
+    if (
+      layerAktif.trace_g &&
+      map.getLayer('trace_g')
+    ) {
+      if (
+        map.getLayer('trace_g_halo')
+      ) {
+        map.moveLayer(
+          'trace_g_halo'
+        );
+      }
+
+      map.moveLayer(
+        'trace_g'
+      );
+    }
+
   }, [layerAktif]);
 
   /**
@@ -1267,7 +1471,13 @@ export default function MapCanvas() {
   useEffect(() => {
 
     const zoomTrace = () => {
-      // Fungsi zoom ke trace
+
+      const map =
+        mapRef.current;
+
+      if (!map) return;
+
+      zoomKeTrace(map);
     };
 
     window.addEventListener(
