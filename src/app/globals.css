@@ -2671,7 +2671,79 @@ main.body {
   position: relative;
   overflow: hidden;
 }
+.basemap-control {
+  position: relative;
+}
 
+.basemap-control > button {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  background: white;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.basemap-panel {
+  position: absolute;
+  top: 0;
+  right: 40px;
+
+  display: grid;
+  grid-template-columns: repeat(2, 110px);
+  gap: 8px;
+
+  padding: 8px;
+
+  background: rgba(255, 255, 255, 0.96);
+  border-radius: 10px;
+
+  box-shadow:
+    0 4px 18px rgba(0, 0, 0, 0.18);
+
+  z-index: 1000;
+}
+
+.basemap-item {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  width: 110px;
+  height: 72px;
+
+  padding: 8px;
+
+  border: 1px solid #d8dde5;
+  border-radius: 8px;
+
+  background: white;
+  cursor: pointer;
+
+  font-size: 11px;
+}
+
+.basemap-item:hover {
+  border-color: #557;
+}
+
+.basemap-item.active {
+  border-width: 2px;
+}
+
+.basemap-item-icon {
+  font-size: 22px;
+  line-height: 1;
+  margin-bottom: 5px;
+}
+
+.basemap-item-label {
+  white-space: nowrap;
+}
 }
 @media (max-width: 600px) {
 
