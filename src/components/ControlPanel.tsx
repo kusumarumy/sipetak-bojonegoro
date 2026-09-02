@@ -15,9 +15,6 @@ export default function ControlPanel({
   return (
     <aside className={'panel' + (terbuka ? ' open' : '')}>
 
-      {/* =====================================================
-          TERRAIN 3D
-          ===================================================== */}
       <div className="terrain-card">
 
         <div className="terrain-title">
@@ -54,11 +51,6 @@ export default function ControlPanel({
         </div>
 
       </div>
-
-
-      {/* =====================================================
-          LAYER
-          ===================================================== */}
       <div className="layer-card">
 
         <div className="layer-card-title">
@@ -128,10 +120,6 @@ export default function ControlPanel({
 
       </div>
 
-
-      {/* =====================================================
-          TAMPILAN BIDANG
-          ===================================================== */}
       <div className="sec">
 
         <span className="lbl">
@@ -160,8 +148,6 @@ export default function ControlPanel({
 
         </div>
 
-
-        {/* Nomor bidang */}
         <div
           className="row"
           style={{ marginTop: 8 }}
