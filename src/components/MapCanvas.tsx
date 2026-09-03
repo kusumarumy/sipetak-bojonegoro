@@ -31,7 +31,7 @@ const ADA_KONTUR = {
   lidar: siap(KONTUR.lidar.url),
   foto: siap(KONTUR.foto.url)
 };
-const TRACE_G_URL =
+const TRASEG_URL =
   'https://raw.githubusercontent.com/kusumarumy/sipetak-bojonegoro/main/data/wgs84/traseg.geojson';
 class BasemapControl implements maplibregl.IControl {
   private container: HTMLDivElement;
@@ -499,7 +499,7 @@ if (DTM.r2) {
 map.addSource(L.id, {
   type: 'geojson',
   data:
-    L.id === 'trace_g'
+    L.id === 'traseg'
       ? 'https://raw.githubusercontent.com/kusumarumy/sipetak-bojonegoro/main/data/wgs84/traseg.geojson'
       : `/api/layers/${L.sumber}`
 });
@@ -615,21 +615,21 @@ map.addSource(L.id, {
       }
 
       if (
-        map.getSource('trace_g') &&
-        map.getLayer('trace_g')
+        map.getSource('traseg') &&
+        map.getLayer('traseg')
       ) {
 
         map.addLayer(
           {
-            id: 'trace_g_halo',
+            id: 'traseg_halo',
 
             type: 'line',
 
-            source: 'trace_g',
+            source: 'traseg',
 
             layout: {
               visibility:
-                layerAktif.trace_g
+                layerAktif.traseg
                   ? 'visible'
                   : 'none'
             },
@@ -644,7 +644,7 @@ map.addSource(L.id, {
                   [
                     'to-number',
                     LAYERS.find(
-                      (l) => l.id === 'trace_g'
+                      (l) => l.id === 'traseg'
                     )?.lebar ?? 4
                   ],
                   4
@@ -655,18 +655,18 @@ map.addSource(L.id, {
               'line-opacity': 0.95
             }
           },
-          'trace_g'
+          'traseg'
         );
 
       
-        map.moveLayer('trace_g');
+        map.moveLayer('traseg');
 
         map.moveLayer(
-          'trace_g_halo',
-          'trace_g'
+          'traseg_halo',
+          'traseg'
         );
 
-        map.moveLayer('trace_g');
+        map.moveLayer('traseg');
       }
 
 
@@ -784,15 +784,15 @@ map.addSource(L.id, {
 
 
       if (
-        map.getLayer('trace_g_halo') &&
-        map.getLayer('trace_g')
+        map.getLayer('traseg_halo') &&
+        map.getLayer('traseg')
       ) {
         map.moveLayer(
-          'trace_g_halo'
+          'traseg_halo'
         );
 
         map.moveLayer(
-          'trace_g'
+          'traseg'
         );
       }
 
@@ -801,7 +801,7 @@ map.addSource(L.id, {
 
       pasangInteraksi(map);
 
-      zoomKeTrace(map);
+      zoomKeTrase(map);
     });
 
 
@@ -1062,15 +1062,15 @@ map.addSource(L.id, {
     );
   }
 
-  const zoomKeTrace = (
+  const zoomKeTrase = (
   map: MLMap
 ) => {
 
-  fetch(TRACE_G_URL)
+  fetch(TRASEG_URL)
     .then((r) => {
       if (!r.ok) {
         throw new Error(
-          `Trace G HTTP ${r.status}`
+          `Trase G HTTP ${r.status}`
         );
       }
 
@@ -1128,7 +1128,7 @@ map.addSource(L.id, {
     })
     .catch((err) => {
       console.warn(
-        'Gagal zoom Trace G:',
+        'Gagal zoom Trase G:',
         err
       );
     });
@@ -1345,30 +1345,22 @@ for (const def of [
       duration: 850
     });
 
-    /**
-     * Trace G harus tetap paling atas
-     * setelah hillshade dibuat.
-     */
+   
     if (
-      map.getLayer('trace_g_halo') &&
-      map.getLayer('trace_g')
+      map.getLayer('traseg_halo') &&
+      map.getLayer('traseg')
     ) {
       map.moveLayer(
-        'trace_g_halo'
+        'traseg_halo'
       );
 
       map.moveLayer(
-        'trace_g'
+        'traseg'
       );
     }
 
   }, [dtm, exag]);
 
-  /**
-   * ==========================
-   * PEWARNAAN BIDANG
-   * ==========================
-   */
   useEffect(() => {
 
     const map =
@@ -1469,70 +1461,59 @@ for (const def of [
       }
     }
 
-    /**
-     * Trace G mempunyai halo sendiri.
-     * Halo harus mengikuti checkbox Trace G.
-     */
+   
     if (
-      map.getLayer('trace_g_halo')
+      map.getLayer('traseg_halo')
     ) {
       map.setLayoutProperty(
-        'trace_g_halo',
+        'traseg_halo',
         'visibility',
-        layerAktif.trace_g
+        layerAktif.traseg
           ? 'visible'
           : 'none'
       );
     }
 
-    /**
-     * Pastikan Trace G tetap paling atas.
-     */
     if (
-      layerAktif.trace_g &&
-      map.getLayer('trace_g')
+      layerAktif.traseg &&
+      map.getLayer('traseg')
     ) {
       if (
-        map.getLayer('trace_g_halo')
+        map.getLayer('traseg_halo')
       ) {
         map.moveLayer(
-          'trace_g_halo'
+          'traseg_halo'
         );
       }
 
       map.moveLayer(
-        'trace_g'
+        'traseg'
       );
     }
 
   }, [layerAktif]);
 
-  /**
-   * ==========================
-   * EVENT ZOOM TRACE
-   * ==========================
-   */
   useEffect(() => {
 
-    const zoomTrace = () => {
+    const zoomTrase = () => {
 
       const map =
         mapRef.current;
 
       if (!map) return;
 
-      zoomKeTrace(map);
+      zoomKeTrase(map);
     };
 
     window.addEventListener(
-      'zoom-trace',
-      zoomTrace
+      'zoom-trase',
+      zoomTrase
     );
 
     return () => {
       window.removeEventListener(
-        'zoom-trace',
-        zoomTrace
+        'zoom-trase',
+        zoomTrase
       );
     };
 
