@@ -85,9 +85,6 @@ export default function ControlPanel({
         </div>
       </section>
 
-      {/* =========================================================
-          LAYER MANAGER
-      ========================================================= */}
       <section className="layer-card">
 
         {/* HEADER */}
@@ -107,7 +104,6 @@ export default function ControlPanel({
           </div>
         </div>
 
-        {/* GROUPS */}
         <div className="layer-groups">
           {grup.map((g) => {
             const layers = LAYERS.filter((l) => l.grup === g);
@@ -119,7 +115,6 @@ export default function ControlPanel({
             return (
               <div className="layer-group" key={g}>
 
-                {/* GROUP HEADER */}
                 <button
                   type="button"
                   className="layer-group-head"
@@ -152,7 +147,6 @@ export default function ControlPanel({
                   </span>
                 </button>
 
-                {/* GROUP CONTENT */}
                 {terbukaGrup && (
                   <div className="layer-list">
                     {layers.map((L) => {
@@ -166,7 +160,6 @@ export default function ControlPanel({
                           }
                           key={L.id}
                         >
-                          {/* MAIN ROW */}
                           <label className="layer-row">
 
                             <input
@@ -206,7 +199,6 @@ export default function ControlPanel({
 
                           </label>
 
-                          {/* BIDANG TANAH OPTIONS */}
                           {g === 'Bidang tanah' &&
                             L.id === 'bidang' &&
                             aktif && (
@@ -295,9 +287,6 @@ export default function ControlPanel({
         </div>
       </section>
 
-      {/* =========================================================
-          FOOTER
-      ========================================================= */}
       <div className="panel-footer">
         <span className="footer-dot" />
         <span>
