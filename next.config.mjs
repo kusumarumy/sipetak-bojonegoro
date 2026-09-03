@@ -1,8 +1,5 @@
-/** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  // Header keamanan dasar. Data bidang bersifat rahasia — jangan diindeks,
-  // jangan dikirim sebagai referrer ke pihak lain.
   async headers() {
     return [{
       source: '/:path*',
