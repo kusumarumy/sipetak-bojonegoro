@@ -36,7 +36,8 @@ const ADA_KONTUR = {
   lidar: siap(KONTUR.lidar.url),
   foto: siap(KONTUR.foto.url)
 };
-
+const TRACE_G_URL =
+  'https://raw.githubusercontent.com/kusumarumy/sipetak-bojonegoro/main/data/traseg.geojson';
 class BasemapControl implements maplibregl.IControl {
   private container: HTMLDivElement;
   private current: Basemap;
@@ -500,10 +501,13 @@ export default function MapCanvas() {
 
   if (L.id === 'bidang') continue;
 
-  map.addSource(L.id, {
-    type: 'geojson',
-    data: `/api/layers/${L.sumber}`
-  });
+map.addSource(L.id, {
+  type: 'geojson',
+  data:
+    L.id === 'trace_g'
+      ? 'https://raw.githubusercontent.com/kusumarumy/sipetak-bojonegoro/main/data/traseg.geojson'
+      : `/api/layers/${L.sumber}`
+});
 
   const vis =
     L.bawaan
@@ -1093,115 +1097,77 @@ export default function MapCanvas() {
     );
   }
 
-  /**
-   * ==========================
-   * ZOOM KE TRACE G
-   * ==========================
-   */
   const zoomKeTrace = (
-    map: MLMap
-  ) => {
+  map: MLMap
+) => {
 
-    fetch(
-      '/api/layers/trace_g'
-    )
-      .then((r) => {
-        if (!r.ok) {
-          throw new Error(
-            `Trace G HTTP ${r.status}`
-          );
-        }
+  fetch(TRACE_G_URL)
+    .then((r) => {
+      if (!r.ok) {
+        throw new Error(
+          `Trace G HTTP ${r.status}`
+        );
+      }
 
-        return r.json();
-      })
-      .then((fc) => {
+      return r.json();
+    })
+    .then((fc) => {
 
-        if (
-          !fc.features?.length
-        ) {
+      if (!fc.features?.length) {
+        return;
+      }
+
+      const b =
+        new maplibregl.LngLatBounds();
+
+      const tambahKoordinat = (
+        coords: any
+      ) => {
+
+        if (!Array.isArray(coords)) {
           return;
         }
 
-        const b =
-          new maplibregl.LngLatBounds();
-
-        /**
-         * Menangani:
-         * - LineString
-         * - MultiLineString
-         * - Polygon
-         * - MultiPolygon
-         */
-        const tambahKoordinat = (
-          coords: any
-        ) => {
-
-          if (
-            !Array.isArray(coords)
-          ) {
-            return;
-          }
-
-          if (
-            coords.length >= 2 &&
-            typeof coords[0] === 'number' &&
-            typeof coords[1] === 'number'
-          ) {
-            b.extend(
-              coords as [
-                number,
-                number
-              ]
-            );
-
-            return;
-          }
-
-          for (
-            const c of coords
-          ) {
-            tambahKoordinat(c);
-          }
-        };
-
-        for (
-          const f
-          of fc.features
+        if (
+          coords.length >= 2 &&
+          typeof coords[0] === 'number' &&
+          typeof coords[1] === 'number'
         ) {
+          b.extend(
+            coords as [number, number]
+          );
 
-          if (
-            f.geometry?.coordinates
-          ) {
-            tambahKoordinat(
-              f.geometry.coordinates
-            );
-          }
+          return;
         }
 
-        if (!b.isEmpty()) {
-          map.fitBounds(
-            b,
-            {
-              padding: 70,
-              duration: 900,
-              maxZoom: 14.5
-            }
+        for (const c of coords) {
+          tambahKoordinat(c);
+        }
+      };
+
+      for (const f of fc.features) {
+        if (f.geometry?.coordinates) {
+          tambahKoordinat(
+            f.geometry.coordinates
           );
         }
-      })
-      .catch((err) => {
-        console.warn(
-          'Gagal zoom Trace G:',
-          err
-        );
-      });
-  };
+      }
 
-  /**
- * ==========================
- * BASEMAP
- * ==========================
- */
+      if (!b.isEmpty()) {
+        map.fitBounds(b, {
+          padding: 70,
+          duration: 900,
+          maxZoom: 14.5
+        });
+      }
+    })
+    .catch((err) => {
+      console.warn(
+        'Gagal zoom Trace G:',
+        err
+      );
+    });
+};
 useEffect(() => {
   const map = mapRef.current;
 
