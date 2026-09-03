@@ -77,9 +77,6 @@ export const LAYERS: DefLayer[] = [
     grup: 'Tutupan lahan'
   },
 
-  // =====================================================
-  // JARINGAN & UTILITAS
-  // =====================================================
   {
     id: 'jalan',
     nama: 'Jalan eksisting',
@@ -167,8 +164,8 @@ export const KONTUR = {
 };
 
 export const DTM = {
-  lidar: process.env.NEXT_PUBLIC_TILES_DTM_LIDAR,
-  foto:  process.env.NEXT_PUBLIC_TILES_DTM_FOTO
+  aws: process.env.NEXT_PUBLIC_TILES_DTM_AWS ?? '',
+  r2: process.env.NEXT_PUBLIC_TILES_DTM_R2 ?? '',
 };
 
 export const ORTHO = process.env.NEXT_PUBLIC_TILES_ORTHO;
