@@ -62,6 +62,17 @@ export const useApp = create<AppState>((set, get) => ({
 layerAktif: {
   traseg: true,
   bidang: true,
+  sawah: false,
+  hutan: false,
+  pemukiman: false,
+  pemakaman: false,
+  jalan: false,
+  rel_kereta: false,
+  sungai: false,
+  kabel_sutet: false,
+  tiang_sutet: false,
+  pipa_exxon: false,
+  pipa_gresem: false,
 },
 
   bidangTerpilih: null,
