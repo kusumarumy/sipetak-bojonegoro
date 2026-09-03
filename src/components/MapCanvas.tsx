@@ -504,10 +504,10 @@ map.addSource(L.id, {
       : `/api/layers/${L.sumber}`
 });
 
-  const vis =
-    L.bawaan
-      ? 'visible'
-      : 'none';
+const vis =
+  layerAktif[L.id]
+    ? 'visible'
+    : 'none';
  
         if (L.tipe === 'fill') {
 
