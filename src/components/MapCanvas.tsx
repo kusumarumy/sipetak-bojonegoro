@@ -37,14 +37,6 @@ const ADA_KONTUR = {
   foto: siap(KONTUR.foto.url)
 };
 
-/**
- * ==========================
- * BASEMAP CONTROL
- * ==========================
- *
- * Icon tetap satu.
- * Klik icon → muncul pilihan 6 basemap.
- */
 class BasemapControl implements maplibregl.IControl {
   private container: HTMLDivElement;
   private current: Basemap;
@@ -219,9 +211,6 @@ export default function MapCanvas() {
     beriPesan
   } = useApp();
 
-  /**
-   * Inisialisasi map.
-   */
   useEffect(() => {
     if (!ref.current || mapRef.current) return;
 
@@ -292,11 +281,6 @@ export default function MapCanvas() {
       };
     }
 
-    /**
-     * Dua DTM dipasang sebagai sumber terpisah.
-     * MapLibre hanya dapat mengaktifkan satu terrain
-     * pada satu waktu.
-     */
     if (ADA_DTM.lidar) {
       sources.dem_lidar = {
         type: 'raster-dem',
@@ -440,12 +424,6 @@ export default function MapCanvas() {
 
     mapRef.current = map;
 
-    /**
-     * ==========================
-     * MAP CONTROLS
-     * ==========================
-     */
-
     map.addControl(
       new maplibregl.NavigationControl({
         visualizePitch: true
@@ -453,9 +431,6 @@ export default function MapCanvas() {
       'top-right'
     );
 
-    /**
-     * Basemap control
-     */
     const basemapControl = new BasemapControl(
       basemap,
       (value) => setBasemap(value)
@@ -466,9 +441,6 @@ export default function MapCanvas() {
       'top-right'
     );
 
-    /**
-     * Scale
-     */
     map.addControl(
       new maplibregl.ScaleControl({
         maxWidth: 110,
@@ -477,18 +449,10 @@ export default function MapCanvas() {
       'bottom-right'
     );
 
-    /**
-     * ==========================
-     * MAP LOAD
-     * ==========================
-     */
+
     map.on('load', () => {
 
-      /**
-       * ==========================
-       * KONTUR
-       * ==========================
-       */
+   
       for (
         const [k, def]
         of [
@@ -531,24 +495,20 @@ export default function MapCanvas() {
         });
       }
 
-      /**
-       * ==========================
-       * LAYERS GEOJSON
-       * ==========================
-       */
-      for (const L of LAYERS) {
-        map.addSource(L.id, {
-          type: 'geojson',
-          data: `/api/layers/${L.sumber}`
-        });
+  
+     for (const L of LAYERS) {
 
-        const vis =
-          L.bawaan
-            ? 'visible'
-            : 'none';
+  if (L.id === 'bidang') continue;
 
-        /**
-         * Polygon
+  map.addSource(L.id, {
+    type: 'geojson',
+    data: `/api/layers/${L.sumber}`
+  });
+
+  const vis =
+    L.bawaan
+      ? 'visible'
+      : 'none';gon
          */
         if (L.tipe === 'fill') {
 
@@ -655,15 +615,6 @@ export default function MapCanvas() {
         }
       }
 
-      /**
-       * =====================================================
-       * TRACE G — HALO / HIGHLIGHT
-       * =====================================================
-       *
-       * Trace G adalah trase utama.
-       * Halo dibuat di bawah garis utama supaya tetap
-       * terbaca di atas basemap dan layer lain.
-       */
       if (
         map.getSource('trace_g') &&
         map.getLayer('trace_g')
@@ -708,45 +659,23 @@ export default function MapCanvas() {
           'trace_g'
         );
 
-        /**
-         * Trace G harus selalu berada paling atas.
-         */
+      
         map.moveLayer('trace_g');
 
-        /**
-         * Pastikan halo tepat di bawah Trace G.
-         */
         map.moveLayer(
           'trace_g_halo',
           'trace_g'
         );
 
-        /**
-         * Trace G kembali dipindahkan ke atas.
-         */
         map.moveLayer('trace_g');
       }
 
-      /**
-       * ==========================
-       * BIDANG TANAH
-       * ==========================
-       *
-       * GeoJSON dari database,
-       * bukan tile, agar hasil edit
-       * langsung tampil.
-       */
+
       map.addSource('bidang', {
-        type: 'geojson',
+  type: 'geojson',
+  data: '/api/bidang'
+});
 
-        data: '/api/bidang',
-
-        promoteId: 'no'
-      });
-
-      /**
-       * Fill bidang
-       */
       map.addLayer({
         id: 'bidang',
 
@@ -782,9 +711,7 @@ export default function MapCanvas() {
         }
       });
 
-      /**
-       * Border bidang
-       */
+ 
       map.addLayer({
         id: 'bidang-ln',
 
@@ -823,9 +750,7 @@ export default function MapCanvas() {
         }
       });
 
-      /**
-       * Label nomor bidang
-       */
+  
       map.addLayer({
         id: 'bidang-lb',
 
