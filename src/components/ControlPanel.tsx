@@ -40,9 +40,6 @@ export default function ControlPanel({
 
   return (
     <aside className={'panel' + (terbuka ? ' open' : '')}>
-      {/* =========================================================
-          TERRAIN
-      ========================================================= */}
       <section className="terrain-card">
         <div className="terrain-head">
           <div className="terrain-head-left">
@@ -71,20 +68,20 @@ export default function ControlPanel({
           </button>
 
           <button
-            type="button"
-            className={s.dtm === 'lidar' ? 'active' : ''}
-            onClick={() => s.setDTM('lidar')}
-          >
-            AWS 30 m
-          </button>
+  type="button"
+  className={s.dtm === 'aws' ? 'active' : ''}
+  onClick={() => s.setDTM('aws')}
+>
+  AWS 30 m
+</button>
 
-          <button
-            type="button"
-            className={s.dtm === 'foto' ? 'active' : ''}
-            onClick={() => s.setDTM('foto')}
-          >
-            DTM 3 m
-          </button>
+<button
+  type="button"
+  className={s.dtm === 'r2' ? 'active' : ''}
+  onClick={() => s.setDTM('r2')}
+>
+  DTM 3 m
+</button>
         </div>
       </section>
 
