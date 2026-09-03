@@ -1,26 +1,18 @@
-/**
- * Definisi seluruh layer peta di satu tempat: sumber data, warna, dan urutan.
- * MapCanvas membaca berkas ini; panel layer juga. Menambah layer baru cukup
- * menambah satu baris di sini.
- */
 export type DefLayer = {
   id: string;
   nama: string;
-  sumber: string;            // nama endpoint /api/layers/<sumber>
+  sumber: string;          
   tipe: 'fill' | 'line' | 'circle';
   warna: string;
-  garis?: boolean;           // tampilkan sebagai contoh garis di legenda
+  garis?: boolean;          
   lebar?: number;
   dash?: number[];
   opasitas?: number;
-  bawaan?: boolean;          // aktif saat aplikasi dibuka
+  bawaan?: boolean;       
   grup: string;
 };
 
 export const LAYERS: DefLayer[] = [
-  // =====================================================
-  // RENCANA TRACE
-  // =====================================================
   {
     id: 'trace_g',
     nama: 'Trace G',
@@ -34,9 +26,17 @@ export const LAYERS: DefLayer[] = [
     grup: 'Rencana trace'
   },
 
-  // =====================================================
-  // TUTUPAN LAHAN
-  // =====================================================
+  {
+    id: 'bidang',
+    nama: 'Bidang tanah',
+    sumber: 'bidang',
+    tipe: 'fill',
+    warna: '#F59E0B',
+    opasitas: 0.18,
+    bawaan: true,
+    grup: 'Bidang tanah'
+  },
+
   {
     id: 'sawah',
     nama: 'Sawah',
