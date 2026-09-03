@@ -508,7 +508,7 @@ export default function MapCanvas() {
   const vis =
     L.bawaan
       ? 'visible'
-      : 'none';gon
+      : 'none';
  
         if (L.tipe === 'fill') {
 
