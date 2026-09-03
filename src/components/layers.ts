@@ -49,7 +49,7 @@ export const LAYERS: DefLayer[] = [
 
   {
     id: 'hutan',
-    nama: 'Hutan',
+    nama: 'Vegetasi',
     sumber: 'hutan',
     tipe: 'fill',
     warna: '#287A5F',
