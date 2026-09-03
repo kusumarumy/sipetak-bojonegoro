@@ -14,9 +14,9 @@ export type DefLayer = {
 
 export const LAYERS: DefLayer[] = [
   {
-    id: 'trace_g',
+    id: 'traseg',
     nama: 'Trace G',
-    sumber: 'trace_g',
+    sumber: 'traseg',
     tipe: 'line',
     warna: '#6C4DFF',
     garis: true,
@@ -58,9 +58,9 @@ export const LAYERS: DefLayer[] = [
   },
 
   {
-    id: 'permukiman',
-    nama: 'Permukiman',
-    sumber: 'permukiman',
+    id: 'pemukiman',
+    nama: 'Pemukiman',
+    sumber: 'pemukiman',
     tipe: 'fill',
     warna: '#E66F91',
     opasitas: 0.45,
@@ -89,9 +89,9 @@ export const LAYERS: DefLayer[] = [
   },
 
   {
-    id: 'rel_ka',
+    id: 'rel_kereta',
     nama: 'Rel kereta api',
-    sumber: 'rel_ka',
+    sumber: 'rel_kereta',
     tipe: 'line',
     warna: '#374151',
     garis: true,
@@ -112,9 +112,9 @@ export const LAYERS: DefLayer[] = [
   },
 
   {
-    id: 'sutet',
+    id: 'kabel_sutet',
     nama: 'Jaringan SUTET',
-    sumber: 'sutet',
+    sumber: 'kabel_sutet',
     tipe: 'line',
     warna: '#82C83E',
     garis: true,
@@ -124,9 +124,9 @@ export const LAYERS: DefLayer[] = [
   },
 
   {
-    id: 'sutet_titik',
-    nama: 'Titik tower SUTET',
-    sumber: 'sutet_titik',
+    id: 'tiang_sutet',
+    nama: 'Tower SUTET',
+    sumber: 'tiang_sutet',
     tipe: 'circle',
     warna: '#82C83E',
     grup: 'Jaringan & utilitas'
@@ -145,9 +145,9 @@ export const LAYERS: DefLayer[] = [
   },
 
   {
-    id: 'pipa_gresik_semarang',
+    id: 'pipa_gresem',
     nama: 'Pipa Gresik–Semarang',
-    sumber: 'pipa_gresik_semarang',
+    sumber: 'pipa_gresem',
     tipe: 'line',
     warna: '#B85CC7',
     garis: true,
@@ -157,7 +157,6 @@ export const LAYERS: DefLayer[] = [
   }
 ];
 
-/** Kontur disajikan dari PMTiles, bukan GeoJSON — jumlah simpulnya terlalu besar. */
 export const KONTUR = {
   lidar: { id: 'kontur_lidar', nama: 'Kontur LiDAR', warna: '#B4A7EE', url: process.env.NEXT_PUBLIC_TILES_KONTUR_LIDAR },
   foto:  { id: 'kontur_foto',  nama: 'Kontur foto udara', warna: '#7FCFD6', url: process.env.NEXT_PUBLIC_TILES_KONTUR_FOTO }
