@@ -24,7 +24,7 @@ export async function GET() {
           'id', f.id, 'kode', f.kode, 'status', f.status,
           'penggunaan', f.penggunaan, 'desa', f.desa,
           'pemilik', f.pemilik, 'luas', f.luas_m2, 'kena', f.luas_terdampak_m2,
-          'no', f.rn
+          'no', f.kode
         ))), '[]'::json)
     ) AS fc
     FROM (SELECT v.*, row_number() OVER (ORDER BY v.kode) AS rn FROM v_bidang_peta v) f
