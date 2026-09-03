@@ -418,14 +418,20 @@ if (DTM.r2) {
       }
     });
 
-    mapRef.current = map;
+mapRef.current = map;
 
-    map.addControl(
-      new maplibregl.NavigationControl({
-        visualizePitch: true
-      }),
-      'top-right'
-    );
+const resizeObserver = new ResizeObserver(() => {
+  map.resize();
+});
+
+resizeObserver.observe(ref.current);
+
+map.addControl(
+  new maplibregl.NavigationControl({
+    visualizePitch: true
+  }),
+  'top-right'
+);
 
     const basemapControl = new BasemapControl(
       basemap,
@@ -799,13 +805,15 @@ const vis =
       );
     });
 
-    return () => {
-      popupRef.current?.remove();
+return () => {
+  resizeObserver.disconnect();
 
-      map.remove();
+  popupRef.current?.remove();
 
-      mapRef.current = null;
-    };
+  map.remove();
+
+  mapRef.current = null;
+};
 
   }, []);
 
