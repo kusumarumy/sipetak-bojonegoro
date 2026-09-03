@@ -782,14 +782,7 @@ map.addSource(L.id, {
         }
       });
 
-      /**
-       * =====================================================
-       * TRACE G DIJAGA PALING ATAS
-       * =====================================================
-       *
-       * Karena bidang ditambahkan setelah Trace G,
-       * kita pindahkan kembali Trace G ke atas.
-       */
+
       if (
         map.getLayer('trace_g_halo') &&
         map.getLayer('trace_g')
@@ -803,27 +796,15 @@ map.addSource(L.id, {
         );
       }
 
-      /**
-       * Tema
-       */
+      
       warnaiTema(map);
 
-      /**
-       * Interaksi bidang
-       */
       pasangInteraksi(map);
 
-      /**
-       * Zoom ke Trace G
-       */
       zoomKeTrace(map);
     });
 
-    /**
-     * ==========================
-     * ERROR
-     * ==========================
-     */
+
     map.on('error', (e) => {
       console.warn(
         'MapLibre:',
@@ -831,11 +812,6 @@ map.addSource(L.id, {
       );
     });
 
-    /**
-     * ==========================
-     * CLEANUP
-     * ==========================
-     */
     return () => {
       popupRef.current?.remove();
 
@@ -846,17 +822,11 @@ map.addSource(L.id, {
 
   }, []);
 
-  /**
-   * ==========================
-   * INTERAKSI BIDANG
-   * ==========================
-   */
+
   function pasangInteraksi(map: MLMap) {
     let hov: number | null = null;
 
-    /**
-     * Hover bidang
-     */
+ 
     map.on(
       'mousemove',
       'bidang',
