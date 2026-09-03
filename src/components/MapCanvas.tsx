@@ -32,7 +32,7 @@ const ADA_KONTUR = {
   foto: siap(KONTUR.foto.url)
 };
 const TRACE_G_URL =
-  'https://raw.githubusercontent.com/kusumarumy/sipetak-bojonegoro/main/data/traseg.geojson';
+  'https://raw.githubusercontent.com/kusumarumy/sipetak-bojonegoro/main/data/wgs84/traseg.geojson';
 class BasemapControl implements maplibregl.IControl {
   private container: HTMLDivElement;
   private current: Basemap;
@@ -500,7 +500,7 @@ map.addSource(L.id, {
   type: 'geojson',
   data:
     L.id === 'trace_g'
-      ? 'https://raw.githubusercontent.com/kusumarumy/sipetak-bojonegoro/main/data/traseg.geojson'
+      ? 'https://raw.githubusercontent.com/kusumarumy/sipetak-bojonegoro/main/data/wgs84/traseg.geojson'
       : `/api/layers/${L.sumber}`
 });
 
