@@ -2,18 +2,18 @@ import { NextResponse } from 'next/server';
 import { auth } from '@/lib/auth';
 
 const LAYER_FILES: Record<string, string> = {
-  trace: 'traseg.geojson',
+  traseg: 'traseg.geojson',
   sawah: 'sawah.geojson',
   hutan: 'hutan.geojson',
-  permukiman: 'pemukiman.geojson',
-  makam: 'pemakaman.geojson',
+  pemukiman: 'pemukiman.geojson',
+  pemakaman: 'pemakaman.geojson',
   sungai: 'sungai.geojson',
-  rel_ka: 'rel_kereta.geojson',
+  rel_kereta: 'rel_kereta.geojson',
   jalan: 'jalan.geojson',
-  sutet: 'kabel_sutet.geojson',
-  sutet_titik: 'tiang_sutet.geojson',
+  kabel_sutet: 'kabel_sutet.geojson',
+  tiang_sutet: 'tiang_sutet.geojson',
   pipa_exxon: 'pipa_exxon.geojson',
-  pipa_gresik_semarang: 'pipa_gresik_semarang.geojson',
+  pipa_gresem: 'pipa_gresik_semarang.geojson',
 };
 
 const GITHUB_RAW_BASE =
