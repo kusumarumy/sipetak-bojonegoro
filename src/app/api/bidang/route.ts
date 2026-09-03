@@ -2,12 +2,6 @@ import { NextResponse } from 'next/server';
 import { auth } from '@/lib/auth';
 import { query } from '@/lib/db';
 
-/**
- * GET /api/bidang — seluruh bidang sebagai GeoJSON untuk peta.
- *
- * Data bidang berasal dari view v_bidang_peta,
- * yang sekarang mengambil data dari public.bidang_tanah.
- */
 export async function GET() {
   const sesi = await auth();
 
