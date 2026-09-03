@@ -15,8 +15,8 @@ export type Basemap =
 
 export type SumberDTM =
   | 'off'
-  | 'lidar'
-  | 'foto';
+  | 'aws'
+  | 'r2';
 
 export type PewarnaanBidang =
   | 'status'
@@ -53,7 +53,7 @@ interface AppState {
 
 export const useApp = create<AppState>((set, get) => ({
   tema: 'auto',
-  basemap: 'osm',
+  basemap: 'esri',
   dtm: 'off',
   exag: 1.8,
   pewarnaan: 'status',
