@@ -1357,31 +1357,18 @@ const src =
       exaggeration: exag
     });
 
-    /**
-     * Kontur mengikuti DTM
-     */
-    for (
-      const [k, def]
-      of [
-        ['lidar', KONTUR.lidar],
-        ['foto', KONTUR.foto]
-      ] as const
-    ) {
-
-      if (
-        map.getLayer(
-          def.id
-        )
-      ) {
-        map.setLayoutProperty(
-          def.id,
-          'visibility',
-          dtm === k
-            ? 'visible'
-            : 'none'
-        );
-      }
-    }
+for (const def of [
+  KONTUR.lidar,
+  KONTUR.foto
+]) {
+  if (map.getLayer(def.id)) {
+    map.setLayoutProperty(
+      def.id,
+      'visibility',
+      'none'
+    );
+  }
+}
 
     map.easeTo({
       pitch: 52,
