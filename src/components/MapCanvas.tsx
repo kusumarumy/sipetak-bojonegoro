@@ -27,11 +27,6 @@ const siap = (url?: string) =>
 
 const ADA_ORTHO = siap(ORTHO);
 
-const ADA_DTM = {
-  lidar: siap(DTM.lidar),
-  foto: siap(DTM.foto)
-};
-
 const ADA_KONTUR = {
   lidar: siap(KONTUR.lidar.url),
   foto: siap(KONTUR.foto.url)
@@ -282,23 +277,23 @@ export default function MapCanvas() {
       };
     }
 
-    if (ADA_DTM.lidar) {
-      sources.dem_lidar = {
-        type: 'raster-dem',
-        url: `pmtiles://${DTM.lidar}`,
-        tileSize: 512,
-        encoding: 'mapbox'
-      };
-    }
+if (DTM.aws) {
+  sources.dem_aws = {
+    type: 'raster-dem',
+    tiles: [DTM.aws],
+    tileSize: 256,
+    encoding: 'terrarium',
+  };
+}
 
-    if (ADA_DTM.foto) {
-      sources.dem_foto = {
-        type: 'raster-dem',
-        url: `pmtiles://${DTM.foto}`,
-        tileSize: 512,
-        encoding: 'mapbox'
-      };
-    }
+if (DTM.r2) {
+  sources.dem_r2 = {
+    type: 'raster-dem',
+    tiles: [DTM.r2],
+    tileSize: 256,
+    encoding: 'terrarium',
+  };
+}
 
     if (ADA_KONTUR.lidar) {
       sources.kontur_lidar = {
@@ -1301,30 +1296,36 @@ useEffect(() => {
       return;
     }
 
-    /**
-     * DTM belum tersedia
-     */
-    if (!ADA_DTM[dtm]) {
+   /**
+ * ==========================
+ * DTM BELUM TERSEDIA
+ * ==========================
+ */
+const urlDTM =
+  dtm === 'aws'
+    ? DTM.aws
+    : DTM.r2;
 
-      beriPesan(
-        `DTM ${
-          dtm === 'lidar'
-            ? 'LiDAR'
-            : 'foto udara'
-        } belum tersedia — isi NEXT_PUBLIC_TILES_DTM_* di .env setelah tiling selesai.`
-      );
+if (!urlDTM) {
+  beriPesan(
+    `DTM ${
+      dtm === 'aws'
+        ? 'AWS Terrarium 30 m'
+        : 'DTM 3 m'
+    } belum tersedia — isi ${
+      dtm === 'aws'
+        ? 'NEXT_PUBLIC_TILES_DTM_AWS'
+        : 'NEXT_PUBLIC_TILES_DTM_R2'
+    } di .env.`
+  );
 
-      return;
-    }
+  return;
+}
 
-    const src =
-      dtm === 'lidar'
-        ? 'dem_lidar'
-        : 'dem_foto';
-
-    /**
-     * Hillshade
-     */
+const src =
+  dtm === 'aws'
+    ? 'dem_aws'
+    : 'dem_r2';
     if (
       map.getLayer(
         'hillshade'
