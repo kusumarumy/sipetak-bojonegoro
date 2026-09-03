@@ -657,7 +657,7 @@ const vis =
           },
           'traseg'
         );
-
+      }
       map.addSource('bidang', {
   type: 'geojson',
   data: '/api/bidang'
