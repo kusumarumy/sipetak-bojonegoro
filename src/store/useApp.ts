@@ -51,25 +51,18 @@ interface AppState {
   beriPesan: (p: string | null) => void;
 }
 
-/** Jembatan tunggal antara peta, panel, dan kartu bidang. */
 export const useApp = create<AppState>((set, get) => ({
   tema: 'auto',
-
-  // DEFAULT BASEMAP = OSM
   basemap: 'osm',
-
   dtm: 'off',
-
   exag: 1.8,
-
   pewarnaan: 'status',
-
   labelNomor: true,
 
-  // Trace G selalu aktif saat aplikasi dibuka
-  layerAktif: {
-    trace_g: true
-  },
+layerAktif: {
+  trace_g: true,
+  bidang: true,
+},
 
   bidangTerpilih: null,
 
