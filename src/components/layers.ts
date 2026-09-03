@@ -1,14 +1,14 @@
 export type DefLayer = {
   id: string;
   nama: string;
-  sumber: string;          
+  sumber: string;
   tipe: 'fill' | 'line' | 'circle';
   warna: string;
-  garis?: boolean;          
+  garis?: boolean;
   lebar?: number;
   dash?: number[];
   opasitas?: number;
-  bawaan?: boolean;       
+  bawaan?: boolean;
   grup: string;
 };
 
@@ -68,9 +68,9 @@ export const LAYERS: DefLayer[] = [
   },
 
   {
-    id: 'makam',
+    id: 'pemakaman',
     nama: 'Makam',
-    sumber: 'makam',
+    sumber: 'pemakaman',
     tipe: 'fill',
     warna: '#9278C9',
     opasitas: 0.55,
