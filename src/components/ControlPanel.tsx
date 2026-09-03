@@ -15,6 +15,9 @@ export default function ControlPanel({
   return (
     <aside className={'panel' + (terbuka ? ' open' : '')}>
 
+      {/* =========================
+          TERRAIN
+      ========================= */}
       <div className="terrain-card">
 
         <div className="terrain-title">
@@ -51,6 +54,11 @@ export default function ControlPanel({
         </div>
 
       </div>
+
+
+      {/* =========================
+          LAYER
+      ========================= */}
       <div className="layer-card">
 
         <div className="layer-card-title">
@@ -58,6 +66,7 @@ export default function ControlPanel({
         </div>
 
         {grup.map((g) => (
+
           <div className="layer-group" key={g}>
 
             <div className="layer-group-title">
@@ -102,12 +111,82 @@ export default function ControlPanel({
                         }
                       />
 
-                      {/* Nama yang tampil di panel */}
+                      {/* Nama layer */}
                       <span className="nm">
                         {L.nama}
                       </span>
 
                     </label>
+
+                    {/* =========================
+                        PENGATURAN BIDANG TANAH
+                    ========================= */}
+                    {g === 'Bidang tanah' &&
+                      L.id === 'bidang' && (
+                        <div
+                          className="bidang-options"
+                          style={{
+                            marginTop: 8,
+                            marginLeft: 24,
+                          }}
+                        >
+
+                          {/* PEWARNAAN */}
+                          <div className="seg">
+
+                            {(
+                              [
+                                ['status', 'Status'],
+                                ['penggunaan', 'Penggunaan'],
+                              ] as const
+                            ).map(([v, n]) => (
+
+                              <button
+                                key={v}
+                                type="button"
+                                aria-pressed={
+                                  s.pewarnaan === v
+                                }
+                                onClick={() =>
+                                  s.setPewarnaan(v)
+                                }
+                              >
+                                {n}
+                              </button>
+
+                            ))}
+
+                          </div>
+
+
+                          {/* NOMOR BIDANG */}
+                          <div
+                            className="row"
+                            style={{ marginTop: 8 }}
+                          >
+
+                            <label>
+
+                              <input
+                                type="checkbox"
+                                checked={s.labelNomor}
+                                onChange={(e) =>
+                                  s.setLabelNomor(
+                                    e.target.checked
+                                  )
+                                }
+                              />
+
+                              <span className="nm">
+                                Nomor bidang
+                              </span>
+
+                            </label>
+
+                          </div>
+
+                        </div>
+                      )}
 
                   </div>
 
@@ -116,62 +195,8 @@ export default function ControlPanel({
             </div>
 
           </div>
+
         ))}
-
-      </div>
-
-      <div className="sec">
-
-        <span className="lbl">
-          Tampilan bidang
-        </span>
-
-        <div className="seg">
-
-          {(
-            [
-              ['status', 'Status'],
-              ['penggunaan', 'Penggunaan'],
-            ] as const
-          ).map(([v, n]) => (
-
-            <button
-              key={v}
-              type="button"
-              aria-pressed={s.pewarnaan === v}
-              onClick={() => s.setPewarnaan(v)}
-            >
-              {n}
-            </button>
-
-          ))}
-
-        </div>
-
-        <div
-          className="row"
-          style={{ marginTop: 8 }}
-        >
-
-          <label>
-
-            <input
-              type="checkbox"
-              checked={s.labelNomor}
-              onChange={(e) =>
-                s.setLabelNomor(
-                  e.target.checked
-                )
-              }
-            />
-
-            <span className="nm">
-              Nomor bidang
-            </span>
-
-          </label>
-
-        </div>
 
       </div>
 
