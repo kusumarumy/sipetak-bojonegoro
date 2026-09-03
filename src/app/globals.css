@@ -500,7 +500,7 @@ header.bar {
   color: var(--accent);
 }
 /* =========================================================
-   PANEL KIRI
+   PANEL KIRI — PROFESSIONAL GIS LAYER MANAGER
    ========================================================= */
 
 main.body {
@@ -524,6 +524,8 @@ aside.panel {
   min-height: 0;
   height: 100%;
 
+  padding: 5px 0;
+
   background: var(--chassis2);
 
   border-right: 1px solid var(--line);
@@ -535,7 +537,6 @@ aside.panel {
   scrollbar-color: var(--line) transparent;
 }
 
-/* Chrome / Edge */
 aside.panel::-webkit-scrollbar {
   width: 5px;
 }
@@ -553,13 +554,18 @@ aside.panel::-webkit-scrollbar-thumb:hover {
   background: var(--dim);
 }
 
+
+/* =========================================================
+   CARD BASE
+   ========================================================= */
+
 .terrain-card,
 .layer-card {
   flex: none;
 
-  margin: 5px 5px;
+  margin: 5px;
 
-  border-radius: 16px;
+  border-radius: 15px;
 
   border: 1px solid var(--card-line);
 
@@ -569,11 +575,15 @@ aside.panel::-webkit-scrollbar-thumb:hover {
     inset 0 1px 0 var(--card-highlight);
 
   transition:
-    background .25s ease,
-    border-color .25s ease,
-    box-shadow .25s ease;
+    background .2s ease,
+    border-color .2s ease,
+    box-shadow .2s ease;
 }
 
+
+/* =========================================================
+   LIGHT / DARK CARD VARIABLES
+   ========================================================= */
 
 html[data-theme="dark"] {
   --card-bg:
@@ -584,7 +594,6 @@ html[data-theme="dark"] {
     );
 
   --card-line: rgba(61, 180, 180, .10);
-
   --card-highlight: rgba(255,255,255,.025);
 
   --card-title: #dce9ec;
@@ -600,11 +609,6 @@ html[data-theme="dark"] {
   --terrain-active-text: #071b22;
 }
 
-
-/* =========================================================
-   LIGHT CARD
-   ========================================================= */
-
 html[data-theme="light"] {
   --card-bg:
     linear-gradient(
@@ -614,7 +618,6 @@ html[data-theme="light"] {
     );
 
   --card-line: #d2dbe7;
-
   --card-highlight: rgba(255,255,255,.75);
 
   --card-title: #253746;
@@ -631,166 +634,87 @@ html[data-theme="light"] {
 }
 
 
-.layer-card {
-  padding: 10px 12px 14px;
-}
-
-
-/* JUDUL */
-
-.layer-card-title {
-  margin: 0 0 15px;
-
-  color: var(--card-title);
-
-  font-size: 13px;
-  font-weight: 700;
-
-  letter-spacing: .12em;
-}
-
-
-/* GROUP */
-
-.layer-group {
-  margin-bottom: 17px;
-}
-
-.layer-group:last-child {
-  margin-bottom: 0;
-}
-
-
-/* NAMA GROUP */
-
-.layer-group-title {
-  padding-bottom: 6px;
-
-  border-bottom: 1px dashed var(--card-line);
-
-  color: var(--card-group);
-
-  font-size: 10px;
-  font-weight: 600;
-
-  letter-spacing: .10em;
-
-  text-transform: uppercase;
-}
-
-
-/* LIST */
-
-.layer-list {
-  padding-top: 4px;
-}
-
-
-/* ROW */
-
-.layer-card .row {
-  min-height: 36px;
-  padding: 2px 0;
-}
-
-.layer-card .row label {
-  display: flex;
-
-  align-items: center;
-
-  gap: 9px;
-
-  width: 100%;
-
-  cursor: pointer;
-}
-
-
-/* CHECKBOX */
-
-.layer-card input[type="checkbox"] {
-  flex: 0 0 auto;
-
-  width: 17px;
-  height: 17px;
-
-  margin: 0;
-
-  accent-color: var(--accent);
-
-  cursor: pointer;
-}
-
-
-/* SWATCH */
-
-.layer-card .swatch {
-  flex: 0 0 auto;
-
-  width: 14px;
-  height: 14px;
-
-  border: 1px solid rgba(80, 100, 110, .45);
-}
-
-.layer-card .swatch.ln {
-  width: 18px;
-  height: 0;
-
-  border-width: 0;
-
-  border-top-width: 3px;
-
-  background: transparent;
-}
-
-
-/* NAMA LAYER */
-
-.layer-card .nm {
-  color: var(--card-text);
-
-  font-size: 13px;
-
-  line-height: 1.25;
-}
-
-
 /* =========================================================
    TERRAIN 3D
    ========================================================= */
 
 .terrain-card {
-  padding: 10px 10px 10px;
+  padding: 10px;
 }
 
-
-/* TITLE */
-
-.terrain-title {
+.terrain-head {
   display: flex;
+  align-items: center;
+  justify-content: space-between;
 
+  gap: 8px;
+
+  margin-bottom: 9px;
+}
+
+.terrain-head-left {
+  display: flex;
   align-items: center;
 
-  gap: 10px;
+  gap: 9px;
 
-  margin-bottom: 5px;
+  min-width: 0;
+}
 
+.terrain-symbol {
+  width: 28px;
+  height: 28px;
+
+  flex: 0 0 28px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 8px;
+
+  background: rgba(47,169,168,.08);
+  border: 1px solid rgba(47,169,168,.18);
+
+  color: var(--accent2);
+
+  font-size: 19px;
+  line-height: 1;
+}
+
+.terrain-title {
   color: var(--card-title);
 
   font-size: 12px;
-}
-
-.terrain-title strong {
   font-weight: 700;
+  line-height: 1.2;
 }
 
-.terrain-icon {
-  color: var(--accent2);
+.terrain-subtitle {
+  margin-top: 2px;
 
-  font-size: 20px;
+  color: var(--card-muted);
 
-  line-height: 1;
+  font-size: 8.5px;
+  line-height: 1.2;
+}
+
+.terrain-status {
+  flex: none;
+
+  padding: 3px 6px;
+
+  border-radius: 5px;
+
+  background: var(--terrain-bg);
+  border: 1px solid var(--terrain-line);
+
+  color: var(--terrain-text);
+
+  font-size: 7.5px;
+  font-weight: 800;
+
+  letter-spacing: .08em;
 }
 
 
@@ -800,7 +724,6 @@ html[data-theme="light"] {
 
 .terrain-segment {
   display: flex;
-
   align-items: stretch;
 
   width: 100%;
@@ -808,8 +731,7 @@ html[data-theme="light"] {
   overflow: hidden;
 
   border: 1px solid var(--terrain-line);
-
-  border-radius: 11px;
+  border-radius: 10px;
 
   background: var(--terrain-bg);
 }
@@ -819,18 +741,18 @@ html[data-theme="light"] {
 
   min-width: 0;
 
-  height: 38px;
+  height: 36px;
 
-  padding: 0 9px;
+  padding: 0 7px;
 
   border: 0;
+  border-radius: 0;
 
   background: transparent;
 
   color: var(--terrain-text);
 
-  font-size: 10px;
-
+  font-size: 9px;
   font-weight: 700;
 
   white-space: nowrap;
@@ -839,7 +761,8 @@ html[data-theme="light"] {
 
   transition:
     background .15s ease,
-    color .15s ease;
+    color .15s ease,
+    box-shadow .15s ease;
 }
 
 .terrain-segment button:hover {
@@ -849,280 +772,572 @@ html[data-theme="light"] {
 .terrain-segment button.active {
   margin: 3px;
 
-  height: 32px;
+  height: 30px;
 
-  border-radius: 9px;
+  border-radius: 8px;
 
   background: var(--terrain-active);
 
   color: var(--terrain-active-text);
 
   box-shadow:
-    0 1px 3px rgba(0,0,0,.20);
+    0 1px 3px rgba(0,0,0,.18);
 }
 
 
-.progress-bar {
+/* =========================================================
+   LAYER CARD
+   ========================================================= */
+
+.layer-card {
+  padding: 10px 10px 8px;
+}
+
+
+/* =========================================================
+   LAYER MANAGER HEADER
+   ========================================================= */
+
+.layer-manager-head {
   display: flex;
+  align-items: center;
+  justify-content: space-between;
 
-  height: 5px;
+  gap: 8px;
 
-  overflow: hidden;
+  padding: 1px 1px 9px;
 
-  background: var(--line);
+  border-bottom: 1px solid var(--card-line);
 }
 
-.progress-bar span {
-  display: block;
+.layer-manager-title {
+  color: var(--card-title);
 
-  height: 100%;
+  font-size: 13px;
+  font-weight: 800;
+
+  letter-spacing: .12em;
 }
 
+.layer-manager-subtitle {
+  margin-top: 2px;
 
-.sec {
-  border-bottom: 1px solid var(--line-soft);
+  color: var(--card-muted);
 
-  padding: 14px 14px 16px;
+  font-size: 8.5px;
 }
 
-.sec > .lbl {
-  display: block;
-  margin-bottom: 10px;
-}
+.layer-count {
+  min-width: 31px;
 
-.seg {
-  display: flex;
+  padding: 4px 6px;
 
+  border-radius: 6px;
+
+  background: var(--chassis3);
   border: 1px solid var(--line);
+
+  color: var(--card-muted);
+
+  font-size: 8px;
+  font-weight: 800;
+
+  text-align: center;
 }
 
-.seg button {
-  flex: 1;
+
+/* =========================================================
+   GROUP
+   ========================================================= */
+
+.layer-group {
+  margin: 0;
+
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.layer-group:last-child {
+  border-bottom: 0;
+}
+
+
+/* =========================================================
+   GROUP HEADER
+   ========================================================= */
+
+.layer-group-head {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 5px;
+
+  padding: 9px 1px 6px;
+
+  border: 0;
 
   background: transparent;
-  border: none;
-  border-right: 1px solid var(--line);
 
-  padding: 7px 4px;
+  color: inherit;
 
-  font-family: var(--f-disp);
+  text-align: left;
 
-  font-size: 10.5px;
-
-  text-transform: uppercase;
-  letter-spacing: .08em;
-
-  color: var(--dim);
+  cursor: pointer;
 }
 
-.seg button:last-child {
-  border-right: none;
+.layer-group-left {
+  min-width: 0;
+
+  display: flex;
+  align-items: center;
+
+  gap: 4px;
 }
 
-.seg button[aria-pressed="true"] {
-  background: var(--chassis3);
+.group-chevron {
+  width: 12px;
+
+  flex: 0 0 12px;
+
+  color: var(--card-muted);
+
+  font-size: 16px;
+  line-height: 1;
+
+  transform: rotate(0deg);
+
+  transition:
+    transform .15s ease,
+    color .15s ease;
+}
+
+.group-chevron.expanded {
+  transform: rotate(90deg);
+}
+
+.layer-group-head:hover .group-chevron {
   color: var(--accent);
 }
 
-.row {
-  display: flex;
-  align-items: center;
-  gap: 9px;
+.group-icon {
+  width: 16px;
 
-  padding: 5px 0;
+  flex: 0 0 16px;
 
-  font-size: 12.5px;
+  color: var(--card-muted);
+
+  font-size: 11px;
+
+  text-align: center;
 }
 
-.row label {
-  flex: 1;
+.layer-group-title {
+  min-width: 0;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  padding: 0;
+
+  border: 0;
+
+  color: var(--card-group);
+
+  font-size: 9px;
+  font-weight: 700;
+
+  letter-spacing: .10em;
+
+  text-transform: uppercase;
+}
+
+.group-count {
+  flex: none;
+
+  padding: 2px 5px;
+
+  border-radius: 5px;
+
+  background: var(--chassis3);
+
+  color: var(--card-muted);
+
+  font-size: 7.5px;
+  font-weight: 700;
+
+  line-height: 1.2;
+}
+
+.layer-group-head:hover .layer-group-title {
+  color: var(--card-title);
+}
+
+
+/* =========================================================
+   LAYER LIST
+   ========================================================= */
+
+.layer-list {
+  padding: 0 0 6px;
+}
+
+
+/* =========================================================
+   LAYER ITEM
+   ========================================================= */
+
+.layer-item {
+  margin: 1px 0;
+
+  border-radius: 8px;
+
+  transition:
+    background .12s ease,
+    box-shadow .12s ease;
+}
+
+.layer-item:hover {
+  background: rgba(127, 143, 160, .055);
+}
+
+.layer-item.active {
+  background: rgba(127, 143, 160, .035);
+}
+
+
+/* =========================================================
+   LAYER ROW
+   ========================================================= */
+
+.layer-row {
+  min-height: 33px;
+
+  padding: 4px 5px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
 
   cursor: pointer;
 
+  user-select: none;
+}
+
+.layer-row input,
+.option-row input {
+  position: absolute;
+
+  width: 1px;
+  height: 1px;
+
+  opacity: 0;
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   GIS CHECKBOX
+   ========================================================= */
+
+.gis-check {
+  width: 16px;
+  height: 16px;
+
+  flex: 0 0 16px;
+
   display: flex;
   align-items: center;
-
-  gap: 9px;
-
-  min-width: 0;
-}
-
-.row .nm {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-input[type="checkbox"],
-input[type="radio"] {
-  appearance: none;
-
-  width: 14px;
-  height: 14px;
+  justify-content: center;
 
   border: 1px solid var(--faint);
+  border-radius: 3px;
 
   background: var(--chassis);
 
-  flex: none;
+  color: transparent;
 
-  position: relative;
+  font-size: 10px;
+  font-weight: 800;
 
-  margin: 0;
-
-  cursor: pointer;
+  transition:
+    background .12s ease,
+    border-color .12s ease,
+    box-shadow .12s ease;
 }
 
-input[type="radio"] {
-  border-radius: 50%;
-}
-
-input[type="checkbox"]:checked {
+.layer-row input:checked + .gis-check,
+.option-row input:checked + .gis-check {
   background: var(--accent);
+
+  border-color: var(--accent);
+
+  color: #fff;
+
+  box-shadow:
+    0 1px 3px rgba(0,0,0,.15);
+}
+
+.gis-check.small {
+  width: 15px;
+  height: 15px;
+
+  flex-basis: 15px;
+}
+
+.layer-row:hover .gis-check {
   border-color: var(--accent);
 }
 
-input[type="checkbox"]:checked::after {
-  content: '';
 
-  position: absolute;
+/* =========================================================
+   LAYER SWATCH
+   ========================================================= */
 
-  left: 4px;
-  top: 1px;
+.layer-swatch {
+  width: 13px;
+  height: 13px;
 
-  width: 4px;
-  height: 8px;
+  flex: 0 0 13px;
 
-  border: solid #fff;
-  border-width: 0 2px 2px 0;
+  border: 1px solid rgba(80,100,110,.35);
 
-  transform: rotate(42deg);
+  border-radius: 2px;
+
+  box-sizing: border-box;
 }
 
-input[type="radio"]:checked {
-  border-color: var(--accent);
-}
-
-input[type="radio"]:checked::after {
-  content: '';
-
-  position: absolute;
-  inset: 3px;
-
-  border-radius: 50%;
-
-  background: var(--accent);
-}
-
-.swatch {
-  width: 14px;
-  height: 11px;
-
-  flex: none;
-
-  border: 1px solid rgba(128, 128, 128, .35);
-}
-
-.swatch.ln {
+.layer-swatch.line {
+  width: 19px;
   height: 0;
 
+  flex: 0 0 19px;
+
   border: 0;
-  border-top-width: 2.4px;
-  border-top-style: solid;
-}
-
-.grp {
-  margin-bottom: 12px;
-}
-
-.grp-h {
-  font-family: var(--f-disp);
-
-  font-size: 10.5px;
-
-  letter-spacing: .12em;
-
-  text-transform: uppercase;
-
-  color: var(--dim);
-
-  padding: 4px 0 3px;
-
-  border-bottom: 1px dashed var(--line);
-
-  margin-bottom: 4px;
-}
-
-.slider {
-  width: 100%;
-
-  appearance: none;
-
-  height: 2px;
-
-  background: var(--line);
-
-  margin-top: 10px;
-}
-
-.slider::-webkit-slider-thumb {
-  appearance: none;
-
-  width: 12px;
-  height: 12px;
-
-  background: var(--accent);
-
-  cursor: pointer;
-}
-
-.hint {
-  font-size: 10.5px;
-
-  color: var(--faint);
-
-  line-height: 1.5;
-
-  margin-top: 8px;
-}
-
-.themepick {
-  display: flex;
-
-  border: 1px solid var(--line);
-
-  background: var(--chassis2);
-}
-
-.themepick button {
-  flex: 1;
+  border-top: 3px solid;
 
   background: transparent;
 
-  border: none;
-  border-right: 1px solid var(--line);
+  border-radius: 0;
+}
 
-  padding: 6px 10px;
 
-  font-family: var(--f-disp);
+/* =========================================================
+   LAYER NAME
+   ========================================================= */
+
+.layer-name {
+  min-width: 0;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  color: var(--card-text);
+
+  font-size: 11px;
+  font-weight: 500;
+
+  line-height: 1.25;
+}
+
+.layer-item.active .layer-name {
+  color: var(--card-title);
+
+  font-weight: 600;
+}
+
+
+/* =========================================================
+   BIDANG TANAH — PROPERTY PANEL
+   ========================================================= */
+
+.layer-properties {
+  margin: 1px 7px 8px 29px;
+
+  padding: 9px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(127,143,160,.055),
+      rgba(127,143,160,.025)
+    );
+
+  border: 1px solid var(--line);
+
+  border-radius: 8px;
+
+  box-shadow:
+    inset 0 1px 2px rgba(0,0,0,.025);
+}
+
+.property-title {
+  margin-bottom: 8px;
+
+  color: var(--card-muted);
+
+  font-size: 7.5px;
+  font-weight: 800;
+
+  letter-spacing: .10em;
+}
+
+.property-block {
+  display: flex;
+  flex-direction: column;
+
+  gap: 5px;
+}
+
+.property-label {
+  color: var(--card-muted);
+
+  font-size: 8.5px;
+  font-weight: 600;
+}
+
+
+/* =========================================================
+   STATUS / PENGGUNAAN
+   ========================================================= */
+
+.style-segment {
+  display: flex;
+
+  width: 100%;
+
+  padding: 2px;
+
+  background: var(--chassis3);
+
+  border: 1px solid var(--line);
+
+  border-radius: 7px;
+}
+
+.style-segment button {
+  flex: 1;
+
+  min-width: 0;
+
+  height: 25px;
+
+  padding: 0 5px;
+
+  border: 0;
+  border-radius: 5px;
+
+  background: transparent;
+
+  color: var(--dim);
+
+  font-family: inherit;
+
+  font-size: 8px;
+  font-weight: 700;
 
   text-transform: uppercase;
 
-  letter-spacing: .09em;
+  letter-spacing: .04em;
 
-  font-size: 10px;
-  font-weight: 600;
+  cursor: pointer;
 
-  color: var(--faint);
+  transition:
+    background .12s ease,
+    color .12s ease,
+    box-shadow .12s ease;
 }
 
-.themepick button:last-child {
-  border-right: none;
+.style-segment button:hover {
+  color: var(--text);
 }
 
-.themepick button[aria-pressed="true"] {
-  background: var(--chassis3);
+.style-segment button.active {
+  background: var(--card-bg);
+
   color: var(--accent);
+
+  box-shadow:
+    0 1px 3px rgba(0,0,0,.10);
+}
+
+
+/* =========================================================
+   PROPERTY DIVIDER
+   ========================================================= */
+
+.property-divider {
+  height: 1px;
+
+  margin: 9px 0;
+
+  background: var(--line);
+}
+
+
+/* =========================================================
+   OPTION ROW
+   ========================================================= */
+
+.option-row {
+  min-height: 25px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 7px;
+
+  color: var(--card-text);
+
+  font-size: 9px;
+
+  cursor: pointer;
+
+  user-select: none;
+}
+
+.option-row:hover {
+  color: var(--card-title);
+}
+
+
+/* =========================================================
+   FOOTER PANEL
+   ========================================================= */
+
+.panel-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 5px;
+
+  flex: none;
+
+  padding: 6px 5px 4px;
+
+  color: var(--card-muted);
+
+  font-size: 8px;
+}
+
+.footer-dot {
+  width: 5px;
+  height: 5px;
+
+  flex: 0 0 5px;
+
+  border-radius: 50%;
+
+  background: #35b979;
+
+  box-shadow:
+    0 0 0 2px rgba(53,185,121,.10);
 }
 
 /* =========================================================
