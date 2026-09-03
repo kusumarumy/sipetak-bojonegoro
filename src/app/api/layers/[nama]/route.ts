@@ -13,7 +13,7 @@ const LAYER_FILES: Record<string, string> = {
   kabel_sutet: 'kabel_sutet.geojson',
   tiang_sutet: 'tiang_sutet.geojson',
   pipa_exxon: 'pipa_exxon.geojson',
-  pipa_gresem: 'pipa_gresik_semarang.geojson',
+  pipa_gresem: 'pipa_gresem.geojson',
 };
 
 const GITHUB_RAW_BASE =
