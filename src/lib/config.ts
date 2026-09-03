@@ -1,11 +1,5 @@
 export const R2 =
   process.env.NEXT_PUBLIC_R2_BASE_URL ?? "";
-
-
-/* =========================================================
-   MAP
-   ========================================================= */
-
 export const MAP = {
   center: [111.879, -7.168] as [number, number],
   zoom: 12.4,
@@ -13,12 +7,6 @@ export const MAP = {
   bearing: 18,
   maxPitch: 75,
 };
-
-
-/* =========================================================
-   BASEMAP
-   ========================================================= */
-
 export type Basemap = {
   id:
     | "osm"
@@ -27,47 +15,31 @@ export type Basemap = {
     | "google-hybrid"
     | "google-streets"
     | "opentopo";
-
   labelKey: string;
-
   tiles: string[];
-
   attribution: string;
-
   minzoom?: number;
   maxzoom?: number;
 };
-
-
 export const BASEMAPS: Basemap[] = [
   {
     id: "osm",
-
     labelKey: "bm_map",
-
     tiles: [
       "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
     ],
-
     attribution: "© OpenStreetMap",
-
     maxzoom: 19,
   },
-
   {
     id: "esri",
-
     labelKey: "bm_sat",
-
     tiles: [
       "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
     ],
-
     attribution: "Esri, Maxar",
-
     maxzoom: 19,
   },
-
   {
     id: "ortho",
 
@@ -125,11 +97,6 @@ export const BASEMAPS: Basemap[] = [
     maxzoom: 17,
   },
 ];
-
-
-/* =========================================================
-   TERRAIN / DTM
-   ========================================================= */
 
 export const TERRAIN_OPTIONS = {
   aws: {
