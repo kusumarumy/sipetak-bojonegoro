@@ -509,7 +509,7 @@ export default function MapCanvas() {
     L.bawaan
       ? 'visible'
       : 'none';gon
-         */
+ 
         if (L.tipe === 'fill') {
 
           map.addLayer({
