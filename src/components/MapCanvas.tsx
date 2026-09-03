@@ -782,20 +782,6 @@ map.addSource(L.id, {
         }
       });
 
-
-      if (
-        map.getLayer('traseg_halo') &&
-        map.getLayer('traseg')
-      ) {
-        map.moveLayer(
-          'traseg_halo'
-        );
-
-        map.moveLayer(
-          'traseg'
-        );
-      }
-
       
       warnaiTema(map);
 
@@ -1344,20 +1330,6 @@ for (const def of [
       pitch: 52,
       duration: 850
     });
-
-   
-    if (
-      map.getLayer('traseg_halo') &&
-      map.getLayer('traseg')
-    ) {
-      map.moveLayer(
-        'traseg_halo'
-      );
-
-      map.moveLayer(
-        'traseg'
-      );
-    }
 
   }, [dtm, exag]);
 
