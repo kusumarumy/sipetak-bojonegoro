@@ -658,18 +658,6 @@ const vis =
           'traseg'
         );
 
-      
-        map.moveLayer('traseg');
-
-        map.moveLayer(
-          'traseg_halo',
-          'traseg'
-        );
-
-        map.moveLayer('traseg');
-      }
-
-
       map.addSource('bidang', {
   type: 'geojson',
   data: '/api/bidang'
@@ -705,12 +693,19 @@ const vis =
 
             0.74,
 
-            0.58
+            0.85
           ]
         }
       });
 
- 
+ if (
+  map.getLayer('traseg_halo') &&
+  map.getLayer('traseg') &&
+  map.getLayer('bidang')
+) {
+  map.moveLayer('traseg_halo', 'bidang');
+  map.moveLayer('traseg', 'bidang');
+}
       map.addLayer({
         id: 'bidang-ln',
 
@@ -850,9 +845,7 @@ const vis =
       }
     );
 
-    /**
-     * Mouse leave
-     */
+
     map.on(
       'mouseleave',
       'bidang',
@@ -876,12 +869,6 @@ const vis =
         hov = null;
       }
     );
-
-    /**
-     * ==========================
-     * POPUP BIDANG
-     * ==========================
-     */
     map.on(
       'click',
       'bidang',
@@ -1009,11 +996,6 @@ const vis =
     );
   }
 
-  /**
-   * ==========================
-   * SOROT BIDANG
-   * ==========================
-   */
   function sorot(
     map: MLMap,
     fid: number
@@ -1252,11 +1234,6 @@ useEffect(() => {
       return;
     }
 
-   /**
- * ==========================
- * DTM BELUM TERSEDIA
- * ==========================
- */
 const urlDTM =
   dtm === 'aws'
     ? DTM.aws
@@ -1355,11 +1332,6 @@ for (const def of [
 
   }, [pewarnaan]);
 
-  /**
-   * ==========================
-   * LABEL NOMOR
-   * ==========================
-   */
   useEffect(() => {
 
     const map =
@@ -1382,11 +1354,6 @@ for (const def of [
 
   }, [labelNomor]);
 
-  /**
-   * ==========================
-   * LAYER AKTIF
-   * ==========================
-   */
   useEffect(() => {
 
     const map =
@@ -1433,35 +1400,34 @@ for (const def of [
       }
     }
 
-   
-    if (
-      map.getLayer('traseg_halo')
-    ) {
-      map.setLayoutProperty(
-        'traseg_halo',
-        'visibility',
-        layerAktif.traseg
-          ? 'visible'
-          : 'none'
-      );
-    }
+if (map.getLayer('traseg')) {
+  map.setLayoutProperty(
+    'traseg',
+    'visibility',
+    layerAktif.traseg
+      ? 'visible'
+      : 'none'
+  );
+}
 
-    if (
-      layerAktif.traseg &&
-      map.getLayer('traseg')
-    ) {
-      if (
-        map.getLayer('traseg_halo')
-      ) {
-        map.moveLayer(
-          'traseg_halo'
-        );
-      }
+if (map.getLayer('traseg_halo')) {
+  map.setLayoutProperty(
+    'traseg_halo',
+    'visibility',
+    layerAktif.traseg
+      ? 'visible'
+      : 'none'
+  );
+}
 
-      map.moveLayer(
-        'traseg'
-      );
-    }
+if (
+  map.getLayer('traseg_halo') &&
+  map.getLayer('traseg') &&
+  map.getLayer('bidang')
+) {
+  map.moveLayer('traseg_halo', 'bidang');
+  map.moveLayer('traseg', 'bidang');
+}
 
   }, [layerAktif]);
 
@@ -1491,11 +1457,6 @@ for (const def of [
 
   }, []);
 
-  /**
-   * ==========================
-   * TEMA
-   * ==========================
-   */
   useEffect(() => {
 
     const m =
@@ -1517,11 +1478,7 @@ for (const def of [
   );
 }
 
-/**
- * ==========================
- * FORMAT ANGKA
- * ==========================
- */
+
 const fmt = (
   n: number | null
 ) =>
@@ -1529,11 +1486,6 @@ const fmt = (
     'id-ID'
   );
 
-/**
- * ==========================
- * WARNA STATUS
- * ==========================
- */
 const ekspresiStatus =
   (): any => [
     'match',
@@ -1554,11 +1506,6 @@ const ekspresiStatus =
     '#888'
   ];
 
-/**
- * ==========================
- * WARNA PENGGUNAAN
- * ==========================
- */
 const ekspresiPenggunaan =
   (): any => {
 
@@ -1581,14 +1528,6 @@ const ekspresiPenggunaan =
     return m;
   };
 
-/**
- * ==========================
- * TEMA PETA
- * ==========================
- *
- * Warna peta ikut tema terang/gelap,
- * bukan hanya panel.
- */
 function warnaiTema(
   map: MLMap
 ) {
