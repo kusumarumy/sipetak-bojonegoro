@@ -746,36 +746,42 @@ const vis =
 
   
       map.addLayer({
-        id: 'bidang-lb',
+  id: 'bidang-lb',
 
-        type: 'symbol',
+  type: 'symbol',
 
-        source: 'bidang',
+  source: 'bidang',
 
-        minzoom: 15.2,
+  minzoom: 15.2,
 
-        layout: {
-          'text-field': [
-            'get',
-            'no'
-          ],
+  layout: {
+    'text-field': [
+      'get',
+      'NIB'
+    ],
 
-          'text-size': 10,
+    'text-size': 10,
 
-          'text-font': [
-            'Open Sans Regular'
-          ]
-        },
+    'text-font': [
+      'Open Sans Regular'
+    ],
 
-        paint: {
-          'text-color': '#0E1720',
+    'text-anchor': 'center',
 
-          'text-halo-color':
-            'rgba(255,255,255,.85)',
+    'text-allow-overlap': true,
 
-          'text-halo-width': 1.1
-        }
-      });
+    'text-ignore-placement': true
+  },
+
+  paint: {
+    'text-color': '#0E1720',
+
+    'text-halo-color':
+      'rgba(255,255,255,.85)',
+
+    'text-halo-width': 1.1
+  }
+});
 
       
       warnaiTema(map);
