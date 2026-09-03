@@ -60,7 +60,7 @@ export const useApp = create<AppState>((set, get) => ({
   labelNomor: true,
 
 layerAktif: {
-  trace_g: true,
+  traseg: true,
   bidang: true,
 },
 
