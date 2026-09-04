@@ -44,7 +44,6 @@ export const KATEGORI_LABEL: Record<KategoriLampiran, string> = {
   lainnya: 'Lainnya'
 };
 
-/** Berkas yang wajib ada sebelum bidang boleh dikirim untuk verifikasi. */
 export const WAJIB: KategoriLampiran[] = [
   'foto_bidang', 'foto_patok', 'foto_pemilik_petugas', 'dok_ktp', 'dok_berita_acara'
 ];
