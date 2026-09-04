@@ -246,7 +246,10 @@ const toggleTema = () => {
 
 </header>
       <main className="body">
-        <ControlPanel terbuka={panel} />
+<ControlPanel
+  terbuka={panel}
+  onClose={() => setPanel(false)}
+/>
 <div className="mapwrap">
   <MapCanvas />
 
