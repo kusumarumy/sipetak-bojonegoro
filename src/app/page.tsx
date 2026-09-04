@@ -4,27 +4,38 @@ import { query } from '@/lib/db';
 import Peta from '@/components/Peta';
 
 export const dynamic = 'force-dynamic';
-
 export default async function Halaman() {
   const sesi = await auth();
   if (!sesi?.user) redirect('/login');
-
-  // Ringkasan dihitung di server — satu query, bukan 950 baris dikirim ke klien
   const [r] = await query<any>(`
-    SELECT count(*) AS total,
-           count(*) FILTER (WHERE status='draft')         AS draft,
-           count(*) FILTER (WHERE status='terkirim')      AS terkirim,
-           count(*) FILTER (WHERE status='terverifikasi') AS terverifikasi,
-           count(*) FILTER (WHERE status='revisi')        AS revisi,
-           COALESCE(sum(luas_terdampak_m2),0)/10000 AS ha_terdampak
-    FROM bidang`);
+  SELECT
+    COUNT(*) AS total,
+    COUNT(*) FILTER (
+      WHERE status = 'draft'
+    ) AS draft,
+    COUNT(*) FILTER (
+      WHERE status = 'terkirim'
+    ) AS terkirim,
+    COUNT(*) FILTER (
+      WHERE status = 'terverifikasi'
+    ) AS terverifikasi,
+    COUNT(*) FILTER (
+      WHERE status = 'revisi'
+    ) AS revisi,
+    COALESCE(
+      (
+        SELECT SUM(luas_terdampak_m2)
+        FROM bidang
+      ),
+      0
+    ) / 10000 AS ha_terdampak
 
+  FROM public.bidang_tanah
+`);
   const [t] = await query<any>(`
     SELECT COALESCE(sum(ST_Length(geom::geography)),0)/1000 AS km
     FROM layer_geom WHERE layer='trace'`);
-
   async function keluar() { 'use server'; await signOut({ redirectTo: '/login' }); }
-
   return (
     <Peta
       pengguna={sesi.user}
