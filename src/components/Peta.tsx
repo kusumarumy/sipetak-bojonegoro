@@ -246,85 +246,125 @@ const toggleTema = () => {
 </header>
       <main className="body">
         <ControlPanel terbuka={panel} />
-
         <div className="mapwrap">
           <MapCanvas />
 
-        
+<div className="progress float">
 
-          <div className="progress float">
-            <div className="ph"><span className="lbl">Progres verifikasi</span><b>{pct}%</b></div>
-            <div className="progress-bar">
-              {angka.map(([s, n]) => (
-                <span key={s} style={{ width: `${ringkasan.total ? n / ringkasan.total * 100 : 0}%`,
-                                       background: STATUS_WARNA[s] }} />
-              ))}
-            </div>
-            <div className="legend">
+  {/* HEADER */}
+  <div className="ph">
+    <span className="lbl">
+      {pewarnaan === 'status'
+        ? 'Progres verifikasi'
+        : 'Penggunaan bidang'}
+    </span>
 
-  {pewarnaan === 'status' ? (
+    {pewarnaan === 'status' && (
+      <b>{pct}%</b>
+    )}
+  </div>
 
-    angka.map(([s, n]) => (
-      <div className="li" key={s}>
+  {/* PROGRESS BAR — HANYA STATUS */}
+  {pewarnaan === 'status' && (
+    <div className="progress-bar">
+      {angka.map(([s, n]) => (
         <span
-          className="swatch"
-          style={{ background: STATUS_WARNA[s] }}
+          key={s}
+          style={{
+            width: `${
+              ringkasan.total
+                ? (n / ringkasan.total) * 100
+                : 0
+            }%`,
+            background: STATUS_WARNA[s]
+          }}
         />
-
-        <span>
-          {STATUS_LABEL[s]}
-        </span>
-
-        <b>
-          {n.toLocaleString('id-ID')}
-        </b>
-      </div>
-    ))
-
-  ) : (
-
-    Object.entries(WARNA_PENGGUNAAN).map(([nama, warna]) => (
-      <div className="li" key={nama}>
-
-        <span
-          className="swatch"
-          style={{ background: warna }}
-        />
-
-        <span>
-          {nama}
-        </span>
-
-        <b>
-          {(jumlahPenggunaan[nama] ?? 0).toLocaleString('id-ID')}
-        </b>
-
-      </div>
-    ))
-
-  )}
-
-  {pewarnaan === 'penggunaan' && (
-    <div className="li" key="Belum diisi">
-
-      <span
-        className="swatch"
-        style={{ background: '#888' }}
-      />
-
-      <span>
-        Belum diisi
-      </span>
-
-      <b>
-        {(jumlahPenggunaan['Belum diisi'] ?? 0).toLocaleString('id-ID')}
-      </b>
-
+      ))}
     </div>
   )}
 
+  {/* LEGEND */}
+  <div className="legend">
+
+    {pewarnaan === 'status' ? (
+
+      angka.map(([s, n]) => (
+        <div className="li" key={s}>
+
+          <span
+            className="swatch"
+            style={{
+              background: STATUS_WARNA[s]
+            }}
+          />
+
+          <span>
+            {STATUS_LABEL[s]}
+          </span>
+
+          <b>
+            {n.toLocaleString('id-ID')}
+          </b>
+
+        </div>
+      ))
+
+    ) : (
+
+      <>
+        {Object.entries(WARNA_PENGGUNAAN).map(
+          ([nama, warna]) => (
+            <div className="li" key={nama}>
+
+              <span
+                className="swatch"
+                style={{
+                  background: warna
+                }}
+              />
+
+              <span>
+                {nama}
+              </span>
+
+              <b>
+                {(
+                  jumlahPenggunaan[nama] ?? 0
+                ).toLocaleString('id-ID')}
+              </b>
+
+            </div>
+          )
+        )}
+
+        {/* NULL / BELUM DIISI */}
+        <div className="li">
+
+          <span
+            className="swatch"
+            style={{
+              background: '#888'
+            }}
+          />
+
+          <span>
+            Belum diisi
+          </span>
+
+          <b>
+            {(
+              jumlahPenggunaan['Belum diisi'] ?? 0
+            ).toLocaleString('id-ID')}
+          </b>
+
+        </div>
+      </>
+
+    )}
+
+  </div>
+
 </div>
-          </div>
 
           {pesan && <div className="toast">{pesan}</div>}
           {kartu && <KartuBidang peran={pengguna.peran} />}
