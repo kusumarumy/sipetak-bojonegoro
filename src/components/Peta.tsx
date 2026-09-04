@@ -12,6 +12,8 @@ import {
   type StatusBidang
 } from '@/types';
 
+import { WARNA_PENGGUNAAN } from './layers';
+
 const MapCanvas = dynamic(() => import('./MapCanvas'), { ssr: false });
 
 type Ringkasan = {
@@ -23,11 +25,16 @@ export default function Peta({ pengguna, ringkasan, keluar }: {
   pengguna: { name: string; peran: Peran };
   ringkasan: Ringkasan;
   keluar: () => Promise<void>;
-}) {
-  const { kartu, pesan, beriPesan, pilihBidang } = useApp();
+}) {const {
+  kartu,
+  pesan,
+  beriPesan,
+  pewarnaan
+} = useApp();
   const [panel, setPanel] = useState(false);
   const [cari, setCari] = useState('');
-  const [hasil, setHasil] = useState<any[]>([]);
+    const [hasil, setHasil] = useState<any[]>([]);
+const [jumlahPenggunaan, setJumlahPenggunaan] = useState<Record<string, number>>({});
 const [tema, setTema] = useState<'light' | 'dark'>('light');
 useEffect(() => {
   const saved = localStorage.getItem('dppt-tema');
@@ -45,7 +52,34 @@ useEffect(() => {
     const t = setTimeout(() => beriPesan(null), 3200);
     return () => clearTimeout(t);
   }, [pesan]);
+useEffect(() => {
+  fetch('/api/bidang')
+    .then(r => r.json())
+    .then((fc) => {
+      const counts: Record<string, number> = {
+        'Kosong': 0,
+        'Tanah Persawahan': 0,
+        'Tanah Perkampungan': 0,
+        'Tanah Perumahan': 0,
+        'Lain-lain': 0,
+        'Tanah Tidak Ada Bangunan': 0,
+        'Belum diisi': 0,
+      };
 
+      for (const f of fc.features ?? []) {
+        const value = f.properties?.penggunaan;
+
+        if (value === null || value === undefined || value === '') {
+          counts['Belum diisi']++;
+        } else if (value in counts) {
+          counts[value]++;
+        }
+      }
+
+      setJumlahPenggunaan(counts);
+    })
+    .catch(() => {});
+}, []);
   useEffect(() => {
     if (cari.trim().length < 2) { setHasil([]); return; }
     const t = setTimeout(() => {
@@ -227,13 +261,69 @@ const toggleTema = () => {
               ))}
             </div>
             <div className="legend">
-              {angka.map(([s, n]) => (
-                <div className="li" key={s}>
-                  <span className="swatch" style={{ background: STATUS_WARNA[s] }} />
-                  {STATUS_LABEL[s]}<b>{n.toLocaleString('id-ID')}</b>
-                </div>
-              ))}
-            </div>
+
+  {pewarnaan === 'status' ? (
+
+    angka.map(([s, n]) => (
+      <div className="li" key={s}>
+        <span
+          className="swatch"
+          style={{ background: STATUS_WARNA[s] }}
+        />
+
+        <span>
+          {STATUS_LABEL[s]}
+        </span>
+
+        <b>
+          {n.toLocaleString('id-ID')}
+        </b>
+      </div>
+    ))
+
+  ) : (
+
+    Object.entries(WARNA_PENGGUNAAN).map(([nama, warna]) => (
+      <div className="li" key={nama}>
+
+        <span
+          className="swatch"
+          style={{ background: warna }}
+        />
+
+        <span>
+          {nama}
+        </span>
+
+        <b>
+          {(jumlahPenggunaan[nama] ?? 0).toLocaleString('id-ID')}
+        </b>
+
+      </div>
+    ))
+
+  )}
+
+  {pewarnaan === 'penggunaan' && (
+    <div className="li" key="Belum diisi">
+
+      <span
+        className="swatch"
+        style={{ background: '#888' }}
+      />
+
+      <span>
+        Belum diisi
+      </span>
+
+      <b>
+        {(jumlahPenggunaan['Belum diisi'] ?? 0).toLocaleString('id-ID')}
+      </b>
+
+    </div>
+  )}
+
+</div>
           </div>
 
           {pesan && <div className="toast">{pesan}</div>}
@@ -243,8 +333,3 @@ const toggleTema = () => {
     </div>
   );
 }
-
-const labelPeran = (p: Peran) => ({
-  pendata: 'Pendata lapangan', supervisor: 'Supervisor',
-  pelihat: 'Pelihat', pengembang: 'Pengembang'
-}[p]);
