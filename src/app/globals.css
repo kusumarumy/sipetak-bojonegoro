@@ -1,77 +1,48 @@
-/* =========================================================
-   ROOT / THEME
-   ========================================================= */
-
 :root {
   --f-disp: 'Archivo Narrow', 'Arial Narrow', system-ui, sans-serif;
   --f-body: 'Archivo', system-ui, -apple-system, sans-serif;
   --f-doc: 'Source Serif 4', Georgia, serif;
   --f-mono: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
-
-  /* kertas kartu bidang — sama di kedua tema */
   --paper: #F5F1E7;
   --paper2: #EBE5D6;
   --paper-line: #D3C9B4;
   --pink: #262019;
   --pdim: #6E6455;
-
   --draft: #93A3B3;
   --kirim: #66B3E5;
   --verif: #4FC49E;
   --revisi: #E0708F;
 }
 
-/* =========================================================
-   TEMA GELAP
-   ========================================================= */
-
 html[data-theme="dark"] {
   --chassis: #0E1720;
   --chassis2: #132029;
   --chassis3: #1B2C39;
-
   --line: #263D4E;
   --line-soft: #1C2E3C;
-
   --text: #D7E2EA;
   --dim: #8CA1B2;
   --faint: #5D7488;
-
   --accent: #A79BEB;
   --accent2: #5FD3BC;
-
   --mapbg: #0E1720;
-
   --shadow: 0 10px 30px rgba(0, 0, 0, .5);
 }
-
-/* =========================================================
-   TEMA TERANG
-   ========================================================= */
 
 html[data-theme="light"] {
   --chassis: #EDF0F7;
   --chassis2: #F8F9FD;
   --chassis3: #E2E7F2;
-
   --line: #CFD7E6;
   --line-soft: #E1E6F1;
-
   --text: #1E2733;
   --dim: #5A6879;
   --faint: #8C99A9;
-
   --accent: #6B57C4;
   --accent2: #1F9E86;
-
   --mapbg: #E7EBF3;
-
   --shadow: 0 10px 28px rgba(30, 39, 51, .14);
 }
-
-/* =========================================================
-   RESET
-   ========================================================= */
 
 * {
   box-sizing: border-box;
@@ -163,11 +134,6 @@ header.bar {
   z-index: 30;
 }
 
-
-/* =========================================================
-   BRAND
-   ========================================================= */
-
 .head-brand {
   display: flex;
 
@@ -239,11 +205,6 @@ header.bar {
   white-space: nowrap;
 }
 
-
-/* =========================================================
-   HEADER ACTIONS
-   ========================================================= */
-
 .head-actions {
   display: flex;
 
@@ -255,11 +216,6 @@ header.bar {
 
   min-width: 0;
 }
-
-
-/* =========================================================
-   SEARCH
-   ========================================================= */
 
 .head-search {
   width: min(380px, 100%);
@@ -315,11 +271,6 @@ header.bar {
   color: var(--faint);
 }
 
-
-/* =========================================================
-   HEADER BUTTON
-   ========================================================= */
-
 .head-action-btn {
   height: 38px;
 
@@ -366,11 +317,6 @@ header.bar {
 
   line-height: 1;
 }
-
-
-/* =========================================================
-   USER
-   ========================================================= */
 
 .head-user {
   display: flex;
@@ -427,11 +373,6 @@ header.bar {
 
   white-space: nowrap;
 }
-
-
-/* =========================================================
-   THEME
-   ========================================================= */
 
 .head-theme {
   width: 34px;
@@ -1429,24 +1370,25 @@ html[data-theme="light"] {
 .progress {
   position: absolute;
 
-  left: 14px;
+  right: 14px;
   bottom: 34px;
+  left: auto;
 
   z-index: 5;
 
   width: 250px;
 }
 
-.progress .ph {
-  padding: 9px 12px 7px;
+.progress {
+  position: absolute;
 
-  border-bottom: 1px solid var(--line-soft);
+  right: 14px;
+  bottom: 78px;
+  left: auto;
 
-  display: flex;
+  z-index: 5;
 
-  justify-content: space-between;
-
-  align-items: baseline;
+  width: 250px;
 }
 
 .progress .ph b {
