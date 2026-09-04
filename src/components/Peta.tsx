@@ -31,9 +31,10 @@ export default function Peta({ pengguna, ringkasan, keluar }: {
   beriPesan,
   pewarnaan
 } = useApp();
-  const [panel, setPanel] = useState(false);
-  const [cari, setCari] = useState('');
-    const [hasil, setHasil] = useState<any[]>([]);
+const [panel, setPanel] = useState(false);
+const [showProgress, setShowProgress] = useState(false);
+const [cari, setCari] = useState('');
+const [hasil, setHasil] = useState<any[]>([]);
 const [jumlahPenggunaan, setJumlahPenggunaan] = useState<Record<string, number>>({});
 const [tema, setTema] = useState<'light' | 'dark'>('light');
 useEffect(() => {
@@ -249,118 +250,166 @@ const toggleTema = () => {
         <div className="mapwrap">
           <MapCanvas />
 
-<div className="progress float">
+{/* =====================================================
+    PROGRESS / LEGEND — DEFAULT HIDDEN
+    ===================================================== */}
 
-  {/* HEADER */}
-  <div className="ph">
-    <span className="lbl">
-      {pewarnaan === 'status'
-        ? 'Progres verifikasi'
-        : 'Penggunaan bidang'}
-    </span>
+{showProgress ? (
 
-    {pewarnaan === 'status' && (
-      <b>{pct}%</b>
-    )}
-  </div>
+  <div className="progress float">
 
-  {/* PROGRESS BAR — HANYA STATUS */}
-  {pewarnaan === 'status' && (
-    <div className="progress-bar">
-      {angka.map(([s, n]) => (
-        <span
-          key={s}
-          style={{
-            width: `${
-              ringkasan.total
-                ? (n / ringkasan.total) * 100
-                : 0
-            }%`,
-            background: STATUS_WARNA[s]
-          }}
-        />
-      ))}
+    {/* HEADER */}
+    <div className="ph">
+
+      <span className="lbl">
+        {pewarnaan === 'status'
+          ? 'Progres verifikasi'
+          : 'Penggunaan bidang'}
+      </span>
+
+      <div className="progress-head-right">
+
+        {pewarnaan === 'status' && (
+          <b>{pct}%</b>
+        )}
+
+        <button
+          type="button"
+          className="progress-close"
+          onClick={() => setShowProgress(false)}
+          title="Sembunyikan"
+          aria-label="Sembunyikan progres"
+        >
+          ×
+        </button>
+
+      </div>
+
     </div>
-  )}
 
-  {/* LEGEND */}
-  <div className="legend">
 
-    {pewarnaan === 'status' ? (
+    {/* PROGRESS BAR — HANYA STATUS */}
+    {pewarnaan === 'status' && (
+      <div className="progress-bar">
 
-      angka.map(([s, n]) => (
-        <div className="li" key={s}>
-
+        {angka.map(([s, n]) => (
           <span
-            className="swatch"
+            key={s}
             style={{
+              width: `${
+                ringkasan.total
+                  ? (n / ringkasan.total) * 100
+                  : 0
+              }%`,
               background: STATUS_WARNA[s]
             }}
           />
+        ))}
 
-          <span>
-            {STATUS_LABEL[s]}
-          </span>
-
-          <b>
-            {n.toLocaleString('id-ID')}
-          </b>
-
-        </div>
-      ))
-
-    ) : (
-
-      <>
-        {Object.entries(WARNA_PENGGUNAAN).map(
-          ([nama, warna]) => (
-            <div className="li" key={nama}>
-
-              <span
-                className="swatch"
-                style={{
-                  background: warna
-                }}
-              />
-
-              <span>
-                {nama}
-              </span>
-
-              <b>
-                {(
-                  jumlahPenggunaan[nama] ?? 0
-                ).toLocaleString('id-ID')}
-              </b>
-
-            </div>
-          )
-        )}
-
-        {/* NULL / BELUM DIISI */}
-        <div className="li">
-
-          <span
-            className="swatch"
-            style={{
-              background: '#888'
-            }}
-          />
-
-          <span>
-            Belum diisi
-          </span>
-
-          <b>
-            {(
-              jumlahPenggunaan['Belum diisi'] ?? 0
-            ).toLocaleString('id-ID')}
-          </b>
-
-        </div>
-      </>
-
+      </div>
     )}
+
+
+    {/* LEGEND */}
+    <div className="legend">
+
+      {pewarnaan === 'status' ? (
+
+        angka.map(([s, n]) => (
+          <div className="li" key={s}>
+
+            <span
+              className="swatch"
+              style={{
+                background: STATUS_WARNA[s]
+              }}
+            />
+
+            <span>
+              {STATUS_LABEL[s]}
+            </span>
+
+            <b>
+              {n.toLocaleString('id-ID')}
+            </b>
+
+          </div>
+        ))
+
+      ) : (
+
+        <>
+          {Object.entries(WARNA_PENGGUNAAN).map(
+            ([nama, warna]) => (
+              <div className="li" key={nama}>
+
+                <span
+                  className="swatch"
+                  style={{
+                    background: warna
+                  }}
+                />
+
+                <span>
+                  {nama}
+                </span>
+
+                <b>
+                  {(
+                    jumlahPenggunaan[nama] ?? 0
+                  ).toLocaleString('id-ID')}
+                </b>
+
+              </div>
+            )
+          )}
+
+          {/* NULL / BELUM DIISI */}
+          <div className="li">
+
+            <span
+              className="swatch"
+              style={{
+                background: '#888'
+              }}
+            />
+
+            <span>
+              Belum diisi
+            </span>
+
+            <b>
+              {(
+                jumlahPenggunaan['Belum diisi'] ?? 0
+              ).toLocaleString('id-ID')}
+            </b>
+
+          </div>
+        </>
+
+      )}
+
+    </div>
+
+  </div>
+
+) : (
+
+  /* =====================================================
+     TOMBOL KECIL UNTUK MEMBUKA
+     ===================================================== */
+
+  <button
+    type="button"
+    className="progress-toggle"
+    onClick={() => setShowProgress(true)}
+    title="Tampilkan progres dan legenda"
+    aria-label="Tampilkan progres dan legenda"
+  >
+    ◔
+  </button>
+
+)}
 
   </div>
 
