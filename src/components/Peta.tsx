@@ -251,7 +251,17 @@ const toggleTema = () => {
   onClose={() => setPanel(false)}
 />
 <div className="mapwrap">
-  <MapCanvas />
+  <button
+  type="button"
+  className="map-panel-toggle"
+  onClick={() => setPanel(true)}
+  aria-label="Buka Control Panel"
+  title="Control Panel"
+>
+  ☰
+</button>
+
+<MapCanvas />
 
   <div className="progress float">
 
