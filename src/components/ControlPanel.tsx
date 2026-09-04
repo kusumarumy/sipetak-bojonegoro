@@ -13,8 +13,10 @@ const GROUP_ICONS: Record<string, string> = {
 
 export default function ControlPanel({
   terbuka,
+  onClose,
 }: {
   terbuka: boolean;
+  onClose: () => void;
 }) {
   const s = useApp();
 
@@ -38,8 +40,19 @@ export default function ControlPanel({
     (l) => s.layerAktif[l.id]
   ).length;
 
-  return (
-    <aside className={'panel' + (terbuka ? ' open' : '')}>
+return (
+  <aside className={'panel' + (terbuka ? ' open' : '')}>
+
+    {/* CLOSE */}
+    <button
+      type="button"
+      className="panel-close"
+      onClick={onClose}
+      aria-label="Tutup panel"
+      title="Tutup panel"
+    >
+      ×
+    </button>
       <section className="terrain-card">
         <div className="terrain-head">
           <div className="terrain-head-left">
