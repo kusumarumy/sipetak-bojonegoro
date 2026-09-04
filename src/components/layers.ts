@@ -170,6 +170,10 @@ export const DTM = {
 export const ORTHO = process.env.NEXT_PUBLIC_TILES_ORTHO;
 
 export const WARNA_PENGGUNAAN: Record<string, string> = {
-  'Sawah': '#6FC7A4', 'Tegalan': '#8FBFD9', 'Pekarangan': '#B49BE5',
-  'Permukiman': '#E0708F', 'Kebun': '#3D9E86', 'Tambak': '#5E8FD0', 'Tanah kosong': '#93A3B3'
+  'Kosong': '#D9DDE3',
+  'Tanah Persawahan': '#6FC7A4',
+  'Tanah Perkampungan': '#E0708F',
+  'Tanah Perumahan': '#B49BE5',
+  'Lain-lain': '#93A3B3',
+  'Tanah Tidak Ada Bangunan': '#8FBFD9'
 };
