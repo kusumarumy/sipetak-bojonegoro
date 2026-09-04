@@ -3,9 +3,6 @@ import authConfig from '@/lib/auth.config';
 
 const { auth } = NextAuth(authConfig);
 
-/**
- * Seluruh aplikasi tertutup. Hanya halaman masuk dan endpoint auth yang terbuka.
- */
 export default auth((req) => {
   const { pathname } = req.nextUrl;
   const terbuka =
