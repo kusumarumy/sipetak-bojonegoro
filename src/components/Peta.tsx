@@ -247,51 +247,27 @@ const toggleTema = () => {
 </header>
       <main className="body">
         <ControlPanel terbuka={panel} />
-        <div className="mapwrap">
-          <MapCanvas />
-
-{/* =====================================================
-    PROGRESS / LEGEND — DEFAULT HIDDEN
-    ===================================================== */}
-
-{showProgress ? (
+<div className="mapwrap">
+  <MapCanvas />
 
   <div className="progress float">
 
     {/* HEADER */}
     <div className="ph">
-
       <span className="lbl">
         {pewarnaan === 'status'
           ? 'Progres verifikasi'
           : 'Penggunaan bidang'}
       </span>
 
-      <div className="progress-head-right">
-
-        {pewarnaan === 'status' && (
-          <b>{pct}%</b>
-        )}
-
-        <button
-          type="button"
-          className="progress-close"
-          onClick={() => setShowProgress(false)}
-          title="Sembunyikan"
-          aria-label="Sembunyikan progres"
-        >
-          ×
-        </button>
-
-      </div>
-
+      {pewarnaan === 'status' && (
+        <b>{pct}%</b>
+      )}
     </div>
-
 
     {/* PROGRESS BAR — HANYA STATUS */}
     {pewarnaan === 'status' && (
       <div className="progress-bar">
-
         {angka.map(([s, n]) => (
           <span
             key={s}
@@ -305,19 +281,15 @@ const toggleTema = () => {
             }}
           />
         ))}
-
       </div>
     )}
 
-
     {/* LEGEND */}
     <div className="legend">
-
       {pewarnaan === 'status' ? (
 
         angka.map(([s, n]) => (
           <div className="li" key={s}>
-
             <span
               className="swatch"
               style={{
@@ -332,7 +304,6 @@ const toggleTema = () => {
             <b>
               {n.toLocaleString('id-ID')}
             </b>
-
           </div>
         ))
 
@@ -388,37 +359,24 @@ const toggleTema = () => {
         </>
 
       )}
-
     </div>
 
   </div>
 
-) : (
+  {/* TOAST */}
+  {pesan && (
+    <div className="toast">
+      {pesan}
+    </div>
+  )}
 
-  /* =====================================================
-     TOMBOL KECIL UNTUK MEMBUKA
-     ===================================================== */
-
-  <button
-    type="button"
-    className="progress-toggle"
-    onClick={() => setShowProgress(true)}
-    title="Tampilkan progres dan legenda"
-    aria-label="Tampilkan progres dan legenda"
-  >
-    ◔
-  </button>
-
-)}
-
-  </div>
+  {/* KARTU BIDANG */}
+  {kartu && (
+    <KartuBidang peran={pengguna.peran} />
+  )}
 
 </div>
-
-          {pesan && <div className="toast">{pesan}</div>}
-          {kartu && <KartuBidang peran={pengguna.peran} />}
-        </div>
-      </main>
+</main>
     </div>
   );
 }
