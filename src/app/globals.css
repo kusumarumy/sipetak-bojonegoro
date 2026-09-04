@@ -1379,18 +1379,6 @@ html[data-theme="light"] {
   width: 250px;
 }
 
-.progress {
-  position: absolute;
-
-  right: 14px;
-  bottom: 78px;
-  left: auto;
-
-  z-index: 5;
-
-  width: 250px;
-}
-
 .progress .ph b {
   font-family: var(--f-mono);
 
@@ -1398,7 +1386,105 @@ html[data-theme="light"] {
 
   font-weight: 500;
 }
+/* =========================================================
+   PROGRESS TOGGLE
+   ========================================================= */
 
+.progress-toggle {
+  position: absolute;
+
+  left: 14px;
+  bottom: 34px;
+
+  z-index: 5;
+
+  width: 34px;
+  height: 34px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+
+  background: var(--chassis2);
+
+  border: 1px solid var(--line);
+
+  color: var(--dim);
+
+  box-shadow: var(--shadow);
+
+  font-size: 17px;
+  line-height: 1;
+
+  cursor: pointer;
+
+  transition:
+    background .15s ease,
+    border-color .15s ease,
+    color .15s ease;
+}
+
+.progress-toggle:hover {
+  background: var(--chassis3);
+
+  border-color: var(--accent);
+
+  color: var(--accent);
+}
+
+
+/* =========================================================
+   PROGRESS HEADER
+   ========================================================= */
+
+.progress-head-right {
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+}
+
+.progress-head-right b {
+  font-family: var(--f-mono);
+
+  font-size: 15px;
+
+  font-weight: 500;
+}
+
+
+/* =========================================================
+   PROGRESS CLOSE
+   ========================================================= */
+
+.progress-close {
+  width: 20px;
+  height: 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+
+  border: 0;
+
+  background: transparent;
+
+  color: var(--faint);
+
+  font-size: 17px;
+  line-height: 1;
+
+  cursor: pointer;
+}
+
+.progress-close:hover {
+  color: var(--accent);
+}
 
 .legend {
   padding: 9px 12px 11px;
