@@ -43,7 +43,6 @@ export default function ControlPanel({
 return (
   <aside className={'panel' + (terbuka ? ' open' : '')}>
 
-    {/* CLOSE */}
     <button
       type="button"
       className="panel-close"
@@ -53,6 +52,8 @@ return (
     >
       ×
     </button>
+
+    {/* isi Control Panel */}
       <section className="terrain-card">
         <div className="terrain-head">
           <div className="terrain-head-left">
