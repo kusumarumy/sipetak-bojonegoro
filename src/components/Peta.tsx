@@ -159,7 +159,7 @@ const toggleTema = () => {
     <button
       type="button"
       className="head-action-btn"
-      onClick={() => setPanel(true)}
+      onClick={() => setPanel((prev) => !prev)}
     >
       <span className="head-action-icon">
         ☷
