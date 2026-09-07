@@ -121,13 +121,8 @@ function FormMasuk() {
 
           <div className="lg-kaki">
             <span>© 2026 Dinas PUBMPR Kabupaten Bojonegoro</span>
-            <span>Data terkelola untuk kebutuhan kedinasan</span>
           </div>
         </section>
-
-        {/* =========================================================
-            PANEL KANAN — FORM LOGIN
-        ========================================================== */}
         <section className="lg-kanan">
           <div className="lg-form-shell">
             <div className="lg-form-topline">
