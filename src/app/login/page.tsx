@@ -621,11 +621,7 @@ function IconMap() {
   );
 }
 
-/* ================================================================
-   STYLES — self contained agar tampilan login langsung konsisten
-================================================================ */
-
-function StyleLogin() n Masuk() {
+export default function Masuk() {
   return (
     <Suspense fallback={<div className="lg-wrap" />}>
       <FormMasuk />
