@@ -3154,122 +3154,113 @@ html[data-theme="dark"] .gate-foot {
 
   border-top-color: #294457;
 }
-/* =========================================================
-   RESPONSIVE
-   ========================================================= */
-/* =====================================================================
-   Halaman masuk — sengaja tidak memakai token tema aplikasi.
-   Warnanya dikunci terang, karena halaman ini adalah wajah pertama
-   sistem dan harus tampil sama di perangkat mana pun.
-   ===================================================================== */
 .lg-wrap{
-  position:fixed;inset:0;display:grid;grid-template-columns:1.15fr 1fr;
+  position:fixed;inset:0;display:grid;grid-template-columns:1.08fr .92fr;
   background:#FFFFFF;color:#16202B;overflow:auto;
   font-family:'Archivo',system-ui,-apple-system,sans-serif;
 }
 
-/* ---------- panel kiri: identitas & ilustrasi ---------- */
 .lg-kiri{
   position:relative;overflow:hidden;display:flex;flex-direction:column;
-  justify-content:space-between;padding:44px 48px;
-  background:linear-gradient(155deg,#EEF1FC 0%,#E3E9FA 42%,#DCE6F7 100%);
+  justify-content:space-between;padding:46px 52px 0;
+  background:linear-gradient(158deg,#EFF2FD 0%,#E4EAFA 45%,#DBE5F7 100%);
 }
 .lg-ombak{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
 
-.lg-brand{position:relative;display:flex;align-items:center;gap:14px}
+.lg-brand{position:relative;display:flex;align-items:center;gap:14px;flex:none}
 .lg-brand img{height:52px;width:auto}
-.lg-brand div{line-height:1.35}
-.lg-brand b{display:block;font-size:14px;font-weight:700;color:#1E2A3D}
+.lg-brand b{display:block;font-size:14px;font-weight:700;color:#1E2A3D;line-height:1.35}
 .lg-brand span{display:block;font-size:12px;color:#5A6A85}
 
-.lg-hero{position:relative;max-width:520px}
+.lg-hero{position:relative;padding:34px 0 26px;max-width:560px}
 .lg-hero h1{
-  font-size:34px;line-height:1.18;letter-spacing:-.02em;margin:0 0 14px;
+  font-size:35px;line-height:1.16;letter-spacing:-.025em;margin:0 0 10px;
   font-weight:700;color:#1B2438;
 }
 .lg-hero h1 em{font-style:normal;color:#4A3AA8}
-.lg-hero p{margin:0;font-size:14.5px;line-height:1.65;color:#4E5C74;max-width:440px}
+.lg-hero p{margin:0;font-size:14.5px;color:#4E5C74}
 
-.lg-angka{position:relative;display:flex;gap:34px;margin-top:30px}
-.lg-angka div b{
+.lg-angka{display:flex;gap:36px;margin-top:26px}
+.lg-angka b{
   display:block;font-family:'IBM Plex Mono',ui-monospace,monospace;
   font-size:23px;font-weight:500;color:#4A3AA8;letter-spacing:-.02em;
 }
-.lg-angka div span{display:block;font-size:11.5px;color:#66748C;margin-top:3px}
+.lg-angka span{display:block;font-size:11.5px;color:#66748C;margin-top:3px}
 
-.lg-gambar{position:relative;margin-top:8px}
-.lg-gambar svg{width:100%;max-width:560px;height:auto;display:block}
+.lg-gambar{position:relative;margin:0 -52px -1px;flex:none}
+.lg-gambar svg{width:100%;height:auto;display:block}
 
-.lg-kaki{position:relative;font-size:11.5px;color:#7A879C;line-height:1.6}
+.lg-kaki{position:absolute;left:52px;bottom:18px;font-size:11.5px;color:#8493A8}
 
-/* ---------- panel kanan: form ---------- */
-.lg-kanan{display:flex;align-items:center;justify-content:center;padding:40px 34px;background:#FFFFFF}
-.lg-kartu{width:100%;max-width:396px}
+.lg-kanan{
+  position:relative;z-index:2;display:flex;align-items:center;
+  justify-content:center;padding:40px 44px;background:#FFFFFF;
+}
+.lg-kartu{
+  width:100%;max-width:390px;background:#FFFFFF;
+  border:1px solid #E7EBF3;border-radius:20px;padding:32px 30px 28px;
+  box-shadow:0 22px 54px -18px rgba(30,42,68,.28), 0 3px 10px rgba(30,42,68,.05);
+  margin-left:-104px;   /* menggeser kartu ke kiri agar menimpa panel ilustrasi */
+}
 
-.lg-kartu-h{margin-bottom:26px}
 .lg-kode{
   display:inline-block;font-family:'IBM Plex Mono',ui-monospace,monospace;
   font-size:10.5px;letter-spacing:.06em;color:#4A3AA8;
-  background:#EEEBFB;padding:5px 10px;border-radius:99px;margin-bottom:14px;
+  background:#EEEBFB;padding:5px 10px;border-radius:99px;margin-bottom:13px;
 }
-.lg-kartu-h h2{font-size:24px;font-weight:700;letter-spacing:-.02em;margin:0 0 6px;color:#16202B}
-.lg-kartu-h p{margin:0;font-size:13px;line-height:1.6;color:#5D6B82}
+.lg-kartu h2{font-size:23px;font-weight:700;letter-spacing:-.02em;margin:0 0 5px;color:#16202B}
+.lg-sub{margin:0 0 22px;font-size:13px;color:#5D6B82}
 
-.lg-field{margin-bottom:16px}
+.lg-field{margin-bottom:15px}
 .lg-field label{display:block;font-size:12.5px;font-weight:600;color:#31405A;margin-bottom:7px}
 .lg-input{position:relative;display:flex;align-items:center}
-.lg-input svg{position:absolute;left:13px;color:#95A2B8;pointer-events:none}
+.lg-input>svg{position:absolute;left:13px;color:#95A2B8;pointer-events:none}
 .lg-input input{
-  width:100%;border:1px solid #D5DCE8;border-radius:9px;background:#FBFCFE;
+  width:100%;border:1px solid #D5DCE8;border-radius:11px;background:#FBFCFE;
   padding:12px 13px 12px 40px;font-size:14px;color:#16202B;transition:.15s;
 }
-.lg-input input::placeholder{color:#A3AEC0}
-.lg-input input:focus{outline:none;border-color:#6C4DFF;background:#fff;box-shadow:0 0 0 3px rgba(108,77,255,.12)}
+.lg-input input:focus{outline:none;border-color:#6C4DFF;background:#fff;
+  box-shadow:0 0 0 3px rgba(108,77,255,.12)}
 .lg-lihat{
   position:absolute;right:6px;background:none;border:none;color:#95A2B8;
-  padding:7px 9px;cursor:pointer;display:grid;place-items:center;border-radius:7px;
+  padding:7px 9px;cursor:pointer;display:grid;place-items:center;border-radius:8px;
 }
 .lg-lihat:hover{color:#4A3AA8;background:#F1F3F9}
 
 .lg-masuk{
-  width:100%;border:none;border-radius:9px;background:#4A3AA8;color:#fff;
-  padding:13px;font-size:14.5px;font-weight:600;letter-spacing:.01em;
-  margin-top:6px;transition:.15s;cursor:pointer;
+  width:100%;border:none;border-radius:11px;background:#4A3AA8;color:#fff;
+  padding:13px;font-size:14.5px;font-weight:600;margin-top:6px;transition:.15s;cursor:pointer;
 }
 .lg-masuk:hover{background:#3C2E90}
 .lg-masuk:disabled{opacity:.6;cursor:progress}
 
 .lg-galat{
-  margin-top:15px;display:flex;gap:9px;align-items:flex-start;
-  background:#FDF0F3;border:1px solid #F3C9D4;border-radius:9px;
+  margin-top:14px;display:flex;gap:9px;align-items:flex-start;
+  background:#FDF0F3;border:1px solid #F3C9D4;border-radius:11px;
   padding:11px 13px;font-size:12.5px;line-height:1.55;color:#93304C;
 }
 .lg-galat svg{flex:none;margin-top:1px}
 
 .lg-info{
-  margin-top:24px;padding-top:20px;border-top:1px solid #E7EBF2;
-  font-size:12.5px;line-height:1.65;color:#5D6B82;
+  margin-top:22px;padding-top:18px;border-top:1px solid #EDF0F6;
+  font-size:12.5px;line-height:1.6;color:#5D6B82;
 }
-.lg-info b{display:block;color:#31405A;font-weight:600;margin-bottom:3px}
+.lg-info b{display:block;color:#31405A;font-weight:600;margin-bottom:2px}
 .lg-info a{color:#4A3AA8;text-decoration:none;font-weight:600}
 .lg-info a:hover{text-decoration:underline}
 
-.lg-aman{
-  margin-top:16px;display:flex;gap:8px;align-items:flex-start;
-  font-size:11.5px;line-height:1.6;color:#7A879C;
-}
-.lg-aman svg{flex:none;margin-top:1px;color:#95A2B8}
-
-/* ---------- layar sempit: panel kiri jadi kepala ringkas ---------- */
-@media (max-width:940px){
+@media (max-width:980px){
   .lg-wrap{grid-template-columns:1fr;position:static;min-height:100%}
-  .lg-kiri{padding:26px 24px 30px}
-  .lg-gambar,.lg-kaki{display:none}
+  .lg-kiri{padding:26px 24px 0}
+  .lg-hero{padding:22px 0 18px}
   .lg-hero h1{font-size:25px}
-  .lg-hero p{font-size:13.5px}
-  .lg-angka{gap:24px;margin-top:20px}
-  .lg-kanan{padding:32px 24px 48px}
+  .lg-angka{gap:22px;margin-top:18px}
+  .lg-gambar{margin:0 -24px -1px}
+  .lg-kaki{display:none}
+  .lg-kanan{padding:0 20px 40px}
+  .lg-kartu{margin-left:0;margin-top:-46px}
 }
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 
 @media (max-width: 900px) {
 
