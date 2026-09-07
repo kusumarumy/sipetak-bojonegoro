@@ -41,15 +41,10 @@ function FormMasuk() {
   return (
     <>
       <main className="lg-wrap">
-        {/* =========================================================
-            PANEL KIRI — IDENTITAS & INFORMASI SISTEM
-        ========================================================== */}
         <section className="lg-kiri">
           <Ombak />
-
           <div className="lg-glow lg-glow-a" />
           <div className="lg-glow lg-glow-b" />
-
           <header className="lg-brand">
             <div className="lg-logo-box">
               <img
@@ -60,9 +55,7 @@ function FormMasuk() {
 
             <div className="lg-brand-text">
               <b>
-                Dinas Pekerjaan Umum Bina Marga
-                <br />
-                dan Perumahan Rakyat
+                Dinas Pekerjaan Umum Bina Marga dan Perumahan Rakyat
               </b>
               <span>Kabupaten Bojonegoro</span>
             </div>
@@ -71,16 +64,16 @@ function FormMasuk() {
           <div className="lg-hero">
             <div className="lg-eyebrow">
               <span className="lg-eyebrow-dot" />
-              SISTEM INFORMASI PENDATAAN
+              SISTEM INFORMASI 
             </div>
 
             <h1>
-              Pendataan Bidang Tanah
-              <strong>Terdampak Trase Jalan</strong>
+              Bidang Tanah Terdampak
+              <strong>Rencana Pembangunan Trase Jalan</strong>
             </h1>
 
             <p className="lg-hero-sub">
-              Platform pendataan bidang tanah terdampak pembangunan
+              Platform pendataan bidang tanah terdampak dari rencana pembangunan
               <strong> Jalur Lingkar Selatan Kabupaten Bojonegoro.</strong>
             </p>
 
@@ -122,9 +115,8 @@ function FormMasuk() {
           <div className="lg-meta">
             <span>
               <i className="lg-live-dot" />
-              Sistem Pendataan Trase Jalan
+              DPPT · BOJONEGORO 2026
             </span>
-            <span>DPPT · BJN-2026</span>
           </div>
 
           <div className="lg-kaki">
