@@ -553,7 +553,53 @@ aside.panel::-webkit-scrollbar-thumb:hover {
     box-shadow .2s ease;
 }
 
+/* =========================================================
+   CONTROL PANEL TOGGLE
+   ========================================================= */
 
+.map-panel-toggle {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+
+  width: 38px;
+  height: 38px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+
+  border: 1px solid var(--line);
+  border-radius: 8px;
+
+  background: var(--chassis2);
+  color: var(--text);
+
+  font-size: 18px;
+  line-height: 1;
+
+  cursor: pointer;
+
+  z-index: 40;
+
+  box-shadow:
+    0 3px 12px rgba(0, 0, 0, .15);
+
+  transition:
+    background .15s ease,
+    border-color .15s ease,
+    color .15s ease,
+    transform .15s ease;
+}
+
+.map-panel-toggle:hover {
+  background: var(--chassis3);
+  border-color: var(--accent);
+  color: var(--accent);
+  transform: translateY(-1px);
+}
 /* =========================================================
    LIGHT / DARK CARD VARIABLES
    ========================================================= */
