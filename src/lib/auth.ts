@@ -17,14 +17,12 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       credentials: {
   username: {},
   password: {},
-  peran: {},
 },
       async authorize(kredensial) {
   const username = String(kredensial?.username ?? '').trim().toLowerCase();
   const password = String(kredensial?.password ?? '');
-  const peranDipilih = String(kredensial?.peran ?? '') as Peran;
 
-  if (!username || !password || !peranDipilih) return null;
+  if (!username || !password) return null;
 
   const [u] = await query<{
     id: string;
@@ -47,15 +45,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
   const cocok = await bcrypt.compare(password, hash);
 
-  // Username/password/akun/role semuanya harus cocok.
-  if (
-    !u ||
-    !u.aktif ||
-    !cocok ||
-    u.peran !== peranDipilih
-  ) {
-    return null;
-  }
+  // Peran tidak lagi dipilih saat masuk — peran melekat pada akun, jadi
+  // sistem sudah tahu sendiri siapa yang masuk. Meminta pengguna memilihnya
+  // hanya menambah satu cara gagal tanpa menambah keamanan.
+  if (!u || !u.aktif || !cocok) return null;
 
   await query(
     'UPDATE pengguna SET login_terakhir = now() WHERE id = $1',
