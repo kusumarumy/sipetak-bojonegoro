@@ -2,7 +2,6 @@
 import { Suspense, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { signIn } from 'next-auth/react';
-import './login.css';
 
 function FormMasuk() {
   const router = useRouter();
