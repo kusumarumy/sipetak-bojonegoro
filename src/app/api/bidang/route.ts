@@ -6,85 +6,97 @@ export async function GET() {
   const sesi = await auth();
 
   if (!sesi?.user) {
-    return new NextResponse('Belum masuk', { status: 401 });
+    return new NextResponse('Belum masuk', {
+      status: 401,
+    });
   }
 
-  const [row] = await query<{ fc: any }>(`
-    SELECT json_build_object(
-      'type', 'FeatureCollection',
-      'features',
-      COALESCE(
-        json_agg(
-          json_build_object(
-            'type', 'Feature',
-            'id', f.id,
-
-            'geometry',
-            CASE
-              WHEN f.geometry IS NOT NULL
-              THEN ST_AsGeoJSON(f.geometry, 6)::json
-              ELSE NULL
-            END,
-
-            'properties',
+  try {
+    const [row] = await query<{ fc: any }>(`
+      SELECT json_build_object(
+        'type', 'FeatureCollection',
+        'features',
+        COALESCE(
+          json_agg(
             json_build_object(
+              'type', 'Feature',
               'id', f.id,
-              'kode', f.kode_bid,
-              'bidang_id', f.bidang_id,
 
-              'status', f.status,
+              'geometry',
+              CASE
+                WHEN f.geom IS NOT NULL
+                THEN ST_AsGeoJSON(f.geom, 6)::json
+                ELSE NULL
+              END,
 
-              'kecamatan', f.kecamatan,
-              'desa', f.kelurahan,
+              'properties',
+              json_build_object(
+                'id', f.id,
 
-              'pemilik', f.nama_milik,
+                'kode', f.kode_bid,
+                'bidang_id', f.bidang_id,
 
-              'nib', f.nib,
+                'status', f.status,
 
-              'luas_m2', f.luastertul,
+                'kecamatan', f.kecamatan,
+                'desa', COALESCE(f.desa, f.kelurahan),
 
-              'penggunaan', f.penggunaan,
+                'pemilik', f.nama_milik,
 
-              'bangunan', f.jml_bgn,
+                'luas_m2', f.luastnh,
 
-              'tipehak', f.tipehak,
-              'tipeproduk', f.tipeproduk,
-              'tahun', f.tahun,
+                'luas_tnh', f.luas_tnh,
+                'luastertul', f.luastertul,
+                'luaspeta', f.luaspeta,
 
-              'rt_rw', f.rt_rw,
-              'nama_sewa', f.nama_sewa,
+                'luas_atbt', f.luas_atbt,
 
-              'sta_tnh', f.sta_tnh,
-              'surat_hak', f.surat_hak,
-              'nomor_hak', f.nomor_hak,
+                'penggunaan', f.penggunaan,
 
-              'luas_tnh', f.luas_tnh,
-              'ruang_atbt', f.ruang_atbt,
-              'luas_atbt', f.luas_atbt,
+                'bangunan', f.bangunan,
+                'jml_bgn', f.jml_bgn,
 
-              'jenis_tnm', f.jenis_tnm,
-              'jumlah_tnm', f.jumlah_tnm,
+                'ruang_atbt', f.ruang_atbt,
+                'dampak_tnh', f.dampak_tnh,
 
-              'jenis_bnd', f.jenis_bnd,
-              'jumlah_bnd', f.jumlah_bnd,
-
-              'dampak_tnh', f.dampak_tnh,
-
-              'nomor_hp', f.nomor_hp,
-
-              'foto_tnh', f.foto_tnh
+                'status_bidang', f.status_bidang,
+                'status_input', f.status_input,
+                'status_validasi', f.status_validasi
+              )
             )
-          )
-        ),
-        '[]'::json
-      )
-    ) AS fc
-    FROM public.bidang_tanah f
-  `);
+          ),
+          '[]'::json
+        )
+      ) AS fc
 
-  return NextResponse.json(row.fc, {
-    headers: {
-      'Cache-Control': 'private, max-age=15',
-    },
-  });
+      FROM public.bidang_tanah f
+
+      WHERE f.deleted_at IS NULL
+    `);
+
+    return NextResponse.json(row.fc, {
+      headers: {
+        'Cache-Control': 'private, max-age=15',
+      },
+    });
+
+  } catch (error) {
+    console.error(
+      'GET /api/bidang ERROR:',
+      error
+    );
+
+    return NextResponse.json(
+      {
+        pesan: 'Gagal memuat daftar bidang',
+        error:
+          error instanceof Error
+            ? error.message
+            : String(error),
+      },
+      {
+        status: 500,
+      }
+    );
+  }
 }
