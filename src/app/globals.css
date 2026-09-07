@@ -3168,40 +3168,43 @@ html[data-theme="dark"] .gate-foot {
         box-sizing: border-box;
       }
 
-      .lg-wrap {
-        min-height: 100vh;
-        width: 100%;
-        display: grid;
-        grid-template-columns: minmax(0, 1.55fr) minmax(390px, 0.72fr);
-        overflow: hidden;
-        background: #f7fafc;
-        color: var(--pub-text);
-        font-family:
-          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-          "Segoe UI", sans-serif;
-      }
+.lg-wrap {
+  min-height: 100dvh;
+  width: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(390px, 0.72fr);
+  overflow-x: hidden;
+  overflow-y: auto;
+  background: #f7fafc;
+  color: var(--pub-text);
+  font-family:
+    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+}
 
-      .lg-kiri {
-        position: relative;
-        min-height: 100vh;
-        overflow: hidden;
-        padding: 44px 6.5vw 28px 5vw;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
+.lg-kiri {
+  position: relative;
+  min-height: 100dvh;
+  overflow: hidden;
+  padding: clamp(28px, 4vh, 44px) 6.5vw 28px 5vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
         background:
           radial-gradient(circle at 86% 14%, rgba(94, 159, 145, .09), transparent 28%),
           radial-gradient(circle at 10% 90%, rgba(23, 74, 126, .08), transparent 32%),
           linear-gradient(145deg, #f5f9fd 0%, #e9f1f9 48%, #e4eef7 100%);
       }
 
-      .lg-kanan {
-        min-height: 100vh;
-        position: relative;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 42px clamp(30px, 4vw, 72px);
+.lg-kanan {
+  min-height: 100dvh;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(25px, 4vh, 42px) clamp(30px, 4vw, 72px);
+  box-sizing: border-box;
         background:
           linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
         border-left: 1px solid #e2eaf1;
@@ -3343,25 +3346,27 @@ html[data-theme="dark"] .gate-foot {
         font-weight: 700;
       }
 
-      .lg-angka {
-        display: flex;
-        align-items: stretch;
-        gap: 10px;
-        margin-top: 28px;
-      }
+.lg-angka {
+  display: flex;
+  align-items: stretch;
+  gap: 10px;
+  margin-top: 28px;
+  flex-wrap: wrap;
+}
 
-      .lg-stat {
-        min-width: 170px;
-        padding: 12px 17px;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        background: rgba(255, 255, 255, .62);
-        border: 1px solid rgba(255, 255, 255, .82);
-        border-radius: 12px;
-        box-shadow: 0 8px 26px rgba(32, 72, 104, .06);
-        backdrop-filter: blur(8px);
-      }
+.lg-stat {
+  min-width: 0;
+  flex: 1 1 170px;
+  padding: 12px 17px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(255, 255, 255, .62);
+  border: 1px solid rgba(255, 255, 255, .82);
+  border-radius: 12px;
+  box-shadow: 0 8px 26px rgba(32, 72, 104, .06);
+  backdrop-filter: blur(8px);
+}
 
       .lg-stat-icon {
         width: 36px;
@@ -3974,24 +3979,72 @@ html[data-theme="dark"] .gate-foot {
           min-width: 145px;
         }
       }
+/* ================= LAPTOP DENGAN TINGGI PENDEK ================= */
 
-      @media (max-width: 850px) {
-        .lg-wrap {
-          grid-template-columns: 1fr;
-        }
+@media (max-height: 800px) and (min-width: 851px) {
 
-        .lg-kiri {
-          min-height: auto;
-          padding: 34px 28px 24px;
-        }
+  .lg-kiri {
+    padding-top: 26px;
+    padding-bottom: 18px;
+  }
 
-        .lg-kanan {
-          min-height: auto;
-          padding: 35px 25px 45px;
-          border-left: 0;
-          border-top: 1px solid #e2eaf1;
-        }
+  .lg-hero {
+    margin-top: 30px;
+  }
 
+  .lg-hero-sub {
+    margin-top: 14px;
+  }
+
+  .lg-angka {
+    margin-top: 18px;
+  }
+
+  .lg-gambar {
+    height: 160px;
+    margin-top: 18px;
+  }
+
+  .lg-kartu {
+    padding: 27px 30px 22px;
+  }
+
+  .lg-sub {
+    margin: 10px 0 20px;
+  }
+
+  .lg-field {
+    margin-top: 14px;
+  }
+
+  .lg-masuk {
+    margin-top: 18px;
+  }
+
+  .lg-security {
+    margin-top: 12px;
+    padding-top: 10px;
+  }
+
+  .lg-form-footer {
+    margin-top: 10px;
+  }
+}
+@media (max-width: 850px) {
+
+  .lg-wrap {
+    grid-template-columns: 1fr;
+    min-height: auto;
+    overflow-y: visible;
+  }
+
+  .lg-kiri {
+    min-height: auto;
+  }
+
+  .lg-kanan {
+    min-height: auto;
+  }
         .lg-hero {
           margin-top: 48px;
         }
