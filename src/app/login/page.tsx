@@ -268,9 +268,7 @@ function FormMasuk() {
                   <b>Belum memiliki akun?</b>
                   <p>
                     Akun dibuat oleh pengelola sistem sesuai penugasan.
-                    <a href="mailto:dpubimapr@bojonegorokab.go.id">
-                      Hubungi Dinas PUBMPR
-                    </a>
+                    <a href="mailto:dpubimapr@bojonegorokab.go.id">Hubungi Dinas PUBMPR</a>
                   </p>
                 </div>
               </div>
