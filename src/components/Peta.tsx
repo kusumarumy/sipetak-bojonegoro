@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 import ControlPanel from './ControlPanel';
 import KartuBidang from './KartuBidang';
+import DaftarBidang from './DaftarBidang';
 import { useApp } from '@/store/useApp';
 import {
   STATUS_LABEL,
@@ -32,6 +33,7 @@ export default function Peta({ pengguna, ringkasan, keluar }: {
   pewarnaan
 } = useApp();
 const [panel, setPanel] = useState(false);
+const [daftarBidang, setDaftarBidang] = useState(false);
 const [showProgress, setShowProgress] = useState(false);
 const [cari, setCari] = useState('');
 const [hasil, setHasil] = useState<any[]>([]);
@@ -155,20 +157,14 @@ const toggleTema = () => {
     </div>
 
 
-    {/* DAFTAR BIDANG */}
-    <button
-      type="button"
-      className="head-action-btn"
-      onClick={() => setPanel((prev) => !prev)}
-    >
-      <span className="head-action-icon">
-        ☷
-      </span>
-
-      <span>
-        Daftar Bidang
-      </span>
-    </button>
+<button
+  type="button"
+  className="head-action-btn"
+  onClick={() => setDaftarBidang(true)}
+>
+  <span className="head-action-icon">☷</span>
+  <span>Daftar Bidang</span>
+</button>
 
 
     {/* ZOOM TRACE */}
@@ -387,7 +383,11 @@ const toggleTema = () => {
   {kartu && (
     <KartuBidang peran={pengguna.peran} />
   )}
-
+{daftarBidang && (
+  <DaftarBidang
+    onClose={() => setDaftarBidang(false)}
+  />
+)}
 </div>
 </main>
     </div>
