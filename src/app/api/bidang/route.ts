@@ -43,7 +43,7 @@ export async function GET() {
 
                 'pemilik', f.nama_milik,
 
-                'luas_m2', f.luastnh,
+                'luas_m2', f.luas_tnh,
 
                 'luas_tnh', f.luas_tnh,
                 'luastertul', f.luastertul,
