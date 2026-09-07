@@ -2,113 +2,501 @@ import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { auth } from '@/lib/auth';
 import { query, transaksi } from '@/lib/db';
-import { dapatMengubahAtribut, dapatMelihatDokumenPribadi } from '@/lib/rbac';
+import { dapatMengubahAtribut } from '@/lib/rbac';
 import type { StatusBidang } from '@/types';
 
-type Ctx = { params: Promise<{ id: string }> };
+type Ctx = {
+  params: Promise<{ id: string }>;
+};
 
-/** GET — satu kartu bidang lengkap. */
-export async function GET(_req: Request, { params }: Ctx) {
+/**
+ * GET — satu bidang lengkap.
+ *
+ * Sumber utama:
+ * public.bidang_tanah
+ *
+ * Seluruh data survei lapangan berada pada satu record.
+ */
+export async function GET(
+  _req: Request,
+  { params }: Ctx
+) {
   const sesi = await auth();
-  if (!sesi?.user) return new NextResponse('Belum masuk', { status: 401 });
+
+  if (!sesi?.user) {
+    return new NextResponse('Belum masuk', {
+      status: 401
+    });
+  }
+
   const { id } = await params;
-  const bolehPribadi = dapatMelihatDokumenPribadi(sesi.user.peran);
 
-  const [b] = await query<any>(`
-    SELECT b.id, b.kode, b.desa, b.kecamatan, b.luas_m2, b.luas_terdampak_m2,
-           (COALESCE(b.luas_m2,0) - COALESCE(b.luas_terdampak_m2,0)) AS luas_sisa_m2,
-           b.penggunaan, b.alas_hak, b.nib, b.njop_m2,
-           b.batas_utara, b.batas_selatan, b.batas_timur, b.batas_barat,
-           b.status, b.catatan_supervisor, b.tanggal_ukur,
-           b.dikirim_pada, b.diverifikasi_pada,
-           pt.nama AS petugas_nama
-    FROM bidang b LEFT JOIN pengguna pt ON pt.id = b.petugas_id
-    WHERE b.id = $1`, [id]);
-  if (!b) return new NextResponse('Bidang tidak ditemukan', { status: 404 });
+  try {
+    const [b] = await query<any>(
+      `
+      SELECT
+        id,
+        objectid,
+        bidang_id,
+        kodewilaya,
+        kecamatan,
+        kelurahan,
+        tipehak,
+        tipeproduk,
+        tahun,
 
-  const [pemilik, bangunan, tanaman, benda_lain, lampiran, riwayat] = await Promise.all([
-    // NIK hanya keluar dari server bila peran berhak. Menyembunyikannya di CSS saja tidak aman.
-    query(`SELECT id, urutan, nama, ${bolehPribadi ? 'nik' : 'NULL AS nik'}, alamat, telepon,
-                  pekerjaan, hubungan, npwp, bank_nama, ${bolehPribadi ? 'bank_rek' : 'NULL AS bank_rek'}
-           FROM pemilik WHERE bidang_id = $1 ORDER BY urutan`, [id]),
-    query('SELECT * FROM bangunan WHERE bidang_id = $1', [id]),
-    query('SELECT * FROM tanaman WHERE bidang_id = $1 ORDER BY jenis', [id]),
-    query('SELECT * FROM benda_lain WHERE bidang_id = $1', [id]),
-    query(`SELECT l.id, l.kategori, l.nama_asli, l.mime, l.ukuran_byte, l.lat, l.lon,
-                  l.diambil_pada, l.sensitif, l.diunggah_pada, u.nama AS diunggah_oleh_nama
-           FROM lampiran l LEFT JOIN pengguna u ON u.id = l.diunggah_oleh
-           WHERE l.bidang_id = $1 ORDER BY l.kategori, l.diunggah_pada`, [id]),
-    query(`SELECT a.id, a.aksi, a.kolom, a.nilai_lama, a.nilai_baru, a.pada, u.nama AS oleh
-           FROM audit_log a LEFT JOIN pengguna u ON u.id = a.pengguna_id
-           WHERE a.bidang_id = $1 ORDER BY a.pada DESC LIMIT 100`, [id])
-  ]);
+        nib,
 
-  return NextResponse.json({ ...b, pemilik, bangunan, tanaman, benda_lain, lampiran, riwayat });
+        luastertul,
+        luaspeta,
+        sumbergeom,
+
+        alatukur,
+        penggunaan,
+        metodukur,
+
+        shape_leng,
+        shape_area,
+
+        hub_tnh,
+        kode_wwc,
+        jenis_tnh,
+
+        kode_bid,
+        rt_rw,
+
+        nama_milik,
+        ttl_milik,
+        krja_milik,
+        almt_milik,
+        nik_milik,
+
+        nama_sewa,
+        ttl_sewa,
+        krja_sewa,
+        almt_sewa,
+        nik_sewa,
+
+        nomor_hp,
+
+        sta_tnh,
+        surat_hak,
+        nomor_hak,
+
+        luas_tnh,
+
+        ruang_atbt,
+        luas_atbt,
+
+        jenis_tnm,
+        jumlah_tnm,
+
+        jenis_bnd,
+        jumlah_bnd,
+
+        beban_hak,
+        dampak_tnh,
+        jml_bgn,
+
+        date_updt,
+        foto_tnh,
+
+        fid,
+        nama,
+        layer,
+        path,
+
+        status,
+        created_at
+
+      FROM public.bidang_tanah
+      WHERE id = $1
+      `,
+      [id]
+    );
+
+    if (!b) {
+      return new NextResponse(
+        'Bidang tidak ditemukan',
+        { status: 404 }
+      );
+    }
+
+    /*
+     * =====================================================
+     * MAPPING DATABASE → FORMAT YANG SUDAH DIPAKAI FRONTEND
+     * =====================================================
+     *
+     * Database tetap menggunakan nama asli.
+     * Frontend tetap bisa menggunakan:
+     * kode, desa, luas_m2, dll.
+     */
+
+    const bidang = {
+      // Identitas
+      id: String(b.id),
+
+      kode:
+        b.kode_bid ??
+        b.bidang_id ??
+        b.fid ??
+        null,
+
+      bidang_id: b.bidang_id,
+      objectid: b.objectid,
+
+      // Lokasi
+      desa: b.kelurahan,
+      kelurahan: b.kelurahan,
+      kecamatan: b.kecamatan,
+      rt_rw: b.rt_rw,
+
+      // Luas
+      //
+      // luas_tnh adalah luas tanah hasil survei.
+      // luastertul dan luaspeta tetap dikirim sebagai
+      // atribut aslinya agar tidak kehilangan informasi.
+      luas_m2: b.luas_tnh,
+
+      luastertul: b.luastertul,
+      luaspeta: b.luaspeta,
+      shape_area: b.shape_area,
+
+      // Penggunaan
+      penggunaan: b.penggunaan,
+
+      // Legalitas
+      tipehak: b.tipehak,
+      tipeproduk: b.tipeproduk,
+      nib: b.nib,
+      sta_tnh: b.sta_tnh,
+      surat_hak: b.surat_hak,
+      nomor_hak: b.nomor_hak,
+      beban_hak: b.beban_hak,
+
+      // Pengukuran
+      tahun: b.tahun,
+      alatukur: b.alatukur,
+      metodukur: b.metodukur,
+      sumbergeom: b.sumbergeom,
+
+      // Pemilik
+      pemilik: b.nama_milik
+        ? [
+            {
+              nama: b.nama_milik,
+              ttl: b.ttl_milik,
+              pekerjaan: b.krja_milik,
+              alamat: b.almt_milik,
+              nik: b.nik_milik
+            }
+          ]
+        : [],
+
+      nama_milik: b.nama_milik,
+      ttl_milik: b.ttl_milik,
+      krja_milik: b.krja_milik,
+      almt_milik: b.almt_milik,
+      nik_milik: b.nik_milik,
+
+      // Penyewa
+      penyewa: b.nama_sewa
+        ? [
+            {
+              nama: b.nama_sewa,
+              ttl: b.ttl_sewa,
+              pekerjaan: b.krja_sewa,
+              alamat: b.almt_sewa,
+              nik: b.nik_sewa
+            }
+          ]
+        : [],
+
+      nama_sewa: b.nama_sewa,
+      ttl_sewa: b.ttl_sewa,
+      krja_sewa: b.krja_sewa,
+      almt_sewa: b.almt_sewa,
+      nik_sewa: b.nik_sewa,
+
+      nomor_hp: b.nomor_hp,
+
+      // Tanaman
+      tanaman:
+        b.jenis_tnm || b.jumlah_tnm != null
+          ? [
+              {
+                jenis: b.jenis_tnm,
+                jumlah: b.jumlah_tnm
+              }
+            ]
+          : [],
+
+      jenis_tnm: b.jenis_tnm,
+      jumlah_tnm: b.jumlah_tnm,
+
+      // Bangunan
+      bangunan:
+        b.jml_bgn != null
+          ? [
+              {
+                jumlah: b.jml_bgn
+              }
+            ]
+          : [],
+
+      jml_bgn: b.jml_bgn,
+
+      // Benda lain
+      benda_lain:
+        b.jenis_bnd || b.jumlah_bnd != null
+          ? [
+              {
+                jenis: b.jenis_bnd,
+                jumlah: b.jumlah_bnd
+              }
+            ]
+          : [],
+
+      jenis_bnd: b.jenis_bnd,
+      jumlah_bnd: b.jumlah_bnd,
+
+      // Atribut lain
+      hub_tnh: b.hub_tnh,
+      kode_wwc: b.kode_wwc,
+      jenis_tnh: b.jenis_tnh,
+
+      ruang_atbt: b.ruang_atbt,
+      luas_atbt: b.luas_atbt,
+
+      dampak_tnh: b.dampak_tnh,
+
+      // File/foto
+      foto_tnh: b.foto_tnh,
+      path: b.path,
+
+      // Metadata
+      fid: b.fid,
+      nama: b.nama,
+      layer: b.layer,
+
+      date_updt: b.date_updt,
+      created_at: b.created_at,
+
+      // Status
+      status: b.status,
+
+      /*
+       * Karena bidang_tanah merupakan sumber tunggal
+       * data survei, tabel tambahan tidak lagi diperlukan
+       * untuk GET kartu.
+       */
+      lampiran: [],
+      riwayat: []
+    };
+
+    return NextResponse.json(bidang);
+
+  } catch (error) {
+    console.error(
+      'GET /api/bidang/[id] ERROR:',
+      error
+    );
+
+    return NextResponse.json(
+      {
+        pesan: 'Gagal memuat data bidang',
+        error:
+          error instanceof Error
+            ? error.message
+            : String(error)
+      },
+      { status: 500 }
+    );
+  }
 }
 
+
+/* =========================================================
+   PATCH
+   ========================================================= */
+
 const SkemaUbah = z.object({
-  desa: z.string().max(120).nullish(),
   kecamatan: z.string().max(120).nullish(),
-  luas_m2: z.number().nonnegative().nullish(),
-  luas_terdampak_m2: z.number().nonnegative().nullish(),
-  penggunaan: z.string().max(80).nullish(),
-  alas_hak: z.string().max(80).nullish(),
-  nib: z.string().max(60).nullish(),
-  njop_m2: z.number().nonnegative().nullish(),
-  batas_utara: z.string().max(160).nullish(),
-  batas_selatan: z.string().max(160).nullish(),
-  batas_timur: z.string().max(160).nullish(),
-  batas_barat: z.string().max(160).nullish(),
-  tanggal_ukur: z.string().nullish(),
-  pemilik: z.array(z.object({
-    id: z.string().uuid().optional(),
-    urutan: z.number().int().min(1).default(1),
-    nama: z.string().min(1).max(160),
-    nik: z.string().max(32).nullish(),
-    alamat: z.string().max(240).nullish(),
-    telepon: z.string().max(40).nullish(),
-    pekerjaan: z.string().max(80).nullish(),
-    hubungan: z.string().max(80).nullish()
-  })).optional()
+  kelurahan: z.string().max(120).nullish(),
+
+  tipehak: z.string().max(120).nullish(),
+  tipeproduk: z.string().max(120).nullish(),
+
+  nib: z.string().max(100).nullish(),
+
+  penggunaan: z.string().max(120).nullish(),
+
+  alatukur: z.string().max(120).nullish(),
+  metodukur: z.string().max(120).nullish(),
+
+  rt_rw: z.string().max(120).nullish(),
+
+  nama_milik: z.string().max(160).nullish(),
+  ttl_milik: z.string().max(160).nullish(),
+  krja_milik: z.string().max(120).nullish(),
+  almt_milik: z.string().max(240).nullish(),
+  nik_milik: z.string().max(32).nullish(),
+
+  nama_sewa: z.string().max(160).nullish(),
+  ttl_sewa: z.string().max(160).nullish(),
+  krja_sewa: z.string().max(120).nullish(),
+  almt_sewa: z.string().max(240).nullish(),
+  nik_sewa: z.string().max(32).nullish(),
+
+  nomor_hp: z.string().max(40).nullish(),
+
+  sta_tnh: z.string().max(120).nullish(),
+  surat_hak: z.string().max(160).nullish(),
+  nomor_hak: z.string().max(160).nullish(),
+
+  luas_tnh: z.number().nonnegative().nullish(),
+
+  ruang_atbt: z.string().max(120).nullish(),
+  luas_atbt: z.number().nonnegative().nullish(),
+
+  jenis_tnm: z.string().max(160).nullish(),
+  jumlah_tnm: z.number().nonnegative().nullish(),
+
+  jenis_bnd: z.string().max(160).nullish(),
+  jumlah_bnd: z.number().nonnegative().nullish(),
+
+  beban_hak: z.string().max(160).nullish(),
+  dampak_tnh: z.string().max(160).nullish(),
+
+  jml_bgn: z.number().nonnegative().nullish(),
+
+  date_updt: z.string().nullish()
 });
 
-/** PATCH — ubah atribut. Hak akses ditentukan peran DAN status bidang. */
-export async function PATCH(req: Request, { params }: Ctx) {
+
+export async function PATCH(
+  req: Request,
+  { params }: Ctx
+) {
   const sesi = await auth();
-  if (!sesi?.user) return new NextResponse('Belum masuk', { status: 401 });
+
+  if (!sesi?.user) {
+    return new NextResponse(
+      'Belum masuk',
+      { status: 401 }
+    );
+  }
+
   const { id } = await params;
 
-  const [row] = await query<{ status: StatusBidang }>('SELECT status FROM bidang WHERE id = $1', [id]);
-  if (!row) return new NextResponse('Bidang tidak ditemukan', { status: 404 });
-  if (!dapatMengubahAtribut(sesi.user.peran, row.status))
-    return new NextResponse('Bidang terkunci untuk peran ini', { status: 403 });
+  try {
+    const [row] =
+      await query<{
+        status: StatusBidang;
+      }>(
+        `
+        SELECT status
+        FROM public.bidang_tanah
+        WHERE id = $1
+        `,
+        [id]
+      );
 
-  const parsed = SkemaUbah.safeParse(await req.json());
-  if (!parsed.success)
-    return NextResponse.json({ pesan: 'Data tidak valid', detail: parsed.error.flatten() }, { status: 400 });
-
-  const { pemilik, ...kolom } = parsed.data;
-  const isi = Object.entries(kolom).filter(([, v]) => v !== undefined);
-
-  await transaksi(sesi.user.id, async (c) => {
-    if (isi.length) {
-      const set = isi.map(([k], i) => `${k} = $${i + 2}`).join(', ');
-      await c.query(`UPDATE bidang SET ${set} WHERE id = $1`, [id, ...isi.map(([, v]) => v)]);
+    if (!row) {
+      return new NextResponse(
+        'Bidang tidak ditemukan',
+        { status: 404 }
+      );
     }
-    if (pemilik) {
-      for (const p of pemilik) {
-        if (p.id) {
-          await c.query(`UPDATE pemilik SET urutan=$2, nama=$3, nik=$4, alamat=$5,
-                         telepon=$6, pekerjaan=$7, hubungan=$8 WHERE id=$1 AND bidang_id=$9`,
-            [p.id, p.urutan, p.nama, p.nik, p.alamat, p.telepon, p.pekerjaan, p.hubungan, id]);
-        } else {
-          await c.query(`INSERT INTO pemilik (bidang_id, urutan, nama, nik, alamat, telepon, pekerjaan, hubungan)
-                         VALUES ($1,$2,$3,$4,$5,$6,$7,$8)`,
-            [id, p.urutan, p.nama, p.nik, p.alamat, p.telepon, p.pekerjaan, p.hubungan]);
-        }
+
+    if (
+      !dapatMengubahAtribut(
+        sesi.user.peran,
+        row.status
+      )
+    ) {
+      return new NextResponse(
+        'Bidang terkunci untuk peran ini',
+        { status: 403 }
+      );
+    }
+
+    const parsed =
+      SkemaUbah.safeParse(
+        await req.json()
+      );
+
+    if (!parsed.success) {
+      return NextResponse.json(
+        {
+          pesan: 'Data tidak valid',
+          detail:
+            parsed.error.flatten()
+        },
+        { status: 400 }
+      );
+    }
+
+    const isi =
+      Object.entries(parsed.data)
+        .filter(
+          ([, value]) =>
+            value !== undefined
+        );
+
+    if (!isi.length) {
+      return NextResponse.json({
+        ok: true
+      });
+    }
+
+    await transaksi(
+      sesi.user.id,
+      async (c) => {
+
+        const set =
+          isi
+            .map(
+              ([kolom], index) =>
+                `${kolom} = $${index + 2}`
+            )
+            .join(', ');
+
+        await c.query(
+          `
+          UPDATE public.bidang_tanah
+          SET ${set}
+          WHERE id = $1
+          `,
+          [
+            id,
+            ...isi.map(
+              ([, value]) => value
+            )
+          ]
+        );
       }
-    }
-  });
+    );
 
-  return NextResponse.json({ ok: true });
+    return NextResponse.json({
+      ok: true
+    });
+
+  } catch (error) {
+    console.error(
+      'PATCH /api/bidang/[id] ERROR:',
+      error
+    );
+
+    return NextResponse.json(
+      {
+        pesan: 'Gagal memperbarui bidang',
+        error:
+          error instanceof Error
+            ? error.message
+            : String(error)
+      },
+      { status: 500 }
+    );
+  }
 }
