@@ -75,7 +75,6 @@ export async function GET() {
 
                 'penggunaan', f.penggunaan,
 
-                // 'bangunan', f.bangunan,
                 'jml_bgn', f.jml_bgn,
 
                 'ruang_atbt', f.ruang_atbt,
