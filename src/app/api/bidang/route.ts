@@ -79,10 +79,6 @@ export async function GET() {
 
                 'ruang_atbt', f.ruang_atbt,
                 'dampak_tnh', f.dampak_tnh,
-
-                'status_bidang', f.status_bidang,
-                'status_input', f.status_input,
-                'status_validasi', f.status_validasi
               )
             )
           ),
