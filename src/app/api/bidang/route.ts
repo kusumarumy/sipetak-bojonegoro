@@ -61,7 +61,7 @@ export async function GET() {
                 'status', f.status,
 
                 'kecamatan', f.kecamatan,
-                'desa', COALESCE(f.desa, f.kelurahan),
+                'desa', f.desa,
 
                 'pemilik', f.nama_milik,
 
