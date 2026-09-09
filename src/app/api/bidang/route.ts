@@ -78,7 +78,7 @@ export async function GET() {
                 'jml_bgn', f.jml_bgn,
 
                 'ruang_atbt', f.ruang_atbt,
-                'dampak_tnh', f.dampak_tnh,
+                'dampak_tnh', f.dampak_tnh
               )
             )
           ),
