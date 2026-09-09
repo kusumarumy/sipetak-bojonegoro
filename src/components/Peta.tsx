@@ -137,62 +137,10 @@ const toggleTema = () => {
   </div>
 
 
-  {/* AKSI HEADER */}
-  <div className="head-actions">
-
-    {/* PENCARIAN */}
-    <div className="head-search">
-
-      <span className="head-search-icon">
-        ⌕
-      </span>
-
-      <input
-        type="text"
-        value={cari}
-        onChange={(e) => setCari(e.target.value)}
-        placeholder="Cari nomor bidang atau nama pemilik..."
-      />
-
-    </div>
-
-
-<button
-  type="button"
-  className="head-action-btn"
-  onClick={() => setDaftarBidang(true)}
->
-  <span className="head-action-icon">☷</span>
-  <span>Daftar Bidang</span>
-</button>
-
-
-    {/* ZOOM TRACE */}
-    <button
-      type="button"
-      className="head-action-btn"
-      onClick={() => {
-        window.dispatchEvent(
-          new CustomEvent('zoom-trace')
-        );
-      }}
-    >
-      <span className="head-action-icon">
-        ⌾
-      </span>
-
-      <span>
-        Zoom Trace
-      </span>
-    </button>
-
-  </div>
-
-
-  {/* USER + TEMA */}
+  {/* USER AREA */}
   <div className="head-user">
 
-    {/* THEME */}
+    {/* DARK / LIGHT */}
     <button
       type="button"
       className="head-theme"
@@ -212,15 +160,15 @@ const toggleTema = () => {
     </button>
 
 
-    {/* USER */}
+    {/* NAMA AKUN */}
     <div className="head-user-info">
 
       <span className="head-user-role">
-        PENGEMBANG
+        {pengguna.peran}
       </span>
 
       <strong>
-        Pengembang Sistem
+        {pengguna.name}
       </strong>
 
     </div>
@@ -233,7 +181,7 @@ const toggleTema = () => {
         type="submit"
         className="head-logout"
       >
-        Keluar
+        KELUAR
       </button>
 
     </form>
