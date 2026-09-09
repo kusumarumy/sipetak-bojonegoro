@@ -88,7 +88,6 @@ export async function GET() {
 
       FROM public.bidang_tanah f
 
-      WHERE f.deleted_at IS NULL
     `);
 
     return NextResponse.json(row.fc, {
