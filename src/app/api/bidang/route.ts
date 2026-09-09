@@ -24,8 +24,8 @@ export async function GET() {
 
               'geometry',
               CASE
-                WHEN f.geom IS NOT NULL
-                THEN ST_AsGeoJSON(f.geom, 6)::json
+                WHEN f.geometry IS NOT NULL
+                THEN ST_AsGeoJSON(f.geometry, 6)::json
                 ELSE NULL
               END,
 
