@@ -12,6 +12,28 @@ export async function GET() {
   }
 
   try {
+    // 🔍 CEK DATABASE YANG DIPAKAI VERCEL
+    const info = await query(`
+      SELECT
+        current_database() AS database,
+        current_schema() AS schema
+    `);
+
+    console.log('DB:', info);
+
+    // 🔍 CEK KOLOM TABEL bidang_tanah
+    const cek = await query(`
+      SELECT
+        column_name,
+        udt_name
+      FROM information_schema.columns
+      WHERE table_schema = 'public'
+        AND table_name = 'bidang_tanah'
+      ORDER BY ordinal_position
+    `);
+
+    console.log('KOLOM:', cek);
+    
     const [row] = await query<{ fc: any }>(`
       SELECT json_build_object(
         'type', 'FeatureCollection',
