@@ -245,21 +245,6 @@ header.bar {
   color: #C83E3E;
 }
 
-.head-project {
-  font-family: 'Barlow Condensed', sans-serif;
-
-  font-size: 19px;
-
-  font-weight: 800;
-
-  letter-spacing: .12em;
-
-  color: #17324D;
-
-  white-space: nowrap;
-}
-
-
 .head-app-name {
   display: block;
 
@@ -279,28 +264,6 @@ header.bar {
 
   white-space: nowrap;
 }
-
-
-/* SUBTITLE */
-
-.head-subtitle {
-  display: block;
-
-  margin-top: 4px;
-
-  font-family: var(--f-body);
-
-  font-size: 8.5px;
-
-  line-height: 1;
-
-  font-weight: 500;
-
-  color: #7C8997;
-
-  white-space: nowrap;
-}
-
 
 /* =========================================================
    USER AREA
