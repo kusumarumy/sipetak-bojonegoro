@@ -754,7 +754,7 @@ const vis =
         id: 'bidang-lb',
         type: 'symbol',
         source: 'bidang',
-        minzoom: 16,
+        minzoom: 15,
         layout: {
           'visibility': labelNomor ? 'visible' : 'none',
           'text-field': [
