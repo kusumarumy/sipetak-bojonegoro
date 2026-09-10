@@ -98,8 +98,8 @@ export default function DaftarBidang({ onClose }: Props) {
   }, [bidang, filter]);
 
   return (
-    <div className="daftar-overlay">
-      <section className="daftar-bidang">
+<div className="daftar-flyout">
+  <section className="daftar-bidang">
 
         {/* HEADER */}
         <div className="daftar-head">
