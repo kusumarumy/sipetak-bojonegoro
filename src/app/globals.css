@@ -515,7 +515,7 @@ main.body {
   margin-top: 88px;
 }
 .maplibregl-ctrl-bottom-left {
-  left: 200px !important;
+  left: 100px !important;
   right: auto !important;
 }
 /* =========================================================
