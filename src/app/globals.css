@@ -510,6 +510,10 @@ main.body {
   position: absolute;
   inset: 0;
 }
+.maplibregl-ctrl-top-right
+.maplibregl-ctrl-group:first-child {
+  margin-top: 88px;
+}
 /* =========================================================
    DPPT SIDEBAR — BARATA STYLE
    Small icon rail + floating flyout
