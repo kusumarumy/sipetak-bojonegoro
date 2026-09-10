@@ -48,170 +48,43 @@ export default function ControlPanel({
   return (
     <aside className="flyout-panel">
 
-      {/* =====================================================
-          HEADER
-      ===================================================== */}
-
       <div className="flyout-header">
 
         <div className="flyout-header-content">
 
-          {mode === 'terrain' ? (
-            <div className="terrain-panel-title">
-              TERRAIN 3D
-            </div>
-          ) : (
-            <>
-              <div className="flyout-kicker">
-                LAYER
-              </div>
+{mode === 'terrain' ? (
+  <div className="terrain-panel-heading">
 
-              <div className="flyout-title">
-                Pengelolaan Layer
-              </div>
+    <div className="terrain-panel-icon">
+      <svg
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+      >
+        <path
+          d="M3.5 19.5L9.5 9l4 6 2.5-3.5 4.5 8H3.5Z"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.7"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    </div>
 
-              <div className="flyout-subtitle">
-                Pengelolaan data peta
-              </div>
-            </>
-          )}
+    <div className="terrain-panel-text">
 
-        </div>
-
-        <button
-          type="button"
-          className="flyout-close"
-          onClick={onClose}
-          aria-label="Tutup"
-          title="Tutup"
-        >
-          ×
-        </button>
-
+      <div className="terrain-panel-title">
+        TERRAIN 3D
       </div>
 
-
-     {/* =====================================================
-    TERRAIN
-===================================================== */}
-
-{mode === 'terrain' && (
-  <div className="flyout-body terrain-body">
-
-    <section className="terrain-card">
-
-      <div className="terrain-head">
-
-        <div className="terrain-head-left">
-
-          <div className="terrain-symbol">
-            <svg
-              viewBox="0 0 24 24"
-              aria-hidden="true"
-            >
-              <path
-                d="M3.5 19.5L9.5 9l4 6 2.5-3.5 4.5 8H3.5Z"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.7"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </div>
-
-          <div>
-            <div className="terrain-title">
-              Terrain 3D
-            </div>
-
-            <div className="terrain-subtitle">
-              Model elevasi permukaan
-            </div>
-          </div>
-
-        </div>
-
-        <div className="terrain-status">
-          {s.dtm === 'off' ? 'OFF' : 'ON'}
-        </div>
-
+      <div className="terrain-panel-subtitle">
+        Model elevasi permukaan
       </div>
 
-
-      <div className="terrain-segment">
-
-        {/* NONAKTIF */}
-
-        <button
-          type="button"
-          className={
-            s.dtm === 'off'
-              ? 'active'
-              : ''
-          }
-          onClick={() =>
-            s.setDTM('off')
-          }
-        >
-          <span className="terrain-option-name">
-            Nonaktif
-          </span>
-        </button>
-
-
-        {/* DTM RENCANA TRACE */}
-
-        <button
-          type="button"
-          className={
-            s.dtm === 'aws'
-              ? 'active'
-              : ''
-          }
-          onClick={() =>
-            s.setDTM('aws')
-          }
-        >
-          <span className="terrain-option-name">
-            DTM Rencana Trace
-          </span>
-
-          <span className="terrain-option-resolution">
-            0.5 m
-          </span>
-        </button>
-
-
-        {/* DTM KAWASAN */}
-
-        <button
-          type="button"
-          className={
-            s.dtm === 'r2'
-              ? 'active'
-              : ''
-          }
-          onClick={() =>
-            s.setDTM('r2')
-          }
-        >
-          <span className="terrain-option-name">
-            DTM Kawasan
-          </span>
-
-          <span className="terrain-option-resolution">
-            1.5 m
-          </span>
-        </button>
-
-      </div>
-
-    </section>
+    </div>
 
   </div>
-)}
-
+)
 
       {/* =====================================================
           LAYER
