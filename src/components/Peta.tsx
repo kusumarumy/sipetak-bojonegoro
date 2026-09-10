@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 import ControlPanel from './ControlPanel';
+import Sidebar from './Sidebar';
 import KartuBidang from './KartuBidang';
 import { useApp } from '@/store/useApp';
 import {
@@ -16,7 +17,6 @@ import { WARNA_PENGGUNAAN } from './layers';
 import logoBojonegoro from '../../data/icon/bojonegoro.png';
 
 const MapCanvas = dynamic(() => import('./MapCanvas'), { ssr: false });
-
 type Ringkasan = {
   total: number;
   draft: number;
@@ -34,8 +34,6 @@ type PanelAktif =
   | 'filter'
   | null;
 
-const [panelAktif, setPanelAktif] =
-  useState<PanelAktif>(null);
 export default function Peta({
   pengguna,
   ringkasan,
@@ -52,8 +50,8 @@ export default function Peta({
     pewarnaan
   } = useApp();
 
-  const [panel, setPanel] = useState(false);
-
+const [panelAktif, setPanelAktif] =
+  useState<PanelAktif>(null);
   const [tema, setTema] = useState<'light' | 'dark'>('light');
 
   const [jumlahPenggunaan, setJumlahPenggunaan] =
@@ -300,45 +298,26 @@ export default function Peta({
 </div>
 
 </header>
-      <main className="body">
+<main className="body">
 
-        <ControlPanel
-          terbuka={panel}
-          onClose={() => setPanel(false)}
-        />
+  <div className="mapwrap">
 
-        <div className="mapwrap">
+    <MapCanvas />
 
-          <button
-            type="button"
-            className="map-panel-toggle"
-            onClick={() => setPanel(true)}
-            aria-label="Buka Control Panel"
-            title="Control Panel"
-          >
-            ☰
-          </button>
+    <Sidebar
+      aktif={panelAktif}
+      onChange={setPanelAktif}
+    />
 
-
-          <MapCanvas />
-<Sidebar
-    aktif={panelAktif}
-    onChange={setPanelAktif}
-  />
-
-  <ControlPanel
-    mode={
-      panelAktif === 'terrain' ||
-      panelAktif === 'layer'
-        ? panelAktif
-        : null
-    }
-    onClose={() => setPanelAktif(null)}
-  />
-
-          {/* =================================================
-              PROGRESS
-              ================================================= */}
+    <ControlPanel
+      mode={
+        panelAktif === 'terrain' ||
+        panelAktif === 'layer'
+          ? panelAktif
+          : null
+      }
+      onClose={() => setPanelAktif(null)}
+    />
 
           <div className="progress float">
 
