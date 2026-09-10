@@ -13,6 +13,7 @@ import {
 } from '@/types';
 
 import { WARNA_PENGGUNAAN } from './layers';
+import logoBojonegoro from '../../data/icon/bojonegoro.png';
 
 const MapCanvas = dynamic(() => import('./MapCanvas'), { ssr: false });
 
@@ -175,10 +176,10 @@ export default function Peta({
 
     <div className="head-logo-wrap">
       <img
-        src="/icon/bojonegoro.png"
-        alt="Logo Kabupaten Bojonegoro"
-        className="head-logo"
-      />
+  src={logoBojonegoro.src}
+  alt="Logo Kabupaten Bojonegoro"
+  className="head-logo"
+/>
     </div>
 
     <div className="head-brand-text">
