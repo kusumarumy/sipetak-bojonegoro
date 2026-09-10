@@ -24,12 +24,13 @@ export default function ControlPanel({
 
   const grup = [...new Set(LAYERS.map((l) => l.grup))];
 
-  const [grupTerbuka, setGrupTerbuka] = useState<Record<string, boolean>>({
-    'Rencana trace': true,
-    'Bidang tanah': true,
-    'Tutupan lahan': true,
-    'Jaringan & utilitas': true,
-  });
+  const [grupTerbuka, setGrupTerbuka] =
+    useState<Record<string, boolean>>({
+      'Rencana trace': true,
+      'Bidang tanah': true,
+      'Tutupan lahan': true,
+      'Jaringan & utilitas': true,
+    });
 
   const toggleGrup = (nama: string) => {
     setGrupTerbuka((prev) => ({
@@ -55,21 +56,25 @@ export default function ControlPanel({
 
         <div className="flyout-header-content">
 
-          <div className="flyout-kicker">
-            {mode === 'terrain' ? 'TERRAIN' : 'LAYER'}
-          </div>
+          {mode === 'terrain' ? (
+            <div className="terrain-panel-title">
+              TERRAIN 3D
+            </div>
+          ) : (
+            <>
+              <div className="flyout-kicker">
+                LAYER
+              </div>
 
-          <div className="flyout-title">
-            {mode === 'terrain'
-              ? 'Terrain 3D'
-              : 'Pengelolaan Layer'}
-          </div>
+              <div className="flyout-title">
+                Pengelolaan Layer
+              </div>
 
-          <div className="flyout-subtitle">
-            {mode === 'terrain'
-              ? 'Model elevasi permukaan'
-              : 'Pengelolaan data peta'}
-          </div>
+              <div className="flyout-subtitle">
+                Pengelolaan data peta
+              </div>
+            </>
+          )}
 
         </div>
 
@@ -85,61 +90,86 @@ export default function ControlPanel({
 
       </div>
 
-{mode === 'terrain' && (
-  <div className="flyout-body">
 
-    <section className="terrain-card">
+      {/* =====================================================
+          TERRAIN
+      ===================================================== */}
 
-      <div className="terrain-head">
+      {mode === 'terrain' && (
+        <div className="flyout-body terrain-body">
 
-        <div className="terrain-head-left">
+          <section className="terrain-card">
 
-          <div className="terrain-symbol">
-            △
-          </div>
+            <div className="terrain-segment">
 
-          <div className="terrain-title">
-            Terrain 3D
-          </div>
+              {/* NONAKTIF */}
+
+              <button
+                type="button"
+                className={
+                  s.dtm === 'off'
+                    ? 'active'
+                    : ''
+                }
+                onClick={() =>
+                  s.setDTM('off')
+                }
+              >
+                Nonaktif
+              </button>
+
+
+              {/* DTM RENCANA TRACE */}
+
+              <button
+                type="button"
+                className={
+                  s.dtm === 'aws'
+                    ? 'active'
+                    : ''
+                }
+                onClick={() =>
+                  s.setDTM('aws')
+                }
+              >
+                <span className="terrain-name">
+                  DTM Rencana Trace
+                </span>
+
+                <span className="terrain-resolution">
+                  0.5 m
+                </span>
+              </button>
+
+
+              {/* DTM KAWASAN */}
+
+              <button
+                type="button"
+                className={
+                  s.dtm === 'r2'
+                    ? 'active'
+                    : ''
+                }
+                onClick={() =>
+                  s.setDTM('r2')
+                }
+              >
+                <span className="terrain-name">
+                  DTM Kawasan
+                </span>
+
+                <span className="terrain-resolution">
+                  1.5 m
+                </span>
+              </button>
+
+            </div>
+
+          </section>
 
         </div>
-
-      </div>
-
-      <div className="terrain-segment">
-
-        <button
-          type="button"
-          className={s.dtm === 'off' ? 'active' : ''}
-          onClick={() => s.setDTM('off')}
-        >
-          Nonaktif
-        </button>
-
-        <button
-          type="button"
-          className={s.dtm === 'aws' ? 'active' : ''}
-          onClick={() => s.setDTM('aws')}
-        >
-          DTM Rencana Trace
-          <span>0.5 m</span>
-        </button>
-
-        <button
-          type="button"
-          className={s.dtm === 'r2' ? 'active' : ''}
-          onClick={() => s.setDTM('r2')}
-        >
-          DTM Kawasan
-          <span>1.5 m</span>
-        </button>
-
-      </div>
-
-    </section>
-
-  </div>
-)}
+      )}
 
 
       {/* =====================================================
@@ -156,6 +186,7 @@ export default function ControlPanel({
             <div className="layer-manager-head">
 
               <div>
+
                 <div className="layer-manager-title">
                   LAYER
                 </div>
@@ -163,6 +194,7 @@ export default function ControlPanel({
                 <div className="layer-manager-subtitle">
                   Pengelolaan data peta
                 </div>
+
               </div>
 
               <div className="layer-count">
@@ -178,15 +210,19 @@ export default function ControlPanel({
 
               {grup.map((g) => {
 
-                const layers = LAYERS.filter(
-                  (l) => l.grup === g
-                );
+                const layers =
+                  LAYERS.filter(
+                    (l) => l.grup === g
+                  );
 
-                const terbukaGrup = grupTerbuka[g];
+                const terbukaGrup =
+                  grupTerbuka[g];
 
-                const aktifGrup = layers.filter(
-                  (l) => s.layerAktif[l.id]
-                ).length;
+                const aktifGrup =
+                  layers.filter(
+                    (l) =>
+                      s.layerAktif[l.id]
+                  ).length;
 
                 return (
                   <div
@@ -199,8 +235,12 @@ export default function ControlPanel({
                     <button
                       type="button"
                       className="layer-group-head"
-                      onClick={() => toggleGrup(g)}
-                      aria-expanded={terbukaGrup}
+                      onClick={() =>
+                        toggleGrup(g)
+                      }
+                      aria-expanded={
+                        terbukaGrup
+                      }
                     >
 
                       <div className="layer-group-left">
@@ -208,9 +248,11 @@ export default function ControlPanel({
                         <span
                           className={
                             'group-chevron' +
-                            (terbukaGrup
-                              ? ' expanded'
-                              : '')
+                            (
+                              terbukaGrup
+                                ? ' expanded'
+                                : ''
+                            )
                           }
                         >
                           ›
@@ -249,9 +291,11 @@ export default function ControlPanel({
                             <div
                               className={
                                 'layer-item' +
-                                (aktif
-                                  ? ' active'
-                                  : '')
+                                (
+                                  aktif
+                                    ? ' active'
+                                    : ''
+                                )
                               }
                               key={L.id}
                             >
@@ -270,15 +314,19 @@ export default function ControlPanel({
                                 />
 
                                 <span className="gis-check">
-                                  <span>✓</span>
+                                  <span>
+                                    ✓
+                                  </span>
                                 </span>
 
                                 <span
                                   className={
                                     'layer-swatch' +
-                                    (L.garis
-                                      ? ' line'
-                                      : '')
+                                    (
+                                      L.garis
+                                        ? ' line'
+                                        : ''
+                                    )
                                   }
                                   style={
                                     L.garis
@@ -300,9 +348,9 @@ export default function ControlPanel({
                               </label>
 
 
-                              {/* =================================
+                              {/* =================================================
                                   PROPERTIES BIDANG TANAH
-                              ================================= */}
+                              ================================================= */}
 
                               {g === 'Bidang tanah' &&
                                 L.id === 'bidang' &&
@@ -390,7 +438,9 @@ export default function ControlPanel({
                                         />
 
                                         <span className="gis-check small">
-                                          <span>✓</span>
+                                          <span>
+                                            ✓
+                                          </span>
                                         </span>
 
                                         <span>
