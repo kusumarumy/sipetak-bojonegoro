@@ -830,7 +830,100 @@ main.body {
   color: #173b68;
 }
 
+/* =========================================================
+   FLYOUT PANEL — DARK MODE
+   ========================================================= */
 
+html[data-theme="dark"] .flyout-panel {
+  background: #241a1d;
+  border-color: #4b353a;
+
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, .38);
+}
+
+
+/* =========================================================
+   FLYOUT HEADER — DARK
+   ========================================================= */
+
+html[data-theme="dark"] .flyout-header {
+  background: #241a1d;
+  border-bottom-color: #4b353a;
+}
+
+
+/* =========================================================
+   FLYOUT BODY — DARK
+   ========================================================= */
+
+html[data-theme="dark"] .flyout-body {
+  background: #241a1d;
+}
+
+
+/* =========================================================
+   CLOSE BUTTON — DARK
+   ========================================================= */
+
+html[data-theme="dark"] .flyout-close {
+  background: #2b2023;
+
+  border-color: #5a4147;
+
+  color: #c9b5ba;
+}
+
+html[data-theme="dark"] .flyout-close:hover {
+  background: #351f25;
+
+  border-color: #9b1f3b;
+
+  color: #ffffff;
+}
+/* =========================================================
+   TERRAIN — DARK MODE
+   ========================================================= */
+
+html[data-theme="dark"] .terrain-panel-title {
+  color: #e7b7c1;
+}
+
+html[data-theme="dark"] .terrain-panel-subtitle {
+  color: #a99a9f;
+}
+
+html[data-theme="dark"] .terrain-panel-icon {
+  border-color: rgba(213, 138, 154, .35);
+
+  background: rgba(155, 31, 59, .12);
+
+  color: #d58a9a;
+}
+
+html[data-theme="dark"] .terrain-segment {
+  background: #1d1518;
+  border-color: #4b353a;
+}
+
+html[data-theme="dark"] .terrain-segment button {
+  color: #b9aaae;
+}
+
+html[data-theme="dark"] .terrain-segment button:hover {
+  color: #f0cbd2;
+}
+
+html[data-theme="dark"] .terrain-segment button.active {
+  background: #9b1f3b;
+  color: #ffffff;
+}
+
+html[data-theme="dark"]
+.terrain-segment button.active
+.terrain-option-resolution {
+  color: rgba(255, 255, 255, .82);
+}
 /* =========================================================
    RESPONSIVE
    ========================================================= */
