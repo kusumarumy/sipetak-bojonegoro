@@ -62,7 +62,6 @@ export async function GET() {
                 'bidang_id', f.bidang_id,
                 'kodewilaya', f.kodewilaya,
                 'kode_bid', f.kode_bid,
-                'kode', f.kode_bid,
                 'fid', f.fid,
 
                 -- =========================
@@ -96,10 +95,6 @@ export async function GET() {
                 'shape_area', f.shape_area,
                 'luas_tnh', f.luas_tnh,
 
-                -- Alias yang sudah dipakai MapCanvas
-                'luas', f.luas_tnh,
-                'kena', f.luastertul,
-
                 -- =========================
                 -- TANAH
                 -- =========================
@@ -119,9 +114,6 @@ export async function GET() {
                 'krja_milik', f.krja_milik,
                 'almt_milik', f.almt_milik,
                 'nik_milik', f.nik_milik,
-
-                -- Alias yang sudah dipakai MapCanvas
-                'pemilik', f.nama_milik,
 
                 -- =========================
                 -- PENYEWA
