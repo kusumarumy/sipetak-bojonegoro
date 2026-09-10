@@ -721,11 +721,11 @@ return () => {
         el.innerHTML = `
           <div class="ph">
             <div class="id">
-              ${p.kode}
+              ${p.kode_bid}
             </div>
 
             <div class="nm">
-              ${p.pemilik ?? '—'}
+              ${p.nama_milik ?? '—'}
             </div>
           </div>
 
@@ -737,17 +737,7 @@ return () => {
               </span>
 
               <b>
-                ${fmt(p.luas)} m²
-              </b>
-            </div>
-
-            <div>
-              <span>
-                Terdampak ROW
-              </span>
-
-              <b>
-                ${fmt(p.kena)} m²
+                ${fmt(p.luas_tnh)} m²
               </b>
             </div>
 
