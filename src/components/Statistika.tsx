@@ -57,13 +57,16 @@ function BarList({
   return (
     <div className="stat-list">
       {tampil.map((item) => (
-        <div
-          className="stat-row"
-          key={item.label}
-        >
+        <div className="stat-row" key={item.label}>
+
           <div className="stat-row-head">
-            <span>{item.label}</span>
-            <strong>{item.jumlah.toLocaleString('id-ID')}</strong>
+            <span title={item.label}>
+              {item.label}
+            </span>
+
+            <strong>
+              {item.jumlah.toLocaleString('id-ID')}
+            </strong>
           </div>
 
           <div className="stat-bar">
@@ -74,6 +77,7 @@ function BarList({
               }}
             />
           </div>
+
         </div>
       ))}
     </div>
@@ -94,9 +98,7 @@ export default function Statistika({
         const r = await fetch('/api/bidang');
 
         if (!r.ok) {
-          throw new Error(
-            `HTTP ${r.status}`
-          );
+          throw new Error(`HTTP ${r.status}`);
         }
 
         const fc = await r.json();
@@ -173,115 +175,175 @@ export default function Statistika({
   );
 
   return (
-    <div className="statistik-flyout">
+    <aside className="statistik-flyout">
 
-      <section className="statistik-panel">
+      {/* HEADER */}
+      <header className="statistik-head">
 
-        <header className="statistik-head">
-          <div>
-            <span className="statistik-eyebrow">
-              ANALISIS DATA
-            </span>
+        <div className="statistik-heading">
 
-            <h2>Statistika</h2>
+          <div className="statistik-icon">
+            <svg
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path
+                d="M4 19V10"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.8"
+                strokeLinecap="round"
+              />
 
-            <p>
-              Rekapitulasi bidang tanah
-              terdampak pembangunan trace jalan.
-            </p>
+              <path
+                d="M10 19V5"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.8"
+                strokeLinecap="round"
+              />
+
+              <path
+                d="M16 19v-8"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.8"
+                strokeLinecap="round"
+              />
+
+              <path
+                d="M3 19h18"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.8"
+                strokeLinecap="round"
+              />
+            </svg>
           </div>
 
-          <button
-            type="button"
-            className="statistik-close"
-            onClick={onClose}
-          >
-            ×
-          </button>
-        </header>
+          <div className="statistik-heading-text">
 
-        {memuat ? (
-          <div className="statistik-loading">
-            Memuat statistik...
-          </div>
-        ) : (
-          <div className="statistik-body">
-
-            {/* TOTAL */}
-            <div className="stat-total">
-              <span>TOTAL BIDANG TERDAMPAK</span>
-
-              <strong>
-                {bidang.length.toLocaleString(
-                  'id-ID'
-                )}
-              </strong>
+            <div className="statistik-title">
+              STATISTIKA
             </div>
 
-            {/* STATUS */}
-            <section className="stat-section">
-              <div className="stat-section-title">
-                PROGRES VERIFIKASI
-              </div>
-
-              <BarList
-                data={status}
-                limit={4}
-              />
-            </section>
-
-            {/* KELURAHAN */}
-            <section className="stat-section">
-              <div className="stat-section-title">
-                BIDANG PER KELURAHAN
-              </div>
-
-              <BarList
-                data={kelurahan}
-                limit={8}
-              />
-            </section>
-
-            {/* KECAMATAN */}
-            <section className="stat-section">
-              <div className="stat-section-title">
-                BIDANG PER KECAMATAN
-              </div>
-
-              <BarList
-                data={kecamatan}
-                limit={8}
-              />
-            </section>
-
-            {/* TIPE HAK */}
-            <section className="stat-section">
-              <div className="stat-section-title">
-                BERDASARKAN TIPE HAK
-              </div>
-
-              <BarList
-                data={tipeHak}
-                limit={8}
-              />
-            </section>
-
-            {/* PENGGUNAAN */}
-            <section className="stat-section">
-              <div className="stat-section-title">
-                BERDASARKAN PENGGUNAAN
-              </div>
-
-              <BarList
-                data={penggunaan}
-                limit={8}
-              />
-            </section>
+            <div className="statistik-subtitle">
+              Analisis bidang tanah
+            </div>
 
           </div>
-        )}
 
-      </section>
-    </div>
+        </div>
+
+        <button
+          type="button"
+          className="statistik-close"
+          onClick={onClose}
+          aria-label="Tutup"
+        >
+          ×
+        </button>
+
+      </header>
+
+      {/* BODY */}
+      {memuat ? (
+        <div className="statistik-loading">
+          Memuat statistik...
+        </div>
+      ) : (
+        <div className="statistik-body">
+
+          {/* TOTAL */}
+          <section className="stat-total">
+
+            <div className="stat-total-label">
+              TOTAL BIDANG TERDAMPAK
+            </div>
+
+            <div className="stat-total-value">
+              {bidang.length.toLocaleString('id-ID')}
+            </div>
+
+            <div className="stat-total-caption">
+              Bidang tanah dalam data
+            </div>
+
+          </section>
+
+          {/* STATUS */}
+          <section className="stat-section">
+
+            <div className="stat-section-title">
+              PROGRES VERIFIKASI
+            </div>
+
+            <BarList
+              data={status}
+              limit={4}
+            />
+
+          </section>
+
+          {/* KELURAHAN */}
+          <section className="stat-section">
+
+            <div className="stat-section-title">
+              BIDANG PER KELURAHAN
+            </div>
+
+            <BarList
+              data={kelurahan}
+              limit={8}
+            />
+
+          </section>
+
+          {/* KECAMATAN */}
+          <section className="stat-section">
+
+            <div className="stat-section-title">
+              BIDANG PER KECAMATAN
+            </div>
+
+            <BarList
+              data={kecamatan}
+              limit={8}
+            />
+
+          </section>
+
+          {/* TIPE HAK */}
+          <section className="stat-section">
+
+            <div className="stat-section-title">
+              BERDASARKAN TIPE HAK
+            </div>
+
+            <BarList
+              data={tipeHak}
+              limit={8}
+            />
+
+          </section>
+
+          {/* PENGGUNAAN */}
+          <section className="stat-section">
+
+            <div className="stat-section-title">
+              BERDASARKAN PENGGUNAAN
+            </div>
+
+            <BarList
+              data={penggunaan}
+              limit={8}
+            />
+
+          </section>
+
+        </div>
+      )}
+
+    </aside>
   );
 }
