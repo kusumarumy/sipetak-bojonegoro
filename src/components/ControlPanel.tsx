@@ -85,75 +85,93 @@ export default function ControlPanel({
 
       </div>
 
+{/* =====================================================
+    TERRAIN
+===================================================== */}
 
-      {/* =====================================================
-          TERRAIN
-      ===================================================== */}
+{mode === 'terrain' && (
+  <div className="flyout-body">
 
-      {mode === 'terrain' && (
-        <div className="flyout-body">
+    <section className="terrain-card">
 
-          <section className="terrain-card">
+      <div className="terrain-selector">
 
-            <div className="terrain-head">
+        {/* NONAKTIF */}
 
-              <div className="terrain-head-left">
+        <button
+          type="button"
+          className={`terrain-option ${
+            s.dtm === 'off' ? 'active' : ''
+          }`}
+          onClick={() => s.setDTM('off')}
+        >
+          <span className="terrain-option-main">
+            <span className="terrain-radio">
+              <span />
+            </span>
 
-                <div className="terrain-symbol">
-                  △
-                </div>
-
-                <div>
-                  <div className="terrain-title">
-                    Terrain 3D
-                  </div>
-
-                  <div className="terrain-subtitle">
-                    Model elevasi permukaan
-                  </div>
-                </div>
-
-              </div>
-
-              <div className="terrain-status">
-                {s.dtm === 'off' ? 'OFF' : 'ON'}
-              </div>
-
-            </div>
+            <span className="terrain-option-name">
+              Nonaktif
+            </span>
+          </span>
+        </button>
 
 
-            <div className="terrain-segment">
+        {/* DTM RENCANA TRACE */}
 
-              <button
-                type="button"
-                className={s.dtm === 'off' ? 'active' : ''}
-                onClick={() => s.setDTM('off')}
-              >
-                Nonaktif
-              </button>
+        <button
+          type="button"
+          className={`terrain-option ${
+            s.dtm === 'aws' ? 'active' : ''
+          }`}
+          onClick={() => s.setDTM('aws')}
+        >
+          <span className="terrain-option-main">
+            <span className="terrain-radio">
+              <span />
+            </span>
 
-              <button
-                type="button"
-                className={s.dtm === 'aws' ? 'active' : ''}
-                onClick={() => s.setDTM('aws')}
-              >
-                AWS 30 m
-              </button>
+            <span className="terrain-option-name">
+              DTM Rencana Trace
+            </span>
+          </span>
 
-              <button
-                type="button"
-                className={s.dtm === 'r2' ? 'active' : ''}
-                onClick={() => s.setDTM('r2')}
-              >
-                DTM 3 m
-              </button>
+          <span className="terrain-resolution">
+            0.5 m
+          </span>
+        </button>
 
-            </div>
 
-          </section>
+        {/* DTM KAWASAN */}
 
-        </div>
-      )}
+        <button
+          type="button"
+          className={`terrain-option ${
+            s.dtm === 'r2' ? 'active' : ''
+          }`}
+          onClick={() => s.setDTM('r2')}
+        >
+          <span className="terrain-option-main">
+            <span className="terrain-radio">
+              <span />
+            </span>
+
+            <span className="terrain-option-name">
+              DTM Kawasan
+            </span>
+          </span>
+
+          <span className="terrain-resolution">
+            1.5 m
+          </span>
+        </button>
+
+      </div>
+
+    </section>
+
+  </div>
+)}
 
 
       {/* =====================================================
