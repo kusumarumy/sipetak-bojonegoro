@@ -515,7 +515,8 @@ main.body {
   margin-top: 88px;
 }
 .maplibregl-ctrl-bottom-left {
-  left: 84px;
+  left: 200px !important;
+  right: auto !important;
 }
 /* =========================================================
    DPPT SIDEBAR — BARATA STYLE
