@@ -12,7 +12,9 @@ export async function GET() {
   }
 
   try {
+    // =========================================================
     // CEK DATABASE YANG DIPAKAI VERCEL
+    // =========================================================
     const info = await query(`
       SELECT
         current_database() AS database,
@@ -21,7 +23,9 @@ export async function GET() {
 
     console.log('DB:', info);
 
+    // =========================================================
     // CEK KOLOM TABEL bidang_tanah
+    // =========================================================
     const cek = await query(`
       SELECT
         column_name,
@@ -34,14 +38,19 @@ export async function GET() {
 
     console.log('KOLOM:', cek);
 
+    // =========================================================
+    // AMBIL DATA BIDANG
+    // =========================================================
     const [row] = await query<{ fc: any }>(`
       SELECT json_build_object(
         'type', 'FeatureCollection',
+
         'features',
         COALESCE(
           json_agg(
             json_build_object(
               'type', 'Feature',
+
               'id', f.id,
 
               'geometry',
@@ -52,11 +61,12 @@ export async function GET() {
               END,
 
               'properties',
-              json_build_object(
 
-                -- =========================
-                -- IDENTITAS BIDANG
-                -- =========================
+              -- =================================================
+              -- KELOMPOK 1
+              -- IDENTITAS + WILAYAH + HAK
+              -- =================================================
+              jsonb_build_object(
                 'id', f.id,
                 'objectid', f.objectid,
                 'bidang_id', f.bidang_id,
@@ -64,16 +74,10 @@ export async function GET() {
                 'kode_bid', f.kode_bid,
                 'fid', f.fid,
 
-                -- =========================
-                -- WILAYAH
-                -- =========================
                 'kecamatan', f.kecamatan,
                 'kelurahan', f.kelurahan,
                 'rt_rw', f.rt_rw,
 
-                -- =========================
-                -- STATUS / ATRIBUT HAK
-                -- =========================
                 'tipehak', f.tipehak,
                 'tipeproduk', f.tipeproduk,
                 'tahun', f.tahun,
@@ -81,11 +85,16 @@ export async function GET() {
                 'sta_tnh', f.sta_tnh,
                 'surat_hak', f.surat_hak,
                 'nomor_hak', f.nomor_hak,
-                'beban_hak', f.beban_hak,
+                'beban_hak', f.beban_hak
+              )
 
-                -- =========================
-                -- PENGUKURAN / GEOMETRI
-                -- =========================
+              ||
+
+              -- =================================================
+              -- KELOMPOK 2
+              -- PENGUKURAN + TANAH
+              -- =================================================
+              jsonb_build_object(
                 'luastertul', f.luastertul,
                 'luaspeta', f.luaspeta,
                 'sumbergeom', f.sumbergeom,
@@ -95,77 +104,76 @@ export async function GET() {
                 'shape_area', f.shape_area,
                 'luas_tnh', f.luas_tnh,
 
-                -- =========================
-                -- TANAH
-                -- =========================
                 'penggunaan', f.penggunaan,
                 'hub_tnh', f.hub_tnh,
                 'kode_wwc', f.kode_wwc,
                 'jenis_tnh', f.jenis_tnh,
                 'ruang_atbt', f.ruang_atbt,
                 'luas_atbt', f.luas_atbt,
-                'dampak_tnh', f.dampak_tnh,
+                'dampak_tnh', f.dampak_tnh
+              )
 
-                -- =========================
-                -- PEMILIK
-                -- =========================
+              ||
+
+              -- =================================================
+              -- KELOMPOK 3
+              -- PEMILIK + PENYEWA + KONTAK
+              -- =================================================
+              jsonb_build_object(
                 'nama_milik', f.nama_milik,
                 'ttl_milik', f.ttl_milik,
                 'krja_milik', f.krja_milik,
                 'almt_milik', f.almt_milik,
                 'nik_milik', f.nik_milik,
 
-                -- =========================
-                -- PENYEWA
-                -- =========================
                 'nama_sewa', f.nama_sewa,
                 'ttl_sewa', f.ttl_sewa,
                 'krja_sewa', f.krja_sewa,
                 'almt_sewa', f.almt_sewa,
                 'nik_sewa', f.nik_sewa,
 
-                -- =========================
-                -- KONTAK
-                -- =========================
-                'nomor_hp', f.nomor_hp,
+                'nomor_hp', f.nomor_hp
+              )
 
-                -- =========================
-                -- BANGUNAN
-                -- =========================
+              ||
+
+              -- =================================================
+              -- KELOMPOK 4
+              -- BANGUNAN + TANAMAN + BENDA LAIN
+              -- =================================================
+              jsonb_build_object(
                 'jml_bgn', f.jml_bgn,
 
-                -- =========================
-                -- TANAMAN
-                -- =========================
                 'jenis_tnm', f.jenis_tnm,
                 'jumlah_tnm', f.jumlah_tnm,
 
-                -- =========================
-                -- BENDA LAIN
-                -- =========================
                 'jenis_bnd', f.jenis_bnd,
-                'jumlah_bnd', f.jumlah_bnd,
+                'jumlah_bnd', f.jumlah_bnd
+              )
 
-                -- =========================
-                -- DATA / FILE
-                -- =========================
+              ||
+
+              -- =================================================
+              -- KELOMPOK 5
+              -- DATA + FILE + SISTEM
+              -- =================================================
+              jsonb_build_object(
                 'date_updt', f.date_updt,
                 'foto_tnh', f.foto_tnh,
                 'nama', f.nama,
                 'layer', f.layer,
                 'path', f.path,
 
-                -- =========================
-                -- SISTEM
-                -- =========================
                 'created_at', f.created_at,
                 'status', f.status
               )
             )
           ),
+
           '[]'::json
         )
       ) AS fc
+
       FROM public.bidang_tanah f
     `);
 
