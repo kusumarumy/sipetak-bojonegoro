@@ -177,11 +177,11 @@ export default function Peta({
         {/* BRAND */}
         <div className="head-brand">
 
-          <img
-            src="https://bojonegorokab.go.id/portal/assets/img/logo-kabupaten.png"
-            alt="Logo Kabupaten Bojonegoro"
-            className="head-logo"
-          />
+        <img
+          src="/icon/bojonegoro.png"
+          alt="Logo Kabupaten Bojonegoro"
+          className="head-logo"
+        />
 
           <div className="head-brand-text">
 
