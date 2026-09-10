@@ -75,7 +75,7 @@ export default function Peta({
   }, []);
 
   const toggleTema = () => {
-    const next = tema === 'dark' ? 'light' : 'dark';
+    const next = tema === 'dark' ? 'light' : 'light';
 
     setTema(next);
 
