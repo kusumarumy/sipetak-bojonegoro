@@ -5042,141 +5042,302 @@ html[data-theme="dark"] .gate-foot {
     padding: 0 9px;
   }
 }
+/* =========================================================
+   BASEMAP FLYOUT
+   ========================================================= */
 
 .basemap-flyout {
   position: fixed;
-
   left: 82px;
   top: 104px;
-
   width: 330px;
+  max-height: calc(100vh - 120px);
+  overflow: hidden;
 
-  background: #fff;
-
-  border: 1px solid #e5e7eb;
+  background: #ffffff;
+  border: 1px solid #dce3eb;
   border-radius: 10px;
 
   box-shadow:
-    0 12px 35px rgba(0, 0, 0, 0.12);
+    0 8px 28px rgba(25, 47, 70, .15);
 
-  overflow: hidden;
+  z-index: 950;
 
-  z-index: 960;
-
-  animation: flyoutIn 0.16s ease-out;
+  animation: flyout-in .14s ease-out;
 }
+
+
+/* HEADER */
 
 .basemap-flyout-head {
-  padding: 15px 16px;
+  min-height: 62px;
 
   display: flex;
+  align-items: center;
   justify-content: space-between;
 
-  border-bottom: 1px solid #e5e7eb;
+  padding: 12px 14px;
+
+  background: #ffffff;
+  border-bottom: 1px solid #e5e9ef;
 }
 
-.panel-eyebrow {
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: .08em;
 
-  color: #9ca3af;
+.basemap-panel-heading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-.basemap-flyout-head h3 {
-  margin: 3px 0;
 
-  font-size: 17px;
-  color: #111827;
+.basemap-panel-icon {
+  width: 34px;
+  height: 34px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid rgba(143, 24, 48, .20);
+  border-radius: 8px;
+
+  background: rgba(143, 24, 48, .06);
+
+  color: #8f1830;
 }
 
-.basemap-flyout-head p {
-  margin: 0;
+
+.basemap-panel-icon svg {
+  width: 19px;
+  height: 19px;
+}
+
+
+.basemap-panel-text {
+  min-width: 0;
+}
+
+
+.basemap-panel-title {
+  font-size: 16px;
+  font-weight: 750;
+  line-height: 1;
+
+  letter-spacing: -0.02em;
+
+  color: #7b1528;
+}
+
+
+.basemap-panel-subtitle {
+  margin-top: 5px;
 
   font-size: 10px;
-  color: #6b7280;
+  line-height: 1.1;
+
+  color: #8190a0;
 }
 
-.panel-close {
+
+/* CLOSE */
+
+.basemap-panel-close {
   width: 28px;
   height: 28px;
 
-  border: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+
+  border: 1px solid #dfe5ec;
   border-radius: 6px;
 
-  background: #f3f4f6;
+  background: #ffffff;
+  color: #68788c;
 
-  color: #6b7280;
-
-  font-size: 19px;
+  font-size: 18px;
+  line-height: 1;
 
   cursor: pointer;
+
+  transition:
+    background .15s ease,
+    color .15s ease,
+    border-color .15s ease;
 }
 
-.basemap-grid {
+
+.basemap-panel-close:hover {
+  background: #f4f6f9;
+  border-color: #c8d2df;
+  color: #8f1830;
+}
+
+
+/* BODY */
+
+.basemap-flyout-body {
+  max-height: calc(100vh - 184px);
+
   padding: 12px;
 
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  overflow-y: auto;
+  overflow-x: hidden;
 
-  gap: 8px;
+  scrollbar-width: thin;
 }
+
+
+/* =========================================================
+   BASEMAP GRID
+   ========================================================= */
+
+.basemap-grid {
+  display: grid;
+
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  gap: 9px;
+
+  width: 100%;
+}
+
+
+/* CARD */
 
 .basemap-card {
   position: relative;
 
-  min-height: 72px;
+  min-width: 0;
 
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
+  padding: 0;
 
-  padding: 10px;
+  overflow: hidden;
 
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
+  border: 1px solid #d8e0e8;
+  border-radius: 9px;
 
-  background: #fff;
+  background: #f5f7fa;
+
+  color: #344657;
+
+  font-family: inherit;
+
+  text-align: left;
 
   cursor: pointer;
 
   transition:
     border-color .15s ease,
-    background .15s ease,
-    transform .15s ease;
+    box-shadow .15s ease,
+    transform .15s ease,
+    background .15s ease;
 }
 
+
 .basemap-card:hover {
-  border-color: #9ca3af;
-  background: #f8fafc;
+  border-color: #b9c5d1;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 3px 10px rgba(25, 47, 70, .08);
 
   transform: translateY(-1px);
 }
 
+
 .basemap-card.active {
-  border-color: #111827;
-  background: #f3f4f6;
+  border-color: #8f1830;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 0 0 1px rgba(143, 24, 48, .10),
+    0 4px 12px rgba(80, 10, 25, .10);
 }
+
+
+/* PREVIEW */
+
+.basemap-card-preview {
+  height: 82px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background:
+    linear-gradient(
+      135deg,
+      #e9eef3,
+      #d9e1e8
+    );
+}
+
 
 .basemap-card-icon {
-  font-size: 22px;
-  line-height: 1;
-  margin-bottom: 7px;
+  width: 38px;
+  height: 38px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 9px;
+
+  background: rgba(255,255,255,.82);
+
+  box-shadow:
+    0 2px 8px rgba(0,0,0,.08);
+
+  font-size: 20px;
 }
+
+
+/* FOOTER */
+
+.basemap-card-footer {
+  min-height: 38px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 5px;
+
+  padding: 7px 9px;
+
+  background: #ffffff;
+
+  border-top: 1px solid #e2e7ed;
+}
+
 
 .basemap-card-label {
-  font-size: 10px;
-  font-weight: 600;
+  min-width: 0;
 
-  color: #374151;
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  font-size: 10.5px;
+  font-weight: 700;
+
+  color: #435667;
 }
 
-.basemap-check {
-  position: absolute;
 
-  right: 8px;
-  top: 8px;
+.basemap-card.active .basemap-card-label {
+  color: #8f1830;
+}
+
+
+.basemap-check {
+  flex: 0 0 auto;
 
   width: 17px;
   height: 17px;
@@ -5187,10 +5348,120 @@ html[data-theme="dark"] .gate-foot {
 
   border-radius: 50%;
 
-  background: #111827;
-  color: #fff;
+  background: #8f1830;
+  color: #ffffff;
 
   font-size: 10px;
+  font-weight: 800;
+}
+
+
+/* =========================================================
+   DARK MODE
+   ========================================================= */
+
+html[data-theme="dark"] .basemap-flyout {
+  background: #241a1d;
+  border-color: #4b353a;
+
+  box-shadow:
+    0 10px 30px rgba(0,0,0,.38);
+}
+
+
+html[data-theme="dark"] .basemap-flyout-head {
+  background: #241a1d;
+  border-bottom-color: #4b353a;
+}
+
+
+html[data-theme="dark"] .basemap-panel-icon {
+  border-color: rgba(213,138,154,.35);
+  background: rgba(155,31,59,.12);
+  color: #d58a9a;
+}
+
+
+html[data-theme="dark"] .basemap-panel-title {
+  color: #e7b7c1;
+}
+
+
+html[data-theme="dark"] .basemap-panel-subtitle {
+  color: #a99a9f;
+}
+
+
+html[data-theme="dark"] .basemap-panel-close {
+  background: #2b2023;
+  border-color: #5a4147;
+  color: #c9b5ba;
+}
+
+
+html[data-theme="dark"] .basemap-panel-close:hover {
+  background: #351f25;
+  border-color: #9b1f3b;
+  color: #ffffff;
+}
+
+
+html[data-theme="dark"] .basemap-flyout-body {
+  background: #241a1d;
+}
+
+
+html[data-theme="dark"] .basemap-card {
+  border-color: #4b353a;
+  background: #1d1518;
+  color: #d6c8cc;
+}
+
+
+html[data-theme="dark"] .basemap-card:hover {
+  border-color: #6b4b53;
+  background: #281c20;
+}
+
+
+html[data-theme="dark"] .basemap-card.active {
+  border-color: #9b1f3b;
+  background: #281c20;
+
+  box-shadow:
+    0 0 0 1px rgba(155,31,59,.18),
+    0 4px 12px rgba(0,0,0,.25);
+}
+
+
+html[data-theme="dark"] .basemap-card-preview {
+  background:
+    linear-gradient(
+      135deg,
+      #30252a,
+      #21191d
+    );
+}
+
+
+html[data-theme="dark"] .basemap-card-icon {
+  background: rgba(255,255,255,.08);
+}
+
+
+html[data-theme="dark"] .basemap-card-footer {
+  background: #281c20;
+  border-top-color: #4b353a;
+}
+
+
+html[data-theme="dark"] .basemap-card-label {
+  color: #c9b9be;
+}
+
+
+html[data-theme="dark"] .basemap-card.active .basemap-card-label {
+  color: #e7b7c1;
 }
 /* =========================================================
    MOBILE
