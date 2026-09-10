@@ -510,85 +510,167 @@ main.body {
   position: absolute;
   inset: 0;
 }
+/* =========================================================
+   DPPT SIDEBAR — BARATA STYLE
+   Small icon rail + floating flyout
+   ========================================================= */
 
-.gis-sidebar {
-  position: absolute;
-
+.sidebar {
+  position: fixed;
   top: 0;
   left: 0;
   bottom: 0;
 
-  width: 64px;
+  width: 72px;
 
   display: flex;
   flex-direction: column;
   align-items: center;
 
-  background: rgba(255, 255, 255, .97);
+  background: #ffffff;
 
-  border-right: 1px solid #dfe4eb;
+  border-right: 1px solid #e1e6ed;
 
-  z-index: 150;
+  z-index: 900;
 }
 
-.gis-sidebar-menu {
+
+/* =========================================================
+   MENU
+   ========================================================= */
+
+.sidebar-menu {
   width: 100%;
 
   display: flex;
   flex-direction: column;
   align-items: center;
 
-  padding-top: 14px;
+  padding-top: 112px;
 }
 
-.gis-sidebar-item {
+
+/* =========================================================
+   SIDEBAR ITEM
+   ========================================================= */
+
+.sidebar-item {
   position: relative;
 
   width: 48px;
   height: 48px;
 
+  margin-bottom: 8px;
+
   display: flex;
   align-items: center;
   justify-content: center;
 
-  margin-bottom: 4px;
+  padding: 0;
 
-  border: 0;
+  border: 1px solid #e2e7ee;
   border-radius: 8px;
 
-  background: transparent;
+  background: #ffffff;
 
-  color: #526174;
+  color: #274a83;
 
   cursor: pointer;
+
+  transition:
+    background .16s ease,
+    border-color .16s ease,
+    color .16s ease,
+    box-shadow .16s ease,
+    transform .16s ease;
 }
 
-.gis-sidebar-item:hover {
-  background: #edf3f9;
-  color: #173b68;
+
+/* =========================================================
+   ICON
+   ========================================================= */
+
+.sidebar-icon {
+  width: 22px;
+  height: 22px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.gis-sidebar-item.active {
-  background: #e8f1fb;
-  color: #1769aa;
+.sidebar-icon svg {
+  width: 22px;
+  height: 22px;
+
+  fill: none;
+  stroke: currentColor;
+
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
-.gis-sidebar-label {
+
+
+/* =========================================================
+   HOVER
+   ========================================================= */
+
+.sidebar-item:hover {
+  background: #f4f7fb;
+
+  border-color: #cbd7e6;
+
+  color: #173f78;
+
+  box-shadow:
+    0 2px 8px rgba(24, 55, 90, .08);
+
+  transform: translateX(1px);
+}
+
+
+/* =========================================================
+   ACTIVE
+   ========================================================= */
+
+.sidebar-item.active {
+  background: #edf4fc;
+
+  border-color: #c2d3e7;
+
+  color: #164f91;
+
+  box-shadow:
+    0 2px 8px rgba(30, 70, 115, .08);
+}
+
+
+/* =========================================================
+   TOOLTIP
+   ========================================================= */
+
+.sidebar-tooltip {
   position: absolute;
 
-  left: calc(100% + 8px);
+  left: calc(100% + 9px);
   top: 50%;
 
-  transform: translateY(-50%);
+  transform:
+    translateY(-50%)
+    translateX(-4px);
 
   padding: 7px 10px;
 
-  background: #172b45;
-  color: #fff;
+  background: #183451;
+  color: #ffffff;
 
   border-radius: 5px;
 
   font-size: 10px;
   font-weight: 600;
+
+  line-height: 1;
 
   white-space: nowrap;
 
@@ -596,32 +678,185 @@ main.body {
   visibility: hidden;
 
   pointer-events: none;
+
+  transition:
+    opacity .12s ease,
+    transform .12s ease;
 }
 
-.gis-sidebar-item:hover .gis-sidebar-label {
+.sidebar-item:hover .sidebar-tooltip {
   opacity: 1;
   visibility: visible;
+
+  transform:
+    translateY(-50%)
+    translateX(0);
 }
-.gis-flyout {
-  position: absolute;
 
-  top: 0;
-  left: 64px;
-  bottom: 0;
 
-  width: 300px;
-
-  background: #fff;
-
-  border-right: 1px solid #dfe4eb;
-
-  box-shadow: 6px 0 20px rgba(20, 35, 55, .12);
-
-  z-index: 140;
-}
 /* =========================================================
-   CONTROL PANEL TOGGLE
+   FLYOUT PANEL
    ========================================================= */
+
+.flyout-panel {
+  position: fixed;
+
+  /*
+   * Sidebar = 72px
+   * gap = 10px
+   */
+  left: 82px;
+
+  /*
+   * Jangan terlalu tinggi karena header floating.
+   */
+  top: 104px;
+
+  width: 330px;
+
+  max-height: calc(100vh - 120px);
+
+  overflow: hidden;
+
+  background: #ffffff;
+
+  border: 1px solid #dce3eb;
+  border-radius: 10px;
+
+  box-shadow:
+    0 8px 28px rgba(25, 47, 70, .15);
+
+  z-index: 950;
+
+  animation: flyout-in .14s ease-out;
+}
+
+
+/* =========================================================
+   FLYOUT ANIMATION
+   ========================================================= */
+
+@keyframes flyout-in {
+  from {
+    opacity: 0;
+    transform: translateX(-6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+
+/* =========================================================
+   FLYOUT HEADER
+   ========================================================= */
+
+.flyout-header {
+  min-height: 62px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 12px 14px;
+
+  background: #ffffff;
+
+  border-bottom: 1px solid #e5e9ef;
+}
+
+
+/* =========================================================
+   FLYOUT BODY
+   ========================================================= */
+
+.flyout-body {
+  max-height: calc(100vh - 184px);
+
+  overflow-y: auto;
+
+  overflow-x: hidden;
+
+  scrollbar-width: thin;
+}
+
+
+/* =========================================================
+   CLOSE BUTTON
+   ========================================================= */
+
+.flyout-close {
+  width: 28px;
+  height: 28px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+
+  border: 1px solid #dfe5ec;
+  border-radius: 6px;
+
+  background: #ffffff;
+
+  color: #68788c;
+
+  font-size: 18px;
+  line-height: 1;
+
+  cursor: pointer;
+
+  transition:
+    background .15s ease,
+    color .15s ease,
+    border-color .15s ease;
+}
+
+.flyout-close:hover {
+  background: #f4f6f9;
+
+  border-color: #c8d2df;
+
+  color: #173b68;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+  .sidebar {
+    width: 60px;
+  }
+
+  .sidebar-menu {
+    padding-top: 92px;
+  }
+
+  .sidebar-item {
+    width: 44px;
+    height: 44px;
+  }
+
+  .flyout-panel {
+    left: 68px;
+
+    width: min(
+      320px,
+      calc(100vw - 78px)
+    );
+
+    top: 92px;
+
+    max-height: calc(100vh - 104px);
+  }
+
+}
 
 .map-panel-toggle {
   position: absolute;
