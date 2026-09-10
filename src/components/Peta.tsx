@@ -281,6 +281,11 @@ const [panelAktif, setPanelAktif] =
   aktif={panelAktif}
   onChange={setPanelAktif}
 />
+ {panelAktif === 'bidang' && (
+  <DaftarBidang
+    onClose={() => setPanelAktif(null)}
+  />
+)}     
 <ControlPanel
   mode={
     panelAktif === 'terrain' || panelAktif === 'layer'
