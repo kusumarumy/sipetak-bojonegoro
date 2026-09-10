@@ -43,40 +43,28 @@ export async function GET() {
             json_build_object(
               'type', 'Feature',
               'id', f.id,
-
               'geometry',
               CASE
                 WHEN f.geometry IS NOT NULL
                 THEN ST_AsGeoJSON(f.geometry, 6)::json
                 ELSE NULL
               END,
-
               'properties',
               json_build_object(
                 'id', f.id,
-
                 'kode', f.kode_bid,
                 'bidang_id', f.bidang_id,
-
                 'status', f.status,
-
                 'kecamatan', f.kecamatan,
                 'desa', f.kelurahan,
-
                 'pemilik', f.nama_milik,
-
                 'luas_m2', f.luas_tnh,
-
                 'luas_tnh', f.luas_tnh,
                 'luastertul', f.luastertul,
                 'luaspeta', f.luaspeta,
-
                 'luas_atbt', f.luas_atbt,
-
                 'penggunaan', f.penggunaan,
-
                 'jml_bgn', f.jml_bgn,
-
                 'ruang_atbt', f.ruang_atbt,
                 'dampak_tnh', f.dampak_tnh
               )
@@ -85,9 +73,7 @@ export async function GET() {
           '[]'::json
         )
       ) AS fc
-
       FROM public.bidang_tanah f
-
     `);
 
     return NextResponse.json(row.fc, {
