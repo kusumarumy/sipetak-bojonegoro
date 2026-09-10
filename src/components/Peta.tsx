@@ -181,20 +181,12 @@ export default function Peta({
 
       <div className="head-title-row">
         <span className="head-eyebrow">
-          DPPT
-        </span>
-
-        <span className="head-project">
-          BOJONEGORO
+          DPPT KABUPATEN BOJONEGORO
         </span>
       </div>
 
       <span className="head-app-name">
-        SISTEM INFORMASI PENGADAAN TANAH
-      </span>
-
-      <span className="head-subtitle">
-        Jalur Lingkar Selatan • Kabupaten Bojonegoro
+        Sistem Informasi Bidang Terdampak Jalur Lingkar Selatan
       </span>
 
     </div>
