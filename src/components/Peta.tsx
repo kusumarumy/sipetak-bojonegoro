@@ -186,7 +186,7 @@ export default function Peta({
       </div>
 
       <span className="head-app-name">
-        Sistem Informasi Bidang Terdampak Jalur Lingkar Selatan
+        SISTEM INFORMASI BIDANG TANAH TERDAMPAK JALUR LINGKAR SELATAN
       </span>
 
     </div>
