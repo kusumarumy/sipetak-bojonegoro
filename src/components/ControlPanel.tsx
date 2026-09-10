@@ -85,85 +85,53 @@ export default function ControlPanel({
 
       </div>
 
-{/* =====================================================
-    TERRAIN
-===================================================== */}
-
 {mode === 'terrain' && (
   <div className="flyout-body">
 
     <section className="terrain-card">
 
-      <div className="terrain-selector">
+      <div className="terrain-head">
 
-        {/* NONAKTIF */}
+        <div className="terrain-head-left">
+
+          <div className="terrain-symbol">
+            △
+          </div>
+
+          <div className="terrain-title">
+            Terrain 3D
+          </div>
+
+        </div>
+
+      </div>
+
+      <div className="terrain-segment">
 
         <button
           type="button"
-          className={`terrain-option ${
-            s.dtm === 'off' ? 'active' : ''
-          }`}
+          className={s.dtm === 'off' ? 'active' : ''}
           onClick={() => s.setDTM('off')}
         >
-          <span className="terrain-option-main">
-            <span className="terrain-radio">
-              <span />
-            </span>
-
-            <span className="terrain-option-name">
-              Nonaktif
-            </span>
-          </span>
+          Nonaktif
         </button>
-
-
-        {/* DTM RENCANA TRACE */}
 
         <button
           type="button"
-          className={`terrain-option ${
-            s.dtm === 'aws' ? 'active' : ''
-          }`}
+          className={s.dtm === 'aws' ? 'active' : ''}
           onClick={() => s.setDTM('aws')}
         >
-          <span className="terrain-option-main">
-            <span className="terrain-radio">
-              <span />
-            </span>
-
-            <span className="terrain-option-name">
-              DTM Rencana Trace
-            </span>
-          </span>
-
-          <span className="terrain-resolution">
-            0.5 m
-          </span>
+          DTM Rencana Trace
+          <span>0.5 m</span>
         </button>
-
-
-        {/* DTM KAWASAN */}
 
         <button
           type="button"
-          className={`terrain-option ${
-            s.dtm === 'r2' ? 'active' : ''
-          }`}
+          className={s.dtm === 'r2' ? 'active' : ''}
           onClick={() => s.setDTM('r2')}
         >
-          <span className="terrain-option-main">
-            <span className="terrain-radio">
-              <span />
-            </span>
-
-            <span className="terrain-option-name">
-              DTM Kawasan
-            </span>
-          </span>
-
-          <span className="terrain-resolution">
-            1.5 m
-          </span>
+          DTM Kawasan
+          <span>1.5 m</span>
         </button>
 
       </div>
