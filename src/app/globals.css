@@ -2252,10 +2252,6 @@ html[data-theme="light"] {
   color: var(--dim);
 }
 
-/* =========================================================
-   POPUP PETA
-   ========================================================= */
-
 .maplibregl-popup-content {
   background: var(--chassis2) !important;
 
