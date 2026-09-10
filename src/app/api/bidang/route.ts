@@ -12,7 +12,7 @@ export async function GET() {
   }
 
   try {
-    // 🔍 CEK DATABASE YANG DIPAKAI VERCEL
+    // CEK DATABASE YANG DIPAKAI VERCEL
     const info = await query(`
       SELECT
         current_database() AS database,
@@ -21,7 +21,7 @@ export async function GET() {
 
     console.log('DB:', info);
 
-    // 🔍 CEK KOLOM TABEL bidang_tanah
+    // CEK KOLOM TABEL bidang_tanah
     const cek = await query(`
       SELECT
         column_name,
@@ -33,7 +33,7 @@ export async function GET() {
     `);
 
     console.log('KOLOM:', cek);
-    
+
     const [row] = await query<{ fc: any }>(`
       SELECT json_build_object(
         'type', 'FeatureCollection',
@@ -43,31 +43,131 @@ export async function GET() {
             json_build_object(
               'type', 'Feature',
               'id', f.id,
+
               'geometry',
               CASE
                 WHEN f.geometry IS NOT NULL
                 THEN ST_AsGeoJSON(f.geometry, 6)::json
                 ELSE NULL
               END,
+
               'properties',
               json_build_object(
+
+                -- =========================
+                -- IDENTITAS BIDANG
+                -- =========================
                 'id', f.id,
-                'kode', f.kode_bid,
+                'objectid', f.objectid,
                 'bidang_id', f.bidang_id,
-                'status', f.status,
+                'kodewilaya', f.kodewilaya,
+                'kode_bid', f.kode_bid,
+                'kode', f.kode_bid,
+                'fid', f.fid,
+
+                -- =========================
+                -- WILAYAH
+                -- =========================
                 'kecamatan', f.kecamatan,
-                'desa', f.kelurahan,
-                'pemilik', f.nama_milik,
-                'luas_m2', f.luas_tnh,
-                'luas_tnh', f.luas_tnh,
+                'kelurahan', f.kelurahan,
+                'rt_rw', f.rt_rw,
+
+                -- =========================
+                -- STATUS / ATRIBUT HAK
+                -- =========================
+                'tipehak', f.tipehak,
+                'tipeproduk', f.tipeproduk,
+                'tahun', f.tahun,
+                'nib', f.nib,
+                'sta_tnh', f.sta_tnh,
+                'surat_hak', f.surat_hak,
+                'nomor_hak', f.nomor_hak,
+                'beban_hak', f.beban_hak,
+
+                -- =========================
+                -- PENGUKURAN / GEOMETRI
+                -- =========================
                 'luastertul', f.luastertul,
                 'luaspeta', f.luaspeta,
-                'luas_atbt', f.luas_atbt,
+                'sumbergeom', f.sumbergeom,
+                'alatukur', f.alatukur,
+                'metodukur', f.metodukur,
+                'shape_leng', f.shape_leng,
+                'shape_area', f.shape_area,
+                'luas_tnh', f.luas_tnh,
+
+                -- Alias yang sudah dipakai MapCanvas
+                'luas', f.luas_tnh,
+                'kena', f.luastertul,
+
+                -- =========================
+                -- TANAH
+                -- =========================
                 'penggunaan', f.penggunaan,
-                'jml_bgn', f.jml_bgn,
+                'hub_tnh', f.hub_tnh,
+                'kode_wwc', f.kode_wwc,
+                'jenis_tnh', f.jenis_tnh,
                 'ruang_atbt', f.ruang_atbt,
+                'luas_atbt', f.luas_atbt,
                 'dampak_tnh', f.dampak_tnh,
-                'nib', f.nib
+
+                -- =========================
+                -- PEMILIK
+                -- =========================
+                'nama_milik', f.nama_milik,
+                'ttl_milik', f.ttl_milik,
+                'krja_milik', f.krja_milik,
+                'almt_milik', f.almt_milik,
+                'nik_milik', f.nik_milik,
+
+                -- Alias yang sudah dipakai MapCanvas
+                'pemilik', f.nama_milik,
+
+                -- =========================
+                -- PENYEWA
+                -- =========================
+                'nama_sewa', f.nama_sewa,
+                'ttl_sewa', f.ttl_sewa,
+                'krja_sewa', f.krja_sewa,
+                'almt_sewa', f.almt_sewa,
+                'nik_sewa', f.nik_sewa,
+
+                -- =========================
+                -- KONTAK
+                -- =========================
+                'nomor_hp', f.nomor_hp,
+
+                -- =========================
+                -- BANGUNAN
+                -- =========================
+                'jml_bgn', f.jml_bgn,
+
+                -- =========================
+                -- TANAMAN
+                -- =========================
+                'jenis_tnm', f.jenis_tnm,
+                'jumlah_tnm', f.jumlah_tnm,
+
+                -- =========================
+                -- BENDA LAIN
+                -- =========================
+                'jenis_bnd', f.jenis_bnd,
+                'jumlah_bnd', f.jumlah_bnd,
+
+                -- =========================
+                -- DATA / FILE
+                -- =========================
+                'date_updt', f.date_updt,
+                'foto_tnh', f.foto_tnh,
+                'nama', f.nama,
+                'layer', f.layer,
+                'path', f.path,
+
+                -- =========================
+                -- SISTEM
+                -- =========================
+                'created_at', f.created_at,
+                'status', f.status
               )
             )
           ),
