@@ -974,9 +974,8 @@ html[data-theme="light"] {
   color: #7b1528;
 }
 
-
 /* =========================================================
-   TERRAIN BODY
+   TERRAIN
 ========================================================= */
 
 .terrain-body {
@@ -987,9 +986,74 @@ html[data-theme="light"] {
   width: 100%;
 }
 
+.terrain-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 9px;
+}
+
+.terrain-head-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.terrain-symbol {
+  width: 28px;
+  height: 28px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid rgba(47, 174, 176, 0.35);
+  border-radius: 8px;
+
+  color: #2faeb0;
+  background: rgba(47, 174, 176, 0.08);
+}
+
+.terrain-symbol svg {
+  width: 18px;
+  height: 18px;
+}
+
+.terrain-title {
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.1;
+
+  color: #263442;
+}
+
+.terrain-subtitle {
+  margin-top: 2px;
+
+  font-size: 10px;
+  line-height: 1.1;
+
+  color: #8190a0;
+}
+
+.terrain-status {
+  padding: 4px 7px;
+
+  border: 1px solid #d5dfe8;
+  border-radius: 5px;
+
+  background: #edf2f6;
+
+  color: #68798a;
+
+  font-size: 9px;
+  font-weight: 750;
+}
+
 
 /* =========================================================
-   TERRAIN SELECTOR
+   SELECTOR
 ========================================================= */
 
 .terrain-segment {
@@ -1007,10 +1071,10 @@ html[data-theme="light"] {
 
   padding: 3px;
 
-  border: 1px solid #dddfe4;
-  border-radius: 9px;
+  border: 1px solid #d5dfe8;
+  border-radius: 10px;
 
-  background: #f1f2f4;
+  background: #edf2f6;
 }
 
 
@@ -1021,35 +1085,62 @@ html[data-theme="light"] {
 .terrain-segment button {
   min-width: 0;
   width: 100%;
-  height: 34px;
+
+  height: 48px;
 
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
 
   gap: 4px;
 
-  padding: 0 7px;
+  padding: 4px 6px;
 
   border: 0;
   border-radius: 7px;
 
   background: transparent;
 
-  color: #687485;
+  color: #617386;
 
   font-family: inherit;
-  font-size: 10px;
-  font-weight: 700;
-
-  white-space: nowrap;
 
   cursor: pointer;
 
   transition:
     background 0.15s ease,
-    color 0.15s ease,
-    box-shadow 0.15s ease;
+    color 0.15s ease;
+}
+
+
+/* =========================================================
+   NAMA
+========================================================= */
+
+.terrain-option-name {
+  max-width: 100%;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  font-size: 10.5px;
+  font-weight: 750;
+}
+
+
+/* =========================================================
+   RESOLUSI
+========================================================= */
+
+.terrain-option-resolution {
+  font-size: 9px;
+  font-weight: 650;
+
+  line-height: 1;
+
+  color: #8b98a7;
 }
 
 
@@ -1058,80 +1149,68 @@ html[data-theme="light"] {
 ========================================================= */
 
 .terrain-segment button:hover {
-  color: #7b1528;
+  color: #8f1830;
 }
 
 
 /* =========================================================
-   ACTIVE
+   ACTIVE — MAROON BOJONEGORO
 ========================================================= */
 
 .terrain-segment button.active {
   background: #8f1830;
-
   color: #ffffff;
 
   box-shadow:
-    0 1px 3px rgba(80, 10, 25, 0.18);
-}
-
-
-/* =========================================================
-   NAME
-========================================================= */
-
-.terrain-name {
-  overflow: hidden;
-
-  text-overflow: ellipsis;
-
-  white-space: nowrap;
-}
-
-
-/* =========================================================
-   RESOLUTION
-========================================================= */
-
-.terrain-resolution {
-  flex: 0 0 auto;
-
-  font-size: 9px;
-  font-weight: 750;
-
-  opacity: 0.78;
+    0 2px 4px rgba(80, 10, 25, 0.16);
 }
 
 .terrain-segment button.active
-.terrain-resolution {
-  opacity: 1;
+.terrain-option-resolution {
+  color: rgba(255, 255, 255, 0.82);
 }
 
 
-// DARK MODE
 /* =========================================================
-   DARK MODE — TERRAIN
+   DARK MODE
 ========================================================= */
 
-[data-theme='dark'] .terrain-panel-title {
-  color: #f3d9de;
+[data-theme='dark'] .terrain-symbol {
+  border-color: rgba(201, 106, 125, 0.35);
+
+  color: #d58a9a;
+  background: rgba(155, 31, 59, 0.12);
+}
+
+[data-theme='dark'] .terrain-title {
+  color: #f1e6e8;
+}
+
+[data-theme='dark'] .terrain-subtitle {
+  color: #a99a9f;
+}
+
+[data-theme='dark'] .terrain-status {
+  border-color: #4b353a;
+  background: #2b2023;
+  color: #b9aaae;
 }
 
 [data-theme='dark'] .terrain-segment {
-  border-color: #4b2931;
-  background: #26171b;
+  border-color: #4b353a;
+  background: #241a1d;
 }
 
 [data-theme='dark'] .terrain-segment button {
-  color: #bcaeb2;
+  color: #b9aaae;
 }
 
 [data-theme='dark'] .terrain-segment button:hover {
-  color: #ffffff;
+  color: #f0cbd2;
 }
 
 [data-theme='dark'] .terrain-segment button.active {
-  background: #9b2038;
+  background: #9b1f3b;
   color: #ffffff;
 }
 
