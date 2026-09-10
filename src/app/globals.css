@@ -1747,7 +1747,345 @@ html[data-theme="light"] {
 
   font-size: 11px;
 }
+/* =========================================================
+   DAFTAR BIDANG FLYOUT
+   ========================================================= */
 
+.daftar-flyout {
+  position: fixed;
+  left: 82px;
+  top: 104px;
+  width: min(1100px, calc(100vw - 110px));
+  max-height: calc(100vh - 125px);
+
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+
+  box-shadow:
+    0 12px 35px rgba(0, 0, 0, 0.12);
+
+  overflow: hidden;
+  z-index: 960;
+
+  animation: flyoutIn 0.16s ease-out;
+}
+
+.daftar-bidang {
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 125px);
+}
+
+.daftar-head {
+  padding: 16px 18px;
+  border-bottom: 1px solid #e5e7eb;
+
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+
+  background: #fff;
+}
+
+.daftar-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  font-size: 11px;
+  color: #6b7280;
+}
+
+.daftar-title strong {
+  font-size: 18px;
+  color: #111827;
+}
+
+.daftar-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.daftar-actions button {
+  border: 1px solid #e5e7eb;
+  background: #fff;
+  color: #6b7280;
+
+  padding: 7px 10px;
+  border-radius: 6px;
+
+  font-size: 10px;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.daftar-actions button:hover,
+.daftar-actions button.active {
+  background: #111827;
+  color: #fff;
+  border-color: #111827;
+}
+
+.daftar-actions .daftar-close {
+  margin-left: 5px;
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.daftar-table-wrap {
+  overflow: auto;
+}
+
+.daftar-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11px;
+}
+
+.daftar-table th {
+  position: sticky;
+  top: 0;
+
+  padding: 10px 12px;
+  background: #f8fafc;
+
+  color: #6b7280;
+  font-size: 9px;
+  font-weight: 700;
+
+  text-align: left;
+  white-space: nowrap;
+
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.daftar-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #f1f5f9;
+  color: #374151;
+  white-space: nowrap;
+}
+
+.daftar-table tbody tr:hover {
+  background: #f8fafc;
+}
+
+.daftar-table .kode {
+  font-weight: 700;
+  color: #111827;
+}
+
+.daftar-table .angka {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.status-daftar {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  font-size: 9px;
+  font-weight: 700;
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #9ca3af;
+}
+
+.daftar-empty {
+  text-align: center;
+  padding: 35px !important;
+  color: #9ca3af !important;
+}
+/* =========================================================
+   STATISTIKA
+   ========================================================= */
+
+.statistik-flyout {
+  position: fixed;
+  left: 82px;
+  top: 104px;
+
+  width: 390px;
+  max-height: calc(100vh - 125px);
+
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+
+  box-shadow:
+    0 12px 35px rgba(0, 0, 0, 0.12);
+
+  overflow: hidden;
+  z-index: 960;
+
+  animation: flyoutIn 0.16s ease-out;
+}
+
+.statistik-panel {
+  max-height: calc(100vh - 125px);
+  overflow-y: auto;
+}
+
+.statistik-head {
+  padding: 18px;
+
+  display: flex;
+  justify-content: space-between;
+
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.statistik-eyebrow {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #9ca3af;
+}
+
+.statistik-head h2 {
+  margin: 4px 0;
+
+  font-size: 19px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.statistik-head p {
+  margin: 0;
+
+  font-size: 11px;
+  color: #6b7280;
+}
+
+.statistik-close {
+  width: 30px;
+  height: 30px;
+
+  border: 0;
+  border-radius: 6px;
+
+  background: #f3f4f6;
+  color: #6b7280;
+
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.statistik-body {
+  padding: 16px;
+}
+
+.stat-total {
+  padding: 14px;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+
+  background: #f8fafc;
+}
+
+.stat-total span {
+  display: block;
+
+  font-size: 9px;
+  font-weight: 700;
+  color: #9ca3af;
+}
+
+.stat-total strong {
+  display: block;
+
+  margin-top: 4px;
+
+  font-size: 27px;
+  color: #111827;
+}
+
+.stat-section {
+  margin-top: 20px;
+}
+
+.stat-section-title {
+  margin-bottom: 10px;
+
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+
+  color: #6b7280;
+}
+
+.stat-list {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.stat-row-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+
+  margin-bottom: 4px;
+
+  font-size: 10px;
+  color: #4b5563;
+}
+
+.stat-row-head strong {
+  color: #111827;
+  font-size: 10px;
+}
+
+.stat-bar {
+  width: 100%;
+  height: 5px;
+
+  overflow: hidden;
+
+  background: #f1f5f9;
+  border-radius: 999px;
+}
+
+.stat-bar-fill {
+  height: 100%;
+
+  background: #374151;
+  border-radius: inherit;
+
+  transition: width 0.3s ease;
+}
+
+.statistik-loading {
+  padding: 40px;
+
+  text-align: center;
+
+  font-size: 11px;
+  color: #9ca3af;
+}
+
+@keyframes flyoutIn {
+  from {
+    opacity: 0;
+    transform: translateX(-6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
 .progress {
   position: absolute;
 
