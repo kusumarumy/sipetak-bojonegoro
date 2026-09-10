@@ -26,7 +26,16 @@ type Ringkasan = {
   haTerdampak: number;
   km: number;
 };
+type PanelAktif =
+  | 'terrain'
+  | 'layer'
+  | 'bidang'
+  | 'statistika'
+  | 'filter'
+  | null;
 
+const [panelAktif, setPanelAktif] =
+  useState<PanelAktif>(null);
 export default function Peta({
   pengguna,
   ringkasan,
@@ -312,7 +321,20 @@ export default function Peta({
 
 
           <MapCanvas />
+<Sidebar
+    aktif={panelAktif}
+    onChange={setPanelAktif}
+  />
 
+  <ControlPanel
+    mode={
+      panelAktif === 'terrain' ||
+      panelAktif === 'layer'
+        ? panelAktif
+        : null
+    }
+    onClose={() => setPanelAktif(null)}
+  />
 
           {/* =================================================
               PROGRESS
