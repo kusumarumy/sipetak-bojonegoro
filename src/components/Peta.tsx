@@ -318,46 +318,7 @@ const [panelAktif, setPanelAktif] =
   <div className="mapwrap">
 
     <MapCanvas />
- <div className="progress float">
-
-            <div className="ph">
-
-              <span className="lbl">
-                {pewarnaan === 'status'
-                  ? 'Progres verifikasi'
-                  : 'Penggunaan bidang'}
-              </span>
-
-              {pewarnaan === 'status' && (
-                <b>{pct}%</b>
-              )}
-
-            </div>
-
-
-            {/* PROGRESS BAR */}
-            {pewarnaan === 'status' && (
-              <div className="progress-bar">
-
-                {angka.map(([s, n]) => (
-                  <span
-                    key={s}
-                    style={{
-                      width: `${
-                        ringkasan.total
-                          ? (n / ringkasan.total) * 100
-                          : 0
-                      }%`,
-                      background: STATUS_WARNA[s]
-                    }}
-                  />
-                ))}
-
-              </div>
-            )}
-
-
-            {/* LEGEND */}
+ 
             <div className="legend">
 
               {pewarnaan === 'status' ? (
