@@ -5,6 +5,8 @@ import dynamic from 'next/dynamic';
 import ControlPanel from './ControlPanel';
 import Sidebar from './Sidebar';
 import KartuBidang from './KartuBidang';
+import DaftarBidang from './DaftarBidang';
+import Statistika from './Statistika';
 import { useApp } from '@/store/useApp';
 import {
   STATUS_LABEL,
@@ -27,6 +29,7 @@ type Ringkasan = {
   km: number;
 };
 type PanelAktif =
+  | 'basemap'
   | 'terrain'
   | 'layer'
   | 'bidang'
@@ -281,14 +284,22 @@ const [panelAktif, setPanelAktif] =
   aktif={panelAktif}
   onChange={setPanelAktif}
 />
- {panelAktif === 'bidang' && (
+
+{panelAktif === 'bidang' && (
   <DaftarBidang
     onClose={() => setPanelAktif(null)}
   />
-)}     
+)}
+
+{panelAktif === 'statistika' && (
+  <Statistika
+    onClose={() => setPanelAktif(null)}
+  />
+)}   
 <ControlPanel
   mode={
-    panelAktif === 'terrain' || panelAktif === 'layer'
+    panelAktif === 'terrain' ||
+    panelAktif === 'layer'
       ? panelAktif
       : null
   }
