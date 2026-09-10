@@ -954,88 +954,147 @@ html[data-theme="light"] {
 }
 
 /* =========================================================
-   TERRAIN 3D
-   ========================================================= */
+   TERRAIN
+========================================================= */
 
 .terrain-card {
-  padding: 10px;
+  padding: 12px;
 }
 
-.terrain-head {
+.terrain-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+
+/* =========================================================
+   OPTION
+========================================================= */
+
+.terrain-option {
+  width: 100%;
+  min-height: 52px;
+
   display: flex;
   align-items: center;
   justify-content: space-between;
 
-  gap: 8px;
+  padding: 0 12px;
 
-  margin-bottom: 9px;
+  border: 1px solid #e1e7ee;
+  border-radius: 9px;
+
+  background: #fff;
+
+  color: #263442;
+
+  cursor: pointer;
+  text-align: left;
+
+  transition:
+    border-color 0.15s ease,
+    background 0.15s ease,
+    box-shadow 0.15s ease;
 }
 
-.terrain-head-left {
+.terrain-option:hover {
+  border-color: #b8c7d6;
+  background: #f8fafc;
+}
+
+
+/* =========================================================
+   ACTIVE
+========================================================= */
+
+.terrain-option.active {
+  border-color: #2faeb0;
+  background: #f0fbfb;
+
+  box-shadow:
+    inset 3px 0 0 #2faeb0;
+}
+
+
+/* =========================================================
+   LEFT CONTENT
+========================================================= */
+
+.terrain-option-main {
   display: flex;
   align-items: center;
-
-  gap: 9px;
-
-  min-width: 0;
+  gap: 10px;
 }
 
-.terrain-symbol {
-  width: 28px;
-  height: 28px;
+.terrain-option-name {
+  font-size: 12px;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+}
 
-  flex: 0 0 28px;
+
+/* =========================================================
+   RADIO
+========================================================= */
+
+.terrain-radio {
+  width: 17px;
+  height: 17px;
+
+  flex: 0 0 17px;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  border-radius: 8px;
-
-  background: rgba(47,169,168,.08);
-  border: 1px solid rgba(47,169,168,.18);
-
-  color: var(--accent2);
-
-  font-size: 19px;
-  line-height: 1;
+  border: 1.5px solid #b9c4cf;
+  border-radius: 50%;
 }
 
-.terrain-title {
-  color: var(--card-title);
-
-  font-size: 12px;
-  font-weight: 700;
-  line-height: 1.2;
+.terrain-option.active .terrain-radio {
+  border-color: #2faeb0;
 }
 
-.terrain-subtitle {
-  margin-top: 2px;
+.terrain-radio span {
+  width: 7px;
+  height: 7px;
 
-  color: var(--card-muted);
+  border-radius: 50%;
 
-  font-size: 8.5px;
-  line-height: 1.2;
+  background: transparent;
 }
 
-.terrain-status {
-  flex: none;
+.terrain-option.active .terrain-radio span {
+  background: #2faeb0;
+}
 
-  padding: 3px 6px;
+
+/* =========================================================
+   RESOLUTION
+========================================================= */
+
+.terrain-resolution {
+  min-width: 40px;
+
+  padding: 4px 7px;
 
   border-radius: 5px;
 
-  background: var(--terrain-bg);
-  border: 1px solid var(--terrain-line);
+  background: #edf1f5;
 
-  color: var(--terrain-text);
+  color: #617184;
 
-  font-size: 7.5px;
-  font-weight: 800;
+  font-size: 10px;
+  font-weight: 700;
 
-  letter-spacing: .08em;
+  text-align: center;
 }
 
+.terrain-option.active .terrain-resolution {
+  background: #d8f1f1;
+  color: #247e80;
+}
 /* =========================================================
    TERRAIN SEGMENT
    ========================================================= */
