@@ -958,169 +958,72 @@ html[data-theme="light"] {
 }
 
 /* =========================================================
-   TERRAIN
+   TERRAIN PANEL
 ========================================================= */
+
+.terrain-panel-title {
+  font-size: 16px;
+  font-weight: 750;
+  line-height: 1;
+  letter-spacing: -0.02em;
+
+  color: #7b1528;
+}
+
+
+/* =========================================================
+   TERRAIN BODY
+========================================================= */
+
+.terrain-body {
+  padding: 10px 12px 12px;
+}
 
 .terrain-card {
-  padding: 12px;
-}
-
-.terrain-selector {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-
-/* =========================================================
-   OPTION
-========================================================= */
-
-.terrain-option {
   width: 100%;
-  min-height: 52px;
-
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  padding: 0 12px;
-
-  border: 1px solid #e1e7ee;
-  border-radius: 9px;
-
-  background: #fff;
-
-  color: #263442;
-
-  cursor: pointer;
-  text-align: left;
-
-  transition:
-    border-color 0.15s ease,
-    background 0.15s ease,
-    box-shadow 0.15s ease;
-}
-
-.terrain-option:hover {
-  border-color: #b8c7d6;
-  background: #f8fafc;
 }
 
 
 /* =========================================================
-   ACTIVE
+   TERRAIN SELECTOR
 ========================================================= */
 
-.terrain-option.active {
-  border-color: #2faeb0;
-  background: #f0fbfb;
-
-  box-shadow:
-    inset 3px 0 0 #2faeb0;
-}
-
-
-/* =========================================================
-   LEFT CONTENT
-========================================================= */
-
-.terrain-option-main {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.terrain-option-name {
-  font-size: 12px;
-  font-weight: 650;
-  letter-spacing: -0.01em;
-}
-
-
-/* =========================================================
-   RADIO
-========================================================= */
-
-.terrain-radio {
-  width: 17px;
-  height: 17px;
-
-  flex: 0 0 17px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border: 1.5px solid #b9c4cf;
-  border-radius: 50%;
-}
-
-.terrain-option.active .terrain-radio {
-  border-color: #2faeb0;
-}
-
-.terrain-radio span {
-  width: 7px;
-  height: 7px;
-
-  border-radius: 50%;
-
-  background: transparent;
-}
-
-.terrain-option.active .terrain-radio span {
-  background: #2faeb0;
-}
-
-
-/* =========================================================
-   RESOLUTION
-========================================================= */
-
-.terrain-resolution {
-  min-width: 40px;
-
-  padding: 4px 7px;
-
-  border-radius: 5px;
-
-  background: #edf1f5;
-
-  color: #617184;
-
-  font-size: 10px;
-  font-weight: 700;
-
-  text-align: center;
-}
-
-.terrain-option.active .terrain-resolution {
-  background: #d8f1f1;
-  color: #247e80;
-}
 .terrain-segment {
   display: grid;
-  grid-template-columns: 0.75fr 1.45fr 1.2fr;
-  align-items: stretch;
+
+  grid-template-columns:
+    0.72fr
+    1.5fr
+    1.28fr;
+
+  gap: 3px;
 
   width: 100%;
   box-sizing: border-box;
 
   padding: 3px;
 
-  border: 1px solid #d6e0e9;
+  border: 1px solid #dddfe4;
   border-radius: 9px;
 
-  background: #edf2f6;
-
-  gap: 3px;
+  background: #f1f2f4;
 }
 
+
+/* =========================================================
+   BUTTON
+========================================================= */
+
 .terrain-segment button {
-  width: 100%;
   min-width: 0;
-  height: 32px;
+  width: 100%;
+  height: 34px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 4px;
 
   padding: 0 7px;
 
@@ -1129,42 +1032,103 @@ html[data-theme="light"] {
 
   background: transparent;
 
-  color: #617386;
+  color: #687485;
 
-  font-size: 10.5px;
+  font-family: inherit;
+  font-size: 10px;
   font-weight: 700;
 
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 
   cursor: pointer;
 
   transition:
     background 0.15s ease,
-    color 0.15s ease;
+    color 0.15s ease,
+    box-shadow 0.15s ease;
 }
+
+
+/* =========================================================
+   HOVER
+========================================================= */
 
 .terrain-segment button:hover {
-  color: #263442;
+  color: #7b1528;
 }
 
+
+/* =========================================================
+   ACTIVE
+========================================================= */
+
 .terrain-segment button.active {
-  background: #2faeb0;
+  background: #8f1830;
+
+  color: #ffffff;
+
+  box-shadow:
+    0 1px 3px rgba(80, 10, 25, 0.18);
+}
+
+
+/* =========================================================
+   NAME
+========================================================= */
+
+.terrain-name {
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   RESOLUTION
+========================================================= */
+
+.terrain-resolution {
+  flex: 0 0 auto;
+
+  font-size: 9px;
+  font-weight: 750;
+
+  opacity: 0.78;
+}
+
+.terrain-segment button.active
+.terrain-resolution {
+  opacity: 1;
+}
+
+
+// DARK MODE
+/* =========================================================
+   DARK MODE — TERRAIN
+========================================================= */
+
+[data-theme='dark'] .terrain-panel-title {
+  color: #f3d9de;
+}
+
+[data-theme='dark'] .terrain-segment {
+  border-color: #4b2931;
+  background: #26171b;
+}
+
+[data-theme='dark'] .terrain-segment button {
+  color: #bcaeb2;
+}
+
+[data-theme='dark'] .terrain-segment button:hover {
   color: #ffffff;
 }
 
-.terrain-segment button span {
-  margin-left: 3px;
-
-  font-size: 9.5px;
-  font-weight: 700;
-
-  opacity: 0.75;
-}
-
-.terrain-segment button.active span {
-  opacity: 1;
+[data-theme='dark'] .terrain-segment button.active {
+  background: #9b2038;
+  color: #ffffff;
 }
 
 .layer-card {
