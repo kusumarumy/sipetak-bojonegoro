@@ -2,6 +2,7 @@
 
 type PanelAktif =
   | 'terrain'
+  | 'basemap'
   | 'layer'
   | 'bidang'
   | 'statistika'
@@ -21,7 +22,15 @@ function IconTerrain() {
     </svg>
   );
 }
-
+function IconBasemap() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M4 5h16v14H4z" />
+      <path d="M4 15l5-5 4 4 3-3 4 4" />
+      <path d="M8 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
+    </svg>
+  );
+}
 function IconLayer() {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -65,6 +74,11 @@ const MENU = [
     id: 'terrain' as const,
     label: 'Terrain 3D',
     icon: <IconTerrain />,
+  },
+    {
+    id: 'basemap' as const,
+    label: 'BASEMAP',
+    icon: <IconBasemap />,
   },
   {
     id: 'layer' as const,
