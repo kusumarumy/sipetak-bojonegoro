@@ -43,38 +43,58 @@ type Props = {
   onClose: () => void;
 };
 
-export default function BasemapPanel({
-  onClose,
-}: Props) {
-  const {
-    basemap,
-    setBasemap,
-  } = useApp();
-
-  const pilih = (id: Basemap) => {
-    setBasemap(id);
-  };
+export default function BasemapPanel({ onClose }: Props) {
+  const { basemap, setBasemap } = useApp();
 
   return (
     <aside className="basemap-flyout">
 
+      {/* HEADER */}
       <div className="basemap-flyout-head">
 
-        <div>
-          <span className="panel-eyebrow">
-            MAP DISPLAY
-          </span>
+        <div className="basemap-panel-heading">
 
-          <h3>Basemap</h3>
+          <div className="basemap-panel-icon">
+            <svg
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path
+                d="M4 5.5L9 3l6 3 5-2.5v15L15 21l-6-3-5 2.5v-15Z"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.6"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
 
-          <p>
-            Pilih tampilan dasar peta.
-          </p>
+              <path
+                d="M9 3v15M15 6v15"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.6"
+                strokeLinecap="round"
+              />
+            </svg>
+          </div>
+
+          <div className="basemap-panel-text">
+
+            <div className="basemap-panel-title">
+              BASEMAP
+            </div>
+
+            <div className="basemap-panel-subtitle">
+              Tampilan dasar peta
+            </div>
+
+          </div>
+
         </div>
 
         <button
           type="button"
-          className="panel-close"
+          className="basemap-panel-close"
           onClick={onClose}
           aria-label="Tutup"
         >
@@ -83,44 +103,51 @@ export default function BasemapPanel({
 
       </div>
 
-      <div className="basemap-grid">
+      {/* BODY */}
+      <div className="basemap-flyout-body">
 
-        {PILIHAN.map((item) => {
+        <div className="basemap-grid">
 
-          const aktif =
-            basemap === item.id;
+          {PILIHAN.map((item) => {
+            const aktif = basemap === item.id;
 
-          return (
-            <button
-              key={item.id}
-              type="button"
-              className={
-                `basemap-card${
+            return (
+              <button
+                key={item.id}
+                type="button"
+                className={`basemap-card${
                   aktif ? ' active' : ''
-                }`
-              }
-              onClick={() =>
-                pilih(item.id)
-              }
-            >
+                }`}
+                onClick={() => setBasemap(item.id)}
+              >
 
-              <span className="basemap-card-icon">
-                {item.icon}
-              </span>
+                <span className="basemap-card-preview">
 
-              <span className="basemap-card-label">
-                {item.label}
-              </span>
+                  <span className="basemap-card-icon">
+                    {item.icon}
+                  </span>
 
-              {aktif && (
-                <span className="basemap-check">
-                  ✓
                 </span>
-              )}
 
-            </button>
-          );
-        })}
+                <span className="basemap-card-footer">
+
+                  <span className="basemap-card-label">
+                    {item.label}
+                  </span>
+
+                  {aktif && (
+                    <span className="basemap-check">
+                      ✓
+                    </span>
+                  )}
+
+                </span>
+
+              </button>
+            );
+          })}
+
+        </div>
 
       </div>
 
