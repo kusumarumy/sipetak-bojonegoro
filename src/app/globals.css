@@ -123,9 +123,6 @@ button {
 
   overflow: hidden;
 }
-/* =========================================================
-   FLOATING HEADER — MODERN GIS
-   ========================================================= */
 
 header.bar {
   position: absolute;
@@ -163,7 +160,6 @@ header.bar {
 
   z-index: 100;
 }
-
 
 .head-brand {
   display: flex;
@@ -264,8 +260,6 @@ header.bar {
 }
 
 
-/* NAMA APLIKASI */
-
 .head-app-name {
   display: block;
 
@@ -273,7 +267,7 @@ header.bar {
 
   font-family: var(--f-disp);
 
-  font-size: 8px;
+  font-size: 10px;
 
   line-height: 1;
 
@@ -281,7 +275,7 @@ header.bar {
 
   letter-spacing: .16em;
 
-  color: #C83E3E;
+  color: #001d6c;
 
   white-space: nowrap;
 }
