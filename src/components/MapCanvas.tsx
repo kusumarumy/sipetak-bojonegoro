@@ -763,7 +763,7 @@ const vis =
   layout: {
     'text-field': [
       'get',
-      'NIB'
+      'nib'
     ],
 
     'text-size': 10,
