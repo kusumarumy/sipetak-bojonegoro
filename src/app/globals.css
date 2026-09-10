@@ -124,7 +124,7 @@ button {
   overflow: hidden;
 }
 /* =========================================================
-   FLOATING HEADER
+   FLOATING HEADER — MODERN GIS
    ========================================================= */
 
 header.bar {
@@ -140,15 +140,24 @@ header.bar {
   align-items: center;
   justify-content: space-between;
 
-  padding: 0 12px 0 18px;
+  padding: 0 12px 0 16px;
 
-  background: #F8FAFC;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,.98),
+      rgba(247,250,253,.96)
+    );
 
-  border: 1px solid #D9E0E8;
-  border-radius: 10px;
+  border: 1px solid rgba(210,220,231,.95);
+  border-radius: 11px;
 
   box-shadow:
-    0 4px 14px rgba(20, 30, 40, .12);
+    0 8px 24px rgba(24,42,60,.12),
+    0 2px 5px rgba(24,42,60,.06);
+
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 
   box-sizing: border-box;
 
@@ -156,32 +165,15 @@ header.bar {
 }
 
 
-/* =========================================================
-   BRAND
-   ========================================================= */
-
 .head-brand {
   display: flex;
   align-items: center;
-
-  gap: 13px;
-
+  gap: 14px;
   min-width: 0;
-  padding: 0;
-}
-
-.head-logo {
-  width: 42px;
-  height: 42px;
-
-  object-fit: contain;
-
-  flex: none;
 }
 
 .head-brand-text {
   min-width: 0;
-
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -189,35 +181,128 @@ header.bar {
 
 .head-eyebrow {
   display: block;
-
   font-family: 'Barlow Condensed', sans-serif;
-
   text-transform: uppercase;
   letter-spacing: .12em;
+  font-size: 20px;
+  line-height: 1;
+  font-weight: 800;
+  color: #183451;
+  white-space: nowrap;
+}
+
+.head-brand strong {
+  display: block;
+  margin-top: 6px;
+  font-family: var(--f-body);
+  font-size: 10px;
+  line-height: 1.15;
+  font-weight: 500;
+  color: #d83232;
+  white-space: nowrap;
+}
+
+/* LOGO */
+
+.head-logo-wrap {
+  width: 46px;
+  height: 46px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex: none;
+
+  background: #FFFFFF;
+
+  border: 1px solid #E0E6ED;
+  border-radius: 8px;
+
+  box-shadow:
+    0 2px 6px rgba(23,50,77,.08);
+}
+
+.head-logo {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  object-position: center;
+  flex: none;
+}
+
+.head-title-row {
+  display: flex;
+  align-items: baseline;
+
+  gap: 7px;
+
+  line-height: 1;
+}
+.head-divider {
+  font-family: var(--f-disp);
+
+  font-size: 14px;
+
+  font-weight: 500;
+
+  color: #C83E3E;
+}
+
+.head-project {
+  font-family: 'Barlow Condensed', sans-serif;
 
   font-size: 19px;
-  line-height: 1;
 
   font-weight: 800;
+
+  letter-spacing: .12em;
 
   color: #17324D;
 
   white-space: nowrap;
 }
 
-.head-brand strong {
+
+/* NAMA APLIKASI */
+
+.head-app-name {
   display: block;
 
-  margin-top: 6px;
+  margin-top: 5px;
+
+  font-family: var(--f-disp);
+
+  font-size: 8px;
+
+  line-height: 1;
+
+  font-weight: 800;
+
+  letter-spacing: .16em;
+
+  color: #C83E3E;
+
+  white-space: nowrap;
+}
+
+
+/* SUBTITLE */
+
+.head-subtitle {
+  display: block;
+
+  margin-top: 4px;
 
   font-family: var(--f-body);
 
-  font-size: 10px;
+  font-size: 8.5px;
+
   line-height: 1;
 
-  font-weight: 600;
+  font-weight: 500;
 
-  color: #C83E3E;
+  color: #7C8997;
 
   white-space: nowrap;
 }
@@ -228,20 +313,59 @@ header.bar {
    ========================================================= */
 
 .head-user {
-  height: 54px;
+  height: 48px;
 
   display: flex;
   align-items: center;
 
   gap: 11px;
 
-  padding: 0 2px 0 14px;
+  padding-left: 15px;
 
-  background: transparent;
-
-  border-left: 1px solid #D9E0E8;
+  border-left: 1px solid #DCE3EA;
 
   flex: none;
+}
+
+
+/* =========================================================
+   THEME
+   ========================================================= */
+
+.head-theme {
+  width: 38px;
+  height: 38px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+
+  background: #FFFFFF;
+
+  border: 1px solid #D7DFE7;
+  border-radius: 7px;
+
+  color: #526477;
+
+  font-size: 17px;
+  line-height: 1;
+
+  cursor: pointer;
+
+  transition:
+    .15s ease;
+}
+
+.head-theme:hover {
+  background: #EEF3F7;
+
+  border-color: #2F6F9F;
+
+  color: #2F6F9F;
+
+  transform: translateY(-1px);
 }
 
 
@@ -258,8 +382,6 @@ header.bar {
   justify-content: center;
 
   min-width: 0;
-
-  padding: 0;
 }
 
 .head-user-role {
@@ -271,12 +393,13 @@ header.bar {
 
   letter-spacing: .14em;
 
-  font-size: 8px;
+  font-size: 7px;
+
   line-height: 1;
 
   font-weight: 700;
 
-  color: #8A98A8;
+  color: #94A1AE;
 }
 
 .head-user-info strong {
@@ -287,6 +410,7 @@ header.bar {
   font-family: var(--f-body);
 
   font-size: 12px;
+
   line-height: 1;
 
   font-weight: 700;
@@ -294,47 +418,6 @@ header.bar {
   color: #17324D;
 
   white-space: nowrap;
-}
-
-
-/* =========================================================
-   DARK / LIGHT
-   ========================================================= */
-
-.head-theme {
-  width: 38px;
-  height: 38px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  padding: 0;
-
-  border: 1px solid #D5DDE6;
-  border-radius: 7px;
-
-  background: #FFFFFF;
-
-  color: #526477;
-
-  font-size: 17px;
-  line-height: 1;
-
-  cursor: pointer;
-
-  transition:
-    background .15s ease,
-    border-color .15s ease,
-    color .15s ease;
-}
-
-.head-theme:hover {
-  background: #EEF3F7;
-
-  border-color: #2F6F9F;
-
-  color: #2F6F9F;
 }
 
 
@@ -351,37 +434,40 @@ header.bar {
   align-items: center;
   justify-content: center;
 
-  background: transparent;
+  background: #FFFFFF;
 
-  border: 1px solid #D5DDE6;
+  border: 1px solid #D7DFE7;
   border-radius: 7px;
 
-  color: #5C6B7A;
+  color: #596978;
 
   font-family: var(--f-disp);
 
   text-transform: uppercase;
 
-  letter-spacing: .1em;
+  letter-spacing: .12em;
 
-  font-size: 9px;
+  font-size: 8px;
 
-  font-weight: 700;
+  font-weight: 800;
 
   cursor: pointer;
 
   transition:
     background .15s ease,
     border-color .15s ease,
-    color .15s ease;
+    color .15s ease,
+    transform .15s ease;
 }
 
 .head-logout:hover {
-  background: #FDF0F0;
+  background: #FFF5F5;
 
   border-color: #C83E3E;
 
   color: #C83E3E;
+
+  transform: translateY(-1px);
 }
 main.body {
   width: 100%;
