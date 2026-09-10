@@ -1099,75 +1099,73 @@ html[data-theme="light"] {
   background: #d8f1f1;
   color: #247e80;
 }
-/* =========================================================
-   TERRAIN SEGMENT
-   ========================================================= */
-
 .terrain-segment {
-  display: flex;
+  display: grid;
+  grid-template-columns: 0.75fr 1.45fr 1.2fr;
   align-items: stretch;
 
   width: 100%;
+  box-sizing: border-box;
 
-  overflow: hidden;
+  padding: 3px;
 
-  border: 1px solid var(--terrain-line);
-  border-radius: 10px;
+  border: 1px solid #d6e0e9;
+  border-radius: 9px;
 
-  background: var(--terrain-bg);
+  background: #edf2f6;
+
+  gap: 3px;
 }
 
 .terrain-segment button {
-  flex: 1;
-
+  width: 100%;
   min-width: 0;
-
-  height: 36px;
+  height: 32px;
 
   padding: 0 7px;
 
   border: 0;
-  border-radius: 0;
+  border-radius: 7px;
 
   background: transparent;
 
-  color: var(--terrain-text);
+  color: #617386;
 
-  font-size: 9px;
+  font-size: 10.5px;
   font-weight: 700;
 
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 
   cursor: pointer;
 
   transition:
-    background .15s ease,
-    color .15s ease,
-    box-shadow .15s ease;
+    background 0.15s ease,
+    color 0.15s ease;
 }
 
 .terrain-segment button:hover {
-  color: var(--text);
+  color: #263442;
 }
 
 .terrain-segment button.active {
-  margin: 3px;
-
-  height: 30px;
-
-  border-radius: 8px;
-
-  background: var(--terrain-active);
-
-  color: var(--terrain-active-text);
-
-  box-shadow:
-    0 1px 3px rgba(0,0,0,.18);
+  background: #2faeb0;
+  color: #ffffff;
 }
 
-/* =========================================================
-   LAYER CARD
-   ========================================================= */
+.terrain-segment button span {
+  margin-left: 3px;
+
+  font-size: 9.5px;
+  font-weight: 700;
+
+  opacity: 0.75;
+}
+
+.terrain-segment button.active span {
+  opacity: 1;
+}
 
 .layer-card {
   padding: 10px 10px 8px;
