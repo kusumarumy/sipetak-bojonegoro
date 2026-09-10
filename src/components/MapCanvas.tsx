@@ -754,20 +754,20 @@ const vis =
         id: 'bidang-lb',
         type: 'symbol',
         source: 'bidang',
-        minzoom: 15.2,
+        minzoom: 13,
         layout: {
           'visibility': labelNomor ? 'visible' : 'none',
           'text-field': [
             'get',
             'nib'
           ],
-          'text-size': 10,
+          'text-size': 15,
           'text-anchor': 'center',
           'text-allow-overlap': true,
           'text-ignore-placement': true
         },
         paint: {
-          'text-color': '#0E1720',
+          'text-color': '#000000',
           'text-halo-color':
             'rgba(255,255,255,.85)',
           'text-halo-width': 1.1
