@@ -65,10 +65,6 @@ const [panelAktif, setPanelAktif] =
       'Belum diisi': 0,
     });
 
-  /* =========================================================
-     TEMA
-     ========================================================= */
-
   useEffect(() => {
     const saved = localStorage.getItem('dppt-tema');
 
@@ -91,11 +87,6 @@ const [panelAktif, setPanelAktif] =
     document.documentElement.dataset.theme = next;
   };
 
-
-  /* =========================================================
-     TOAST
-     ========================================================= */
-
   useEffect(() => {
     if (!pesan) return;
 
@@ -105,11 +96,6 @@ const [panelAktif, setPanelAktif] =
 
     return () => clearTimeout(t);
   }, [pesan, beriPesan]);
-
-
-  /* =========================================================
-     JUMLAH PENGGUNAAN
-     ========================================================= */
 
   useEffect(() => {
     fetch('/api/bidang')
@@ -148,11 +134,6 @@ const [panelAktif, setPanelAktif] =
       .catch(() => {});
   }, []);
 
-
-  /* =========================================================
-     PROGRESS
-     ========================================================= */
-
   const pct = ringkasan.total
     ? Math.round(
         ringkasan.terverifikasi /
@@ -173,7 +154,6 @@ const [panelAktif, setPanelAktif] =
 
      <header className="bar">
 
-  {/* BRAND */}
   <div className="head-brand">
 
     <div className="head-logo-wrap">
@@ -200,10 +180,8 @@ const [panelAktif, setPanelAktif] =
 
   </div>
 
-{/* USER AREA */}
 <div className="head-user">
 
-  {/* LIGHT / DARK TOGGLE */}
   <button
     type="button"
     className={`theme-switch ${tema === 'dark' ? 'dark' : 'light'}`}
@@ -298,6 +276,19 @@ const [panelAktif, setPanelAktif] =
 </div>
 
 </header>
+
+<Sidebar
+  aktif={panelAktif}
+  onChange={setPanelAktif}
+/>
+<ControlPanel
+  mode={
+    panelAktif === 'terrain' || panelAktif === 'layer'
+      ? panelAktif
+      : null
+  }
+  onClose={() => setPanelAktif(null)}
+/>
 <main className="body">
 
   <div className="mapwrap">
