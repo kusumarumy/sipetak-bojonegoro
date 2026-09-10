@@ -131,7 +131,7 @@ header.bar {
   left: 88px;
   right: 12px;
 
-  height: 70px;
+  height: 64px;
 
   display: flex;
   align-items: center;
@@ -179,11 +179,11 @@ header.bar {
   display: block;
   font-family: 'Barlow Condensed', sans-serif;
   text-transform: uppercase;
-  letter-spacing: .12em;
-  font-size: 20px;
+  letter-spacing: .1em;
+  font-size: 22px;
   line-height: 1;
   font-weight: 800;
-  color: #183451;
+  color: #000f80;
   white-space: nowrap;
 }
 
@@ -197,8 +197,6 @@ header.bar {
   color: #d83232;
   white-space: nowrap;
 }
-
-/* LOGO */
 
 .head-logo-wrap {
   width: 46px;
@@ -220,8 +218,8 @@ header.bar {
 }
 
 .head-logo {
-  width: 48px;
-  height: 48px;
+  width: 37px;
+  height: 37px;
   object-fit: contain;
   object-position: center;
   flex: none;
@@ -247,27 +245,15 @@ header.bar {
 
 .head-app-name {
   display: block;
-
   margin-top: 5px;
-
   font-family: var(--f-disp);
-
-  font-size: 10px;
-
+  font-size: 11px;
   line-height: 1;
-
   font-weight: 800;
-
   letter-spacing: .16em;
-
-  color: #001d6c;
-
+  color: #000000;
   white-space: nowrap;
 }
-
-/* =========================================================
-   USER AREA
-   ========================================================= */
 
 .head-user {
   height: 48px;
@@ -283,11 +269,6 @@ header.bar {
 
   flex: none;
 }
-
-
-/* =========================================================
-   THEME
-   ========================================================= */
 
 .head-theme {
   width: 38px;
@@ -324,11 +305,6 @@ header.bar {
 
   transform: translateY(-1px);
 }
-
-
-/* =========================================================
-   USER INFO
-   ========================================================= */
 
 .head-user-info {
   display: flex;
