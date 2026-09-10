@@ -285,7 +285,7 @@ map.addControl(
         maxWidth: 110,
         unit: 'metric'
       }),
-      'bottom-right'
+      'bottom-left'
     );
 
 
