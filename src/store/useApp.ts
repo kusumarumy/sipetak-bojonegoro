@@ -57,7 +57,7 @@ export const useApp = create<AppState>((set, get) => ({
   dtm: 'off',
   exag: 1.8,
   pewarnaan: 'status',
-  labelNomor: true,
+  labelNomor: false,
 
 layerAktif: {
   traseg: true,
