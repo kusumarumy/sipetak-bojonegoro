@@ -754,14 +754,14 @@ const vis =
         id: 'bidang-lb',
         type: 'symbol',
         source: 'bidang',
-        minzoom: 13,
+        minzoom: 14,
         layout: {
           'visibility': labelNomor ? 'visible' : 'none',
           'text-field': [
             'get',
             'nib'
           ],
-          'text-size': 15,
+          'text-size': 12,
           'text-anchor': 'center',
           'text-allow-overlap': true,
           'text-ignore-placement': true
