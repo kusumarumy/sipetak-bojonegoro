@@ -250,7 +250,7 @@ if (DTM.r2) {
       maxPitch: 75,
 
       attributionControl: {
-        compact: true
+        compact: false
       },
 
       style: {
