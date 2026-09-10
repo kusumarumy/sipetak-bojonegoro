@@ -168,94 +168,95 @@ export default function Peta({
   return (
     <div className="shell">
 
-      {/* =====================================================
-          FLOATING HEADER
-          ===================================================== */}
+     <header className="bar">
 
-      <header className="bar">
+  {/* BRAND */}
+  <div className="head-brand">
 
-        {/* BRAND */}
-        <div className="head-brand">
+    <div className="head-logo-wrap">
+      <img
+        src="/icon/bojonegoro.png"
+        alt="Logo Kabupaten Bojonegoro"
+        className="head-logo"
+      />
+    </div>
 
-        <img
-          src="/icon/bojonegoro.png"
-          alt="Logo Kabupaten Bojonegoro"
-          className="head-logo"
-        />
+    <div className="head-brand-text">
 
-          <div className="head-brand-text">
+      <div className="head-title-row">
+        <span className="head-eyebrow">
+          DPPT
+        </span>
 
-            <span className="head-eyebrow">
-              DPPT BOJONEGORO
-            </span>
+        <span className="head-divider">
+          /
+        </span>
 
-            <strong>
-              Dokumen Perencanaan Pengadaan Tanah Jalur Lingkar Selatan Kabupaten Bojonegoro
-            </strong>
+        <span className="head-project">
+          BOJONEGORO
+        </span>
+      </div>
 
-          </div>
+      <span className="head-app-name">
+        SISTEM INFORMASI PENGADAAN TANAH
+      </span>
 
-        </div>
+      <span className="head-subtitle">
+        Jalur Lingkar Selatan • Kabupaten Bojonegoro
+      </span>
 
+    </div>
 
-        {/* USER AREA */}
-        <div className="head-user">
-
-          {/* DARK / LIGHT */}
-          <button
-            type="button"
-            className="head-theme"
-            aria-label={
-              tema === 'dark'
-                ? 'Aktifkan tema terang'
-                : 'Aktifkan tema gelap'
-            }
-            title={
-              tema === 'dark'
-                ? 'Tema terang'
-                : 'Tema gelap'
-            }
-            onClick={toggleTema}
-          >
-            {tema === 'dark' ? '☀' : '☾'}
-          </button>
+  </div>
 
 
-          {/* NAMA AKUN */}
-          <div className="head-user-info">
+  {/* USER AREA */}
+  <div className="head-user">
 
-            <span className="head-user-role">
-              {pengguna.peran}
-            </span>
-
-            <strong>
-              {pengguna.name}
-            </strong>
-
-          </div>
-
-
-          {/* KELUAR */}
-          <form action={keluar}>
-
-            <button
-              type="submit"
-              className="head-logout"
-            >
-              KELUAR
-            </button>
-
-          </form>
-
-        </div>
-
-      </header>
+    <button
+      type="button"
+      className="head-theme"
+      aria-label={
+        tema === 'dark'
+          ? 'Aktifkan tema terang'
+          : 'Aktifkan tema gelap'
+      }
+      title={
+        tema === 'dark'
+          ? 'Tema terang'
+          : 'Tema gelap'
+      }
+      onClick={toggleTema}
+    >
+      {tema === 'dark' ? '☀' : '☾'}
+    </button>
 
 
-      {/* =====================================================
-          BODY
-          ===================================================== */}
+    <div className="head-user-info">
 
+      <span className="head-user-role">
+        {pengguna.peran}
+      </span>
+
+      <strong>
+        {pengguna.name}
+      </strong>
+
+    </div>
+
+
+    <form action={keluar}>
+      <button
+        type="submit"
+        className="head-logout"
+      >
+        KELUAR
+      </button>
+    </form>
+
+  </div>
+
+</header>
       <main className="body">
 
         <ControlPanel
