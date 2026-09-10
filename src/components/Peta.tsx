@@ -193,31 +193,52 @@ export default function Peta({
 
   </div>
 
+{/* USER AREA */}
+<div className="head-user">
 
-  {/* USER AREA */}
-  <div className="head-user">
+  {/* LIGHT / DARK TOGGLE */}
+  <button
+    type="button"
+    className={`theme-switch ${tema === 'dark' ? 'dark' : 'light'}`}
+    aria-label={
+      tema === 'dark'
+        ? 'Aktifkan tema terang'
+        : 'Aktifkan tema gelap'
+    }
+    title={
+      tema === 'dark'
+        ? 'Tema terang'
+        : 'Tema gelap'
+    }
+    onClick={toggleTema}
+  >
+    <span className="theme-switch-track">
+      <span className="theme-switch-thumb">
+        {tema === 'dark' ? '☾' : '☀'}
+      </span>
+    </span>
+  </button>
 
-    <button
-      type="button"
-      className="head-theme"
-      aria-label={
-        tema === 'dark'
-          ? 'Aktifkan tema terang'
-          : 'Aktifkan tema gelap'
-      }
-      title={
-        tema === 'dark'
-          ? 'Tema terang'
-          : 'Tema gelap'
-      }
-      onClick={toggleTema}
-    >
-      {tema === 'dark' ? '☀' : '☾'}
-    </button>
+  {/* USER */}
+  <div className="head-user-profile">
 
+    <div className="head-user-avatar">
+      <svg
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+      >
+        <path
+          d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"
+          fill="currentColor"
+        />
+        <path
+          d="M4.5 21a7.5 7.5 0 0 1 15 0"
+          fill="currentColor"
+        />
+      </svg>
+    </div>
 
     <div className="head-user-info">
-
       <span className="head-user-role">
         {pengguna.peran}
       </span>
@@ -225,20 +246,49 @@ export default function Peta({
       <strong>
         {pengguna.name}
       </strong>
-
     </div>
 
-
-    <form action={keluar}>
-      <button
-        type="submit"
-        className="head-logout"
-      >
-        KELUAR
-      </button>
-    </form>
-
   </div>
+
+  {/* SIGN OUT */}
+  <form action={keluar}>
+    <button
+      type="submit"
+      className="head-logout"
+    >
+      <svg
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+      >
+        <path
+          d="M10 17l5-5-5-5"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path
+          d="M15 12H3"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+        />
+        <path
+          d="M21 3v18"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+        />
+      </svg>
+
+      <span>SIGN OUT</span>
+    </button>
+  </form>
+
+</div>
 
 </header>
       <main className="body">
