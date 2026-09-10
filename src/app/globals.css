@@ -142,19 +142,13 @@ header.bar {
 
   padding: 0 12px 0 18px;
 
-  background:
-    linear-gradient(
-      135deg,
-      #ef4f23 0%,
-      #f15a24 50%,
-      #ed4b20 100%
-    );
+  background: #F8FAFC;
 
-  border: 1px solid rgba(255, 255, 255, .18);
+  border: 1px solid #D9E0E8;
   border-radius: 10px;
 
   box-shadow:
-    0 4px 14px rgba(20, 30, 40, .16);
+    0 4px 14px rgba(20, 30, 40, .12);
 
   box-sizing: border-box;
 
@@ -173,10 +167,7 @@ header.bar {
   gap: 13px;
 
   min-width: 0;
-
   padding: 0;
-
-  color: #fff;
 }
 
 .head-logo {
@@ -209,7 +200,7 @@ header.bar {
 
   font-weight: 800;
 
-  color: #fff;
+  color: #17324D;
 
   white-space: nowrap;
 }
@@ -224,9 +215,9 @@ header.bar {
   font-size: 10px;
   line-height: 1;
 
-  font-weight: 500;
+  font-weight: 600;
 
-  color: #fff;
+  color: #C83E3E;
 
   white-space: nowrap;
 }
@@ -242,23 +233,20 @@ header.bar {
   display: flex;
   align-items: center;
 
-  gap: 10px;
+  gap: 11px;
 
-  padding: 0 10px;
+  padding: 0 2px 0 14px;
 
-  background: #fff;
+  background: transparent;
 
-  border-radius: 8px;
-
-  box-shadow:
-    0 2px 8px rgba(20, 30, 40, .08);
+  border-left: 1px solid #D9E0E8;
 
   flex: none;
 }
 
 
 /* =========================================================
-   USER NAME
+   USER INFO
    ========================================================= */
 
 .head-user-info {
@@ -271,7 +259,7 @@ header.bar {
 
   min-width: 0;
 
-  padding: 0 5px;
+  padding: 0;
 }
 
 .head-user-role {
@@ -281,14 +269,14 @@ header.bar {
 
   text-transform: uppercase;
 
-  letter-spacing: .12em;
+  letter-spacing: .14em;
 
   font-size: 8px;
   line-height: 1;
 
   font-weight: 700;
 
-  color: #9aa3b2;
+  color: #8A98A8;
 }
 
 .head-user-info strong {
@@ -299,10 +287,11 @@ header.bar {
   font-family: var(--f-body);
 
   font-size: 12px;
+  line-height: 1;
 
-  font-weight: 600;
+  font-weight: 700;
 
-  color: #202633;
+  color: #17324D;
 
   white-space: nowrap;
 }
@@ -322,14 +311,14 @@ header.bar {
 
   padding: 0;
 
-  border: 1px solid #d7dce5;
-  border-radius: 6px;
+  border: 1px solid #D5DDE6;
+  border-radius: 7px;
 
-  background: #fff;
+  background: #FFFFFF;
 
-  color: #596273;
+  color: #526477;
 
-  font-size: 18px;
+  font-size: 17px;
   line-height: 1;
 
   cursor: pointer;
@@ -341,11 +330,11 @@ header.bar {
 }
 
 .head-theme:hover {
-  background: #f3f5f8;
+  background: #EEF3F7;
 
-  border-color: var(--accent);
+  border-color: #2F6F9F;
 
-  color: var(--accent);
+  color: #2F6F9F;
 }
 
 
@@ -356,14 +345,18 @@ header.bar {
 .head-logout {
   height: 38px;
 
-  padding: 0 14px;
+  padding: 0 13px;
 
-  background: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 
-  border: 1px solid #d7dce5;
-  border-radius: 6px;
+  background: transparent;
 
-  color: #596273;
+  border: 1px solid #D5DDE6;
+  border-radius: 7px;
+
+  color: #5C6B7A;
 
   font-family: var(--f-disp);
 
@@ -384,11 +377,11 @@ header.bar {
 }
 
 .head-logout:hover {
-  background: #f3f5f8;
+  background: #FDF0F0;
 
-  border-color: var(--accent);
+  border-color: #C83E3E;
 
-  color: var(--accent);
+  color: #C83E3E;
 }
 main.body {
   width: 100%;
