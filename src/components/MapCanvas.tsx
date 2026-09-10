@@ -750,53 +750,34 @@ const vis =
         }
       });
 
-  
       map.addLayer({
-  id: 'bidang-lb',
-
-  type: 'symbol',
-
-  source: 'bidang',
-
-  minzoom: 15.2,
-
-  layout: {
-    'text-field': [
-      'get',
-      'nib'
-    ],
-
-    'text-size': 10,
-
-    'text-font': [
-      'Open Sans Regular'
-    ],
-
-    'text-anchor': 'center',
-
-    'text-allow-overlap': true,
-
-    'text-ignore-placement': true
-  },
-
-  paint: {
-    'text-color': '#0E1720',
-
-    'text-halo-color':
-      'rgba(255,255,255,.85)',
-
-    'text-halo-width': 1.1
-  }
-});
-
+        id: 'bidang-lb',
+        type: 'symbol',
+        source: 'bidang',
+        minzoom: 15.2,
+        layout: {
+          'visibility': labelNomor ? 'visible' : 'none',
+          'text-field': [
+            'get',
+            'nib'
+          ],
+          'text-size': 10,
+          'text-anchor': 'center',
+          'text-allow-overlap': true,
+          'text-ignore-placement': true
+        },
+        paint: {
+          'text-color': '#0E1720',
+          'text-halo-color':
+            'rgba(255,255,255,.85)',
+          'text-halo-width': 1.1
+        }
+      });
       
       warnaiTema(map);
-
       pasangInteraksi(map);
-
       zoomKeTrase(map);
     });
-
 
     map.on('error', (e) => {
       console.warn(
@@ -817,22 +798,17 @@ return () => {
 
   }, []);
 
-
   function pasangInteraksi(map: MLMap) {
     let hov: number | null = null;
 
- 
     map.on(
       'mousemove',
       'bidang',
       (e) => {
-
         map.getCanvas().style.cursor =
           'pointer';
-
         const id =
           e.features?.[0]?.id as number;
-
         if (hov !== null) {
           map.setFeatureState(
             {
@@ -844,7 +820,7 @@ return () => {
             }
           );
         }
-
+        
         hov = id;
 
         map.setFeatureState(
