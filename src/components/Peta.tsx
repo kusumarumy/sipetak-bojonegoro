@@ -303,23 +303,7 @@ const [panelAktif, setPanelAktif] =
   <div className="mapwrap">
 
     <MapCanvas />
-
-    <Sidebar
-      aktif={panelAktif}
-      onChange={setPanelAktif}
-    />
-
-    <ControlPanel
-      mode={
-        panelAktif === 'terrain' ||
-        panelAktif === 'layer'
-          ? panelAktif
-          : null
-      }
-      onClose={() => setPanelAktif(null)}
-    />
-
-          <div className="progress float">
+ <div className="progress float">
 
             <div className="ph">
 
