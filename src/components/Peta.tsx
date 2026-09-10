@@ -161,11 +161,6 @@ export default function Peta({
     ['revisi', ringkasan.revisi]
   ];
 
-
-  /* =========================================================
-     RENDER
-     ========================================================= */
-
   return (
     <div className="shell">
 
@@ -187,10 +182,6 @@ export default function Peta({
       <div className="head-title-row">
         <span className="head-eyebrow">
           DPPT
-        </span>
-
-        <span className="head-divider">
-          /
         </span>
 
         <span className="head-project">
