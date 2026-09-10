@@ -5,6 +5,7 @@ import dynamic from 'next/dynamic';
 import ControlPanel from './ControlPanel';
 import Sidebar from './Sidebar';
 import KartuBidang from './KartuBidang';
+import BasemapPanel from './BasemapPanel';
 import DaftarBidang from './DaftarBidang';
 import Statistika from './Statistika';
 import { useApp } from '@/store/useApp';
@@ -285,6 +286,12 @@ const [panelAktif, setPanelAktif] =
   onChange={setPanelAktif}
 />
 
+{panelAktif === 'basemap' && (
+  <BasemapPanel
+    onClose={() => setPanelAktif(null)}
+  />
+)}
+
 {panelAktif === 'bidang' && (
   <DaftarBidang
     onClose={() => setPanelAktif(null)}
@@ -295,7 +302,8 @@ const [panelAktif, setPanelAktif] =
   <Statistika
     onClose={() => setPanelAktif(null)}
   />
-)}   
+)}
+
 <ControlPanel
   mode={
     panelAktif === 'terrain' ||
