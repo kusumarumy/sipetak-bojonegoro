@@ -63,27 +63,27 @@ function IconFilter() {
 const MENU = [
   {
     id: 'terrain' as const,
-    label: 'TERRAIN',
+    label: 'Terrain 3D',
     icon: <IconTerrain />,
   },
   {
     id: 'layer' as const,
-    label: 'LAYER',
+    label: 'Layer',
     icon: <IconLayer />,
   },
   {
     id: 'bidang' as const,
-    label: 'DAFTAR BIDANG',
+    label: 'Daftar bidang',
     icon: <IconBidang />,
   },
   {
     id: 'statistika' as const,
-    label: 'STATISTIKA',
+    label: 'Statistika',
     icon: <IconStatistika />,
   },
   {
     id: 'filter' as const,
-    label: 'FILTER',
+    label: 'Filter',
     icon: <IconFilter />,
   },
 ];
@@ -93,12 +93,11 @@ export default function Sidebar({
   onChange,
 }: Props) {
   return (
-    <aside className="sidebar">
+    <aside className="sidebar" aria-label="Kontrol peta">
 
       <div className="sidebar-menu">
 
         {MENU.map((item) => {
-
           const isActive = aktif === item.id;
 
           return (
@@ -108,14 +107,28 @@ export default function Sidebar({
               className={
                 `sidebar-item${isActive ? ' active' : ''}`
               }
-              onClick={() =>
+
+              /*
+               * HOVER:
+               * Saat cursor masuk icon, panel langsung dibuka.
+               */
+              onMouseEnter={() => {
+                onChange(item.id);
+              }}
+
+              /*
+               * CLICK:
+               * Tetap bisa digunakan untuk desktop/touch.
+               */
+              onClick={() => {
                 onChange(
                   isActive ? null : item.id
-                )
-              }
-              aria-label={item.label}
-            >
+                );
+              }}
 
+              aria-label={item.label}
+              aria-pressed={isActive}
+            >
               <span className="sidebar-icon">
                 {item.icon}
               </span>
@@ -123,10 +136,8 @@ export default function Sidebar({
               <span className="sidebar-tooltip">
                 {item.label}
               </span>
-
             </button>
           );
-
         })}
 
       </div>
