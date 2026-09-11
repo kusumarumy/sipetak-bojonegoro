@@ -537,7 +537,7 @@ main.body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: ##7c0000;
+  background: #7c0000;
   border-right: 1px solid #e1e6ed;
   z-index: 900;
 }
@@ -5318,11 +5318,8 @@ html[data-theme="dark"] .gate-foot {
 
 .basemap-grid {
   display: grid;
-
   grid-template-columns: repeat(2, minmax(0, 1fr));
-
-  gap: 7px;
-
+  gap: 4px;
   width: 100%;
 }
 
@@ -5362,7 +5359,7 @@ html[data-theme="dark"] .gate-foot {
 }
 
 .basemap-card-preview {
-  height: 82px;
+  height: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -5398,7 +5395,7 @@ html[data-theme="dark"] .gate-foot {
   align-items: center;
   justify-content: center;
   gap: 5px;
-  padding: 7px 9px;
+  padding: 2px 3px;
   background: #ffffff;
   border-top: 1px solid #e2e7ed;
 }
