@@ -215,8 +215,10 @@ export default function KartuBidang({
     status
   );
 
-  const nilai = (key: string) =>
-    draft[key] !== undefined ? draft[key] : b?.[key];
+const nilai = (key: string) =>
+  draft[key] !== undefined
+    ? draft[key]
+    : (b as any)?.[key];
 
   const setNilai = (key: string, value: any) => {
     setDraft((prev) => ({
