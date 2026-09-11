@@ -1,10 +1,5 @@
 import type { Peran, StatusBidang } from '@/types';
 
-/**
- * Semua keputusan hak akses ada di berkas ini — satu tempat, mudah diaudit.
- * Aturan yang sama dipanggil di server (API route) dan di klien (menyembunyikan
- * tombol). Server yang menentukan; klien hanya mengikuti agar UI tidak menipu.
- */
 export const dapatMelihatDokumenPribadi = (p: Peran) => p !== 'pelihat';
 
 export const dapatMengubahAtribut = (p: Peran, status: StatusBidang) => {
