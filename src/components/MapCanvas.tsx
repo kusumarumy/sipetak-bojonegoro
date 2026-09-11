@@ -1063,10 +1063,6 @@ if (!urlDTM) {
         : 'NEXT_PUBLIC_TILES_DTM_KAWASAN'
     } di .env.`
   );
-
-  return;
-}
-
   return;
 }
 
