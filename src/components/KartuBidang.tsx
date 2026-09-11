@@ -3,6 +3,13 @@
 import { useEffect, useMemo, useState } from "react";
 import { useApp } from "@/store/useApp";
 import UnggahBerkas from "./UnggahBerkas";
+import type { Peran, StatusBidang } from "@/types";
+import {
+  dapatMengubahAtribut,
+  dapatMengirim,
+  dapatMemverifikasi,
+  dapatMelihatDokumenPribadi,
+} from "@/lib/rbac";
 
 type TabId =
   | "ringkas"
@@ -175,12 +182,13 @@ function Completeness({ bidang }: { bidang: any }) {
 export default function KartuBidang({
   bidang: b,
   onClose,
+  peran,
 }: {
   bidang: any;
   onClose: () => void;
+  peran: Peran;
 }) {
   const {
-    peran,
     muatUlangKartu,
     toast,
   } = useApp();
@@ -190,7 +198,25 @@ export default function KartuBidang({
   const [draft, setDraft] = useState<Record<string, any>>({});
   const [busy, setBusy] = useState(false);
 
-  const bolehEdit = true;
+  const status = (b?.status ?? "draft") as StatusBidang;
+
+  const bolehEdit = dapatMengubahAtribut(
+    peran,
+    status
+  );
+
+  const bolehKirim = dapatMengirim(
+    peran,
+    status
+  );
+
+  const bolehVerifikasi = dapatMemverifikasi(
+    peran,
+    status
+  );
+
+  const bolehLihatDokumenPribadi =
+    dapatMelihatDokumenPribadi(peran);
 
   const nilai = (key: string) =>
     draft[key] !== undefined ? draft[key] : b?.[key];
@@ -207,13 +233,11 @@ export default function KartuBidang({
     setEdit(false);
     setDraft({});
   }, [b?.id]);
-
+  
   const namaPemilik =
     b?.pemilik?.[0]?.nama ??
     b?.nama_milik ??
     "Pemilik belum diisi";
-
-  const status = b?.status ?? "draft";
 
   const luas =
     b?.luas_m2 ??
@@ -1603,56 +1627,62 @@ export default function KartuBidang({
               {busy ? "Menyimpan…" : "Simpan perubahan"}
             </button>
           </>
-        ) : (
-          <>
-            {bolehEdit && (
-              <button
-                className="kb-secondary"
-                disabled={busy}
-                onClick={() => setEdit(true)}
-              >
-                ✎ Edit data
-              </button>
-            )}
+       ) : (
+  <>
+    {bolehEdit && (
+      <button
+        className="kb-secondary"
+        disabled={busy}
+        onClick={() => setEdit(true)}
+      >
+        ✎ Edit data
+      </button>
+    )}
 
-            {status === "draft" || status === "revisi" ? (
-              <button
-                className="kb-primary"
-                disabled={busy}
-                onClick={() => pindahStatus("terkirim")}
-              >
-                {busy ? "Memproses…" : "Kirim verifikasi"}
-              </button>
-            ) : status === "terkirim" ? (
-              <>
-                <button
-                  className="kb-danger"
-                  disabled={busy}
-                  onClick={() => pindahStatus("revisi")}
-                >
-                  Revisi
-                </button>
+    {bolehKirim && (
+      <button
+        className="kb-primary"
+        disabled={busy}
+        onClick={() => pindahStatus("terkirim")}
+      >
+        {busy ? "Memproses…" : "Kirim verifikasi"}
+      </button>
+    )}
 
-                <button
-                  className="kb-primary"
-                  disabled={busy}
-                  onClick={() =>
-                    pindahStatus("terverifikasi")
-                  }
-                >
-                  Verifikasi
-                </button>
-              </>
-            ) : (
-              <button
-                className="kb-primary"
-                disabled
-              >
-                ✓ Terverifikasi
-              </button>
-            )}
-          </>
-        )}
+    {bolehVerifikasi && (
+      <>
+        <button
+          className="kb-danger"
+          disabled={busy}
+          onClick={() => pindahStatus("revisi")}
+        >
+          Revisi
+        </button>
+
+        <button
+          className="kb-primary"
+          disabled={busy}
+          onClick={() => pindahStatus("terverifikasi")}
+        >
+          Verifikasi
+        </button>
+      </>
+    )}
+
+    {!bolehEdit &&
+      !bolehKirim &&
+      !bolehVerifikasi && (
+        <button
+          className="kb-primary"
+          disabled
+        >
+          {status === "terverifikasi"
+            ? "✓ Terverifikasi"
+            : "Tidak ada tindakan"}
+        </button>
+      )}
+  </>
+)}
       </footer>
     </aside>
   );
