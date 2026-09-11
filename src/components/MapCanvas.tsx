@@ -123,19 +123,19 @@ export default function MapCanvas() {
       };
     }
 
-if (DTM.aws) {
-  sources.dem_aws = {
+if (DTM.trace) {
+  sources.dem_trace = {
     type: 'raster-dem',
-    tiles: [DTM.aws],
+    tiles: [DTM.trace],
     tileSize: 256,
     encoding: 'terrarium',
   };
 }
 
-if (DTM.r2) {
-  sources.dem_r2 = {
+if (DTM.kawasan) {
+  sources.dem_kawasan = {
     type: 'raster-dem',
-    tiles: [DTM.r2],
+    tiles: [DTM.kawasan],
     tileSize: 256,
     encoding: 'terrarium',
   };
