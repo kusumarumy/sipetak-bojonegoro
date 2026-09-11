@@ -634,40 +634,28 @@ export async function PATCH(
       });
     }
 
-
-    /* =====================================================
-       TRANSAKSI
-       ===================================================== */
-
     await transaksi(
       sesi.user.id,
       async (c) => {
 
-        /* ===============================================
-           AMBIL NILAI LAMA
-           =============================================== */
+const hasilLama =
+  await c.query<any>(
+    `
+    SELECT *
+    FROM public.bidang_tanah
+    WHERE id = $1
+    FOR UPDATE
+    `,
+    [id]
+  );
 
-        const [lama] =
-          await c.query<any>(
-            `
-            SELECT *
-            FROM public.bidang_tanah
-            WHERE id = $1
-            FOR UPDATE
-            `,
-            [id]
-          );
+const lama = hasilLama.rows[0];
 
-        if (!lama) {
-          throw new Error(
-            'Bidang tidak ditemukan'
-          );
-        }
-
-
-        /* ===============================================
-           UPDATE
-           =============================================== */
+if (!lama) {
+  throw new Error(
+    'Bidang tidak ditemukan'
+  );
+}
 
         const set =
           isi
