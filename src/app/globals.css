@@ -5308,32 +5308,21 @@ html[data-theme="dark"] .gate-foot {
     padding: 0 9px;
   }
 }
-/* =========================================================
-   BASEMAP FLYOUT
-   ========================================================= */
-
 .basemap-flyout {
   position: fixed;
   left: 82px;
   top: 104px;
-  width: 330px;
+  width: 250px;
   max-height: calc(100vh - 120px);
   overflow: hidden;
-
   background: #ffffff;
   border: 1px solid #dce3eb;
   border-radius: 10px;
-
   box-shadow:
     0 8px 28px rgba(25, 47, 70, .15);
-
   z-index: 950;
-
   animation: flyout-in .14s ease-out;
 }
-
-
-/* HEADER */
 
 .basemap-flyout-head {
   min-height: 62px;
@@ -5442,7 +5431,6 @@ html[data-theme="dark"] .gate-foot {
 }
 
 
-/* BODY */
 
 .basemap-flyout-body {
   max-height: calc(100vh - 184px);
@@ -5455,46 +5443,28 @@ html[data-theme="dark"] .gate-foot {
   scrollbar-width: thin;
 }
 
-
-/* =========================================================
-   BASEMAP GRID
-   ========================================================= */
-
 .basemap-grid {
   display: grid;
 
   grid-template-columns: repeat(2, minmax(0, 1fr));
 
-  gap: 9px;
+  gap: 7px;
 
   width: 100%;
 }
 
-
-/* CARD */
-
 .basemap-card {
   position: relative;
-
   min-width: 0;
-
   padding: 0;
-
   overflow: hidden;
-
   border: 1px solid #d8e0e8;
   border-radius: 9px;
-
   background: #f5f7fa;
-
   color: #344657;
-
   font-family: inherit;
-
-  text-align: left;
-
+  text-align: center;
   cursor: pointer;
-
   transition:
     border-color .15s ease,
     box-shadow .15s ease,
@@ -5502,39 +5472,27 @@ html[data-theme="dark"] .gate-foot {
     background .15s ease;
 }
 
-
 .basemap-card:hover {
   border-color: #b9c5d1;
-
   background: #ffffff;
-
   box-shadow:
     0 3px 10px rgba(25, 47, 70, .08);
-
   transform: translateY(-1px);
 }
 
-
 .basemap-card.active {
   border-color: #8f1830;
-
   background: #ffffff;
-
   box-shadow:
     0 0 0 1px rgba(143, 24, 48, .10),
     0 4px 12px rgba(80, 10, 25, .10);
 }
 
-
-/* PREVIEW */
-
 .basemap-card-preview {
   height: 82px;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   background:
     linear-gradient(
       135deg,
@@ -5542,7 +5500,6 @@ html[data-theme="dark"] .gate-foot {
       #d9e1e8
     );
 }
-
 
 .basemap-card-icon {
   width: 38px;
@@ -5562,25 +5519,16 @@ html[data-theme="dark"] .gate-foot {
   font-size: 20px;
 }
 
-
-/* FOOTER */
-
 .basemap-card-footer {
-  min-height: 38px;
-
+  min-height: 5px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-
+  justify-content: center;
   gap: 5px;
-
   padding: 7px 9px;
-
   background: #ffffff;
-
   border-top: 1px solid #e2e7ed;
 }
-
 
 .basemap-card-label {
   min-width: 0;
@@ -5620,7 +5568,6 @@ html[data-theme="dark"] .gate-foot {
   font-size: 10px;
   font-weight: 800;
 }
-
 
 /* =========================================================
    DARK MODE
