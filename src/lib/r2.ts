@@ -70,7 +70,20 @@ export const penyimpananSiap = () =>
     process.env.BOJO_R2_SECRET_ACCESS_KEY &&
     process.env.BOJO_R2_BUCKET
   );
-
+export async function unggahObjek(
+  objectKey: string,
+  body: Buffer | Uint8Array,
+  mime: string
+) {
+  await s3().send(
+    new PutObjectCommand({
+      Bucket: bucket(),
+      Key: objectKey,
+      Body: body,
+      ContentType: mime,
+    })
+  );
+}
 export function urlUnggah(objectKey: string, mime: string, detik = 300) {
   return getSignedUrl(
     s3(),
