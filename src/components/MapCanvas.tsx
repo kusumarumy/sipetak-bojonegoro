@@ -1055,14 +1055,17 @@ if (!urlDTM) {
   beriPesan(
     `DTM ${
       dtm === 'trace'
-        ? 'AWS Terrarium 30 m'
-        : 'DTM 3 m'
+        ? 'DTM Rencana Trace 0.5 m'
+        : 'DTM Kawasan 1.5 m'
     } belum tersedia — isi ${
-      dtm === 'kawasan'
+      dtm === 'trace'
         ? 'NEXT_PUBLIC_TILES_DTM_TRACE'
         : 'NEXT_PUBLIC_TILES_DTM_KAWASAN'
     } di .env.`
   );
+
+  return;
+}
 
   return;
 }
