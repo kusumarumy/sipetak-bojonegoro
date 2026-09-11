@@ -4,23 +4,23 @@ import { useState } from 'react';
 import { useApp } from '@/store/useApp';
 import { LAYERS } from './layers';
 
-const GROUP_ICONS: Record<string, string> = {
-  'Rencana trace': '⌁',
-  'Bidang tanah': '▦',
-  'Jaringan irigasi': '≈',
-  'Jaringan transportasi': '⇆',
-  'Tutupan lahan': '◈',
-  'Utilitas': '⌁',
-};
-
 const GROUP_ORDER = [
-  'Rencana trace',
-  'Bidang tanah',
-  'Jaringan irigasi',
-  'Jaringan transportasi',
-  'Tutupan lahan',
+  'Rencana Trase',
+  'Bidang Tanah',
+  'Jaringan Irigasi',
+  'Jaringan Transportasi',
+  'Tutupan Lahan',
   'Utilitas',
 ];
+
+const GROUP_ICONS: Record<string, string> = {
+  'Rencana Trase': '⌁',
+  'Bidang Tanah': '▦',
+  'Jaringan Irigasi': '≈',
+  'Jaringan Transportasi': '⇆',
+  'Tutupan Lahan': '◈',
+  'Utilitas': '⌁',
+};
 
 type PanelMode = 'terrain' | 'layer' | null;
 
@@ -36,15 +36,8 @@ export default function ControlPanel({
   const grup = GROUP_ORDER.filter((g) =>
   LAYERS.some((l) => l.grup === g)
 );
-
-  const [grupTerbuka, setGrupTerbuka] =
-    useState<Record<string, boolean>>({
-      'Rencana trace': true,
-      'Bidang tanah': true,
-      'Tutupan lahan': true,
-      'Jaringan & utilitas': true,
-    });
-
+const [grupTerbuka, setGrupTerbuka] =
+  useState<Record<string, boolean>>({});
   const toggleGrup = (nama: string) => {
     setGrupTerbuka((prev) => ({
       ...prev,
@@ -103,18 +96,18 @@ export default function ControlPanel({
 
             <>
               <div className="layer-panel-heading">
-  <div className="flyout-kicker">
-    LAYER
-  </div>
-
-  <div className="flyout-title">
-    Pengelolaan Layer
-  </div>
-
-  <div className="flyout-subtitle">
-    Kelola tampilan dan data peta
-  </div>
-</div>
+              <div className="layer-panel-heading">
+            
+              <div className="flyout-kicker">
+                LAYER
+              </div>
+            
+              <div className="flyout-subtitle">
+                Kelola tampilan dan data peta
+              </div>
+            
+            </div>
+            </div>
             </>
 
           )}
@@ -219,34 +212,9 @@ export default function ControlPanel({
 
           <section className="layer-card">
 
-            {/* HEADER */}
-
-            <div className="layer-manager-head">
-
-              <div>
-
-                <div className="layer-manager-title">
-                  LAYER
-                </div>
-
-                <div className="layer-manager-subtitle">
-                  Pengelolaan data peta
-                </div>
-
-              </div>
-
-              <div className="layer-count">
-                {jumlahAktif}/{LAYERS.length}
-              </div>
-
-            </div>
-
-
-            {/* GROUPS */}
-
             <div className="layer-groups">
 
-              {grup.map((g) => {
+{grup.map((g) => {
 
   const layers = LAYERS
     .filter((l) => l.grup === g)
@@ -254,9 +222,7 @@ export default function ControlPanel({
       a.nama.localeCompare(
         b.nama,
         'id',
-        {
-          sensitivity: 'base',
-        }
+        { sensitivity: 'base' }
       )
     );
 
@@ -314,10 +280,10 @@ export default function ControlPanel({
                       </div>
 
                       <span className="group-count">
-                        {aktifGrup > 0
-                          ? `${aktifGrup}/${layers.length}`
-                          : layers.length}
-                      </span>
+  {aktifGrup > 0
+    ? `${aktifGrup}/${layers.length}`
+    : layers.length}
+</span>
 
                     </button>
 
