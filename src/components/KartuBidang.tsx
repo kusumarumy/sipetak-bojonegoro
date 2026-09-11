@@ -453,11 +453,11 @@ case "pemilik": {
                 />
 
                 <Field
-                  label="Tempat, tanggal lahir"
-                  value={pemilik?.ttl ?? b?.ttl_milik}
-                  edit={edit}
-                  onChange={(v) => setNilai("ttl_milik", v)}
-                />
+  label="Tempat, tanggal lahir"
+  value={b?.ttl_milik}
+  edit={edit}
+  onChange={(v) => setNilai("ttl_milik", v)}
+/>
 
                 <Field
                   label="Pekerjaan"
