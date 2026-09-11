@@ -12,7 +12,6 @@ export type DefLayer = {
   grup: string;
 };
 
-
 /* =========================================================
    LAYERS
 ========================================================= */
@@ -20,7 +19,7 @@ export type DefLayer = {
 export const LAYERS: DefLayer[] = [
 
   /* -------------------------------------------------------
-     01 — RENCANA TRASE
+     RENCANA TRASE
   ------------------------------------------------------- */
 
   {
@@ -33,12 +32,12 @@ export const LAYERS: DefLayer[] = [
     lebar: 4,
     opasitas: 1,
     bawaan: true,
-    grup: 'Rencana trase'
+    grup: 'Rencana Trase'
   },
 
 
   /* -------------------------------------------------------
-     02 — BIDANG TANAH
+     BIDANG TANAH
   ------------------------------------------------------- */
 
   {
@@ -49,12 +48,12 @@ export const LAYERS: DefLayer[] = [
     warna: '#F59E0B',
     opasitas: 0.18,
     bawaan: true,
-    grup: 'Bidang tanah'
+    grup: 'Bidang Tanah'
   },
 
 
   /* -------------------------------------------------------
-     03 — JARINGAN IRIGASI
+     JARINGAN IRIGASI
   ------------------------------------------------------- */
 
   {
@@ -65,12 +64,12 @@ export const LAYERS: DefLayer[] = [
     warna: '#3182BD',
     garis: true,
     lebar: 3,
-    grup: 'Jaringan irigasi'
+    grup: 'Jaringan Irigasi'
   },
 
 
   /* -------------------------------------------------------
-     04 — JARINGAN TRANSPORTASI
+     JARINGAN TRANSPORTASI
   ------------------------------------------------------- */
 
   {
@@ -78,10 +77,10 @@ export const LAYERS: DefLayer[] = [
     nama: 'Jalan eksisting',
     sumber: 'jalan',
     tipe: 'line',
-    warna: '#66758A',
+    warna: '#8894A6',
     garis: true,
     lebar: 2,
-    grup: 'Jaringan transportasi'
+    grup: 'Jaringan Transportasi'
   },
 
   {
@@ -89,17 +88,27 @@ export const LAYERS: DefLayer[] = [
     nama: 'Rel kereta api',
     sumber: 'rel_kereta',
     tipe: 'line',
-    warna: '#AEB9C8',
+    warna: '#C3CCD9',
     garis: true,
     lebar: 2.5,
     dash: [6, 4],
-    grup: 'Jaringan transportasi'
+    grup: 'Jaringan Transportasi'
   },
 
 
   /* -------------------------------------------------------
-     05 — TUTUPAN LAHAN
+     TUTUPAN LAHAN
   ------------------------------------------------------- */
+
+  {
+    id: 'hutan',
+    nama: 'Vegetasi',
+    sumber: 'hutan',
+    tipe: 'fill',
+    warna: '#287A5F',
+    opasitas: 0.48,
+    grup: 'Tutupan Lahan'
+  },
 
   {
     id: 'pemakaman',
@@ -107,8 +116,8 @@ export const LAYERS: DefLayer[] = [
     sumber: 'pemakaman',
     tipe: 'fill',
     warna: '#9278C9',
-    opasitas: 0.50,
-    grup: 'Tutupan lahan'
+    opasitas: 0.55,
+    grup: 'Tutupan Lahan'
   },
 
   {
@@ -116,9 +125,9 @@ export const LAYERS: DefLayer[] = [
     nama: 'Pemukiman',
     sumber: 'pemukiman',
     tipe: 'fill',
-    warna: '#E16F91',
-    opasitas: 0.42,
-    grup: 'Tutupan lahan'
+    warna: '#E66F91',
+    opasitas: 0.45,
+    grup: 'Tutupan Lahan'
   },
 
   {
@@ -127,23 +136,13 @@ export const LAYERS: DefLayer[] = [
     sumber: 'sawah',
     tipe: 'fill',
     warna: '#63C59A',
-    opasitas: 0.40,
-    grup: 'Tutupan lahan'
-  },
-
-  {
-    id: 'hutan',
-    nama: 'Vegetasi',
-    sumber: 'hutan',
-    tipe: 'fill',
-    warna: '#287A5F',
-    opasitas: 0.46,
-    grup: 'Tutupan lahan'
+    opasitas: 0.42,
+    grup: 'Tutupan Lahan'
   },
 
 
   /* -------------------------------------------------------
-     06 — UTILITAS
+     UTILITAS
   ------------------------------------------------------- */
 
   {
@@ -151,7 +150,7 @@ export const LAYERS: DefLayer[] = [
     nama: 'Jaringan SUTET',
     sumber: 'kabel_sutet',
     tipe: 'line',
-    warna: '#8FC84A',
+    warna: '#9ED45E',
     garis: true,
     lebar: 2,
     dash: [7, 4],
@@ -163,7 +162,7 @@ export const LAYERS: DefLayer[] = [
     nama: 'Pipa Exxon',
     sumber: 'pipa_exxon',
     tipe: 'line',
-    warna: '#00A79D',
+    warna: '#00AFA3',
     garis: true,
     lebar: 2.5,
     dash: [8, 4],
@@ -175,7 +174,7 @@ export const LAYERS: DefLayer[] = [
     nama: 'Pipa Gresik–Semarang',
     sumber: 'pipa_gresem',
     tipe: 'line',
-    warna: '#C174CF',
+    warna: '#C77DD4',
     garis: true,
     lebar: 2.5,
     dash: [8, 4],
@@ -187,7 +186,7 @@ export const LAYERS: DefLayer[] = [
     nama: 'Tower SUTET',
     sumber: 'tiang_sutet',
     tipe: 'circle',
-    warna: '#8FC84A',
+    warna: '#9ED45E',
     grup: 'Utilitas'
   }
 
