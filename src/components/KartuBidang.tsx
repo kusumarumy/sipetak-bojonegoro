@@ -9,6 +9,7 @@ import {
   dapatMengirim,
   dapatMemverifikasi,
 } from "@/lib/rbac";
+
 type TabId =
   | "ringkas"
   | "pemilik"
@@ -43,11 +44,15 @@ const STATUS_CLASS: Record<string, string> = {
 };
 
 function formatNumber(value: any) {
-  if (value === null || value === undefined || value === "") return "—";
+  if (value === null || value === undefined || value === "") {
+    return "—";
+  }
 
   const n = Number(value);
 
-  if (Number.isNaN(n)) return String(value);
+  if (Number.isNaN(n)) {
+    return String(value);
+  }
 
   return new Intl.NumberFormat("id-ID", {
     maximumFractionDigits: 2,
@@ -144,13 +149,13 @@ function Stat({
 
 function Completeness({ bidang }: { bidang: any }) {
   const checks = [
-    Boolean(bidang.pemilik?.[0]?.nama || bidang.nama_milik),
-    Boolean(bidang.nib),
-    Boolean(bidang.luas_m2 ?? bidang.luastertul),
-    Boolean(bidang.penggunaan),
-    Boolean(bidang.bangunan?.length || bidang.jml_bgn),
-    Boolean(bidang.tanaman?.length || bidang.jenis_tnm),
-    Boolean(bidang.foto_tnh),
+    Boolean(bidang?.pemilik?.[0]?.nama || bidang?.nama_milik),
+    Boolean(bidang?.nib),
+    Boolean(bidang?.luas_m2 ?? bidang?.luastertul),
+    Boolean(bidang?.penggunaan),
+    Boolean(bidang?.bangunan?.length || bidang?.jml_bgn),
+    Boolean(bidang?.tanaman?.length || bidang?.jenis_tnm),
+    Boolean(bidang?.foto_tnh),
   ];
 
   const total = checks.length;
@@ -200,25 +205,16 @@ export default function KartuBidang({
 
   const status = (b?.status ?? "draft") as StatusBidang;
 
-  const bolehEdit = dapatMengubahAtribut(
-    peran,
-    status
-  );
+  const bolehEdit = dapatMengubahAtribut(peran, status);
 
-  const bolehKirim = dapatMengirim(
-    peran,
-    status
-  );
+  const bolehKirim = dapatMengirim(peran, status);
 
-  const bolehVerifikasi = dapatMemverifikasi(
-    peran,
-    status
-  );
+  const bolehVerifikasi = dapatMemverifikasi(peran, status);
 
-const nilai = (key: string) =>
-  draft[key] !== undefined
-    ? draft[key]
-    : (b as any)?.[key];
+  const nilai = (key: string) =>
+    draft[key] !== undefined
+      ? draft[key]
+      : (b as any)?.[key];
 
   const setNilai = (key: string, value: any) => {
     setDraft((prev) => ({
@@ -232,15 +228,17 @@ const nilai = (key: string) =>
     setEdit(false);
     setDraft({});
   }, [b?.id]);
-  
+
   const pemilik: Pemilik | null = useMemo(
-  () => b?.pemilik?.[0] ?? null,
-  [b]
-);
-const namaPemilik =
-  pemilik?.nama ??
-  b?.nama_milik ??
-  "Pemilik belum diisi";
+    () => b?.pemilik?.[0] ?? null,
+    [b]
+  );
+
+  const namaPemilik =
+    pemilik?.nama ??
+    b?.nama_milik ??
+    "Pemilik belum diisi";
+
   const luas =
     b?.luas_m2 ??
     b?.luastertul ??
@@ -338,6 +336,9 @@ const namaPemilik =
 
   const tabContent = useMemo(() => {
     switch (tab) {
+      /* =========================================================
+         RINGKASAN
+      ========================================================= */
       case "ringkas":
         return (
           <>
@@ -429,13 +430,11 @@ const namaPemilik =
             <Completeness bidang={b} />
           </>
         );
-case "pemilik":
-        return (
-          <>
-            <Section
-              title="Pemilik tanah"
-              subtitle="Identitas pemegang/pemilik bidang"
-            >
+
+      /* =========================================================
+         PEMILIK
+      ========================================================= */
+      case "pemilik":
         return (
           <>
             <Section
@@ -458,11 +457,11 @@ case "pemilik":
                 />
 
                 <Field
-  label="Tempat, tanggal lahir"
-  value={b?.ttl_milik}
-  edit={edit}
-  onChange={(v) => setNilai("ttl_milik", v)}
-/>
+                  label="Tempat, tanggal lahir"
+                  value={b?.ttl_milik}
+                  edit={edit}
+                  onChange={(v) => setNilai("ttl_milik", v)}
+                />
 
                 <Field
                   label="Pekerjaan"
@@ -530,7 +529,10 @@ case "pemilik":
             </Section>
           </>
         );
-   
+
+      /* =========================================================
+         BIDANG
+      ========================================================= */
       case "bidang":
         return (
           <>
@@ -539,8 +541,15 @@ case "pemilik":
               subtitle="Identitas dan informasi administrasi tanah"
             >
               <div className="kb-grid two">
-                <Field label="Object ID" value={b?.objectid} />
-                <Field label="Bidang ID" value={b?.bidang_id} />
+                <Field
+                  label="Object ID"
+                  value={b?.objectid}
+                />
+
+                <Field
+                  label="Bidang ID"
+                  value={b?.bidang_id}
+                />
 
                 <Field
                   label="Kode wilayah"
@@ -672,7 +681,7 @@ case "pemilik":
 
                 <Field
                   label="NJOP / m²"
-                  value={formatNumber(b?.njop_m2)}
+                  value={(b as any)?.njop_m2}
                 />
 
                 <Field
@@ -686,6 +695,9 @@ case "pemilik":
           </>
         );
 
+      /* =========================================================
+         BANGUNAN
+      ========================================================= */
       case "bangunan":
         return (
           <>
@@ -696,7 +708,10 @@ case "pemilik":
               {bangunan.length > 0 ? (
                 <div className="kb-list">
                   {bangunan.map((item: any, i: number) => (
-                    <div className="kb-item-card" key={item.id ?? i}>
+                    <div
+                      className="kb-item-card"
+                      key={item.id ?? i}
+                    >
                       <div className="kb-item-head">
                         <div className="kb-item-number">
                           {String(i + 1).padStart(2, "0")}
@@ -704,8 +719,11 @@ case "pemilik":
 
                         <div>
                           <strong>
-                            {item.jenis ?? item.jenis_bgn ?? "Bangunan"}
+                            {item.jenis ??
+                              item.jenis_bgn ??
+                              "Bangunan"}
                           </strong>
+
                           <span>
                             {item.tingkat_terdampak ??
                               item.kondisi ??
@@ -724,7 +742,9 @@ case "pemilik":
                           label="Luas lantai"
                           value={
                             item.luas_lantai_m2
-                              ? `${formatNumber(item.luas_lantai_m2)} m²`
+                              ? `${formatNumber(
+                                  item.luas_lantai_m2
+                                )} m²`
                               : undefined
                           }
                         />
@@ -770,9 +790,14 @@ case "pemilik":
               ) : (
                 <div className="kb-empty">
                   <div>⌂</div>
-                  <strong>Belum ada data bangunan</strong>
+
+                  <strong>
+                    Belum ada data bangunan
+                  </strong>
+
                   <span>
-                    Tambahkan informasi bangunan saat survei lapangan.
+                    Tambahkan informasi bangunan saat survei
+                    lapangan.
                   </span>
                 </div>
               )}
@@ -780,6 +805,9 @@ case "pemilik":
           </>
         );
 
+      /* =========================================================
+         TANAMAN
+      ========================================================= */
       case "tanaman":
         return (
           <>
@@ -790,7 +818,10 @@ case "pemilik":
               {tanaman.length > 0 ? (
                 <div className="kb-list">
                   {tanaman.map((item: any, i: number) => (
-                    <div className="kb-item-card" key={item.id ?? i}>
+                    <div
+                      className="kb-item-card"
+                      key={item.id ?? i}
+                    >
                       <div className="kb-item-head">
                         <div className="kb-item-number plant">
                           {String(i + 1).padStart(2, "0")}
@@ -802,10 +833,12 @@ case "pemilik":
                               item.jenis_tnm ??
                               "Tanaman"}
                           </strong>
+
                           <span>
                             Jumlah:{" "}
                             {formatNumber(
-                              item.jumlah ?? item.jumlah_tnm
+                              item.jumlah ??
+                                item.jumlah_tnm
                             )}
                           </span>
                         </div>
@@ -816,9 +849,14 @@ case "pemilik":
               ) : (
                 <div className="kb-empty">
                   <div>♧</div>
-                  <strong>Belum ada data tanaman</strong>
+
+                  <strong>
+                    Belum ada data tanaman
+                  </strong>
+
                   <span>
-                    Data tanaman dapat ditambahkan dari hasil survei.
+                    Data tanaman dapat ditambahkan dari hasil
+                    survei.
                   </span>
                 </div>
               )}
@@ -827,21 +865,27 @@ case "pemilik":
                 b?.jenis_bnd ||
                 b?.jumlah_bnd) && (
                 <div className="kb-sub-block">
-                  <div className="kb-sub-title">Benda lain</div>
+                  <div className="kb-sub-title">
+                    Benda lain
+                  </div>
 
                   <div className="kb-grid two">
                     <Field
                       label="Jenis"
                       value={b?.jenis_bnd}
                       edit={edit}
-                      onChange={(v) => setNilai("jenis_bnd", v)}
+                      onChange={(v) =>
+                        setNilai("jenis_bnd", v)
+                      }
                     />
 
                     <Field
                       label="Jumlah"
                       value={b?.jumlah_bnd}
                       edit={edit}
-                      onChange={(v) => setNilai("jumlah_bnd", v)}
+                      onChange={(v) =>
+                        setNilai("jumlah_bnd", v)
+                      }
                     />
                   </div>
                 </div>
@@ -850,6 +894,9 @@ case "pemilik":
           </>
         );
 
+      /* =========================================================
+         DOKUMEN
+      ========================================================= */
       case "dokumen":
         return (
           <Section
@@ -864,6 +911,9 @@ case "pemilik":
           </Section>
         );
 
+      /* =========================================================
+         RIWAYAT
+      ========================================================= */
       case "riwayat":
         return (
           <Section
@@ -873,7 +923,10 @@ case "pemilik":
             {b?.riwayat?.length ? (
               <div className="kb-timeline">
                 {b.riwayat.map((item: any, i: number) => (
-                  <div className="kb-timeline-item" key={item.id ?? i}>
+                  <div
+                    className="kb-timeline-item"
+                    key={item.id ?? i}
+                  >
                     <div className="kb-timeline-dot" />
 
                     <div className="kb-timeline-content">
@@ -901,7 +954,9 @@ case "pemilik":
                       </p>
 
                       {item.nama_pengguna && (
-                        <small>{item.nama_pengguna}</small>
+                        <small>
+                          {item.nama_pengguna}
+                        </small>
                       )}
                     </div>
                   </div>
@@ -910,8 +965,14 @@ case "pemilik":
             ) : (
               <div className="kb-empty">
                 <div>◷</div>
-                <strong>Belum ada riwayat</strong>
-                <span>Aktivitas bidang akan muncul di sini.</span>
+
+                <strong>
+                  Belum ada riwayat
+                </strong>
+
+                <span>
+                  Aktivitas bidang akan muncul di sini.
+                </span>
               </div>
             )}
           </Section>
@@ -1486,7 +1547,10 @@ case "pemilik":
           }
 
           .kb-header {
-            padding-top: max(12px, env(safe-area-inset-top));
+            padding-top: max(
+              12px,
+              env(safe-area-inset-top)
+            );
           }
 
           .kb-tabs {
@@ -1510,7 +1574,10 @@ case "pemilik":
           }
 
           .kb-stat-grid {
-            grid-template-columns: repeat(3, minmax(0, 1fr));
+            grid-template-columns: repeat(
+              3,
+              minmax(0, 1fr)
+            );
           }
 
           .kb-mini-grid {
@@ -1561,10 +1628,15 @@ case "pemilik":
           </button>
 
           <div className="kb-title">
-            <span className="kb-eyebrow">Kartu bidang tanah</span>
+            <span className="kb-eyebrow">
+              Kartu bidang tanah
+            </span>
 
             <strong>
-              {b?.kode ?? b?.bidang_id ?? b?.nib ?? "Bidang"}
+              {b?.kode ??
+                b?.bidang_id ??
+                b?.nib ??
+                "Bidang"}
             </strong>
 
             <span className="kb-owner">
@@ -1574,7 +1646,8 @@ case "pemilik":
 
           <span
             className={`kb-status ${
-              STATUS_CLASS[status] ?? "status-draft"
+              STATUS_CLASS[status] ??
+              "status-draft"
             }`}
           >
             {STATUS[status] ?? status}
@@ -1628,65 +1701,75 @@ case "pemilik":
               disabled={busy}
               onClick={simpan}
             >
-              {busy ? "Menyimpan…" : "Simpan perubahan"}
+              {busy
+                ? "Menyimpan…"
+                : "Simpan perubahan"}
             </button>
           </>
-       ) : (
-  <>
-    {bolehEdit && (
-      <button
-        className="kb-secondary"
-        disabled={busy}
-        onClick={() => setEdit(true)}
-      >
-        ✎ Edit data
-      </button>
-    )}
+        ) : (
+          <>
+            {bolehEdit && (
+              <button
+                className="kb-secondary"
+                disabled={busy}
+                onClick={() => setEdit(true)}
+              >
+                ✎ Edit data
+              </button>
+            )}
 
-    {bolehKirim && (
-      <button
-        className="kb-primary"
-        disabled={busy}
-        onClick={() => pindahStatus("terkirim")}
-      >
-        {busy ? "Memproses…" : "Kirim verifikasi"}
-      </button>
-    )}
+            {bolehKirim && (
+              <button
+                className="kb-primary"
+                disabled={busy}
+                onClick={() =>
+                  pindahStatus("terkirim")
+                }
+              >
+                {busy
+                  ? "Memproses…"
+                  : "Kirim verifikasi"}
+              </button>
+            )}
 
-    {bolehVerifikasi && (
-      <>
-        <button
-          className="kb-danger"
-          disabled={busy}
-          onClick={() => pindahStatus("revisi")}
-        >
-          Revisi
-        </button>
+            {bolehVerifikasi && (
+              <>
+                <button
+                  className="kb-danger"
+                  disabled={busy}
+                  onClick={() =>
+                    pindahStatus("revisi")
+                  }
+                >
+                  Revisi
+                </button>
 
-        <button
-          className="kb-primary"
-          disabled={busy}
-          onClick={() => pindahStatus("terverifikasi")}
-        >
-          Verifikasi
-        </button>
-      </>
-    )}
+                <button
+                  className="kb-primary"
+                  disabled={busy}
+                  onClick={() =>
+                    pindahStatus("terverifikasi")
+                  }
+                >
+                  Verifikasi
+                </button>
+              </>
+            )}
 
-    {!bolehEdit &&
-      !bolehKirim &&
-      !bolehVerifikasi && (
-        <button
-          className="kb-primary"
-          disabled
-        >
-          {status === "terverifikasi"
-            ? "✓ Terverifikasi"
-            : "Tidak ada tindakan"}
-        </button>
-      )}
-  </>
-)}
+            {!bolehEdit &&
+              !bolehKirim &&
+              !bolehVerifikasi && (
+                <button
+                  className="kb-primary"
+                  disabled
+                >
+                  {status === "terverifikasi"
+                    ? "✓ Terverifikasi"
+                    : "Tidak ada tindakan"}
+                </button>
+              )}
+          </>
+        )}
       </footer>
     </aside>
   );
