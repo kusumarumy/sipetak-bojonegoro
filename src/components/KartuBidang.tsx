@@ -234,10 +234,10 @@ const nilai = (key: string) =>
     setDraft({});
   }, [b?.id]);
   
-  const namaPemilik =
-    b?.pemilik?.[0]?.nama ??
-    b?.nama_milik ??
-    "Pemilik belum diisi";
+  const pemilik: Pemilik | null = useMemo(
+  () => b?.pemilik?.[0] ?? null,
+  [b]
+);
 
   const luas =
     b?.luas_m2 ??
