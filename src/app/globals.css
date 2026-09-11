@@ -5300,23 +5300,26 @@ html[data-theme="dark"] .stat-bar-fill {
 
 
 /* =========================================================
-   TABS
-   ========================================================= */
+   TABS KARTU BIDANG
+========================================================= */
 
 .kb-tabs {
-  flex: 0 0 auto;
-
   display: flex;
+  align-items: stretch;
   gap: 4px;
 
-  padding: 7px 10px;
+  width: 100%;
+  min-width: 0;
+
+  padding: 6px 8px;
 
   overflow-x: auto;
-
-  border-bottom: 1px solid var(--kb-line);
-  background: var(--kb-bg);
+  overflow-y: hidden;
 
   scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+
+  border-bottom: 1px solid var(--kb-border);
 }
 
 .kb-tabs::-webkit-scrollbar {
@@ -5328,11 +5331,11 @@ html[data-theme="dark"] .stat-bar-fill {
 
   display: inline-flex;
   align-items: center;
-  gap: 5px;
+  justify-content: center;
+  gap: 7px;
 
-  height: 33px;
-
-  padding: 0 11px;
+  min-height: 34px;
+  padding: 7px 11px;
 
   border: 0;
   border-radius: 9px;
@@ -5340,30 +5343,35 @@ html[data-theme="dark"] .stat-bar-fill {
   background: transparent;
   color: var(--kb-muted);
 
-  font-size: 11px;
-  font-weight: 650;
+  font-size: 12px;
+  font-weight: 700;
 
-  cursor: pointer;
   white-space: nowrap;
+  cursor: pointer;
+
+  transition:
+    background 0.18s ease,
+    color 0.18s ease;
 }
 
 .kb-tab:hover {
-  background: var(--kb-bg2);
+  background: #f3f5f8;
   color: var(--kb-text);
 }
 
 .kb-tab.active {
-  color: white;
   background: var(--kb-red);
-
-  box-shadow:
-    0 4px 10px rgba(143, 38, 53, 0.18);
+  color: white;
 }
 
 .kb-tab-icon {
-  font-size: 13px;
-}
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 
+  font-size: 13px;
+  line-height: 1;
+}
 
 /* =========================================================
    SCROLL AREA
