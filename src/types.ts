@@ -76,14 +76,144 @@ export interface JejakAudit {
   pada: string; oleh: string | null;
 }
 export interface Bidang {
-  id: string; kode: string; desa: string | null; kecamatan: string | null;
-  luas_m2: number | null; luas_terdampak_m2: number | null; luas_sisa_m2: number | null;
-  penggunaan: string | null; alas_hak: string | null; nib: string | null; njop_m2: number | null;
-  batas_utara: string | null; batas_selatan: string | null;
-  batas_timur: string | null; batas_barat: string | null;
-  status: StatusBidang; catatan_supervisor: string | null;
-  petugas_nama: string | null; tanggal_ukur: string | null;
-  dikirim_pada: string | null; diverifikasi_pada: string | null;
-  pemilik: Pemilik[]; bangunan: Bangunan[]; tanaman: Tanaman[];
-  benda_lain: BendaLain[]; lampiran: Lampiran[]; riwayat: JejakAudit[];
+  // =========================
+  // IDENTITAS BIDANG
+  // =========================
+  id: string;
+  objectid?: number | null;
+  bidang_id?: string | null;
+  kode?: string | null;
+  kode_bid?: string | null;
+  fid?: string | null;
+
+  // =========================
+  // WILAYAH
+  // =========================
+  kodewilaya?: string | null;
+  kecamatan: string | null;
+  kelurahan?: string | null;
+  desa?: string | null;
+  rt_rw?: string | null;
+
+  // =========================
+  // HAK / PRODUK
+  // =========================
+  tipehak?: string | null;
+  tipeproduk?: string | null;
+  tahun?: number | null;
+  nib: string | null;
+
+  surat_hak?: string | null;
+  nomor_hak?: string | null;
+  alas_hak?: string | null;
+  beban_hak?: string | null;
+
+  // =========================
+  // LUAS
+  // =========================
+  luastertul?: number | null;
+  luaspeta?: number | null;
+  luas_m2?: number | null;
+
+  luas_tnh?: number | null;
+  luas_atbt?: number | null;
+
+  luas_terdampak_m2?: number | null;
+  luas_sisa_m2?: number | null;
+
+  sumbergeom?: number | null;
+  shape_leng?: number | null;
+  shape_area?: number | null;
+
+  // =========================
+  // PENGUKURAN
+  // =========================
+  alatukur?: string | null;
+  metodukur?: string | null;
+
+  // =========================
+  // PENGGUNAAN / TANAH
+  // =========================
+  penggunaan: string | null;
+  hub_tnh?: string | null;
+  kode_wwc?: string | null;
+  jenis_tnh?: string | null;
+  ruang_atbt?: string | null;
+
+  sta_tnh?: string | null;
+  dampak_tnh?: string | null;
+
+  // =========================
+  // PEMILIK — DATA LANGSUNG
+  // =========================
+  nama_milik?: string | null;
+  ttl_milik?: string | null;
+  krja_milik?: string | null;
+  almt_milik?: string | null;
+  nik_milik?: string | null;
+
+  nomor_hp?: string | null;
+
+  // =========================
+  // PENYEWA
+  // =========================
+  nama_sewa?: string | null;
+  ttl_sewa?: string | null;
+  krja_sewa?: string | null;
+  almt_sewa?: string | null;
+  nik_sewa?: string | null;
+
+  // =========================
+  // TANAMAN
+  // =========================
+  jenis_tnm?: string | null;
+  jumlah_tnm?: number | null;
+
+  // =========================
+  // BENDA LAIN
+  // =========================
+  jenis_bnd?: string | null;
+  jumlah_bnd?: number | null;
+
+  // =========================
+  // BANGUNAN
+  // =========================
+  jml_bgn?: number | null;
+
+  // =========================
+  // DATA LAIN
+  // =========================
+  date_updt?: string | null;
+  foto_tnh?: string | null;
+  nama?: string | null;
+  layer?: string | null;
+  path?: string | null;
+
+  // =========================
+  // GEOMETRY
+  // =========================
+  geometry?: unknown;
+
+  // =========================
+  // STATUS APLIKASI
+  // =========================
+  status: StatusBidang;
+  catatan_supervisor: string | null;
+
+  petugas_nama: string | null;
+  tanggal_ukur: string | null;
+  dikirim_pada: string | null;
+  diverifikasi_pada: string | null;
+
+  created_at?: string | null;
+
+  // =========================
+  // RELASI APLIKASI
+  // =========================
+  pemilik: Pemilik[];
+  bangunan: Bangunan[];
+  tanaman: Tanaman[];
+  benda_lain: BendaLain[];
+  lampiran: Lampiran[];
+  riwayat: JejakAudit[];
 }
