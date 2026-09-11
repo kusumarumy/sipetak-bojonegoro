@@ -256,18 +256,23 @@ const [grupTerbuka, setGrupTerbuka] =
 
                       <div className="layer-group-left">
 
-                        <span
-                          className={
-                            'group-chevron' +
-                            (
-                              terbukaGrup
-                                ? ' expanded'
-                                : ''
-                            )
-                          }
-                        >
-                          ›
-                        </span>
+                     <span
+  className={
+    'group-chevron' +
+    (terbukaGrup ? ' expanded' : '')
+  }
+>
+  <svg viewBox="0 0 16 16" aria-hidden="true">
+    <path
+      d="M6 3l5 5-5 5"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.7"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+</span>
 
                         <span className="group-icon">
                           {GROUP_ICONS[g] ?? '•'}
@@ -279,10 +284,8 @@ const [grupTerbuka, setGrupTerbuka] =
 
                       </div>
 
-                      <span className="group-count">
-  {aktifGrup > 0
-    ? `${aktifGrup}/${layers.length}`
-    : layers.length}
+<span className="group-count">
+  {layers.length}
 </span>
 
                     </button>
