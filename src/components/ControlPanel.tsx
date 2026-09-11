@@ -158,12 +158,12 @@ const [grupTerbuka, setGrupTerbuka] =
               <button
                 type="button"
                 className={
-                  s.dtm === 'aws'
+                  s.dtm === 'trace'
                     ? 'active'
                     : ''
                 }
                 onClick={() =>
-                  s.setDTM('aws')
+                  s.setDTM('trace')
                 }
               >
                 <span className="terrain-option-name">
@@ -181,12 +181,12 @@ const [grupTerbuka, setGrupTerbuka] =
               <button
                 type="button"
                 className={
-                  s.dtm === 'r2'
+                  s.dtm === 'kawasan'
                     ? 'active'
                     : ''
                 }
                 onClick={() =>
-                  s.setDTM('r2')
+                  s.setDTM('kawasan')
                 }
               >
                 <span className="terrain-option-name">
