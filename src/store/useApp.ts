@@ -15,8 +15,8 @@ export type Basemap =
 
 export type SumberDTM =
   | 'off'
-  | 'aws'
-  | 'r2';
+  | 'trace'
+  | 'kawasan';
 
 export type PewarnaanBidang =
   | 'status'
