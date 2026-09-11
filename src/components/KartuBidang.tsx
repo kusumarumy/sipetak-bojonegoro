@@ -189,9 +189,9 @@ export default function KartuBidang({
   peran: Peran;
 }) {
   const {
-    muatUlangKartu,
-    toast,
-  } = useApp();
+  muatUlangKartu,
+  beriPesan,
+} = useApp();
 
   const [tab, setTab] = useState<TabId>("ringkas");
   const [edit, setEdit] = useState(false);
@@ -286,10 +286,10 @@ export default function KartuBidang({
 
       await muatUlangKartu?.();
 
-      toast?.("Perubahan berhasil disimpan");
+      beriPesan("Perubahan berhasil disimpan");
     } catch (error) {
       console.error(error);
-      toast?.("Gagal menyimpan perubahan");
+      beriPesan("Gagal menyimpan perubahan");
     } finally {
       setBusy(false);
     }
@@ -319,7 +319,7 @@ export default function KartuBidang({
 
       await muatUlangKartu?.();
 
-      toast?.(
+      beriPesan(
         target === "terkirim"
           ? "Bidang dikirim untuk verifikasi"
           : target === "terverifikasi"
@@ -328,7 +328,7 @@ export default function KartuBidang({
       );
     } catch (error) {
       console.error(error);
-      toast?.("Gagal mengubah status");
+      beriPesan("Gagal mengubah status");
     } finally {
       setBusy(false);
     }
