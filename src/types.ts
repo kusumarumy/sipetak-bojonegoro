@@ -76,9 +76,7 @@ export interface JejakAudit {
   pada: string; oleh: string | null;
 }
 export interface Bidang {
-  // =========================
-  // IDENTITAS BIDANG
-  // =========================
+  // Identitas
   id: string;
   objectid?: number | null;
   bidang_id?: string | null;
@@ -86,130 +84,92 @@ export interface Bidang {
   kode_bid?: string | null;
   fid?: string | null;
 
-  // =========================
-  // WILAYAH
-  // =========================
+  // Wilayah
   kodewilaya?: string | null;
   kecamatan: string | null;
   kelurahan?: string | null;
   desa?: string | null;
   rt_rw?: string | null;
 
-  // =========================
-  // HAK / PRODUK
-  // =========================
+  // Hak / produk
   tipehak?: string | null;
   tipeproduk?: string | null;
   tahun?: number | null;
   nib: string | null;
-
   surat_hak?: string | null;
   nomor_hak?: string | null;
   alas_hak?: string | null;
   beban_hak?: string | null;
 
-  // =========================
-  // LUAS
-  // =========================
+  // Luas
   luastertul?: number | null;
   luaspeta?: number | null;
   luas_m2?: number | null;
-
   luas_tnh?: number | null;
   luas_atbt?: number | null;
-
   luas_terdampak_m2?: number | null;
   luas_sisa_m2?: number | null;
-
   sumbergeom?: number | null;
   shape_leng?: number | null;
   shape_area?: number | null;
 
-  // =========================
-  // PENGUKURAN
-  // =========================
+  // Pengukuran
   alatukur?: string | null;
   metodukur?: string | null;
 
-  // =========================
-  // PENGGUNAAN / TANAH
-  // =========================
+  // Tanah
   penggunaan: string | null;
   hub_tnh?: string | null;
   kode_wwc?: string | null;
   jenis_tnh?: string | null;
   ruang_atbt?: string | null;
-
   sta_tnh?: string | null;
   dampak_tnh?: string | null;
 
-  // =========================
-  // PEMILIK — DATA LANGSUNG
-  // =========================
+  // Pemilik langsung dari tabel bidang_tanah
   nama_milik?: string | null;
   ttl_milik?: string | null;
   krja_milik?: string | null;
   almt_milik?: string | null;
   nik_milik?: string | null;
-
   nomor_hp?: string | null;
 
-  // =========================
-  // PENYEWA
-  // =========================
+  // Penyewa
   nama_sewa?: string | null;
   ttl_sewa?: string | null;
   krja_sewa?: string | null;
   almt_sewa?: string | null;
   nik_sewa?: string | null;
 
-  // =========================
-  // TANAMAN
-  // =========================
+  // Tanaman
   jenis_tnm?: string | null;
   jumlah_tnm?: number | null;
 
-  // =========================
-  // BENDA LAIN
-  // =========================
+  // Benda lain
   jenis_bnd?: string | null;
   jumlah_bnd?: number | null;
 
-  // =========================
-  // BANGUNAN
-  // =========================
+  // Bangunan
   jml_bgn?: number | null;
 
-  // =========================
-  // DATA LAIN
-  // =========================
+  // Metadata
   date_updt?: string | null;
   foto_tnh?: string | null;
   nama?: string | null;
   layer?: string | null;
   path?: string | null;
-
-  // =========================
-  // GEOMETRY
-  // =========================
   geometry?: unknown;
+  created_at?: string | null;
 
-  // =========================
-  // STATUS APLIKASI
-  // =========================
+  // Status aplikasi
   status: StatusBidang;
   catatan_supervisor: string | null;
-
   petugas_nama: string | null;
   tanggal_ukur: string | null;
   dikirim_pada: string | null;
   diverifikasi_pada: string | null;
 
-  created_at?: string | null;
-
-  // =========================
-  // RELASI APLIKASI
-  // =========================
+  // Relasi aplikasi
   pemilik: Pemilik[];
   bangunan: Bangunan[];
   tanaman: Tanaman[];
