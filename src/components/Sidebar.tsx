@@ -115,42 +115,24 @@ export default function Sidebar({
           const isActive = aktif === item.id;
 
           return (
-            <button
-              key={item.id}
-              type="button"
-              className={
-                `sidebar-item${isActive ? ' active' : ''}`
-              }
+<button
+  key={item.id}
+  type="button"
+  className={`sidebar-item${isActive ? ' active' : ''}`}
+  onClick={() => {
+    onChange(isActive ? null : item.id);
+  }}
+  aria-label={item.label}
+  aria-pressed={isActive}
+>
+  <span className="sidebar-icon">
+    {item.icon}
+  </span>
 
-              /*
-               * HOVER:
-               * Saat cursor masuk icon, panel langsung dibuka.
-               */
-              onMouseEnter={() => {
-                onChange(item.id);
-              }}
-
-              /*
-               * CLICK:
-               * Tetap bisa digunakan untuk desktop/touch.
-               */
-              onClick={() => {
-                onChange(
-                  isActive ? null : item.id
-                );
-              }}
-
-              aria-label={item.label}
-              aria-pressed={isActive}
-            >
-              <span className="sidebar-icon">
-                {item.icon}
-              </span>
-
-              <span className="sidebar-tooltip">
-                {item.label}
-              </span>
-            </button>
+  <span className="sidebar-tooltip">
+    {item.label}
+  </span>
+</button>
           );
         })}
 
