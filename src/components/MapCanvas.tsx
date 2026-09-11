@@ -271,15 +271,12 @@ const resizeObserver = new ResizeObserver(() => {
 });
 
 resizeObserver.observe(ref.current);
-
-map.addControl(
-  new maplibregl.NavigationControl({
-    visualizePitch: true
-  }),
-  'top-right'
-);
-
-
+    map.addControl(
+      new maplibregl.NavigationControl({
+        visualizePitch: true
+      }),
+      'top-right'
+    );
     map.addControl(
       new maplibregl.ScaleControl({
         maxWidth: 110,
@@ -287,11 +284,14 @@ map.addControl(
       }),
       'bottom-left'
     );
-
+    map.addControl(
+      new maplibregl.AttributionControl({
+        compact: true
+      }),
+      'bottom-left'
+    );
 
     map.on('load', () => {
-
-   
       for (
         const [k, def]
         of [
@@ -300,12 +300,9 @@ map.addControl(
         ] as const
       ) {
         if (!ADA_KONTUR[k]) continue;
-
         map.addLayer({
           id: def.id,
-
           type: 'line',
-
           source:
             k === 'lidar'
               ? 'kontur_lidar'
