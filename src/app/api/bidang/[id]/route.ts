@@ -1,9 +1,9 @@
-import { NextResponse } from 'next/server';
-import { z } from 'zod';
-import { auth } from '@/lib/auth';
-import { query, transaksi } from '@/lib/db';
-import { dapatMengubahAtribut } from '@/lib/rbac';
-import type { StatusBidang } from '@/types';
+import { NextResponse } from "next/server";
+import { z } from "zod";
+import { auth } from "@/lib/auth";
+import { query, transaksi } from "@/lib/db";
+import { dapatMengubahAtribut } from "@/lib/rbac";
+import type { StatusBidang } from "@/types";
 
 type Ctx = {
   params: Promise<{ id: string }>;
@@ -23,15 +23,13 @@ const angkaOpsional = z.preprocess(
       return undefined;
     }
 
-    if (value === null || value === '') {
+    if (value === null || value === "") {
       return null;
     }
 
     const n = Number(value);
 
-    return Number.isFinite(n)
-      ? n
-      : value;
+    return Number.isFinite(n) ? n : value;
   },
   z.number().nonnegative().nullable().optional()
 );
@@ -42,15 +40,13 @@ const tahunOpsional = z.preprocess(
       return undefined;
     }
 
-    if (value === null || value === '') {
+    if (value === null || value === "") {
       return null;
     }
 
     const n = Number(value);
 
-    return Number.isFinite(n)
-      ? n
-      : value;
+    return Number.isFinite(n) ? n : value;
   },
   z
     .number()
@@ -60,10 +56,8 @@ const tahunOpsional = z.preprocess(
     .optional()
 );
 
-
 /* =========================================================
    GET
-   Mengambil data langsung dari public.bidang_tanah
    ========================================================= */
 
 export async function GET(
@@ -73,15 +67,18 @@ export async function GET(
   const sesi = await auth();
 
   if (!sesi?.user) {
-    return new NextResponse(
-      'Belum masuk',
-      { status: 401 }
-    );
+    return new NextResponse("Belum masuk", {
+      status: 401,
+    });
   }
 
   const { id } = await params;
 
   try {
+    /* =====================================================
+       AMBIL DATA BIDANG
+       ===================================================== */
+
     const [b] = await query<any>(
       `
       SELECT
@@ -175,19 +172,38 @@ export async function GET(
 
     if (!b) {
       return new NextResponse(
-        'Bidang tidak ditemukan',
+        "Bidang tidak ditemukan",
         { status: 404 }
       );
     }
 
-    /*
-     * =====================================================
-     * DATABASE → FRONTEND
-     *
-     * Nilai tetap berasal dari public.bidang_tanah.
-     * Tidak membuat data yang tidak ada di database.
-     * =====================================================
-     */
+    /* =====================================================
+       AMBIL RIWAYAT DARI AUDIT LOG
+       ===================================================== */
+
+    const hasilRiwayat = await query<any>(
+      `
+      SELECT
+        al.id,
+        al.aksi,
+        al.kolom,
+        al.nilai_lama,
+        al.nilai_baru,
+        al.pada,
+        p.nama AS nama_pengguna
+      FROM public.audit_log al
+      LEFT JOIN public.pengguna p
+        ON p.id = al.pengguna_id
+      WHERE al.tabel = 'bidang_tanah'
+        AND al.record_id = $1
+      ORDER BY al.pada DESC, al.id DESC
+      `,
+      [id]
+    );
+
+    /* =====================================================
+       DATABASE → FRONTEND
+       ===================================================== */
 
     const bidang = {
       /* Identitas */
@@ -259,8 +275,8 @@ export async function GET(
               hubungan: null,
               npwp: null,
               bank_nama: null,
-              bank_rek: null
-            }
+              bank_rek: null,
+            },
           ]
         : [],
 
@@ -292,8 +308,8 @@ export async function GET(
               hubungan: null,
               npwp: null,
               bank_nama: null,
-              bank_rek: null
-            }
+              bank_rek: null,
+            },
           ]
         : [],
 
@@ -301,16 +317,11 @@ export async function GET(
       hub_tnh: b.hub_tnh,
       kode_wwc: b.kode_wwc,
       jenis_tnh: b.jenis_tnh,
-
       ruang_atbt: b.ruang_atbt,
       luas_atbt: b.luas_atbt,
-
       dampak_tnh: b.dampak_tnh,
 
-      /* Bangunan
-       * Database hanya menyimpan jumlah.
-       * Tidak membuat objek bangunan palsu.
-       */
+      /* Bangunan */
       jml_bgn: b.jml_bgn,
       bangunan: [],
 
@@ -345,45 +356,49 @@ export async function GET(
       diverifikasi_pada:
         b.diverifikasi_pada,
 
-      /*
-       * Lampiran dan riwayat belum berasal
-       * dari tabel bidang_tanah.
-       */
+      /* Lampiran */
       lampiran: [],
-      riwayat: []
+
+      /* Riwayat */
+      riwayat: hasilRiwayat.map((r) => ({
+        id: r.id,
+        aksi: r.aksi,
+        kolom: r.kolom,
+        nilai_lama: r.nilai_lama,
+        nilai_baru: r.nilai_baru,
+        pada: r.pada,
+        nama_pengguna:
+          r.nama_pengguna,
+      })),
     };
 
     return NextResponse.json(bidang);
-
   } catch (error) {
     console.error(
-      'GET /api/bidang/[id] ERROR:',
+      "GET /api/bidang/[id] ERROR:",
       error
     );
 
     return NextResponse.json(
       {
-        pesan:
-          'Gagal memuat data bidang',
+        pesan: "Gagal memuat data bidang",
         error:
           error instanceof Error
             ? error.message
-            : String(error)
+            : String(error),
       },
       { status: 500 }
     );
   }
 }
 
-
 /* =========================================================
    PATCH SCHEMA
-   HANYA kolom yang benar-benar ada di
-   public.bidang_tanah
+
+   Kolom yang memang ada di public.bidang_tanah
    ========================================================= */
 
 const SkemaUbah = z.object({
-
   /* Lokasi */
   kecamatan:
     z.string().max(120).nullish(),
@@ -399,7 +414,6 @@ const SkemaUbah = z.object({
 
   kode_bid:
     z.string().max(120).nullish(),
-
 
   /* Legalitas */
   tipehak:
@@ -426,7 +440,6 @@ const SkemaUbah = z.object({
   beban_hak:
     z.string().max(160).nullish(),
 
-
   /* Penggunaan */
   penggunaan:
     z.string().max(120).nullish(),
@@ -440,7 +453,6 @@ const SkemaUbah = z.object({
   dampak_tnh:
     z.string().max(160).nullish(),
 
-
   /* Pengukuran */
   alatukur:
     z.string().max(120).nullish(),
@@ -451,12 +463,24 @@ const SkemaUbah = z.object({
   luas_tnh:
     angkaOpsional,
 
+  luastertul:
+    angkaOpsional,
+
+  luaspeta:
+    angkaOpsional,
+
   luas_atbt:
     angkaOpsional,
 
   ruang_atbt:
     z.string().max(120).nullish(),
 
+  /* Dampak */
+  luas_terdampak_m2:
+    angkaOpsional,
+
+  luas_sisa_m2:
+    angkaOpsional,
 
   /* Pemilik */
   nama_milik:
@@ -473,7 +497,6 @@ const SkemaUbah = z.object({
 
   nik_milik:
     z.string().max(32).nullish(),
-
 
   /* Penyewa */
   nama_sewa:
@@ -494,14 +517,12 @@ const SkemaUbah = z.object({
   nomor_hp:
     z.string().max(40).nullish(),
 
-
   /* Tanaman */
   jenis_tnm:
     z.string().max(160).nullish(),
 
   jumlah_tnm:
     angkaOpsional,
-
 
   /* Benda lain */
   jenis_bnd:
@@ -510,28 +531,21 @@ const SkemaUbah = z.object({
   jumlah_bnd:
     angkaOpsional,
 
-
   /* Bangunan */
   jml_bgn:
     angkaOpsional,
 
+  /* Workflow / pendataan */
+  petugas_nama:
+    z.string().max(160).nullish(),
 
-  /* Luas dampak
-   * Bisa dipakai jika nantinya KartuBidang
-   * menjadikannya editable.
-   */
-  luas_terdampak_m2:
-    angkaOpsional,
-
-  luas_sisa_m2:
-    angkaOpsional,
-
+  tanggal_ukur:
+    z.string().nullish(),
 
   /* Metadata */
   date_updt:
-    z.string().nullish()
+    z.string().nullish(),
 });
-
 
 /* =========================================================
    PATCH
@@ -544,16 +558,14 @@ export async function PATCH(
   const sesi = await auth();
 
   if (!sesi?.user) {
-    return new NextResponse(
-      'Belum masuk',
-      { status: 401 }
-    );
+    return new NextResponse("Belum masuk", {
+      status: 401,
+    });
   }
 
   const { id } = await params;
 
   try {
-
     /* =====================================================
        CEK BIDANG
        ===================================================== */
@@ -572,11 +584,10 @@ export async function PATCH(
 
     if (!row) {
       return new NextResponse(
-        'Bidang tidak ditemukan',
+        "Bidang tidak ditemukan",
         { status: 404 }
       );
     }
-
 
     /* =====================================================
        CEK RBAC
@@ -589,11 +600,10 @@ export async function PATCH(
       )
     ) {
       return new NextResponse(
-        'Bidang terkunci untuk peran ini',
+        "Bidang terkunci untuk peran ini",
         { status: 403 }
       );
     }
-
 
     /* =====================================================
        VALIDASI BODY
@@ -607,63 +617,73 @@ export async function PATCH(
     if (!parsed.success) {
       return NextResponse.json(
         {
-          pesan:
-            'Data tidak valid',
+          pesan: "Data tidak valid",
           detail:
-            parsed.error.flatten()
+            parsed.error.flatten(),
         },
         { status: 400 }
       );
     }
 
-
     /* =====================================================
        AMBIL FIELD YANG DIKIRIM
        ===================================================== */
 
-    const isi =
-      Object.entries(parsed.data)
-        .filter(
-          ([, value]) =>
-            value !== undefined
-        );
+    const isi = Object.entries(
+      parsed.data
+    ).filter(
+      ([, value]) =>
+        value !== undefined
+    );
 
     if (!isi.length) {
       return NextResponse.json({
-        ok: true
+        ok: true,
       });
     }
+
+    /* =====================================================
+       TRANSAKSI
+       UPDATE + AUDIT
+       ===================================================== */
 
     await transaksi(
       sesi.user.id,
       async (c) => {
+        /* ===============================================
+           AMBIL DATA LAMA
+           =============================================== */
 
-const hasilLama =
-  await c.query<any>(
-    `
-    SELECT *
-    FROM public.bidang_tanah
-    WHERE id = $1
-    FOR UPDATE
-    `,
-    [id]
-  );
+        const hasilLama =
+          await c.query<any>(
+            `
+            SELECT *
+            FROM public.bidang_tanah
+            WHERE id = $1
+            FOR UPDATE
+            `,
+            [id]
+          );
 
-const lama = hasilLama.rows[0];
+        const lama =
+          hasilLama.rows[0];
 
-if (!lama) {
-  throw new Error(
-    'Bidang tidak ditemukan'
-  );
-}
+        if (!lama) {
+          throw new Error(
+            "Bidang tidak ditemukan"
+          );
+        }
 
-        const set =
-          isi
-            .map(
-              ([kolom], index) =>
-                `${kolom} = $${index + 2}`
-            )
-            .join(', ');
+        /* ===============================================
+           UPDATE
+           =============================================== */
+
+        const set = isi
+          .map(
+            ([kolom], index) =>
+              `${kolom} = $${index + 2}`
+          )
+          .join(", ");
 
         await c.query(
           `
@@ -676,21 +696,19 @@ if (!lama) {
             ...isi.map(
               ([, value]) =>
                 value
-            )
+            ),
           ]
         );
 
-
         /* ===============================================
            AUDIT LOG
-           HANYA FIELD YANG BERUBAH
+           HANYA YANG BENAR-BENAR BERUBAH
            =============================================== */
 
         for (
           const [kolom, nilaiBaru]
           of isi
         ) {
-
           const nilaiLama =
             lama[kolom];
 
@@ -736,45 +754,42 @@ if (!lama) {
             )
             `,
             [
-              'bidang_tanah',
-              id,
+              "bidang_tanah",
+              Number(id),
               lama.bidang_id ??
                 null,
-              'UPDATE',
+              "UPDATE",
               kolom,
               lamaText,
               baruText,
-              sesi.user.id
+              sesi.user.id,
             ]
           );
         }
       }
     );
 
-
     /* =====================================================
        BERHASIL
        ===================================================== */
 
     return NextResponse.json({
-      ok: true
+      ok: true,
     });
-
   } catch (error) {
-
     console.error(
-      'PATCH /api/bidang/[id] ERROR:',
+      "PATCH /api/bidang/[id] ERROR:",
       error
     );
 
     return NextResponse.json(
       {
         pesan:
-          'Gagal memperbarui bidang',
+          "Gagal memperbarui bidang",
         error:
           error instanceof Error
             ? error.message
-            : String(error)
+            : String(error),
       },
       { status: 500 }
     );
