@@ -15,7 +15,6 @@ type TabId =
   | "pemilik"
   | "bidang"
   | "bangunan"
-  | "tanaman"
   | "dokumen"
   | "riwayat";
 
@@ -24,7 +23,6 @@ const TABS: { id: TabId; label: string; icon: string }[] = [
   { id: "pemilik", label: "Pemilik", icon: "♙" },
   { id: "bidang", label: "Bidang", icon: "▣" },
   { id: "bangunan", label: "Bangunan", icon: "⌂" },
-  { id: "tanaman", label: "Tanaman", icon: "♧" },
   { id: "dokumen", label: "Foto & Dokumen", icon: "▧" },
   { id: "riwayat", label: "Riwayat", icon: "◷" },
 ];
@@ -154,7 +152,6 @@ function Completeness({ bidang }: { bidang: any }) {
     Boolean(bidang?.luas_m2 ?? bidang?.luastertul),
     Boolean(bidang?.penggunaan),
     Boolean(bidang?.bangunan?.length || bidang?.jml_bgn),
-    Boolean(bidang?.tanaman?.length || bidang?.jenis_tnm),
     Boolean(bidang?.foto_tnh),
   ];
 
@@ -251,16 +248,10 @@ export default function KartuBidang({
   const luasSisa = b?.luas_sisa_m2;
 
   const bangunan = b?.bangunan ?? [];
-  const tanaman = b?.tanaman ?? [];
 
   const jumlahBangunan =
     bangunan.length ||
     b?.jml_bgn ||
-    0;
-
-  const jumlahTanaman =
-    tanaman.length ||
-    b?.jumlah_tnm ||
     0;
 
   async function simpan() {
@@ -805,94 +796,6 @@ export default function KartuBidang({
           </>
         );
 
-      /* =========================================================
-         TANAMAN
-      ========================================================= */
-      case "tanaman":
-        return (
-          <>
-            <Section
-              title="Tanaman"
-              subtitle={`${jumlahTanaman} tanaman tercatat pada bidang`}
-            >
-              {tanaman.length > 0 ? (
-                <div className="kb-list">
-                  {tanaman.map((item: any, i: number) => (
-                    <div
-                      className="kb-item-card"
-                      key={item.id ?? i}
-                    >
-                      <div className="kb-item-head">
-                        <div className="kb-item-number plant">
-                          {String(i + 1).padStart(2, "0")}
-                        </div>
-
-                        <div>
-                          <strong>
-                            {item.jenis ??
-                              item.jenis_tnm ??
-                              "Tanaman"}
-                          </strong>
-
-                          <span>
-                            Jumlah:{" "}
-                            {formatNumber(
-                              item.jumlah ??
-                                item.jumlah_tnm
-                            )}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="kb-empty">
-                  <div>♧</div>
-
-                  <strong>
-                    Belum ada data tanaman
-                  </strong>
-
-                  <span>
-                    Data tanaman dapat ditambahkan dari hasil
-                    survei.
-                  </span>
-                </div>
-              )}
-
-              {(b?.benda_lain?.length > 0 ||
-                b?.jenis_bnd ||
-                b?.jumlah_bnd) && (
-                <div className="kb-sub-block">
-                  <div className="kb-sub-title">
-                    Benda lain
-                  </div>
-
-                  <div className="kb-grid two">
-                    <Field
-                      label="Jenis"
-                      value={b?.jenis_bnd}
-                      edit={edit}
-                      onChange={(v) =>
-                        setNilai("jenis_bnd", v)
-                      }
-                    />
-
-                    <Field
-                      label="Jumlah"
-                      value={b?.jumlah_bnd}
-                      edit={edit}
-                      onChange={(v) =>
-                        setNilai("jumlah_bnd", v)
-                      }
-                    />
-                  </div>
-                </div>
-              )}
-            </Section>
-          </>
-        );
 
       /* =========================================================
          DOKUMEN
@@ -986,9 +889,6 @@ export default function KartuBidang({
     peran,
     bolehEdit,
     bangunan,
-    tanaman,
-    jumlahBangunan,
-    jumlahTanaman,
   ]);
 
   return (
@@ -1358,9 +1258,6 @@ export default function KartuBidang({
           flex: 0 0 auto;
         }
 
-        .kb-item-number.plant {
-          border-radius: 50%;
-        }
 
         .kb-item-head strong {
           display: block;
