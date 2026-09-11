@@ -70,6 +70,41 @@ function formatDate(value: any) {
   }
 }
 
+/**
+ * PostgreSQL timestamp with timezone → input datetime-local
+ * Contoh:
+ * 2026-09-11T07:00:00.000Z
+ * menjadi:
+ * 2026-09-11T14:00
+ */
+function formatDateTimeLocal(value: any) {
+  if (!value) return "";
+
+  try {
+    const d = new Date(value);
+
+    if (Number.isNaN(d.getTime())) {
+      return String(value).slice(0, 16);
+    }
+
+    const pad = (n: number) =>
+      String(n).padStart(2, "0");
+
+    return [
+      d.getFullYear(),
+      pad(d.getMonth() + 1),
+      pad(d.getDate()),
+    ].join("-") +
+      "T" +
+      [
+        pad(d.getHours()),
+        pad(d.getMinutes()),
+      ].join(":");
+  } catch {
+    return "";
+  }
+}
+
 function Field({
   label,
   value,
@@ -173,7 +208,6 @@ function Completeness({
 }: {
   bidang: any;
 }) {
-  
   const checks = [
     Boolean(
       bidang?.nama_milik ||
@@ -188,8 +222,7 @@ function Completeness({
     Boolean(
       bidang?.lampiran?.some(
         (x: any) =>
-          x.kategori ===
-          "foto_bidang"
+          x.kategori === "foto_bidang"
       ) ||
         bidang?.foto_tnh
     ),
@@ -323,97 +356,95 @@ export default function KartuBidang({
   const luasSisa =
     b?.luas_sisa_m2;
 
-  const jumlahBangunan =
-    b?.jml_bgn ?? 0;
-
   async function simpan() {
-  if (!b?.id) return;
+    if (!b?.id) return;
 
-  if (Object.keys(draft).length === 0) {
-    setEdit(false);
-    return;
-  }
+    if (Object.keys(draft).length === 0) {
+      setEdit(false);
+      return;
+    }
 
-  setBusy(true);
+    setBusy(true);
 
-  try {
-    console.log("DATA YANG AKAN DISIMPAN:", draft);
+    try {
+      console.log(
+        "DATA YANG AKAN DISIMPAN:",
+        draft
+      );
 
-    const response = await fetch(
-      `/api/bidang/${b.id}`,
-      {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(draft),
+      const response = await fetch(
+        `/api/bidang/${b.id}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type":
+              "application/json",
+          },
+          body: JSON.stringify(draft),
+        }
+      );
+
+      const contentType =
+        response.headers.get(
+          "content-type"
+        ) ?? "";
+
+      let hasil: any = null;
+
+      if (
+        contentType.includes(
+          "application/json"
+        )
+      ) {
+        hasil =
+          await response.json();
+      } else {
+        const text =
+          await response.text();
+
+        hasil = {
+          pesan: text,
+        };
       }
-    );
 
-    const contentType =
-      response.headers.get("content-type") ?? "";
+      console.log(
+        "RESPONSE SIMPAN:",
+        response.status,
+        hasil
+      );
 
-    let hasil: any = null;
+      if (!response.ok) {
+        throw new Error(
+          hasil?.error ??
+            hasil?.pesan ??
+            "Gagal menyimpan perubahan"
+        );
+      }
 
-    if (contentType.includes("application/json")) {
-      hasil = await response.json();
-    } else {
-      const text = await response.text();
+      setEdit(false);
+      setDraft({});
 
-      hasil = {
-        pesan: text,
-      };
+      await muatUlangKartu();
+
+      beriPesan(
+        "Perubahan berhasil disimpan"
+      );
+    } catch (error) {
+      console.error(
+        "ERROR SIMPAN BIDANG:",
+        error
+      );
+
+      beriPesan(
+        error instanceof Error
+          ? error.message
+          : "Gagal menyimpan perubahan"
+      );
+    } finally {
+      setBusy(false);
     }
-
-    console.log(
-      "RESPONSE SIMPAN:",
-      response.status,
-      hasil
-    );
-
-    if (!response.ok) {
-      const pesan =
-        hasil?.pesan ??
-        hasil?.error ??
-        "Gagal menyimpan perubahan";
-
-      throw new Error(pesan);
-    }
-
-    /*
-     * PATCH berhasil
-     */
-    setEdit(false);
-    setDraft({});
-
-    /*
-     * Ambil ulang data dari database
-     */
-    await muatUlangKartu();
-
-    /*
-     * Notifikasi berhasil
-     */
-    beriPesan(
-      "Perubahan berhasil disimpan"
-    );
-
-  } catch (error) {
-    console.error(
-      "ERROR SIMPAN BIDANG:",
-      error
-    );
-
-    beriPesan(
-      error instanceof Error
-        ? error.message
-        : "Gagal menyimpan perubahan"
-    );
-
-  } finally {
-    setBusy(false);
   }
-}
+
   async function pindahStatus(
     target:
       | "terkirim"
@@ -556,7 +587,10 @@ export default function KartuBidang({
               </div>
             </Section>
 
-            <Section title="Luas bidang">
+            <Section
+              title="Luas bidang"
+              subtitle="Ringkasan luas bidang dan dampaknya"
+            >
               <div className="kb-stat-grid">
                 <Stat
                   label="Luas bidang"
@@ -582,9 +616,45 @@ export default function KartuBidang({
                   suffix="m²"
                 />
               </div>
+
+              {edit && (
+                <div className="kb-grid two kb-edit-area">
+                  <Field
+                    label="Luas terdampak"
+                    value={nilai(
+                      "luas_terdampak_m2"
+                    )}
+                    edit={true}
+                    type="number"
+                    onChange={(v) =>
+                      setNilai(
+                        "luas_terdampak_m2",
+                        v
+                      )
+                    }
+                  />
+
+                  <Field
+                    label="Luas sisa"
+                    value={nilai(
+                      "luas_sisa_m2"
+                    )}
+                    edit={true}
+                    type="number"
+                    onChange={(v) =>
+                      setNilai(
+                        "luas_sisa_m2",
+                        v
+                      )
+                    }
+                  />
+                </div>
+              )}
             </Section>
 
-            <Section title="Penggunaan & kondisi">
+            <Section
+              title="Penggunaan & kondisi"
+            >
               <div className="kb-grid two">
                 <Field
                   label="Penggunaan"
@@ -602,7 +672,9 @@ export default function KartuBidang({
 
                 <Field
                   label="Status tanah"
-                  value={nilai("sta_tnh")}
+                  value={nilai(
+                    "sta_tnh"
+                  )}
                   edit={edit}
                   onChange={(v) =>
                     setNilai(
@@ -628,7 +700,9 @@ export default function KartuBidang({
 
                 <Field
                   label="Hubungan tanah"
-                  value={nilai("hub_tnh")}
+                  value={nilai(
+                    "hub_tnh"
+                  )}
                   edit={edit}
                   onChange={(v) =>
                     setNilai(
@@ -640,20 +714,46 @@ export default function KartuBidang({
               </div>
             </Section>
 
-            <Section title="Status pendataan">
+            <Section
+              title="Status pendataan"
+              subtitle="Informasi proses survei dan verifikasi"
+            >
               <div className="kb-grid two">
                 <Field
                   label="Petugas"
-                  value={
-                    b.petugas_nama
+                  value={nilai(
+                    "petugas_nama"
+                  )}
+                  edit={edit}
+                  onChange={(v) =>
+                    setNilai(
+                      "petugas_nama",
+                      v
+                    )
                   }
                 />
 
                 <Field
                   label="Tanggal ukur"
-                  value={formatDate(
-                    b.tanggal_ukur
-                  )}
+                  value={
+                    edit
+                      ? formatDateTimeLocal(
+                          nilai(
+                            "tanggal_ukur"
+                          )
+                        )
+                      : formatDate(
+                          b.tanggal_ukur
+                        )
+                  }
+                  edit={edit}
+                  type="datetime-local"
+                  onChange={(v) =>
+                    setNilai(
+                      "tanggal_ukur",
+                      v
+                    )
+                  }
                 />
 
                 <Field
@@ -902,16 +1002,18 @@ export default function KartuBidang({
                 />
 
                 <Field
-  label="Kode wilayah"
-  value={nilai("kodewilaya")}
-  edit={edit}
-  onChange={(v) =>
-    setNilai(
-      "kodewilaya",
-      v
-    )
-  }
-/>
+                  label="Kode wilayah"
+                  value={nilai(
+                    "kodewilaya"
+                  )}
+                  edit={edit}
+                  onChange={(v) =>
+                    setNilai(
+                      "kodewilaya",
+                      v
+                    )
+                  }
+                />
 
                 <Field
                   label="FID"
@@ -937,48 +1039,111 @@ export default function KartuBidang({
               </div>
             </Section>
 
-            <Section title="Pengukuran & geometri">
+            <Section
+              title="Pengukuran & geometri"
+              subtitle="Data pengukuran lapangan dan informasi geometri"
+            >
               <div className="kb-grid two">
                 <Field
                   label="Luas tanah"
-                  value={formatNumber(
-                    b.luas_tnh
+                  value={nilai(
+                    "luas_tnh"
                   )}
+                  edit={edit}
+                  type="number"
+                  onChange={(v) =>
+                    setNilai(
+                      "luas_tnh",
+                      v
+                    )
+                  }
                 />
 
                 <Field
                   label="Luas tertulis"
-                  value={formatNumber(
-                    b.luastertul
+                  value={nilai(
+                    "luastertul"
                   )}
+                  edit={edit}
+                  type="number"
+                  onChange={(v) =>
+                    setNilai(
+                      "luastertul",
+                      v
+                    )
+                  }
                 />
 
                 <Field
                   label="Luas peta"
-                  value={formatNumber(
-                    b.luaspeta
+                  value={nilai(
+                    "luaspeta"
                   )}
+                  edit={edit}
+                  type="number"
+                  onChange={(v) =>
+                    setNilai(
+                      "luaspeta",
+                      v
+                    )
+                  }
                 />
 
                 <Field
                   label="Luas ATBT"
-                  value={formatNumber(
-                    b.luas_atbt
+                  value={nilai(
+                    "luas_atbt"
                   )}
+                  edit={edit}
+                  type="number"
+                  onChange={(v) =>
+                    setNilai(
+                      "luas_atbt",
+                      v
+                    )
+                  }
                 />
 
                 <Field
                   label="Luas terdampak"
-                  value={formatNumber(
-                    b.luas_terdampak_m2
-                  )}
+                  value={
+                    edit
+                      ? nilai(
+                          "luas_terdampak_m2"
+                        )
+                      : formatNumber(
+                          b.luas_terdampak_m2
+                        )
+                  }
+                  edit={edit}
+                  type="number"
+                  onChange={(v) =>
+                    setNilai(
+                      "luas_terdampak_m2",
+                      v
+                    )
+                  }
                 />
 
                 <Field
                   label="Luas sisa"
-                  value={formatNumber(
-                    b.luas_sisa_m2
-                  )}
+                  value={
+                    edit
+                      ? nilai(
+                          "luas_sisa_m2"
+                        )
+                      : formatNumber(
+                          b.luas_sisa_m2
+                        )
+                  }
+                  edit={edit}
+                  type="number"
+                  onChange={(v) =>
+                    setNilai(
+                      "luas_sisa_m2",
+                      v
+                    )
+                  }
                 />
 
                 <Field
@@ -1030,7 +1195,9 @@ export default function KartuBidang({
               </div>
             </Section>
 
-            <Section title="Hak & dokumen tanah">
+            <Section
+              title="Hak & dokumen tanah"
+            >
               <div className="kb-grid two">
                 <Field
                   label="Tipe hak"
@@ -1208,35 +1375,127 @@ export default function KartuBidang({
       ===================================================== */
       case "bangunan":
         return (
-          <Section
-            title="Bangunan"
-            subtitle="Jumlah bangunan yang tercatat pada bidang"
-          >
-            <div className="kb-stat-grid">
-              <Stat
-                label="Jumlah bangunan"
-                value={formatNumber(
-                  b.jml_bgn
-                )}
-                suffix="unit"
-              />
-            </div>
+          <>
+            <Section
+              title="Bangunan"
+              subtitle="Data bangunan yang tercatat pada bidang"
+            >
+              <div className="kb-stat-grid">
+                <Stat
+                  label="Jumlah bangunan"
+                  value={formatNumber(
+                    b.jml_bgn
+                  )}
+                  suffix="unit"
+                />
+              </div>
+
+              {edit && (
+                <div className="kb-grid two kb-edit-area">
+                  <Field
+                    label="Jumlah bangunan"
+                    value={nilai("jml_bgn")}
+                    edit={true}
+                    type="number"
+                    onChange={(v) =>
+                      setNilai(
+                        "jml_bgn",
+                        v
+                      )
+                    }
+                  />
+                </div>
+              )}
+            </Section>
+
+            <Section
+              title="Tanaman"
+              subtitle="Objek tanaman yang tercatat pada bidang"
+            >
+              <div className="kb-grid two">
+                <Field
+                  label="Jenis tanaman"
+                  value={nilai(
+                    "jenis_tnm"
+                  )}
+                  edit={edit}
+                  onChange={(v) =>
+                    setNilai(
+                      "jenis_tnm",
+                      v
+                    )
+                  }
+                />
+
+                <Field
+                  label="Jumlah tanaman"
+                  value={nilai(
+                    "jumlah_tnm"
+                  )}
+                  edit={edit}
+                  type="number"
+                  onChange={(v) =>
+                    setNilai(
+                      "jumlah_tnm",
+                      v
+                    )
+                  }
+                />
+              </div>
+            </Section>
+
+            <Section
+              title="Benda lain"
+              subtitle="Objek lain yang tercatat pada bidang"
+            >
+              <div className="kb-grid two">
+                <Field
+                  label="Jenis benda"
+                  value={nilai(
+                    "jenis_bnd"
+                  )}
+                  edit={edit}
+                  onChange={(v) =>
+                    setNilai(
+                      "jenis_bnd",
+                      v
+                    )
+                  }
+                />
+
+                <Field
+                  label="Jumlah benda"
+                  value={nilai(
+                    "jumlah_bnd"
+                  )}
+                  edit={edit}
+                  type="number"
+                  onChange={(v) =>
+                    setNilai(
+                      "jumlah_bnd",
+                      v
+                    )
+                  }
+                />
+              </div>
+            </Section>
 
             <div className="kb-info-box">
               <strong>
-                Data bangunan
+                Catatan bangunan
               </strong>
 
               <span>
-                Database bidang_tanah saat ini
-                menyimpan jumlah bangunan melalui
-                kolom <b>jml_bgn</b>. Detail jenis,
-                konstruksi, luas lantai, dan kondisi
-                bangunan belum tersedia sebagai kolom
-                pada tabel tersebut.
+                Database saat ini menyimpan
+                jumlah bangunan melalui
+                <b> jml_bgn</b>. Detail per
+                bangunan seperti jenis konstruksi,
+                luas lantai, kondisi, dan jumlah
+                lantai belum tersedia di tabel
+                bidang_tanah.
               </span>
             </div>
-          </Section>
+          </>
         );
 
       /* =====================================================
@@ -1263,7 +1522,7 @@ export default function KartuBidang({
         return (
           <Section
             title="Riwayat bidang"
-            subtitle="Aktivitas dan perubahan data"
+            subtitle="Rekam perubahan dan aktivitas data"
           >
             {b.riwayat?.length ? (
               <div className="kb-timeline">
@@ -1283,32 +1542,43 @@ export default function KartuBidang({
                       <div className="kb-timeline-content">
                         <div className="kb-timeline-top">
                           <strong>
-                            {item.judul ??
-                              item.aksi ??
-                              item.status ??
-                              "Aktivitas"}
+                            {item.kolom
+                              ? `Perubahan ${item.kolom}`
+                              : item.aksi ??
+                                "Aktivitas"}
                           </strong>
 
                           <span>
                             {formatDate(
-                              item.created_at ??
-                                item.tanggal ??
-                                item.waktu
+                              item.pada ??
+                                item.created_at ??
+                                item.tanggal
                             )}
                           </span>
                         </div>
 
-                        <p>
-                          {item.keterangan ??
-                            item.deskripsi ??
-                            "Perubahan data bidang"}
-                        </p>
+                        {(item.nilai_lama !==
+                            undefined ||
+                          item.nilai_baru !==
+                            undefined) && (
+                          <p className="kb-history-change">
+                            <span>
+                              {item.nilai_lama ??
+                                "Kosong"}
+                            </span>
+
+                            <b>→</b>
+
+                            <span>
+                              {item.nilai_baru ??
+                                "Kosong"}
+                            </span>
+                          </p>
+                        )}
 
                         {item.nama_pengguna && (
                           <small>
-                            {
-                              item.nama_pengguna
-                            }
+                            {item.nama_pengguna}
                           </small>
                         )}
                       </div>
@@ -1325,7 +1595,9 @@ export default function KartuBidang({
                 </strong>
 
                 <span>
-                  Aktivitas bidang akan muncul di sini.
+                  Perubahan data bidang akan
+                  tercatat otomatis setelah data
+                  disimpan.
                 </span>
               </div>
             )}
@@ -1345,7 +1617,6 @@ export default function KartuBidang({
     luas,
     luasTerdampak,
     luasSisa,
-    jumlahBangunan,
     pemilik,
   ]);
 
@@ -1359,8 +1630,6 @@ export default function KartuBidang({
 
   return (
     <aside className="kartu open kb-modern">
-
-      {/* HEADER */}
       <header className="kb-header">
         <div className="kb-header-top">
           <button
@@ -1402,7 +1671,6 @@ export default function KartuBidang({
         />
       </header>
 
-      {/* TABS */}
       <nav className="kb-tabs">
         {TABS.map((item) => (
           <button
@@ -1428,12 +1696,10 @@ export default function KartuBidang({
         ))}
       </nav>
 
-      {/* CONTENT */}
       <div className="kb-scroll">
         {tabContent}
       </div>
 
-      {/* FOOTER */}
       <footer className="kb-footer">
         {edit ? (
           <>
