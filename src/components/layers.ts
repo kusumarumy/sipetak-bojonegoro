@@ -20,7 +20,7 @@ export type DefLayer = {
 export const LAYERS: DefLayer[] = [
 
   /* -------------------------------------------------------
-     RENCANA TRASE
+     01 — RENCANA TRASE
   ------------------------------------------------------- */
 
   {
@@ -38,7 +38,7 @@ export const LAYERS: DefLayer[] = [
 
 
   /* -------------------------------------------------------
-     BIDANG TANAH
+     02 — BIDANG TANAH
   ------------------------------------------------------- */
 
   {
@@ -54,76 +54,8 @@ export const LAYERS: DefLayer[] = [
 
 
   /* -------------------------------------------------------
-     TUTUPAN LAHAN
+     03 — JARINGAN IRIGASI
   ------------------------------------------------------- */
-
-  {
-    id: 'sawah',
-    nama: 'Sawah',
-    sumber: 'sawah',
-    tipe: 'fill',
-    warna: '#63C59A',
-    opasitas: 0.42,
-    grup: 'Tutupan lahan'
-  },
-
-  {
-    id: 'hutan',
-    nama: 'Vegetasi',
-    sumber: 'hutan',
-    tipe: 'fill',
-    warna: '#287A5F',
-    opasitas: 0.48,
-    grup: 'Tutupan lahan'
-  },
-
-  {
-    id: 'pemukiman',
-    nama: 'Pemukiman',
-    sumber: 'pemukiman',
-    tipe: 'fill',
-    warna: '#E66F91',
-    opasitas: 0.45,
-    grup: 'Tutupan lahan'
-  },
-
-  {
-    id: 'pemakaman',
-    nama: 'Makam',
-    sumber: 'pemakaman',
-    tipe: 'fill',
-    warna: '#9278C9',
-    opasitas: 0.55,
-    grup: 'Tutupan lahan'
-  },
-
-
-  /* -------------------------------------------------------
-     JARINGAN & UTILITAS
-  ------------------------------------------------------- */
-
-  {
-    id: 'jalan',
-    nama: 'Jalan eksisting',
-    sumber: 'jalan',
-    tipe: 'line',
-    warna: '#8894A6',
-    garis: true,
-    lebar: 2,
-    grup: 'Jaringan & utilitas'
-  },
-
-  {
-    id: 'rel_kereta',
-    nama: 'Rel kereta api',
-    sumber: 'rel_kereta',
-    tipe: 'line',
-    warna: '#C3CCD9',
-    garis: true,
-    lebar: 2.5,
-    dash: [6, 4],
-    grup: 'Jaringan & utilitas'
-  },
 
   {
     id: 'sungai',
@@ -133,28 +65,97 @@ export const LAYERS: DefLayer[] = [
     warna: '#3182BD',
     garis: true,
     lebar: 3,
-    grup: 'Jaringan & utilitas'
+    grup: 'Jaringan irigasi'
   },
+
+
+  /* -------------------------------------------------------
+     04 — JARINGAN TRANSPORTASI
+  ------------------------------------------------------- */
+
+  {
+    id: 'jalan',
+    nama: 'Jalan eksisting',
+    sumber: 'jalan',
+    tipe: 'line',
+    warna: '#66758A',
+    garis: true,
+    lebar: 2,
+    grup: 'Jaringan transportasi'
+  },
+
+  {
+    id: 'rel_kereta',
+    nama: 'Rel kereta api',
+    sumber: 'rel_kereta',
+    tipe: 'line',
+    warna: '#AEB9C8',
+    garis: true,
+    lebar: 2.5,
+    dash: [6, 4],
+    grup: 'Jaringan transportasi'
+  },
+
+
+  /* -------------------------------------------------------
+     05 — TUTUPAN LAHAN
+  ------------------------------------------------------- */
+
+  {
+    id: 'pemakaman',
+    nama: 'Makam',
+    sumber: 'pemakaman',
+    tipe: 'fill',
+    warna: '#9278C9',
+    opasitas: 0.50,
+    grup: 'Tutupan lahan'
+  },
+
+  {
+    id: 'pemukiman',
+    nama: 'Pemukiman',
+    sumber: 'pemukiman',
+    tipe: 'fill',
+    warna: '#E16F91',
+    opasitas: 0.42,
+    grup: 'Tutupan lahan'
+  },
+
+  {
+    id: 'sawah',
+    nama: 'Sawah',
+    sumber: 'sawah',
+    tipe: 'fill',
+    warna: '#63C59A',
+    opasitas: 0.40,
+    grup: 'Tutupan lahan'
+  },
+
+  {
+    id: 'hutan',
+    nama: 'Vegetasi',
+    sumber: 'hutan',
+    tipe: 'fill',
+    warna: '#287A5F',
+    opasitas: 0.46,
+    grup: 'Tutupan lahan'
+  },
+
+
+  /* -------------------------------------------------------
+     06 — UTILITAS
+  ------------------------------------------------------- */
 
   {
     id: 'kabel_sutet',
     nama: 'Jaringan SUTET',
     sumber: 'kabel_sutet',
     tipe: 'line',
-    warna: '#9ED45E',
+    warna: '#8FC84A',
     garis: true,
     lebar: 2,
     dash: [7, 4],
-    grup: 'Jaringan & utilitas'
-  },
-
-  {
-    id: 'tiang_sutet',
-    nama: 'Tower SUTET',
-    sumber: 'tiang_sutet',
-    tipe: 'circle',
-    warna: '#9ED45E',
-    grup: 'Jaringan & utilitas'
+    grup: 'Utilitas'
   },
 
   {
@@ -162,11 +163,11 @@ export const LAYERS: DefLayer[] = [
     nama: 'Pipa Exxon',
     sumber: 'pipa_exxon',
     tipe: 'line',
-    warna: '#00AFA3',
+    warna: '#00A79D',
     garis: true,
     lebar: 2.5,
     dash: [8, 4],
-    grup: 'Jaringan & utilitas'
+    grup: 'Utilitas'
   },
 
   {
@@ -174,14 +175,23 @@ export const LAYERS: DefLayer[] = [
     nama: 'Pipa Gresik–Semarang',
     sumber: 'pipa_gresem',
     tipe: 'line',
-    warna: '#C77DD4',
+    warna: '#C174CF',
     garis: true,
     lebar: 2.5,
     dash: [8, 4],
-    grup: 'Jaringan & utilitas'
-  }
-];
+    grup: 'Utilitas'
+  },
 
+  {
+    id: 'tiang_sutet',
+    nama: 'Tower SUTET',
+    sumber: 'tiang_sutet',
+    tipe: 'circle',
+    warna: '#8FC84A',
+    grup: 'Utilitas'
+  }
+
+];
 
 /* =========================================================
    KONTUR
