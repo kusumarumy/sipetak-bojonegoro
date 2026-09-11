@@ -5088,7 +5088,7 @@ html[data-theme="dark"] .stat-bar-fill {
    KARTU BIDANG — MODERN
    ========================================================= */
 
-.kb-modern {
+.kartu.open.kb-modern {
   --kb-red: #8f2635;
   --kb-red-dark: #741e2b;
   --kb-red-soft: rgba(143, 38, 53, 0.1);
@@ -5102,17 +5102,17 @@ html[data-theme="dark"] .stat-bar-fill {
 
   width: min(480px, calc(100vw - 24px));
 
-  /* Tidak menutupi header */
   top: 104px;
   right: 12px;
   bottom: 12px;
 
-  height: calc(100vh - 116px);
-  max-height: calc(100vh - 116px);
+  height: auto;
+  max-height: none;
 
   display: flex;
   flex-direction: column;
 
+  /* PENTING */
   overflow: hidden;
 
   background: var(--kb-bg);
@@ -5126,20 +5126,20 @@ html[data-theme="dark"] .stat-bar-fill {
     0 2px 8px rgba(0, 0, 0, 0.08);
 
   z-index: 40;
+
+  isolation: isolate;
 }
-
-
-/* =========================================================
-   HEADER
-   ========================================================= */
-
 .kb-header {
+  position: relative;
+  z-index: 3;
+
   flex: 0 0 auto;
+
   padding: 14px 16px 11px;
+
   border-bottom: 1px solid var(--kb-line);
   background: var(--kb-bg);
 }
-
 .kb-header-top {
   display: flex;
   align-items: flex-start;
@@ -5297,15 +5297,18 @@ html[data-theme="dark"] .stat-bar-fill {
 
   transition: width 0.25s ease;
 }
-
-
 /* =========================================================
-   TABS KARTU BIDANG
+   TABS
 ========================================================= */
 
 .kb-tabs {
+  position: relative;
+  z-index: 10;
+
+  flex: 0 0 auto;
+
   display: flex;
-  align-items: stretch;
+  align-items: center;
   gap: 4px;
 
   width: 100%;
@@ -5313,13 +5316,15 @@ html[data-theme="dark"] .stat-bar-fill {
 
   padding: 6px 8px;
 
+  background: var(--kb-bg);
+
+  border-bottom: 1px solid var(--kb-line);
+
   overflow-x: auto;
   overflow-y: hidden;
 
   scrollbar-width: none;
-  -webkit-overflow-scrolling: touch;
-
-  border-bottom: 1px solid var(--kb-border);
+  -ms-overflow-style: none;
 }
 
 .kb-tabs::-webkit-scrollbar {
@@ -5327,6 +5332,8 @@ html[data-theme="dark"] .stat-bar-fill {
 }
 
 .kb-tab {
+  position: relative;
+
   flex: 0 0 auto;
 
   display: inline-flex;
@@ -5345,8 +5352,10 @@ html[data-theme="dark"] .stat-bar-fill {
 
   font-size: 12px;
   font-weight: 700;
+  line-height: 1;
 
   white-space: nowrap;
+
   cursor: pointer;
 
   transition:
@@ -5361,7 +5370,7 @@ html[data-theme="dark"] .stat-bar-fill {
 
 .kb-tab.active {
   background: var(--kb-red);
-  color: white;
+  color: #fff;
 }
 
 .kb-tab-icon {
@@ -5369,31 +5378,35 @@ html[data-theme="dark"] .stat-bar-fill {
   align-items: center;
   justify-content: center;
 
+  flex: 0 0 auto;
+
   font-size: 13px;
   line-height: 1;
 }
 
-/* =========================================================
-   SCROLL AREA
-   ========================================================= */
-
 .kb-scroll {
+  position: relative;
+  z-index: 1;
+
   flex: 1 1 auto;
+
+  min-width: 0;
   min-height: 0;
 
+  overflow-x: hidden;
   overflow-y: auto;
-  overscroll-behavior: contain;
 
   padding: 12px;
 
   background: var(--kb-bg2);
+
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
 }
 
-
-/* =========================================================
-   SECTION
-   ========================================================= */
-
+.kb-scroll > * {
+  position: relative;
+}
 .kb-section {
   margin-bottom: 10px;
   padding: 13px;
@@ -5765,12 +5778,10 @@ html[data-theme="dark"] .stat-bar-fill {
   font-size: 9px;
 }
 
-
-/* =========================================================
-   FOOTER
-   ========================================================= */
-
 .kb-footer {
+  position: relative;
+  z-index: 20;
+
   flex: 0 0 auto;
 
   display: flex;
@@ -5782,7 +5793,6 @@ html[data-theme="dark"] .stat-bar-fill {
 
   background: var(--kb-bg);
 }
-
 .kb-footer button {
   min-height: 40px;
 
@@ -5828,20 +5838,16 @@ html[data-theme="dark"] .stat-bar-fill {
 }
 
 
-/* =========================================================
-   MOBILE
-   ========================================================= */
-
 @media (max-width: 700px) {
-  .kb-modern {
+  .kartu.open.kb-modern {
     width: 100vw;
-
-    height: 100dvh;
-    max-height: none;
 
     top: 0;
     right: 0;
     bottom: 0;
+
+    height: 100dvh;
+    max-height: none;
 
     border: 0;
     border-radius: 0;
@@ -5850,8 +5856,7 @@ html[data-theme="dark"] .stat-bar-fill {
   }
 
   .kb-header {
-    padding-top:
-      max(12px, env(safe-area-inset-top));
+    padding-top: max(12px, env(safe-area-inset-top));
   }
 
   .kb-tabs {
@@ -5875,8 +5880,7 @@ html[data-theme="dark"] .stat-bar-fill {
   }
 
   .kb-stat-grid {
-    grid-template-columns:
-      repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .kb-mini-grid {
