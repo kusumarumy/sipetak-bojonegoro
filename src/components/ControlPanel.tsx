@@ -7,9 +7,20 @@ import { LAYERS } from './layers';
 const GROUP_ICONS: Record<string, string> = {
   'Rencana trace': '⌁',
   'Bidang tanah': '▦',
+  'Jaringan irigasi': '≈',
+  'Jaringan transportasi': '⇆',
   'Tutupan lahan': '◈',
-  'Jaringan & utilitas': '⌁',
+  'Utilitas': '⌁',
 };
+
+const GROUP_ORDER = [
+  'Rencana trace',
+  'Bidang tanah',
+  'Jaringan irigasi',
+  'Jaringan transportasi',
+  'Tutupan lahan',
+  'Utilitas',
+];
 
 type PanelMode = 'terrain' | 'layer' | null;
 
@@ -22,7 +33,9 @@ export default function ControlPanel({
 }) {
   const s = useApp();
 
-  const grup = [...new Set(LAYERS.map((l) => l.grup))];
+  const grup = GROUP_ORDER.filter((g) =>
+  LAYERS.some((l) => l.grup === g)
+);
 
   const [grupTerbuka, setGrupTerbuka] =
     useState<Record<string, boolean>>({
@@ -47,10 +60,6 @@ export default function ControlPanel({
 
   return (
     <aside className="flyout-panel">
-
-      {/* =====================================================
-          HEADER
-      ===================================================== */}
 
       <div className="flyout-header">
 
@@ -93,17 +102,19 @@ export default function ControlPanel({
           ) : (
 
             <>
-              <div className="flyout-kicker">
-                LAYER
-              </div>
+              <div className="layer-panel-heading">
+  <div className="flyout-kicker">
+    LAYER
+  </div>
 
-              <div className="flyout-title">
-                Pengelolaan Layer
-              </div>
+  <div className="flyout-title">
+    Pengelolaan Layer
+  </div>
 
-              <div className="flyout-subtitle">
-                Pengelolaan data peta
-              </div>
+  <div className="flyout-subtitle">
+    Kelola tampilan dan data peta
+  </div>
+</div>
             </>
 
           )}
@@ -121,11 +132,6 @@ export default function ControlPanel({
         </button>
 
       </div>
-
-
-      {/* =====================================================
-          TERRAIN
-      ===================================================== */}
 
       {mode === 'terrain' && (
 
@@ -207,11 +213,6 @@ export default function ControlPanel({
 
       )}
 
-
-      {/* =====================================================
-          LAYER
-      ===================================================== */}
-
       {mode === 'layer' && (
 
         <div className="flyout-body">
@@ -247,10 +248,17 @@ export default function ControlPanel({
 
               {grup.map((g) => {
 
-                const layers =
-                  LAYERS.filter(
-                    (l) => l.grup === g
-                  );
+  const layers = LAYERS
+    .filter((l) => l.grup === g)
+    .sort((a, b) =>
+      a.nama.localeCompare(
+        b.nama,
+        'id',
+        {
+          sensitivity: 'base',
+        }
+      )
+    );
 
                 const terbukaGrup =
                   grupTerbuka[g];
@@ -386,113 +394,95 @@ export default function ControlPanel({
 
                               </label>
 
+{g === 'Bidang tanah' &&
+  L.id === 'bidang' &&
+  aktif && (
 
-                              {/* =================================================
-                                  PROPERTIES BIDANG TANAH
-                              ================================================= */}
+    <div className="layer-properties">
 
-                              {g === 'Bidang tanah' &&
-                                L.id === 'bidang' &&
-                                aktif && (
-
-                                  <div className="layer-properties">
-
-                                    <div className="property-title">
-                                      TAMPILAN
-                                    </div>
+      <div className="property-title">
+        TAMPILAN BIDANG
+      </div>
 
 
-                                    {/* PEWARNAAN */}
+      {/* PEWARNAAN */}
 
-                                    <div className="property-block">
+      <div className="property-block">
 
-                                      <div className="property-label">
-                                        Pewarnaan bidang
-                                      </div>
+        <div className="property-label">
+          Pewarnaan bidang
+        </div>
 
-                                      <div className="style-segment">
+        <div className="style-segment">
 
-                                        <button
-                                          type="button"
-                                          className={
-                                            s.pewarnaan ===
-                                            'status'
-                                              ? 'active'
-                                              : ''
-                                          }
-                                          onClick={() =>
-                                            s.setPewarnaan(
-                                              'status'
-                                            )
-                                          }
-                                        >
-                                          Status
-                                        </button>
+          <button
+            type="button"
+            className={
+              s.pewarnaan === 'status'
+                ? 'active'
+                : ''
+            }
+            onClick={() =>
+              s.setPewarnaan('status')
+            }
+          >
+            STATUS
+          </button>
 
-                                        <button
-                                          type="button"
-                                          className={
-                                            s.pewarnaan ===
-                                            'penggunaan'
-                                              ? 'active'
-                                              : ''
-                                          }
-                                          onClick={() =>
-                                            s.setPewarnaan(
-                                              'penggunaan'
-                                            )
-                                          }
-                                        >
-                                          Penggunaan
-                                        </button>
+          <button
+            type="button"
+            className={
+              s.pewarnaan === 'penggunaan'
+                ? 'active'
+                : ''
+            }
+            onClick={() =>
+              s.setPewarnaan('penggunaan')
+            }
+          >
+            PENGGUNAAN
+          </button>
 
-                                      </div>
+        </div>
 
-                                    </div>
+      </div>
 
 
-                                    <div className="property-divider" />
+      {/* LABEL */}
 
+      <div className="property-block label-block">
 
-                                    {/* LABEL */}
+        <div className="property-label">
+          Label
+        </div>
 
-                                    <div className="property-block">
+        <label className="option-row">
 
-                                      <div className="property-label">
-                                        Label
-                                      </div>
+          <input
+            type="checkbox"
+            checked={s.labelNomor}
+            onChange={(e) =>
+              s.setLabelNomor(
+                e.target.checked
+              )
+            }
+          />
 
-                                      <label className="option-row">
+          <span className="gis-check small">
+            <span>✓</span>
+          </span>
 
-                                        <input
-                                          type="checkbox"
-                                          checked={
-                                            s.labelNomor
-                                          }
-                                          onChange={(e) =>
-                                            s.setLabelNomor(
-                                              e.target.checked
-                                            )
-                                          }
-                                        />
+          <span>
+            Nomor bidang
+          </span>
 
-                                        <span className="gis-check small">
-                                          <span>
-                                            ✓
-                                          </span>
-                                        </span>
+        </label>
 
-                                        <span>
-                                          Nomor bidang
-                                        </span>
+      </div>
 
-                                      </label>
+    </div>
 
-                                    </div>
-
-                                  </div>
-
-                                )}
+)}
 
                             </div>
 
