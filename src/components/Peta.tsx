@@ -9,7 +9,7 @@ import KartuBidang from './KartuBidang';
 import BasemapPanel from './BasemapPanel';
 import DaftarBidang from './DaftarBidang';
 import Statistika from './Statistika';
-
+import FilterPanel from './FilterPanel';
 import { useApp } from '@/store/useApp';
 
 import {
@@ -438,7 +438,17 @@ export default function Peta({
           setPanelAktif(null)
         }
       />
+{/* =====================================================
+    FILTER
+    ===================================================== */}
 
+{panelAktif === 'filter' && (
+  <FilterPanel
+    onClose={() =>
+      setPanelAktif(null)
+    }
+  />
+)}
       {/* =====================================================
           MAIN
           ===================================================== */}
