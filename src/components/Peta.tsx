@@ -44,8 +44,8 @@ type PanelAktif =
   | 'bidang'
   | 'statistika'
   | 'filter'
+  | 'search'
   | null;
-
 export default function Peta({
   pengguna,
   ringkasan,
