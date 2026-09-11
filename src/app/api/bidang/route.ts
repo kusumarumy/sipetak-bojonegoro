@@ -13,8 +13,9 @@ export async function GET() {
 
   try {
     // =========================================================
-    // CEK DATABASE YANG DIPAKAI VERCEL
+    // CEK DATABASE
     // =========================================================
+
     const info = await query(`
       SELECT
         current_database() AS database,
@@ -24,8 +25,9 @@ export async function GET() {
     console.log('DB:', info);
 
     // =========================================================
-    // CEK KOLOM TABEL bidang_tanah
+    // CEK KOLOM bidang_tanah
     // =========================================================
+
     const cek = await query(`
       SELECT
         column_name,
@@ -41,17 +43,21 @@ export async function GET() {
     // =========================================================
     // AMBIL DATA BIDANG
     // =========================================================
+
     const [row] = await query<{ fc: any }>(`
       SELECT json_build_object(
-        'type', 'FeatureCollection',
+        'type',
+        'FeatureCollection',
 
         'features',
         COALESCE(
           json_agg(
             json_build_object(
-              'type', 'Feature',
+              'type',
+              'Feature',
 
-              'id', f.id,
+              'id',
+              f.id,
 
               'geometry',
               CASE
@@ -63,9 +69,9 @@ export async function GET() {
               'properties',
 
               -- =================================================
-              -- KELOMPOK 1
-              -- IDENTITAS + WILAYAH + HAK
+              -- IDENTITAS
               -- =================================================
+
               jsonb_build_object(
                 'id', f.id,
                 'objectid', f.objectid,
@@ -73,103 +79,157 @@ export async function GET() {
                 'kodewilaya', f.kodewilaya,
                 'kode_bid', f.kode_bid,
                 'fid', f.fid,
+                'nib', f.nib
+              )
 
+              ||
+
+              -- =================================================
+              -- WILAYAH
+              -- =================================================
+
+              jsonb_build_object(
                 'kecamatan', f.kecamatan,
                 'kelurahan', f.kelurahan,
-                'rt_rw', f.rt_rw,
+                'rt_rw', f.rt_rw
+              )
 
+              ||
+
+              -- =================================================
+              -- HAK / PRODUK
+              -- =================================================
+
+              jsonb_build_object(
                 'tipehak', f.tipehak,
                 'tipeproduk', f.tipeproduk,
                 'tahun', f.tahun,
-                'nib', f.nib,
-                'sta_tnh', f.sta_tnh,
                 'surat_hak', f.surat_hak,
                 'nomor_hak', f.nomor_hak,
+                'alas_hak', f.alas_hak,
                 'beban_hak', f.beban_hak
               )
 
               ||
 
               -- =================================================
-              -- KELOMPOK 2
-              -- PENGUKURAN + TANAH
+              -- LUAS
               -- =================================================
+
               jsonb_build_object(
                 'luastertul', f.luastertul,
                 'luaspeta', f.luaspeta,
-                'sumbergeom', f.sumbergeom,
-                'alatukur', f.alatukur,
-                'metodukur', f.metodukur,
-                'shape_leng', f.shape_leng,
-                'shape_area', f.shape_area,
                 'luas_tnh', f.luas_tnh,
+                'luas_atbt', f.luas_atbt,
 
+                'luas_terdampak_m2',
+                f.luas_terdampak_m2,
+
+                'luas_sisa_m2',
+                f.luas_sisa_m2,
+
+                'sumbergeom', f.sumbergeom,
+                'shape_leng', f.shape_leng,
+                'shape_area', f.shape_area
+              )
+
+              ||
+
+              -- =================================================
+              -- PENGUKURAN
+              -- =================================================
+
+              jsonb_build_object(
+                'alatukur', f.alatukur,
+                'metodukur', f.metodukur
+              )
+
+              ||
+
+              -- =================================================
+              -- TANAH
+              -- =================================================
+
+              jsonb_build_object(
                 'penggunaan', f.penggunaan,
                 'hub_tnh', f.hub_tnh,
                 'kode_wwc', f.kode_wwc,
                 'jenis_tnh', f.jenis_tnh,
                 'ruang_atbt', f.ruang_atbt,
-                'luas_atbt', f.luas_atbt,
+                'sta_tnh', f.sta_tnh,
                 'dampak_tnh', f.dampak_tnh
               )
 
               ||
 
               -- =================================================
-              -- KELOMPOK 3
-              -- PEMILIK + PENYEWA + KONTAK
+              -- PEMILIK
               -- =================================================
+
               jsonb_build_object(
                 'nama_milik', f.nama_milik,
                 'ttl_milik', f.ttl_milik,
                 'krja_milik', f.krja_milik,
                 'almt_milik', f.almt_milik,
                 'nik_milik', f.nik_milik,
-
-                'nama_sewa', f.nama_sewa,
-                'ttl_sewa', f.ttl_sewa,
-                'krja_sewa', f.krja_sewa,
-                'almt_sewa', f.almt_sewa,
-                'nik_sewa', f.nik_sewa,
-
                 'nomor_hp', f.nomor_hp
               )
 
               ||
 
               -- =================================================
-              -- KELOMPOK 4
-              -- BANGUNAN + TANAMAN + BENDA LAIN
+              -- PENYEWA
               -- =================================================
+
               jsonb_build_object(
-                'jml_bgn', f.jml_bgn,
-
-                'jenis_tnm', f.jenis_tnm,
-                'jumlah_tnm', f.jumlah_tnm,
-
-                'jenis_bnd', f.jenis_bnd,
-                'jumlah_bnd', f.jumlah_bnd
+                'nama_sewa', f.nama_sewa,
+                'ttl_sewa', f.ttl_sewa,
+                'krja_sewa', f.krja_sewa,
+                'almt_sewa', f.almt_sewa,
+                'nik_sewa', f.nik_sewa
               )
 
               ||
 
               -- =================================================
-              -- KELOMPOK 5
-              -- DATA + FILE + SISTEM
+              -- BANGUNAN
               -- =================================================
+
+              jsonb_build_object(
+                'jml_bgn', f.jml_bgn
+              )
+
+              ||
+
+              -- =================================================
+              -- DATA LAIN
+              -- =================================================
+
               jsonb_build_object(
                 'date_updt', f.date_updt,
                 'foto_tnh', f.foto_tnh,
                 'nama', f.nama,
                 'layer', f.layer,
                 'path', f.path,
+                'created_at', f.created_at
+              )
 
-                'created_at', f.created_at,
-                'status', f.status
+              ||
+
+              -- =================================================
+              -- WORKFLOW PENDATAAN
+              -- =================================================
+
+              jsonb_build_object(
+                'status', f.status,
+                'catatan_supervisor', f.catatan_supervisor,
+                'petugas_nama', f.petugas_nama,
+                'tanggal_ukur', f.tanggal_ukur,
+                'dikirim_pada', f.dikirim_pada,
+                'diverifikasi_pada', f.diverifikasi_pada
               )
             )
           ),
-
           '[]'::json
         )
       ) AS fc
