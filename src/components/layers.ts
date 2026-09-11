@@ -218,11 +218,11 @@ export const KONTUR = {
 ========================================================= */
 
 export const DTM = {
-  aws:
-    process.env.NEXT_PUBLIC_TILES_DTM_AWS ?? '',
+  trace:
+    process.env.NEXT_PUBLIC_TILES_DTM_TRACE ?? '',
 
-  r2:
-    process.env.NEXT_PUBLIC_TILES_DTM_R2 ?? ''
+  kawasan:
+    process.env.NEXT_PUBLIC_TILES_DTM_KAWASAN ?? ''
 };
 
 
