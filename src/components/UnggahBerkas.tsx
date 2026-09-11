@@ -97,108 +97,59 @@ export default function UnggahBerkas({
         )
       : 0;
 
-  /* =======================================================
-     UPLOAD
-     ======================================================= */
+  async function unggah(kategori: KategoriLampiran, file: File) {
+  setSedang(kategori);
+  try {
+    const exif = await bacaExif(file);
 
-  async function unggah(
-    kategori: KategoriLampiran,
-    file: File
-  ) {
-    setSedang(kategori);
+    // Upload lewat API route sendiri (bebas CORS) → dapat object_key
+    const fd = new FormData();
+    fd.append("file", file);
+    fd.append("bidang_id", String(bidang.id));
+    fd.append("kategori", kategori);
+    fd.append("nama_asli", file.name);
 
-    try {
-      const exif = await bacaExif(file);
+    const naik = await fetch("/api/lampiran/unggah", {
+      method: "POST",
+      body: fd,
+    });
 
-      const presign = await fetch(
-        "/api/lampiran/presign",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type":
-              "application/json",
-          },
-          body: JSON.stringify({
-            bidang_id: bidang.id,
-            kategori,
-            nama_asli: file.name,
-            mime: file.type,
-            ukuran_byte: file.size,
-          }),
-        }
-      );
-
-      if (!presign.ok) {
-        throw new Error(
-          await presign.text()
-        );
-      }
-
-      const {
-        url,
-        object_key,
-      } = await presign.json();
-
-      const put = await fetch(url, {
-        method: "PUT",
-        headers: {
-          "Content-Type": file.type,
-        },
-        body: file,
-      });
-
-      if (!put.ok) {
-        throw new Error(
-          "Unggahan ke penyimpanan gagal"
-        );
-      }
-
-      const simpan = await fetch(
-        "/api/lampiran",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type":
-              "application/json",
-          },
-          body: JSON.stringify({
-            bidang_id: bidang.id,
-            kategori,
-            object_key,
-            nama_asli: file.name,
-            mime: file.type,
-            ukuran_byte: file.size,
-            ...exif,
-          }),
-        }
-      );
-
-      if (!simpan.ok) {
-        throw new Error(
-          await simpan.text()
-        );
-      }
-
-      await muatUlangKartu();
-
-      beriPesan(
-        `${KATEGORI_LABEL[kategori]} berhasil diunggah.`
-      );
-    } catch (error) {
-      console.error(
-        "UPLOAD BERKAS:",
-        error
-      );
-
-      beriPesan(
-        error instanceof Error
-          ? error.message
-          : "Berkas gagal diunggah."
-      );
-    } finally {
-      setSedang(null);
+    if (!naik.ok) {
+      throw new Error(await naik.text());
     }
+
+    const { object_key } = await naik.json();
+
+    // Simpan metadata seperti biasa (tidak berubah)
+    const simpan = await fetch("/api/lampiran", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        bidang_id: bidang.id,
+        kategori,
+        object_key,
+        nama_asli: file.name,
+        mime: file.type,
+        ukuran_byte: file.size,
+        ...exif,
+      }),
+    });
+
+    if (!simpan.ok) {
+      throw new Error(await simpan.text());
+    }
+
+    await muatUlangKartu();
+    beriPesan(`${KATEGORI_LABEL[kategori]} berhasil diunggah.`);
+  } catch (error) {
+    console.error("UPLOAD BERKAS:", error);
+    beriPesan(
+      error instanceof Error ? error.message : "Berkas gagal diunggah."
+    );
+  } finally {
+    setSedang(null);
   }
+}
 
   const kurang = WAJIB.filter(
     (k) => !perKategori.has(k)
