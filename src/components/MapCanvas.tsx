@@ -249,9 +249,7 @@ if (DTM.r2) {
       bearing: 18,
       maxPitch: 75,
 
-      attributionControl: {
-        compact: false
-      },
+      attributionControl: false,
 
       style: {
         version: 8,
