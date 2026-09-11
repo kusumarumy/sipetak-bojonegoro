@@ -4,12 +4,6 @@ import { useEffect, useMemo, useState } from "react";
 import { useApp } from "@/store/useApp";
 import UnggahBerkas from "./UnggahBerkas";
 import type { Peran, StatusBidang } from "@/types";
-import {
-  dapatMengubahAtribut,
-  dapatMengirim,
-  dapatMemverifikasi,
-  dapatMelihatDokumenPribadi,
-} from "@/lib/rbac";
 
 type TabId =
   | "ringkas"
@@ -180,18 +174,20 @@ function Completeness({ bidang }: { bidang: any }) {
 }
 
 export default function KartuBidang({
-  bidang: b,
-  onClose,
   peran,
 }: {
-  bidang: any;
-  onClose: () => void;
   peran: Peran;
 }) {
   const {
-  muatUlangKartu,
-  beriPesan,
-} = useApp();
+    kartu: b,
+    pilihBidang,
+    muatUlangKartu,
+    beriPesan,
+  } = useApp();
+
+  const onClose = () => {
+    void pilihBidang(null);
+  };
 
   const [tab, setTab] = useState<TabId>("ringkas");
   const [edit, setEdit] = useState(false);
@@ -214,9 +210,6 @@ export default function KartuBidang({
     peran,
     status
   );
-
-  const bolehLihatDokumenPribadi =
-    dapatMelihatDokumenPribadi(peran);
 
   const nilai = (key: string) =>
     draft[key] !== undefined ? draft[key] : b?.[key];
