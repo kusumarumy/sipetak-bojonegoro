@@ -447,7 +447,31 @@ export async function PATCH(
     await transaksi(
       sesi.user.id,
       async (c) => {
-
+    
+        // =========================================================
+        // AMBIL NILAI LAMA
+        // =========================================================
+    
+        const [lama] = await c.query<any>(
+          `
+          SELECT *
+          FROM public.bidang_tanah
+          WHERE id = $1
+          FOR UPDATE
+          `,
+          [id]
+        );
+    
+        if (!lama) {
+          throw new Error(
+            'Bidang tidak ditemukan'
+          );
+        }
+    
+        // =========================================================
+        // UPDATE DATA BIDANG
+        // =========================================================
+    
         const set =
           isi
             .map(
@@ -455,7 +479,7 @@ export async function PATCH(
                 `${kolom} = $${index + 2}`
             )
             .join(', ');
-
+    
         await c.query(
           `
           UPDATE public.bidang_tanah
@@ -469,6 +493,69 @@ export async function PATCH(
             )
           ]
         );
+    
+        // =========================================================
+        // SIMPAN AUDIT LOG
+        // HANYA UNTUK ATRIBUT YANG BENAR-BENAR BERUBAH
+        // =========================================================
+    
+        for (const [kolom, nilaiBaru] of isi) {
+    
+          const nilaiLama =
+            lama[kolom];
+    
+          const lamaText =
+            nilaiLama == null
+              ? null
+              : String(nilaiLama);
+    
+          const baruText =
+            nilaiBaru == null
+              ? null
+              : String(nilaiBaru);
+    
+          // Tidak mencatat kalau nilainya sebenarnya sama
+          if (lamaText === baruText) {
+            continue;
+          }
+    
+          await c.query(
+            `
+            INSERT INTO public.audit_log (
+              tabel,
+              record_id,
+              bidang_id,
+              aksi,
+              kolom,
+              nilai_lama,
+              nilai_baru,
+              pengguna_id,
+              pada
+            )
+            VALUES (
+              $1,
+              $2,
+              $3,
+              $4,
+              $5,
+              $6,
+              $7,
+              $8,
+              NOW()
+            )
+            `,
+            [
+              'bidang_tanah',
+              id,
+              lama.bidang_id ?? null,
+              'UPDATE',
+              kolom,
+              lamaText,
+              baruText,
+              sesi.user.id
+            ]
+          );
+        }
       }
     );
 
