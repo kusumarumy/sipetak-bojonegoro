@@ -527,53 +527,31 @@ main.body {
 .maplibregl-ctrl-bottom-left .maplibregl-ctrl-attrib {
   order: 2;
 }
-/* =========================================================
-   DPPT SIDEBAR — BARATA STYLE
-   Small icon rail + floating flyout
-   ========================================================= */
 
 .sidebar {
   position: fixed;
   top: 0;
   left: 0;
   bottom: 0;
-
   width: 72px;
-
   display: flex;
   flex-direction: column;
   align-items: center;
-
-  background: #ffffff;
-
+  background: ##7c0000;
   border-right: 1px solid #e1e6ed;
-
   z-index: 900;
 }
 
-
-/* =========================================================
-   MENU
-   ========================================================= */
-
 .sidebar-menu {
   width: 100%;
-
   display: flex;
   flex-direction: column;
   align-items: center;
-
   padding-top: 112px;
 }
 
-
-/* =========================================================
-   SIDEBAR ITEM
-   ========================================================= */
-
 .sidebar-item {
   position: relative;
-
   width: 48px;
   height: 48px;
 
@@ -710,122 +688,64 @@ main.body {
     translateX(0);
 }
 
-
-/* =========================================================
-   FLYOUT PANEL
-   ========================================================= */
-
 .flyout-panel {
   position: fixed;
-
-  /*
-   * Sidebar = 72px
-   * gap = 10px
-   */
   left: 82px;
-
-  /*
-   * Jangan terlalu tinggi karena header floating.
-   */
   top: 104px;
-
   width: 330px;
-
   max-height: calc(100vh - 120px);
-
   overflow: hidden;
-
   background: #ffffff;
-
   border: 1px solid #dce3eb;
   border-radius: 10px;
-
   box-shadow:
     0 8px 28px rgba(25, 47, 70, .15);
-
   z-index: 950;
-
   animation: flyout-in .14s ease-out;
 }
-
-
-/* =========================================================
-   FLYOUT ANIMATION
-   ========================================================= */
 
 @keyframes flyout-in {
   from {
     opacity: 0;
     transform: translateX(-6px);
   }
-
   to {
     opacity: 1;
     transform: translateX(0);
   }
 }
 
-
-/* =========================================================
-   FLYOUT HEADER
-   ========================================================= */
-
 .flyout-header {
   min-height: 62px;
-
   display: flex;
   align-items: center;
   justify-content: space-between;
-
   padding: 12px 14px;
-
   background: #ffffff;
-
   border-bottom: 1px solid #e5e9ef;
 }
 
-
-/* =========================================================
-   FLYOUT BODY
-   ========================================================= */
-
 .flyout-body {
   max-height: calc(100vh - 184px);
-
   overflow-y: auto;
-
   overflow-x: hidden;
-
   scrollbar-width: thin;
 }
-
-
-/* =========================================================
-   CLOSE BUTTON
-   ========================================================= */
 
 .flyout-close {
   width: 28px;
   height: 28px;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   padding: 0;
-
-  border: 1px solid #dfe5ec;
+  border: 1px solid #7c0000;
   border-radius: 6px;
-
   background: #ffffff;
-
-  color: #68788c;
-
+  color: #7c0000;
   font-size: 18px;
   line-height: 1;
-
   cursor: pointer;
-
   transition:
     background .15s ease,
     color .15s ease,
@@ -1062,9 +982,6 @@ html[data-theme="light"] {
   --terrain-active: #2fa9a8;
   --terrain-active-text: #071b22;
 }
-/* =========================================================
-   TERRAIN PANEL — BOJONEGORO
-========================================================= */
 
 .terrain-panel-heading {
   display: flex;
@@ -1075,18 +992,14 @@ html[data-theme="light"] {
 .terrain-panel-icon {
   width: 30px;
   height: 30px;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   flex-shrink: 0;
-
-  border: 1px solid rgba(47, 174, 176, 0.35);
+  border: 1px solid rgba(176, 47, 47, 0.35);
   border-radius: 8px;
-
-  background: rgba(47, 174, 176, 0.08);
-  color: #2faeb0;
+  background: rgba(176, 47, 47, 0.08);
+  color: #7c0000;
 }
 
 .terrain-panel-icon svg {
@@ -1118,11 +1031,6 @@ html[data-theme="light"] {
   color: #71869a;
 }
 
-
-/* =========================================================
-   BODY
-========================================================= */
-
 .terrain-body {
   padding: 10px 12px 12px;
 }
@@ -1131,36 +1039,20 @@ html[data-theme="light"] {
   width: 100%;
 }
 
-
-/* =========================================================
-   TERRAIN OPTIONS
-========================================================= */
-
 .terrain-segment {
   display: grid;
-
   grid-template-columns:
     0.72fr
     1.5fr
     1.28fr;
-
   gap: 3px;
-
   width: 100%;
   box-sizing: border-box;
-
   padding: 3px;
-
-  border: 1px solid #cbd6e1;
+  border: 1px solid #7c0000;
   border-radius: 10px;
-
   background: #edf2f6;
 }
-
-
-/* =========================================================
-   OPTION BUTTON
-========================================================= */
 
 .terrain-segment button {
   min-width: 0;
@@ -1194,10 +1086,6 @@ html[data-theme="light"] {
 }
 
 
-/* =========================================================
-   NAMA DTM
-========================================================= */
-
 .terrain-option-name {
   display: block;
 
@@ -1214,11 +1102,6 @@ html[data-theme="light"] {
   line-height: 1.1;
 }
 
-
-/* =========================================================
-   RESOLUSI
-========================================================= */
-
 .terrain-option-resolution {
   font-size: 9px;
   font-weight: 650;
@@ -1228,19 +1111,9 @@ html[data-theme="light"] {
   color: #8797a7;
 }
 
-
-/* =========================================================
-   HOVER
-========================================================= */
-
 .terrain-segment button:hover {
   color: #7b1528;
 }
-
-
-/* =========================================================
-   ACTIVE
-========================================================= */
 
 .terrain-segment button.active {
   background: #9b1734;
