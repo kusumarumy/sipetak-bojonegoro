@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useApp } from "@/store/useApp";
 import UnggahBerkas from "./UnggahBerkas";
-import type { Peran, StatusBidang } from "@/types";
+import type { Peran, StatusBidang, Pemilik } from "@/types";
 import {
   dapatMengubahAtribut,
   dapatMengirim,
@@ -428,8 +428,8 @@ const nilai = (key: string) =>
           </>
         );
 
-      case "pemilik": {
-        const pemilik = b?.pemilik?.[0] ?? {};
+case "pemilik": {
+  const pemilik = b?.pemilik?.[0] ?? null;
 
         return (
           <>
@@ -440,28 +440,28 @@ const nilai = (key: string) =>
               <div className="kb-grid two">
                 <Field
                   label="Nama"
-                  value={pemilik.nama ?? b?.nama_milik}
+                  value={pemilik?.nama ?? b?.nama_milik}
                   edit={edit}
                   onChange={(v) => setNilai("nama_milik", v)}
                 />
 
                 <Field
                   label="NIK"
-                  value={pemilik.nik ?? b?.nik_milik}
+                  value={pemilik?.nik ?? b?.nik_milik}
                   edit={edit}
                   onChange={(v) => setNilai("nik_milik", v)}
                 />
 
                 <Field
                   label="Tempat, tanggal lahir"
-                  value={pemilik.ttl ?? b?.ttl_milik}
+                  value={pemilik?.ttl ?? b?.ttl_milik}
                   edit={edit}
                   onChange={(v) => setNilai("ttl_milik", v)}
                 />
 
                 <Field
                   label="Pekerjaan"
-                  value={pemilik.pekerjaan ?? b?.krja_milik}
+                  value={pemilik?.pekerjaan ?? b?.krja_milik}
                   edit={edit}
                   onChange={(v) => setNilai("krja_milik", v)}
                 />
@@ -469,7 +469,7 @@ const nilai = (key: string) =>
 
               <Field
                 label="Alamat"
-                value={pemilik.alamat ?? b?.almt_milik}
+                value={pemilik?.alamat ?? b?.almt_milik}
                 edit={edit}
                 onChange={(v) => setNilai("almt_milik", v)}
               />
