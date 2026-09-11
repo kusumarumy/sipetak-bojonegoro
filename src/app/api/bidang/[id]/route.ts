@@ -71,6 +71,17 @@ export async function GET(
       status: 401,
     });
   }
+  
+  const namaAkun =
+  sesi.user.name ?? null;
+
+  const ipAddress =
+    req.headers
+      .get("x-forwarded-for")
+      ?.split(",")[0]
+      ?.trim() ??
+    req.headers.get("x-real-ip") ??
+    null;
 
   const { id } = await params;
 
@@ -324,14 +335,6 @@ export async function GET(
       /* Bangunan */
       jml_bgn: b.jml_bgn,
       bangunan: [],
-
-      /* Tanaman */
-      jenis_tnm: b.jenis_tnm,
-      jumlah_tnm: b.jumlah_tnm,
-
-      /* Benda lain */
-      jenis_bnd: b.jenis_bnd,
-      jumlah_bnd: b.jumlah_bnd,
 
       /* Foto */
       foto_tnh: b.foto_tnh,
