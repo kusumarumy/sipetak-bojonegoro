@@ -890,20 +890,22 @@ main.body {
 .layer-group-head {
   width: 100%;
 
-  min-height: 40px;
+  min-height: 54px;
 
   display: flex;
   align-items: center;
   justify-content: space-between;
 
-  padding: 7px 5px;
+  padding: 8px 4px;
 
   border: 0;
+  border-bottom: 1px solid #dfe5ec;
+
   background: transparent;
 
-  color: var(--layer-text-secondary);
-
   cursor: pointer;
+
+  color: #334155;
 
   transition:
     background .15s ease,
@@ -911,8 +913,7 @@ main.body {
 }
 
 .layer-group-head:hover {
-  background: var(--layer-hover);
-  border-radius: 7px;
+  background: #f8fafc;
 }
 
 .layer-group-left {
@@ -920,35 +921,100 @@ main.body {
 
   display: flex;
   align-items: center;
-
   gap: 7px;
 }
 
+.layer-group-title {
+  font-size: 11px;
+  font-weight: 750;
+  letter-spacing: .12em;
+  text-transform: uppercase;
 
-/* =========================================================
-   CHEVRON
-   ========================================================= */
+  color: #64748b;
 
-.group-chevron {
-  width: 15px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.group-count {
+  min-width: 27px;
+  height: 24px;
+
+  padding: 0 7px;
 
   display: inline-flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
 
-  color: #8c99a6;
+  border-radius: 7px;
 
-  font-size: 16px;
+  background: #e9eef6;
+  color: #607086;
 
-  transform: rotate(0deg);
+  font-size: 10px;
+  font-weight: 750;
+}
+.group-icon {
+  width: 28px;
+  height: 28px;
 
-  transition: transform .15s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  flex: 0 0 28px;
+
+  border-radius: 7px;
+
+  background: #f7eeee;
+  color: #8f1734;
+
+  transition:
+    background .15s ease,
+    color .15s ease,
+    transform .15s ease;
+}
+
+.group-icon svg {
+  width: 15px;
+  height: 15px;
+}
+
+.layer-group-head:hover .group-icon {
+  background: #f3e2e6;
+  color: #7c1230;
+}
+html[data-theme="dark"] .group-icon {
+  background: #35272b;
+  color: #d59aaa;
+}
+
+html[data-theme="dark"] .layer-group-head:hover .group-icon {
+  background: #422d33;
+  color: #e7b5c1;
+}
+.group-chevron {
+  width: 14px;
+  height: 14px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #7f91a5;
+
+  transition: transform .18s ease;
+}
+
+.group-chevron svg {
+  width: 12px;
+  height: 12px;
 }
 
 .group-chevron.expanded {
   transform: rotate(90deg);
 }
-
 
 /* =========================================================
    GROUP ICON
@@ -992,34 +1058,6 @@ main.body {
   color: #657484;
 }
 
-
-/* =========================================================
-   GROUP COUNT
-   ========================================================= */
-
-.group-count {
-  flex: 0 0 auto;
-
-  min-width: 22px;
-
-  padding: 3px 6px;
-
-  border-radius: 999px;
-
-  background: #edf1f5;
-
-  color: #778594;
-
-  font-size: 9px;
-  font-weight: 700;
-
-  text-align: center;
-}
-
-
-/* =========================================================
-   LAYER LIST
-   ========================================================= */
 
 .layer-list {
   padding: 1px 0 7px 24px;
@@ -1365,31 +1403,6 @@ main.body {
   letter-spacing: .11em;
 }
 
-.group-count {
-  min-width: 24px;
-  height: 20px;
-
-  padding: 0 6px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 7px;
-
-  background: #e8edf5;
-
-  color: #6c7f94;
-
-  font-size: 9px;
-  font-weight: 750;
-}
-
-
-/* =========================================================
-   LAYER LIST
-   ========================================================= */
-
 .layer-list {
   padding: 0 0 7px;
 }
@@ -1662,7 +1675,7 @@ html[data-theme="dark"] .layer-group-head:hover {
 }
 
 html[data-theme="dark"] .group-chevron {
-  color: #918086;
+  color: #9c8b91;
 }
 
 html[data-theme="dark"] .group-icon {
@@ -1670,13 +1683,22 @@ html[data-theme="dark"] .group-icon {
   color: #d28a9b;
 }
 
+html[data-theme="dark"] .layer-group-head {
+  border-bottom-color: #49383d;
+  color: #e8dfe2;
+}
+
+html[data-theme="dark"] .layer-group-head:hover {
+  background: #2d2225;
+}
+
 html[data-theme="dark"] .layer-group-title {
-  color: #bcaeb2;
+  color: #aa999f;
 }
 
 html[data-theme="dark"] .group-count {
-  background: #302428;
-  color: #918086;
+  background: #3a2d31;
+  color: #bcaab0;
 }
 
 
@@ -2297,27 +2319,6 @@ html[data-theme="dark"]
   gap: 4px;
 }
 
-.group-chevron {
-  width: 12px;
-
-  flex: 0 0 12px;
-
-  color: var(--card-muted);
-
-  font-size: 16px;
-  line-height: 1;
-
-  transform: rotate(0deg);
-
-  transition:
-    transform .15s ease,
-    color .15s ease;
-}
-
-.group-chevron.expanded {
-  transform: rotate(90deg);
-}
-
 .layer-group-head:hover .group-chevron {
   color: var(--accent);
 }
@@ -2353,23 +2354,6 @@ html[data-theme="dark"]
   letter-spacing: .10em;
 
   text-transform: uppercase;
-}
-
-.group-count {
-  flex: none;
-
-  padding: 2px 5px;
-
-  border-radius: 5px;
-
-  background: var(--chassis3);
-
-  color: var(--card-muted);
-
-  font-size: 7.5px;
-  font-weight: 700;
-
-  line-height: 1.2;
 }
 
 .layer-group-head:hover .layer-group-title {
