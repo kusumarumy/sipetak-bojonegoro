@@ -17,7 +17,7 @@ export const STATUS_WARNA: Record<StatusBidang, string> = {
 
 export type KategoriLampiran =
   | 'foto_bidang' | 'foto_bangunan_depan' | 'foto_bangunan_kiri' | 'foto_bangunan_kanan'
-  | 'foto_bangunan_belakang' | 'foto_patok' | 'foto_tanaman' | 'foto_benda_lain'
+  | 'foto_bangunan_belakang' | 'foto_patok' 
   | 'foto_akses' | 'foto_pemilik_petugas'
   | 'dok_ktp' | 'dok_kk' | 'dok_sertipikat' | 'dok_sppt' | 'dok_ahli_waris'
   | 'dok_kuasa' | 'dok_rekening' | 'dok_berita_acara' | 'lainnya';
@@ -29,8 +29,6 @@ export const KATEGORI_LABEL: Record<KategoriLampiran, string> = {
   foto_bangunan_kanan: 'Tampak samping kanan',
   foto_bangunan_belakang: 'Tampak belakang',
   foto_patok: 'Patok batas',
-  foto_tanaman: 'Tanaman tumbuh',
-  foto_benda_lain: 'Benda lain di atas tanah',
   foto_akses: 'Akses jalan',
   foto_pemilik_petugas: 'Pemilik & petugas',
   dok_ktp: 'KTP pemilik',
@@ -62,8 +60,6 @@ export interface Bangunan {
   tingkat_terdampak: string | null;
   listrik: string | null; air: string | null; sanitasi: string | null;
 }
-export interface Tanaman { id: string; jenis: string; jumlah: number | null; satuan: string | null; keterangan: string | null; }
-export interface BendaLain { id: string; jenis: string; ukuran: string | null; jumlah: number | null; keterangan: string | null; }
 export interface Lampiran {
   id: string; kategori: KategoriLampiran; nama_asli: string | null;
   mime: string | null; ukuran_byte: number | null;
@@ -140,15 +136,6 @@ export interface Bidang {
   krja_sewa?: string | null;
   almt_sewa?: string | null;
   nik_sewa?: string | null;
-
-  // Tanaman
-  jenis_tnm?: string | null;
-  jumlah_tnm?: number | null;
-
-  // Benda lain
-  jenis_bnd?: string | null;
-  jumlah_bnd?: number | null;
-
   // Bangunan
   jml_bgn?: number | null;
 
@@ -172,8 +159,6 @@ export interface Bidang {
   // Relasi aplikasi
   pemilik: Pemilik[];
   bangunan: Bangunan[];
-  tanaman: Tanaman[];
-  benda_lain: BendaLain[];
   lampiran: Lampiran[];
   riwayat: JejakAudit[];
 }
