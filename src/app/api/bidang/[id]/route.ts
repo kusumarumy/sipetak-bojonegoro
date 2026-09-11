@@ -71,18 +71,6 @@ export async function GET(
       status: 401,
     });
   }
-  
-  const namaAkun =
-  sesi.user.name ?? null;
-
-  const ipAddress =
-    req.headers
-      .get("x-forwarded-for")
-      ?.split(",")[0]
-      ?.trim() ??
-    req.headers.get("x-real-ip") ??
-    null;
-
   const { id } = await params;
 
   try {
