@@ -18,9 +18,7 @@ function s3(): S3Client {
     "BOJO_R2_BUCKET",
   ];
 
-  const kurang = wajib.filter(
-    (k) => !process.env[k]
-  );
+  const kurang = wajib.filter((k) => !process.env[k]);
 
   if (kurang.length) {
     throw new Error(
@@ -28,22 +26,42 @@ function s3(): S3Client {
     );
   }
 
- _s3 = new S3Client({
-  region: "auto",
-  endpoint: `https://${process.env.BOJO_R2_ACCOUNT_ID}.r2.cloudflarestorage.com`,
-  credentials: {
-    accessKeyId: process.env.BOJO_R2_ACCESS_KEY_ID!,
-    secretAccessKey: process.env.BOJO_R2_SECRET_ACCESS_KEY!,
-  },
-  requestChecksumCalculation: "WHEN_REQUIRED",
-  responseChecksumValidation: "WHEN_REQUIRED",
-});
+  _s3 = new S3Client({
+    region: "auto",
+    endpoint: `https://${process.env.BOJO_R2_ACCOUNT_ID}.r2.cloudflarestorage.com`,
+    credentials: {
+      accessKeyId: process.env.BOJO_R2_ACCESS_KEY_ID!,
+      secretAccessKey: process.env.BOJO_R2_SECRET_ACCESS_KEY!,
+    },
+    requestChecksumCalculation: "WHEN_REQUIRED",
+    responseChecksumValidation: "WHEN_REQUIRED",
+  });
+
+  // ↓↓↓ PAKSA buang header checksum yang tetap disuntik SDK,
+  //     agar tidak ikut ditandatangani ke presigned URL (penyebab 403 di R2)
+  _s3.middlewareStack.add(
+    (next) => async (args) => {
+      const req: any = (args as any).request;
+      if (req?.headers) {
+        for (const h of Object.keys(req.headers)) {
+          const k = h.toLowerCase();
+          if (
+            k.startsWith("x-amz-checksum-") ||
+            k.startsWith("x-amz-sdk-checksum-")
+          ) {
+            delete req.headers[h];
+          }
+        }
+      }
+      return next(args);
+    },
+    { step: "build", name: "stripChecksum", priority: "low" }
+  );
 
   return _s3;
 }
 
-const bucket = () =>
-  process.env.BOJO_R2_BUCKET!;
+const bucket = () => process.env.BOJO_R2_BUCKET!;
 
 export const penyimpananSiap = () =>
   !!(
@@ -53,11 +71,7 @@ export const penyimpananSiap = () =>
     process.env.BOJO_R2_BUCKET
   );
 
-export function urlUnggah(
-  objectKey: string,
-  mime: string,
-  detik = 300
-) {
+export function urlUnggah(objectKey: string, mime: string, detik = 300) {
   return getSignedUrl(
     s3(),
     new PutObjectCommand({
@@ -69,10 +83,7 @@ export function urlUnggah(
   );
 }
 
-export function urlBaca(
-  objectKey: string,
-  detik = 300
-) {
+export function urlBaca(objectKey: string, detik = 300) {
   return getSignedUrl(
     s3(),
     new GetObjectCommand({
@@ -83,9 +94,7 @@ export function urlBaca(
   );
 }
 
-export async function hapusObjek(
-  objectKey: string
-) {
+export async function hapusObjek(objectKey: string) {
   await s3().send(
     new DeleteObjectCommand({
       Bucket: bucket(),
