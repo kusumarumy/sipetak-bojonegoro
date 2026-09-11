@@ -9,14 +9,6 @@ type Ctx = {
   params: Promise<{ id: string }>;
 };
 
-/**
- * GET — satu bidang lengkap.
- *
- * Sumber utama:
- * public.bidang_tanah
- *
- * Seluruh data survei lapangan berada pada satu record.
- */
 export async function GET(
   _req: Request,
   { params }: Ctx
@@ -84,6 +76,8 @@ export async function GET(
         nomor_hak,
 
         luas_tnh,
+luas_terdampak_m2,
+luas_sisa_m2,
 
         ruang_atbt,
         luas_atbt,
@@ -151,12 +145,10 @@ export async function GET(
       kecamatan: b.kecamatan,
       rt_rw: b.rt_rw,
 
-      // Luas
-      //
-      // luas_tnh adalah luas tanah hasil survei.
-      // luastertul dan luaspeta tetap dikirim sebagai
-      // atribut aslinya agar tidak kehilangan informasi.
       luas_m2: b.luas_tnh,
+luas_tnh: b.luas_tnh,
+luas_terdampak_m2: b.luas_terdampak_m2,
+luas_sisa_m2: b.luas_sisa_m2,
 
       luastertul: b.luastertul,
       luaspeta: b.luaspeta,
@@ -355,6 +347,8 @@ const SkemaUbah = z.object({
   nomor_hak: z.string().max(160).nullish(),
 
   luas_tnh: z.number().nonnegative().nullish(),
+luas_terdampak_m2: z.number().nonnegative().nullish(),
+luas_sisa_m2: z.number().nonnegative().nullish(),
 
   ruang_atbt: z.string().max(120).nullish(),
   luas_atbt: z.number().nonnegative().nullish(),
