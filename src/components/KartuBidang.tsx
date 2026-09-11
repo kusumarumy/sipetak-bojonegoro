@@ -173,10 +173,7 @@ function Completeness({
 }: {
   bidang: any;
 }) {
-  /*
-   * Mengacu pada data yang memang tersedia
-   * pada bidang_tanah / lampiran.
-   */
+  
   const checks = [
     Boolean(
       bidang?.nama_milik ||
@@ -315,13 +312,6 @@ export default function KartuBidang({
     pemilik?.nama ??
     "Pemilik belum diisi";
 
-  /*
-   * Semua luas diambil dari kolom database.
-   *
-   * luas_tnh       = luas tanah
-   * luas_terdampak_m2 = luas terdampak
-   * luas_sisa_m2      = luas sisa
-   */
   const luas =
     b?.luas_tnh ??
     b?.luastertul ??
@@ -333,72 +323,97 @@ export default function KartuBidang({
   const luasSisa =
     b?.luas_sisa_m2;
 
-  /*
-   * Database hanya menyimpan jumlah bangunan
-   * melalui jml_bgn.
-   *
-   * Jangan membuat data bangunan palsu
-   * dari jumlah tersebut.
-   */
   const jumlahBangunan =
     b?.jml_bgn ?? 0;
 
   async function simpan() {
-    if (!b?.id) return;
+  if (!b?.id) return;
 
-    if (
-      Object.keys(draft).length === 0
-    ) {
-      setEdit(false);
-      return;
-    }
-
-    setBusy(true);
-
-    try {
-      const response = await fetch(
-        `/api/bidang/${b.id}`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type":
-              "application/json",
-          },
-          body: JSON.stringify(draft),
-        }
-      );
-
-      const text =
-        await response.text();
-
-      if (!response.ok) {
-        throw new Error(
-          text ||
-            "Gagal menyimpan perubahan"
-        );
-      }
-
-      setEdit(false);
-      setDraft({});
-
-      await muatUlangKartu();
-
-      beriPesan(
-        "Perubahan berhasil disimpan"
-      );
-    } catch (error) {
-      console.error(error);
-
-      beriPesan(
-        error instanceof Error
-          ? error.message
-          : "Gagal menyimpan perubahan"
-      );
-    } finally {
-      setBusy(false);
-    }
+  if (Object.keys(draft).length === 0) {
+    setEdit(false);
+    return;
   }
 
+  setBusy(true);
+
+  try {
+    console.log("DATA YANG AKAN DISIMPAN:", draft);
+
+    const response = await fetch(
+      `/api/bidang/${b.id}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(draft),
+      }
+    );
+
+    const contentType =
+      response.headers.get("content-type") ?? "";
+
+    let hasil: any = null;
+
+    if (contentType.includes("application/json")) {
+      hasil = await response.json();
+    } else {
+      const text = await response.text();
+
+      hasil = {
+        pesan: text,
+      };
+    }
+
+    console.log(
+      "RESPONSE SIMPAN:",
+      response.status,
+      hasil
+    );
+
+    if (!response.ok) {
+      const pesan =
+        hasil?.pesan ??
+        hasil?.error ??
+        "Gagal menyimpan perubahan";
+
+      throw new Error(pesan);
+    }
+
+    /*
+     * PATCH berhasil
+     */
+    setEdit(false);
+    setDraft({});
+
+    /*
+     * Ambil ulang data dari database
+     */
+    await muatUlangKartu();
+
+    /*
+     * Notifikasi berhasil
+     */
+    beriPesan(
+      "Perubahan berhasil disimpan"
+    );
+
+  } catch (error) {
+    console.error(
+      "ERROR SIMPAN BIDANG:",
+      error
+    );
+
+    beriPesan(
+      error instanceof Error
+        ? error.message
+        : "Gagal menyimpan perubahan"
+    );
+
+  } finally {
+    setBusy(false);
+  }
+}
   async function pindahStatus(
     target:
       | "terkirim"
