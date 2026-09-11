@@ -518,12 +518,6 @@ main.body {
   left: 100px !important;
   right: auto !important;
 }
-map.addControl(
-  new maplibregl.AttributionControl({
-    compact: false
-  }),
-  'bottom-left'
-);
 /* =========================================================
    DPPT SIDEBAR — BARATA STYLE
    Small icon rail + floating flyout
