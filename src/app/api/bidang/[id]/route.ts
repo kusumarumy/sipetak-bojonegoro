@@ -703,73 +703,93 @@ export async function PATCH(
         );
 
         /* ===============================================
-           AUDIT LOG
-           HANYA YANG BENAR-BENAR BERUBAH
-           =============================================== */
-
-        for (
-          const [kolom, nilaiBaru]
-          of isi
-        ) {
-          const nilaiLama =
-            lama[kolom];
-
-          const lamaText =
-            nilaiLama == null
-              ? null
-              : String(nilaiLama);
-
-          const baruText =
-            nilaiBaru == null
-              ? null
-              : String(nilaiBaru);
-
-          if (
-            lamaText === baruText
-          ) {
-            continue;
-          }
-
-          await c.query(
-            `
-            INSERT INTO public.audit_log (
-              tabel,
-              record_id,
-              bidang_id,
-              aksi,
-              kolom,
-              nilai_lama,
-              nilai_baru,
-              pengguna_id,
-              pada
-            )
-            VALUES (
-              $1,
-              $2,
-              $3,
-              $4,
-              $5,
-              $6,
-              $7,
-              $8,
-              NOW()
-            )
-            `,
-            [
-              "bidang_tanah",
-              Number(id),
-              lama.bidang_id ??
-                null,
-              "UPDATE",
-              kolom,
-              lamaText,
-              baruText,
-              sesi.user.id,
-            ]
-          );
+         AUDIT LOG
+         HANYA YANG BENAR-BENAR BERUBAH
+         =============================================== */
+      for (
+        const [kolom, nilaiBaru]
+        of isi
+      ) {
+        const nilaiLama =
+          lama[kolom];
+      
+        const lamaText =
+          nilaiLama == null
+            ? null
+            : String(nilaiLama);
+      
+        const baruText =
+          nilaiBaru == null
+            ? null
+            : String(nilaiBaru);
+      
+        // Tidak ada perubahan → tidak dicatat
+        if (lamaText === baruText) {
+          continue;
         }
+      
+        // Tentukan jenis aksi
+        let aksi: "INPUT" | "UPDATE" | "DELETE";
+      
+        const lamaKosong =
+          lamaText == null ||
+          lamaText.trim() === "";
+      
+        const baruKosong =
+          baruText == null ||
+          baruText.trim() === "";
+      
+        if (lamaKosong && !baruKosong) {
+          aksi = "INPUT";
+        } else if (!lamaKosong && baruKosong) {
+          aksi = "DELETE";
+        } else {
+          aksi = "UPDATE";
+        }
+      
+        await c.query(
+          `
+          INSERT INTO public.audit_log (
+            tabel,
+            record_id,
+            bidang_id,
+            aksi,
+            kolom,
+            nilai_lama,
+            nilai_baru,
+            pengguna_id,
+            nama_akun,
+            ip_address,
+            pada
+          )
+          VALUES (
+            $1,
+            $2,
+            $3,
+            $4,
+            $5,
+            $6,
+            $7,
+            $8,
+            $9,
+            $10,
+            NOW()
+          )
+          `,
+          [
+            "bidang_tanah",
+            id,
+            lama.bidang_id ?? null,
+            aksi,
+            kolom,
+            lamaText,
+            baruText,
+            sesi.user.id,
+            namaAkun,
+            ipAddress,
+          ]
+        );
       }
-    );
 
     /* =====================================================
        BERHASIL
