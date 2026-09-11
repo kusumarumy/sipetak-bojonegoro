@@ -7,7 +7,7 @@ type PanelAktif =
   | 'bidang'
   | 'statistika'
   | 'filter'
-    'search'
+  | 'search'
   | null;
 
 type Props = {
