@@ -530,8 +530,7 @@ case "pemilik":
             </Section>
           </>
         );
-      }
-
+   
       case "bidang":
         return (
           <>
