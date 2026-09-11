@@ -591,36 +591,53 @@ export default function KartuBidang({
   title="Luas bidang"
   subtitle="Informasi luas bidang dan dampak pengadaan"
 >
-  <div className="kb-stat-grid">
-    <Stat
-      label="Luas bidang"
-      value={formatNumber(luas)}
-      suffix="m²"
-    />
+  {!edit ? (
+    <div className="kb-stat-grid">
+      <Stat
+        label="Luas bidang"
+        value={formatNumber(
+          b.luas_tnh
+        )}
+        suffix="m²"
+      />
 
-    <Stat
-      label="Terdampak"
-      value={formatNumber(
-        nilai("luas_terdampak_m2")
-      )}
-      suffix="m²"
-    />
+      <Stat
+        label="Terdampak"
+        value={formatNumber(
+          b.luas_terdampak_m2
+        )}
+        suffix="m²"
+      />
 
-    <Stat
-      label="Sisa"
-      value={formatNumber(
-        nilai("luas_sisa_m2")
-      )}
-      suffix="m²"
-    />
-  </div>
+      <Stat
+        label="Sisa"
+        value={formatNumber(
+          b.luas_sisa_m2
+        )}
+        suffix="m²"
+      />
+    </div>
+  ) : (
+    <div className="kb-grid two">
+      <Field
+        label="Luas bidang"
+        value={nilai("luas_tnh")}
+        edit={true}
+        type="number"
+        onChange={(v) =>
+          setNilai(
+            "luas_tnh",
+            v
+          )
+        }
+      />
 
-  {edit && (
-    <div className="kb-grid two kb-edit-area">
       <Field
         label="Luas terdampak"
-        value={nilai("luas_terdampak_m2")}
-        edit={edit}
+        value={nilai(
+          "luas_terdampak_m2"
+        )}
+        edit={true}
         type="number"
         onChange={(v) =>
           setNilai(
@@ -632,8 +649,10 @@ export default function KartuBidang({
 
       <Field
         label="Luas sisa"
-        value={nilai("luas_sisa_m2")}
-        edit={edit}
+        value={nilai(
+          "luas_sisa_m2"
+        )}
+        edit={true}
         type="number"
         onChange={(v) =>
           setNilai(
