@@ -902,18 +902,16 @@ export default function KartuBidang({
                 />
 
                 <Field
-                  label="Kode wilayah"
-                  value={
-                    b.kodewilaya
-                  }
-                  edit={edit}
-                  onChange={(v) =>
-                    setNilai(
-                      "kodewilaya",
-                      v
-                    )
-                  }
-                />
+  label="Kode wilayah"
+  value={nilai("kodewilaya")}
+  edit={edit}
+  onChange={(v) =>
+    setNilai(
+      "kodewilaya",
+      v
+    )
+  }
+/>
 
                 <Field
                   label="FID"
