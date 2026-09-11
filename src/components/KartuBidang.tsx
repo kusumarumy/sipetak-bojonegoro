@@ -588,70 +588,63 @@ export default function KartuBidang({
             </Section>
 
             <Section
-              title="Luas bidang"
-              subtitle="Ringkasan luas bidang dan dampaknya"
-            >
-              <div className="kb-stat-grid">
-                <Stat
-                  label="Luas bidang"
-                  value={formatNumber(
-                    luas
-                  )}
-                  suffix="m²"
-                />
+  title="Luas bidang"
+  subtitle="Informasi luas bidang dan dampak pengadaan"
+>
+  <div className="kb-stat-grid">
+    <Stat
+      label="Luas bidang"
+      value={formatNumber(luas)}
+      suffix="m²"
+    />
 
-                <Stat
-                  label="Terdampak"
-                  value={formatNumber(
-                    luasTerdampak
-                  )}
-                  suffix="m²"
-                />
+    <Stat
+      label="Terdampak"
+      value={formatNumber(
+        nilai("luas_terdampak_m2")
+      )}
+      suffix="m²"
+    />
 
-                <Stat
-                  label="Sisa"
-                  value={formatNumber(
-                    luasSisa
-                  )}
-                  suffix="m²"
-                />
-              </div>
+    <Stat
+      label="Sisa"
+      value={formatNumber(
+        nilai("luas_sisa_m2")
+      )}
+      suffix="m²"
+    />
+  </div>
 
-              {edit && (
-                <div className="kb-grid two kb-edit-area">
-                  <Field
-                    label="Luas terdampak"
-                    value={nilai(
-                      "luas_terdampak_m2"
-                    )}
-                    edit={true}
-                    type="number"
-                    onChange={(v) =>
-                      setNilai(
-                        "luas_terdampak_m2",
-                        v
-                      )
-                    }
-                  />
+  {edit && (
+    <div className="kb-grid two kb-edit-area">
+      <Field
+        label="Luas terdampak"
+        value={nilai("luas_terdampak_m2")}
+        edit={edit}
+        type="number"
+        onChange={(v) =>
+          setNilai(
+            "luas_terdampak_m2",
+            v
+          )
+        }
+      />
 
-                  <Field
-                    label="Luas sisa"
-                    value={nilai(
-                      "luas_sisa_m2"
-                    )}
-                    edit={true}
-                    type="number"
-                    onChange={(v) =>
-                      setNilai(
-                        "luas_sisa_m2",
-                        v
-                      )
-                    }
-                  />
-                </div>
-              )}
-            </Section>
-
+      <Field
+        label="Luas sisa"
+        value={nilai("luas_sisa_m2")}
+        edit={edit}
+        type="number"
+        onChange={(v) =>
+          setNilai(
+            "luas_sisa_m2",
+            v
+          )
+        }
+      />
+    </div>
+  )}
+</Section>
             <Section
               title="Penggunaan & kondisi"
             >
