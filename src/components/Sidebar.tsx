@@ -69,6 +69,19 @@ function IconFilter() {
   );
 }
 
+function IconSearch() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <circle
+        cx="10.5"
+        cy="10.5"
+        r="6.5"
+      />
+      <path d="M16 16l5 5" />
+    </svg>
+  );
+}
+
 const MENU = [
   {
     id: 'terrain' as const,
@@ -100,6 +113,11 @@ const MENU = [
     label: 'Filter',
     icon: <IconFilter />,
   },
+  {
+    id: 'search' as const,
+    label: 'Pencarian',
+    icon: <IconSearch />,
+  }
 ];
 
 export default function Sidebar({
