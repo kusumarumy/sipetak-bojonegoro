@@ -8,7 +8,8 @@ import {
   dapatMengubahAtribut,
   dapatMengirim,
   dapatMemverifikasi,
-} from '@/lib/rbac';
+  dapatMelihatDokumenPribadi,
+} from "@/lib/rbac";
 type TabId =
   | "ringkas"
   | "pemilik"
