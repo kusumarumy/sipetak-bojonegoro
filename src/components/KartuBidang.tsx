@@ -4,7 +4,11 @@ import { useEffect, useMemo, useState } from "react";
 import { useApp } from "@/store/useApp";
 import UnggahBerkas from "./UnggahBerkas";
 import type { Peran, StatusBidang } from "@/types";
-
+import {
+  dapatMengubahAtribut,
+  dapatMengirim,
+  dapatMemverifikasi,
+} from '@/lib/rbac';
 type TabId =
   | "ringkas"
   | "pemilik"
