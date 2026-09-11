@@ -59,6 +59,7 @@ interface AppState {
   kartu: Bidang | null;
   memuatKartu: boolean;
   pesan: string | null;
+toast: (pesan: string) => void;
 
   setTema: (t: Tema) => void;
   setBasemap: (b: Basemap) => void;
@@ -143,6 +144,9 @@ export const useApp = create<AppState>(
     memuatKartu: false,
 
     pesan: null,
+
+toast: (pesan) =>
+  set({ pesan }),
 
     /* =====================================================
        TEMA
