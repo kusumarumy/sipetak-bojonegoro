@@ -22,7 +22,7 @@ const TABS: { id: TabId; label: string; icon: string }[] = [
   { id: "ringkas", label: "Ringkasan", icon: "⌂" },
   { id: "pemilik", label: "Pemilik", icon: "♙" },
   { id: "bidang", label: "Bidang", icon: "▣" },
-  { id: "bangunan", label: "Bangunan", icon: "⌂" },
+  { id: "bangunan", label: "Bangunan", icon: "▤" },
   { id: "dokumen", label: "Foto & Dokumen", icon: "▧" },
   { id: "riwayat", label: "Riwayat", icon: "◷" },
 ];
@@ -63,40 +63,17 @@ function formatDate(value: any) {
   try {
     return new Intl.DateTimeFormat("id-ID", {
       dateStyle: "medium",
+      timeStyle: "short",
     }).format(new Date(value));
   } catch {
     return String(value);
   }
 }
 
-function Section({
-  title,
-  subtitle,
-  children,
-}: {
-  title: string;
-  subtitle?: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <section className="kb-section">
-      <div className="kb-section-head">
-        <div>
-          <h3>{title}</h3>
-
-          {subtitle && <p>{subtitle}</p>}
-        </div>
-      </div>
-
-      <div className="kb-section-body">{children}</div>
-    </section>
-  );
-}
-
 function Field({
   label,
   value,
-  edit,
+  edit = false,
   onChange,
   type = "text",
   placeholder,
@@ -108,6 +85,13 @@ function Field({
   type?: string;
   placeholder?: string;
 }) {
+  const displayValue =
+    value === null ||
+    value === undefined ||
+    value === ""
+      ? "—"
+      : String(value);
+
   return (
     <div className="kb-field">
       <label>{label}</label>
@@ -117,10 +101,14 @@ function Field({
           type={type}
           value={value ?? ""}
           placeholder={placeholder}
-          onChange={(e) => onChange?.(e.target.value)}
+          onChange={(e) =>
+            onChange?.(e.target.value)
+          }
         />
       ) : (
-        <div className="kb-value">{value || "—"}</div>
+        <div className="kb-value">
+          {displayValue}
+        </div>
       )}
     </div>
   );
@@ -140,7 +128,11 @@ function Stat({
       <span>{label}</span>
 
       <strong>
-        {value ?? "—"}
+        {value === null ||
+        value === undefined ||
+        value === ""
+          ? "—"
+          : value}
 
         {suffix && <small>{suffix}</small>}
       </strong>
@@ -148,37 +140,80 @@ function Stat({
   );
 }
 
-function Completeness({ bidang }: { bidang: any }) {
+function Section({
+  title,
+  subtitle,
+  children,
+}: {
+  title: string;
+  subtitle?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <section className="kb-section">
+      <div className="kb-section-head">
+        <div>
+          <h3>{title}</h3>
+
+          {subtitle && (
+            <p>{subtitle}</p>
+          )}
+        </div>
+      </div>
+
+      <div className="kb-section-body">
+        {children}
+      </div>
+    </section>
+  );
+}
+
+function Completeness({
+  bidang,
+}: {
+  bidang: any;
+}) {
+  /*
+   * Mengacu pada data yang memang tersedia
+   * pada bidang_tanah / lampiran.
+   */
   const checks = [
     Boolean(
-      bidang?.pemilik?.[0]?.nama ||
-        bidang?.nama_milik
+      bidang?.nama_milik ||
+        bidang?.pemilik?.[0]?.nama
     ),
     Boolean(bidang?.nib),
-    Boolean(
-      bidang?.luas_m2 ??
-        bidang?.luastertul
-    ),
+    bidang?.luas_tnh != null ||
+      bidang?.luastertul != null ||
+      bidang?.luaspeta != null,
     Boolean(bidang?.penggunaan),
+    bidang?.jml_bgn != null,
     Boolean(
-      bidang?.bangunan?.length ||
-        bidang?.jml_bgn
+      bidang?.lampiran?.some(
+        (x: any) =>
+          x.kategori ===
+          "foto_bidang"
+      ) ||
+        bidang?.foto_tnh
     ),
-    Boolean(bidang?.foto_tnh),
   ];
 
   const total = checks.length;
-  const complete = checks.filter(Boolean).length;
-  const percent = Math.round(
-    (complete / total) * 100
-  );
+  const complete =
+    checks.filter(Boolean).length;
+
+  const percent =
+    total > 0
+      ? Math.round(
+          (complete / total) * 100
+        )
+      : 0;
 
   return (
     <div className="kb-completeness">
       <div className="kb-completeness-top">
         <div>
           <span>Kelengkapan data</span>
-
           <strong>{percent}%</strong>
         </div>
 
@@ -188,7 +223,11 @@ function Completeness({ bidang }: { bidang: any }) {
       </div>
 
       <div className="kb-progress">
-        <i style={{ width: `${percent}%` }} />
+        <i
+          style={{
+            width: `${percent}%`,
+          }}
+        />
       </div>
     </div>
   );
@@ -217,11 +256,6 @@ export default function KartuBidang({
 
   const [busy, setBusy] =
     useState(false);
-
-  /*
-   * Semua hooks diletakkan sebelum guard !b.
-   * Ini penting agar urutan hooks selalu konsisten.
-   */
 
   const status: StatusBidang =
     b?.status ?? "draft";
@@ -277,32 +311,47 @@ export default function KartuBidang({
     );
 
   const namaPemilik =
-    pemilik?.nama ??
     b?.nama_milik ??
+    pemilik?.nama ??
     "Pemilik belum diisi";
 
+  /*
+   * Semua luas diambil dari kolom database.
+   *
+   * luas_tnh       = luas tanah
+   * luas_terdampak_m2 = luas terdampak
+   * luas_sisa_m2      = luas sisa
+   */
   const luas =
-    b?.luas_m2 ??
+    b?.luas_tnh ??
     b?.luastertul ??
     b?.luaspeta;
 
   const luasTerdampak =
-    b?.luas_terdampak_m2 ??
-    b?.luas_atbt;
+    b?.luas_terdampak_m2;
 
   const luasSisa =
     b?.luas_sisa_m2;
 
-  const bangunan =
-    b?.bangunan ?? [];
-
+  /*
+   * Database hanya menyimpan jumlah bangunan
+   * melalui jml_bgn.
+   *
+   * Jangan membuat data bangunan palsu
+   * dari jumlah tersebut.
+   */
   const jumlahBangunan =
-    bangunan.length ||
-    b?.jml_bgn ||
-    0;
+    b?.jml_bgn ?? 0;
 
   async function simpan() {
     if (!b?.id) return;
+
+    if (
+      Object.keys(draft).length === 0
+    ) {
+      setEdit(false);
+      return;
+    }
 
     setBusy(true);
 
@@ -315,22 +364,24 @@ export default function KartuBidang({
             "Content-Type":
               "application/json",
           },
-          body: JSON.stringify(
-            draft
-          ),
+          body: JSON.stringify(draft),
         }
       );
 
+      const text =
+        await response.text();
+
       if (!response.ok) {
         throw new Error(
-          "Gagal menyimpan perubahan"
+          text ||
+            "Gagal menyimpan perubahan"
         );
       }
 
       setEdit(false);
       setDraft({});
 
-      await muatUlangKartu?.();
+      await muatUlangKartu();
 
       beriPesan(
         "Perubahan berhasil disimpan"
@@ -339,7 +390,9 @@ export default function KartuBidang({
       console.error(error);
 
       beriPesan(
-        "Gagal menyimpan perubahan"
+        error instanceof Error
+          ? error.message
+          : "Gagal menyimpan perubahan"
       );
     } finally {
       setBusy(false);
@@ -371,13 +424,17 @@ export default function KartuBidang({
         }
       );
 
+      const text =
+        await response.text();
+
       if (!response.ok) {
         throw new Error(
-          "Gagal mengubah status"
+          text ||
+            "Gagal mengubah status"
         );
       }
 
-      await muatUlangKartu?.();
+      await muatUlangKartu();
 
       beriPesan(
         target === "terkirim"
@@ -391,61 +448,48 @@ export default function KartuBidang({
       console.error(error);
 
       beriPesan(
-        "Gagal mengubah status"
+        error instanceof Error
+          ? error.message
+          : "Gagal mengubah status"
       );
     } finally {
       setBusy(false);
     }
   }
 
-  /*
-   * Guard b berada DI DALAM useMemo.
-   * Dengan begitu b otomatis dianggap sebagai Bidang
-   * pada seluruh isi switch, termasuk UnggahBerkas.
-   */
   const tabContent = useMemo(() => {
-    if (!b) {
-      return null;
-    }
+    if (!b) return null;
 
     switch (tab) {
-      /* =========================================================
+      /* =====================================================
          RINGKASAN
-      ========================================================= */
+      ===================================================== */
       case "ringkas":
         return (
           <>
             <Section
               title="Informasi utama"
-              subtitle="Ringkasan identitas dan kondisi bidang"
+              subtitle="Identitas utama bidang tanah"
             >
               <div className="kb-grid two">
                 <Field
                   label="NIB"
-                  value={
-                    nilai("nib") ??
-                    b.kode
-                  }
+                  value={nilai("nib")}
                   edit={edit}
                   onChange={(v) =>
-                    setNilai(
-                      "nib",
-                      v
-                    )
+                    setNilai("nib", v)
                   }
                 />
 
                 <Field
                   label="Bidang ID"
-                  value={
-                    b.bidang_id
-                  }
+                  value={b.bidang_id}
                 />
 
                 <Field
                   label="Kelurahan"
                   value={
-                    b.kelurahan ??
+                    nilai("kelurahan") ??
                     b.desa
                   }
                   edit={edit}
@@ -459,13 +503,37 @@ export default function KartuBidang({
 
                 <Field
                   label="Kecamatan"
-                  value={
-                    b.kecamatan
-                  }
+                  value={nilai(
+                    "kecamatan"
+                  )}
                   edit={edit}
                   onChange={(v) =>
                     setNilai(
                       "kecamatan",
+                      v
+                    )
+                  }
+                />
+
+                <Field
+                  label="RT / RW"
+                  value={nilai("rt_rw")}
+                  edit={edit}
+                  onChange={(v) =>
+                    setNilai(
+                      "rt_rw",
+                      v
+                    )
+                  }
+                />
+
+                <Field
+                  label="Tipe hak"
+                  value={nilai("tipehak")}
+                  edit={edit}
+                  onChange={(v) =>
+                    setNilai(
+                      "tipehak",
                       v
                     )
                   }
@@ -519,9 +587,7 @@ export default function KartuBidang({
 
                 <Field
                   label="Status tanah"
-                  value={
-                    b.sta_tnh
-                  }
+                  value={nilai("sta_tnh")}
                   edit={edit}
                   onChange={(v) =>
                     setNilai(
@@ -533,9 +599,9 @@ export default function KartuBidang({
 
                 <Field
                   label="Dampak tanah"
-                  value={
-                    b.dampak_tnh
-                  }
+                  value={nilai(
+                    "dampak_tnh"
+                  )}
                   edit={edit}
                   onChange={(v) =>
                     setNilai(
@@ -546,13 +612,58 @@ export default function KartuBidang({
                 />
 
                 <Field
-                  label="Tanggal ukur"
-                  value={
-                    b.tanggal_ukur ??
-                    b.date_updt
+                  label="Hubungan tanah"
+                  value={nilai("hub_tnh")}
+                  edit={edit}
+                  onChange={(v) =>
+                    setNilai(
+                      "hub_tnh",
+                      v
+                    )
                   }
                 />
               </div>
+            </Section>
+
+            <Section title="Status pendataan">
+              <div className="kb-grid two">
+                <Field
+                  label="Petugas"
+                  value={
+                    b.petugas_nama
+                  }
+                />
+
+                <Field
+                  label="Tanggal ukur"
+                  value={formatDate(
+                    b.tanggal_ukur
+                  )}
+                />
+
+                <Field
+                  label="Dikirim pada"
+                  value={formatDate(
+                    b.dikirim_pada
+                  )}
+                />
+
+                <Field
+                  label="Diverifikasi pada"
+                  value={formatDate(
+                    b.diverifikasi_pada
+                  )}
+                />
+              </div>
+
+              {b.catatan_supervisor && (
+                <Field
+                  label="Catatan supervisor"
+                  value={
+                    b.catatan_supervisor
+                  }
+                />
+              )}
             </Section>
 
             <Completeness
@@ -561,23 +672,22 @@ export default function KartuBidang({
           </>
         );
 
-      /* =========================================================
+      /* =====================================================
          PEMILIK
-      ========================================================= */
+      ===================================================== */
       case "pemilik":
         return (
           <>
             <Section
               title="Pemilik tanah"
-              subtitle="Identitas pemegang/pemilik bidang"
+              subtitle="Data pemilik dari bidang_tanah"
             >
               <div className="kb-grid two">
                 <Field
                   label="Nama"
-                  value={
-                    pemilik?.nama ??
-                    b.nama_milik
-                  }
+                  value={nilai(
+                    "nama_milik"
+                  )}
                   edit={edit}
                   onChange={(v) =>
                     setNilai(
@@ -589,10 +699,9 @@ export default function KartuBidang({
 
                 <Field
                   label="NIK"
-                  value={
-                    pemilik?.nik ??
-                    b.nik_milik
-                  }
+                  value={nilai(
+                    "nik_milik"
+                  )}
                   edit={edit}
                   onChange={(v) =>
                     setNilai(
@@ -604,9 +713,9 @@ export default function KartuBidang({
 
                 <Field
                   label="Tempat, tanggal lahir"
-                  value={
-                    b.ttl_milik
-                  }
+                  value={nilai(
+                    "ttl_milik"
+                  )}
                   edit={edit}
                   onChange={(v) =>
                     setNilai(
@@ -618,10 +727,9 @@ export default function KartuBidang({
 
                 <Field
                   label="Pekerjaan"
-                  value={
-                    pemilik?.pekerjaan ??
-                    b.krja_milik
-                  }
+                  value={nilai(
+                    "krja_milik"
+                  )}
                   edit={edit}
                   onChange={(v) =>
                     setNilai(
@@ -634,10 +742,9 @@ export default function KartuBidang({
 
               <Field
                 label="Alamat"
-                value={
-                  pemilik?.alamat ??
-                  b.almt_milik
-                }
+                value={nilai(
+                  "almt_milik"
+                )}
                 edit={edit}
                 onChange={(v) =>
                   setNilai(
@@ -650,14 +757,14 @@ export default function KartuBidang({
 
             <Section
               title="Penyewa / penggarap"
-              subtitle="Diisi apabila bidang memiliki pihak selain pemilik"
+              subtitle="Data pihak yang menggunakan atau menggarap tanah"
             >
               <div className="kb-grid two">
                 <Field
                   label="Nama"
-                  value={
-                    b.nama_sewa
-                  }
+                  value={nilai(
+                    "nama_sewa"
+                  )}
                   edit={edit}
                   onChange={(v) =>
                     setNilai(
@@ -669,9 +776,9 @@ export default function KartuBidang({
 
                 <Field
                   label="NIK"
-                  value={
-                    b.nik_sewa
-                  }
+                  value={nilai(
+                    "nik_sewa"
+                  )}
                   edit={edit}
                   onChange={(v) =>
                     setNilai(
@@ -683,9 +790,9 @@ export default function KartuBidang({
 
                 <Field
                   label="Tempat, tanggal lahir"
-                  value={
-                    b.ttl_sewa
-                  }
+                  value={nilai(
+                    "ttl_sewa"
+                  )}
                   edit={edit}
                   onChange={(v) =>
                     setNilai(
@@ -697,9 +804,9 @@ export default function KartuBidang({
 
                 <Field
                   label="Pekerjaan"
-                  value={
-                    b.krja_sewa
-                  }
+                  value={nilai(
+                    "krja_sewa"
+                  )}
                   edit={edit}
                   onChange={(v) =>
                     setNilai(
@@ -711,9 +818,9 @@ export default function KartuBidang({
 
                 <Field
                   label="Nomor HP"
-                  value={
-                    b.nomor_hp
-                  }
+                  value={nilai(
+                    "nomor_hp"
+                  )}
                   edit={edit}
                   onChange={(v) =>
                     setNilai(
@@ -726,9 +833,9 @@ export default function KartuBidang({
 
               <Field
                 label="Alamat"
-                value={
-                  b.almt_sewa
-                }
+                value={nilai(
+                  "almt_sewa"
+                )}
                 edit={edit}
                 onChange={(v) =>
                   setNilai(
@@ -741,28 +848,41 @@ export default function KartuBidang({
           </>
         );
 
-      /* =========================================================
+      /* =====================================================
          BIDANG
-      ========================================================= */
+      ===================================================== */
       case "bidang":
         return (
           <>
             <Section
-              title="Administrasi bidang"
-              subtitle="Identitas dan informasi administrasi tanah"
+              title="Identitas bidang"
+              subtitle="Atribut yang berasal langsung dari bidang_tanah"
             >
               <div className="kb-grid two">
                 <Field
+                  label="ID"
+                  value={b.id}
+                />
+
+                <Field
                   label="Object ID"
-                  value={
-                    b.objectid
-                  }
+                  value={b.objectid}
                 />
 
                 <Field
                   label="Bidang ID"
-                  value={
-                    b.bidang_id
+                  value={b.bidang_id}
+                />
+
+                <Field
+                  label="Kode bidang"
+                  value={nilai("kode_bid")}
+                  edit={edit}
+                  onChange={(v) =>
+                    setNilai(
+                      "kode_bid",
+                      v
+                    )
                   }
                 />
 
@@ -781,24 +901,13 @@ export default function KartuBidang({
                 />
 
                 <Field
-                  label="Kode bidang"
-                  value={
-                    b.kode_bid
-                  }
-                  edit={edit}
-                  onChange={(v) =>
-                    setNilai(
-                      "kode_bid",
-                      v
-                    )
-                  }
+                  label="FID"
+                  value={b.fid}
                 />
 
                 <Field
                   label="RT / RW"
-                  value={
-                    b.rt_rw
-                  }
+                  value={nilai("rt_rw")}
                   edit={edit}
                   onChange={(v) =>
                     setNilai(
@@ -809,23 +918,21 @@ export default function KartuBidang({
                 />
 
                 <Field
-                  label="Hubungan tanah"
-                  value={
-                    b.hub_tnh
-                  }
-                  edit={edit}
-                  onChange={(v) =>
-                    setNilai(
-                      "hub_tnh",
-                      v
-                    )
-                  }
+                  label="Layer"
+                  value={b.layer}
                 />
               </div>
             </Section>
 
-            <Section title="Pengukuran">
+            <Section title="Pengukuran & geometri">
               <div className="kb-grid two">
+                <Field
+                  label="Luas tanah"
+                  value={formatNumber(
+                    b.luas_tnh
+                  )}
+                />
+
                 <Field
                   label="Luas tertulis"
                   value={formatNumber(
@@ -841,17 +948,50 @@ export default function KartuBidang({
                 />
 
                 <Field
+                  label="Luas ATBT"
+                  value={formatNumber(
+                    b.luas_atbt
+                  )}
+                />
+
+                <Field
+                  label="Luas terdampak"
+                  value={formatNumber(
+                    b.luas_terdampak_m2
+                  )}
+                />
+
+                <Field
+                  label="Luas sisa"
+                  value={formatNumber(
+                    b.luas_sisa_m2
+                  )}
+                />
+
+                <Field
                   label="Sumber geometri"
-                  value={
-                    b.sumbergeom
-                  }
+                  value={b.sumbergeom}
+                />
+
+                <Field
+                  label="Panjang geometri"
+                  value={formatNumber(
+                    b.shape_leng
+                  )}
+                />
+
+                <Field
+                  label="Luas geometri"
+                  value={formatNumber(
+                    b.shape_area
+                  )}
                 />
 
                 <Field
                   label="Alat ukur"
-                  value={
-                    b.alatukur
-                  }
+                  value={nilai(
+                    "alatukur"
+                  )}
                   edit={edit}
                   onChange={(v) =>
                     setNilai(
@@ -863,9 +1003,9 @@ export default function KartuBidang({
 
                 <Field
                   label="Metode ukur"
-                  value={
-                    b.metodukur
-                  }
+                  value={nilai(
+                    "metodukur"
+                  )}
                   edit={edit}
                   onChange={(v) =>
                     setNilai(
@@ -874,13 +1014,6 @@ export default function KartuBidang({
                     )
                   }
                 />
-
-                <Field
-                  label="Luas tanah"
-                  value={formatNumber(
-                    b.luas_tnh
-                  )}
-                />
               </div>
             </Section>
 
@@ -888,9 +1021,9 @@ export default function KartuBidang({
               <div className="kb-grid two">
                 <Field
                   label="Tipe hak"
-                  value={
-                    b.tipehak
-                  }
+                  value={nilai(
+                    "tipehak"
+                  )}
                   edit={edit}
                   onChange={(v) =>
                     setNilai(
@@ -902,9 +1035,9 @@ export default function KartuBidang({
 
                 <Field
                   label="Tipe produk"
-                  value={
-                    b.tipeproduk
-                  }
+                  value={nilai(
+                    "tipeproduk"
+                  )}
                   edit={edit}
                   onChange={(v) =>
                     setNilai(
@@ -916,10 +1049,9 @@ export default function KartuBidang({
 
                 <Field
                   label="Tahun"
-                  value={
-                    b.tahun
-                  }
+                  value={nilai("tahun")}
                   edit={edit}
+                  type="number"
                   onChange={(v) =>
                     setNilai(
                       "tahun",
@@ -930,9 +1062,9 @@ export default function KartuBidang({
 
                 <Field
                   label="Surat hak"
-                  value={
-                    b.surat_hak
-                  }
+                  value={nilai(
+                    "surat_hak"
+                  )}
                   edit={edit}
                   onChange={(v) =>
                     setNilai(
@@ -944,9 +1076,9 @@ export default function KartuBidang({
 
                 <Field
                   label="Nomor hak"
-                  value={
-                    b.nomor_hak
-                  }
+                  value={nilai(
+                    "nomor_hak"
+                  )}
                   edit={edit}
                   onChange={(v) =>
                     setNilai(
@@ -957,10 +1089,24 @@ export default function KartuBidang({
                 />
 
                 <Field
-                  label="Beban hak"
-                  value={
-                    b.beban_hak
+                  label="Alas hak"
+                  value={nilai(
+                    "alas_hak"
+                  )}
+                  edit={edit}
+                  onChange={(v) =>
+                    setNilai(
+                      "alas_hak",
+                      v
+                    )
                   }
+                />
+
+                <Field
+                  label="Beban hak"
+                  value={nilai(
+                    "beban_hak"
+                  )}
                   edit={edit}
                   onChange={(v) =>
                     setNilai(
@@ -972,13 +1118,51 @@ export default function KartuBidang({
               </div>
             </Section>
 
-            <Section title="Ruang & bangunan terdampak">
+            <Section title="Informasi tanah">
               <div className="kb-grid two">
                 <Field
-                  label="Ruang ATBT"
-                  value={
-                    b.ruang_atbt
+                  label="Penggunaan"
+                  value={nilai(
+                    "penggunaan"
+                  )}
+                  edit={edit}
+                  onChange={(v) =>
+                    setNilai(
+                      "penggunaan",
+                      v
+                    )
                   }
+                />
+
+                <Field
+                  label="Hubungan tanah"
+                  value={nilai(
+                    "hub_tnh"
+                  )}
+                  edit={edit}
+                  onChange={(v) =>
+                    setNilai(
+                      "hub_tnh",
+                      v
+                    )
+                  }
+                />
+
+                <Field
+                  label="Kode WWC"
+                  value={b.kode_wwc}
+                />
+
+                <Field
+                  label="Jenis tanah"
+                  value={b.jenis_tnh}
+                />
+
+                <Field
+                  label="Ruang ATBT"
+                  value={nilai(
+                    "ruang_atbt"
+                  )}
                   edit={edit}
                   onChange={(v) =>
                     setNilai(
@@ -989,25 +1173,10 @@ export default function KartuBidang({
                 />
 
                 <Field
-                  label="Luas ATBT"
-                  value={formatNumber(
-                    b.luas_atbt
-                  )}
-                />
-
-                <Field
-                  label="NJOP / m²"
-                  value={
-                    (b as any)
-                      ?.njop_m2
-                  }
-                />
-
-                <Field
                   label="Dampak tanah"
-                  value={
-                    b.dampak_tnh
-                  }
+                  value={nilai(
+                    "dampak_tnh"
+                  )}
                   edit={edit}
                   onChange={(v) =>
                     setNilai(
@@ -1021,147 +1190,45 @@ export default function KartuBidang({
           </>
         );
 
-      /* =========================================================
+      /* =====================================================
          BANGUNAN
-      ========================================================= */
+      ===================================================== */
       case "bangunan":
         return (
-          <>
-            <Section
-              title="Bangunan"
-              subtitle={`${jumlahBangunan} bangunan tercatat pada bidang`}
-            >
-              {bangunan.length > 0 ? (
-                <div className="kb-list">
-                  {bangunan.map(
-                    (
-                      item: any,
-                      i: number
-                    ) => (
-                      <div
-                        className="kb-item-card"
-                        key={
-                          item.id ?? i
-                        }
-                      >
-                        <div className="kb-item-head">
-                          <div className="kb-item-number">
-                            {String(
-                              i + 1
-                            ).padStart(
-                              2,
-                              "0"
-                            )}
-                          </div>
+          <Section
+            title="Bangunan"
+            subtitle="Jumlah bangunan yang tercatat pada bidang"
+          >
+            <div className="kb-stat-grid">
+              <Stat
+                label="Jumlah bangunan"
+                value={formatNumber(
+                  b.jml_bgn
+                )}
+                suffix="unit"
+              />
+            </div>
 
-                          <div>
-                            <strong>
-                              {item.jenis ??
-                                item.jenis_bgn ??
-                                "Bangunan"}
-                            </strong>
+            <div className="kb-info-box">
+              <strong>
+                Data bangunan
+              </strong>
 
-                            <span>
-                              {item.tingkat_terdampak ??
-                                item.kondisi ??
-                                "Data bangunan"}
-                            </span>
-                          </div>
-                        </div>
-
-                        <div className="kb-mini-grid">
-                          <Field
-                            label="Konstruksi"
-                            value={
-                              item.konstruksi
-                            }
-                          />
-
-                          <Field
-                            label="Luas lantai"
-                            value={
-                              item.luas_lantai_m2
-                                ? `${formatNumber(
-                                    item.luas_lantai_m2
-                                  )} m²`
-                                : undefined
-                            }
-                          />
-
-                          <Field
-                            label="Jumlah lantai"
-                            value={
-                              item.jumlah_lantai
-                            }
-                          />
-
-                          <Field
-                            label="Atap"
-                            value={
-                              item.atap
-                            }
-                          />
-
-                          <Field
-                            label="Dinding"
-                            value={
-                              item.dinding
-                            }
-                          />
-
-                          <Field
-                            label="Tahun dibangun"
-                            value={
-                              item.tahun_dibangun
-                            }
-                          />
-
-                          <Field
-                            label="Listrik"
-                            value={
-                              item.listrik
-                            }
-                          />
-
-                          <Field
-                            label="Air"
-                            value={
-                              item.air
-                            }
-                          />
-
-                          <Field
-                            label="Sanitasi"
-                            value={
-                              item.sanitasi
-                            }
-                          />
-                        </div>
-                      </div>
-                    )
-                  )}
-                </div>
-              ) : (
-                <div className="kb-empty">
-                  <div>⌂</div>
-
-                  <strong>
-                    Belum ada data bangunan
-                  </strong>
-
-                  <span>
-                    Tambahkan informasi bangunan saat survei
-                    lapangan.
-                  </span>
-                </div>
-              )}
-            </Section>
-          </>
+              <span>
+                Database bidang_tanah saat ini
+                menyimpan jumlah bangunan melalui
+                kolom <b>jml_bgn</b>. Detail jenis,
+                konstruksi, luas lantai, dan kondisi
+                bangunan belum tersedia sebagai kolom
+                pada tabel tersebut.
+              </span>
+            </div>
+          </Section>
         );
 
-      /* =========================================================
+      /* =====================================================
          DOKUMEN
-      ========================================================= */
+      ===================================================== */
       case "dokumen":
         return (
           <Section
@@ -1171,16 +1238,14 @@ export default function KartuBidang({
             <UnggahBerkas
               bidang={b}
               peran={peran}
-              bolehEdit={
-                bolehEdit
-              }
+              bolehEdit={bolehEdit}
             />
           </Section>
         );
 
-      /* =========================================================
+      /* =====================================================
          RIWAYAT
-      ========================================================= */
+      ===================================================== */
       case "riwayat":
         return (
           <Section
@@ -1264,7 +1329,6 @@ export default function KartuBidang({
     b,
     peran,
     bolehEdit,
-    bangunan,
     luas,
     luasTerdampak,
     luasSisa,
@@ -1272,10 +1336,6 @@ export default function KartuBidang({
     pemilik,
   ]);
 
-  /*
-   * Guard dilakukan SETELAH seluruh hooks.
-   * Ini aman terhadap Rules of Hooks.
-   */
   if (!b) {
     return null;
   }
@@ -1287,9 +1347,7 @@ export default function KartuBidang({
   return (
     <aside className="kartu open kb-modern">
 
-      {/* =========================================================
-          HEADER
-      ========================================================= */}
+      {/* HEADER */}
       <header className="kb-header">
         <div className="kb-header-top">
           <button
@@ -1306,7 +1364,7 @@ export default function KartuBidang({
             </span>
 
             <strong>
-              {b.kode ??
+              {b.kode_bid ??
                 b.bidang_id ??
                 b.nib ??
                 "Bidang"}
@@ -1331,9 +1389,7 @@ export default function KartuBidang({
         />
       </header>
 
-      {/* =========================================================
-          TABS
-      ========================================================= */}
+      {/* TABS */}
       <nav className="kb-tabs">
         {TABS.map((item) => (
           <button
@@ -1359,16 +1415,12 @@ export default function KartuBidang({
         ))}
       </nav>
 
-      {/* =========================================================
-          CONTENT
-      ========================================================= */}
+      {/* CONTENT */}
       <div className="kb-scroll">
         {tabContent}
       </div>
 
-      {/* =========================================================
-          FOOTER
-      ========================================================= */}
+      {/* FOOTER */}
       <footer className="kb-footer">
         {edit ? (
           <>
