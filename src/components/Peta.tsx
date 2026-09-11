@@ -38,13 +38,14 @@ type Ringkasan = {
 };
 
 type PanelAktif =
-  | 'basemap'
   | 'terrain'
+  | 'basemap'
   | 'layer'
   | 'bidang'
   | 'statistika'
   | 'filter'
   | 'search'
+  | 'riwayat'
   | null;
 export default function Peta({
   pengguna,
