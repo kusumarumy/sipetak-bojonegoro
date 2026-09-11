@@ -8,7 +8,6 @@ import {
   dapatMengubahAtribut,
   dapatMengirim,
   dapatMemverifikasi,
-  dapatMelihatDokumenPribadi,
 } from "@/lib/rbac";
 type TabId =
   | "ringkas"
@@ -238,7 +237,10 @@ const nilai = (key: string) =>
   () => b?.pemilik?.[0] ?? null,
   [b]
 );
-
+const namaPemilik =
+  pemilik?.nama ??
+  b?.nama_milik ??
+  "Pemilik belum diisi";
   const luas =
     b?.luas_m2 ??
     b?.luastertul ??
@@ -428,8 +430,15 @@ const nilai = (key: string) =>
           </>
         );
 
-case "pemilik": {
-  const pemilik = b?.pemilik?.[0] ?? null;
+const pemilik: Pemilik | null = useMemo(
+  () => b?.pemilik?.[0] ?? null,
+  [b]
+);
+
+const namaPemilik =
+  pemilik?.nama ??
+  b?.nama_milik ??
+  "Pemilik belum diisi";
 
         return (
           <>
