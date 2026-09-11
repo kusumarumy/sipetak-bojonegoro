@@ -429,17 +429,13 @@ const namaPemilik =
             <Completeness bidang={b} />
           </>
         );
-
-const pemilik: Pemilik | null = useMemo(
-  () => b?.pemilik?.[0] ?? null,
-  [b]
-);
-
-const namaPemilik =
-  pemilik?.nama ??
-  b?.nama_milik ??
-  "Pemilik belum diisi";
-
+case "pemilik":
+        return (
+          <>
+            <Section
+              title="Pemilik tanah"
+              subtitle="Identitas pemegang/pemilik bidang"
+            >
         return (
           <>
             <Section
