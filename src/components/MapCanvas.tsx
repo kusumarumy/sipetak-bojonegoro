@@ -1047,9 +1047,9 @@ useEffect(() => {
     }
 
 const urlDTM =
-  dtm === 'aws'
-    ? DTM.aws
-    : DTM.r2;
+  dtm === 'trace'
+    ? DTM.trace
+    : DTM.kawasan;
 
 if (!urlDTM) {
   beriPesan(
@@ -1068,9 +1068,9 @@ if (!urlDTM) {
 }
 
 const src =
-  dtm === 'aws'
-    ? 'dem_aws'
-    : 'dem_r2';
+  dtm === 'trace'
+    ? 'dem_trace'
+    : 'dem_kawasan';
     if (
       map.getLayer(
         'hillshade'
