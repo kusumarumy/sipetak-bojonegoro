@@ -515,7 +515,7 @@ main.body {
   margin-top: 88px;
 }
 .maplibregl-ctrl-bottom-left {
-  left: 100px !important;
+  left: 80px !important;
   right: auto !important;
   display: flex;
   flex-direction: column;
