@@ -3140,9 +3140,6 @@ html[data-theme="dark"]
   padding: 35px !important;
   color: #9ca3af !important;
 }
-/* =========================================================
-   STATISTIKA — EXECUTIVE DASHBOARD
-   ========================================================= */
 
 .statistik-flyout {
   --stat-red: #9f1239;
@@ -3150,38 +3147,27 @@ html[data-theme="dark"]
   --stat-green: #16a34a;
   --stat-amber: #f59e0b;
   --stat-pink: #e11d48;
-
   --stat-text: #334155;
   --stat-text-2: #475569;
   --stat-muted: #94a3b8;
-
   --stat-bg: #ffffff;
   --stat-soft: #f8fafc;
   --stat-track: #edf1f5;
   --stat-line: #e2e8f0;
-
   position: absolute;
-
-  top: 137px;
+  top: 118px;
   left: 110px;
-
-  width: 412px;
+  width: 350px;
   max-height: calc(100vh - 155px);
-
   display: flex;
   flex-direction: column;
-
   background: var(--stat-bg);
-
   border: 1px solid rgba(15, 23, 42, 0.08);
   border-radius: 15px;
-
   box-shadow:
     0 18px 45px rgba(15, 23, 42, 0.15),
     0 5px 14px rgba(15, 23, 42, 0.07);
-
   overflow: hidden;
-
   z-index: 30;
 }
 
