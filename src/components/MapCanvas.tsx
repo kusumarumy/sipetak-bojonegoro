@@ -38,20 +38,22 @@ export default function MapCanvas() {
   const ref = useRef<HTMLDivElement>(null);
   const mapRef = useRef<MLMap | null>(null);
   const popupRef = useRef<Popup | null>(null);
-  const terpilihRef = useRef<number | null>(null);
+const terpilihRef =
+  useRef<string | number | null>(null);
 
-  const {
-    basemap,
-    setBasemap,
-    dtm,
-    exag,
-    pewarnaan,
-    labelNomor,
-    layerAktif,
-    tema,
-    pilihBidang,
-    beriPesan
-  } = useApp();
+const {
+  basemap,
+  setBasemap,
+  dtm,
+  exag,
+  pewarnaan,
+  labelNomor,
+  layerAktif,
+  tema,
+  filterBidang,
+  pilihBidang,
+  beriPesan
+} = useApp();
 
   useEffect(() => {
     if (!ref.current || mapRef.current) return;
@@ -496,45 +498,55 @@ const vis =
           'traseg'
         );
       }
-      map.addSource('bidang', {
+     map.addSource('bidang', {
   type: 'geojson',
-  data: '/api/bidang'
+  data: '/api/bidang',
+  promoteId: 'id',
 });
 
-      map.addLayer({
-        id: 'bidang',
+map.addLayer({
+  id: 'bidang',
 
-        type: 'fill',
+  type: 'fill',
 
-        source: 'bidang',
+  source: 'bidang',
 
-        paint: {
-          'fill-color':
-            ekspresiStatus(),
+  paint: {
+    'fill-color':
+      ekspresiStatus(),
 
-          'fill-opacity': [
-            'case',
+    'fill-opacity': [
+      'case',
 
-            [
-              'boolean',
-              ['feature-state', 'sel'],
-              false
-            ],
+      // bidang hasil filter
+      [
+        'boolean',
+        ['feature-state', 'filter'],
+        false
+      ],
+      0.92,
 
-            0.88,
+      // bidang yang sedang dipilih
+      [
+        'boolean',
+        ['feature-state', 'sel'],
+        false
+      ],
+      0.95,
 
-            [
-              'boolean',
-              ['feature-state', 'hov'],
-              false
-            ],
+      // hover
+      [
+        'boolean',
+        ['feature-state', 'hov'],
+        false
+      ],
+      0.74,
 
-            0.74,
-
-            0.85
-          ]
-        }
-      });
+      // normal
+      0.35
+    ]
+  }
+});
 
  if (
   map.getLayer('traseg_halo') &&
@@ -544,44 +556,94 @@ const vis =
   map.moveLayer('traseg_halo', 'bidang');
   map.moveLayer('traseg', 'bidang');
 }
-      map.addLayer({
-        id: 'bidang-ln',
+map.addLayer({
+  id: 'bidang-ln',
 
-        type: 'line',
+  type: 'line',
 
-        source: 'bidang',
+  source: 'bidang',
 
-        paint: {
-          'line-color': [
-            'case',
+  paint: {
+    'line-color': [
+      'case',
 
-            [
-              'boolean',
-              ['feature-state', 'sel'],
-              false
-            ],
+      [
+        'boolean',
+        ['feature-state', 'filter'],
+        false
+      ],
+      '#FFFFFF',
 
-            '#FFFFFF',
+      [
+        'boolean',
+        ['feature-state', 'sel'],
+        false
+      ],
+      '#FFFFFF',
 
-            'rgba(14,23,32,.85)'
-          ],
+      'rgba(14,23,32,.45)'
+    ],
 
-          'line-width': [
-            'case',
+    'line-width': [
+      'case',
 
-            [
-              'boolean',
-              ['feature-state', 'sel'],
-              false
-            ],
+      [
+        'boolean',
+        ['feature-state', 'filter'],
+        false
+      ],
+      2.2,
 
-            2.6,
+      [
+        'boolean',
+        ['feature-state', 'sel'],
+        false
+      ],
+      3,
 
-            0.7
-          ]
-        }
-      });
+      0.6
+    ],
 
+    'line-opacity': [
+      'case',
+
+      [
+        'boolean',
+        ['feature-state', 'filter'],
+        false
+      ],
+      1,
+
+      0.65
+    ]
+  }
+});
+map.addLayer({
+  id: 'bidang-filter',
+  type: 'fill',
+  source: 'bidang',
+
+  filter: ['==', 0, 1],
+
+  paint: {
+    'fill-color': '#FF1744',
+    'fill-opacity': 0.30
+  }
+});
+
+map.addLayer({
+  id: 'bidang-filter-ln',
+  type: 'line',
+  source: 'bidang',
+
+  filter: ['==', 0, 1],
+
+  paint: {
+    'line-color': '#FF1744',
+    'line-width': 3,
+    'line-opacity': 1
+  }
+});
       map.addLayer({
         id: 'bidang-lb',
         type: 'symbol',
@@ -639,8 +701,12 @@ return () => {
       (e) => {
         map.getCanvas().style.cursor =
           'pointer';
-        const id =
-          e.features?.[0]?.id as number;
+const id =
+  e.features?.[0]?.id;
+
+if (id === undefined) {
+  return;
+}
         if (hov !== null) {
           map.setFeatureState(
             {
@@ -808,39 +874,36 @@ return () => {
     );
   }
 
-  function sorot(
-    map: MLMap,
-    fid: number
+function sorot(
+  map: MLMap,
+  fid: string | number
+) {
+  if (
+    terpilihRef.current !== null
   ) {
-
-    if (
-      terpilihRef.current !== null
-    ) {
-      map.setFeatureState(
-        {
-          source: 'bidang',
-          id:
-            terpilihRef.current
-        },
-        {
-          sel: false
-        }
-      );
-    }
-
-    terpilihRef.current =
-      fid;
-
     map.setFeatureState(
       {
         source: 'bidang',
-        id: fid
+        id: terpilihRef.current
       },
       {
-        sel: true
+        sel: false
       }
     );
   }
+
+  terpilihRef.current = fid;
+
+  map.setFeatureState(
+    {
+      source: 'bidang',
+      id: fid
+    },
+    {
+      sel: true
+    }
+  );
+}
 
   const zoomKeTrase = (
   map: MLMap
@@ -1241,7 +1304,53 @@ if (
 }
 
   }, [layerAktif]);
+useEffect(() => {
+  const map = mapRef.current;
 
+  if (!map) return;
+
+  const terapkanFilter = () => {
+    if (
+      !map.getLayer('bidang-filter') ||
+      !map.getLayer('bidang-filter-ln')
+    ) {
+      return;
+    }
+
+    const expression =
+      ekspresiFilterBidang(filterBidang);
+
+    map.setFilter(
+      'bidang-filter',
+      expression
+    );
+
+    map.setFilter(
+      'bidang-filter-ln',
+      expression
+    );
+  };
+
+  /*
+   * Map sudah siap
+   */
+  if (map.isStyleLoaded()) {
+    terapkanFilter();
+  } else {
+    map.once(
+      'load',
+      terapkanFilter
+    );
+  }
+
+  return () => {
+    map.off(
+      'load',
+      terapkanFilter
+    );
+  };
+
+}, [filterBidang]);
   useEffect(() => {
 
     const zoomTrase = () => {
@@ -1289,7 +1398,69 @@ if (
   );
 }
 
+const ekspresiFilterBidang = (
+  filter: {
+    status: string[];
+    kecamatan: string[];
+    kelurahan: string[];
+    tipehak: string[];
+    penggunaan: string[];
+  }
+): any => {
+  const kondisi: any[] = ['all'];
 
+  const tambahFilter = (
+    property: string,
+    values: string[]
+  ) => {
+    if (!values.length) return;
+
+    kondisi.push([
+      'match',
+      ['get', property],
+      ...values.flatMap((value) => [
+        value,
+        true
+      ]),
+      false
+    ]);
+  };
+
+  tambahFilter(
+    'status',
+    filter.status
+  );
+
+  tambahFilter(
+    'kecamatan',
+    filter.kecamatan
+  );
+
+  tambahFilter(
+    'kelurahan',
+    filter.kelurahan
+  );
+
+  tambahFilter(
+    'tipehak',
+    filter.tipehak
+  );
+
+  tambahFilter(
+    'penggunaan',
+    filter.penggunaan
+  );
+
+  /*
+   * Tidak ada filter aktif.
+   * Jangan highlight apa pun.
+   */
+  if (kondisi.length === 1) {
+    return ['==', 0, 1];
+  }
+
+  return kondisi;
+};
 const fmt = (
   n: number | null
 ) =>
