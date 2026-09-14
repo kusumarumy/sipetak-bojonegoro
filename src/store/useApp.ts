@@ -27,7 +27,7 @@ export type PewarnaanBidang =
    ========================================================= */
 
 export interface FilterBidang {
-  status: string;
+  status: string[];
   kecamatan: string[];
   kelurahan: string[];
   tipehak: string[];
@@ -35,7 +35,7 @@ export interface FilterBidang {
 }
 
 export const FILTER_KOSONG: FilterBidang = {
-  status: '',
+  status: [],
   kecamatan: [],
   kelurahan: [],
   tipehak: [],
