@@ -3314,7 +3314,94 @@ html[data-theme="dark"]
   border-radius: 20px;
 }
 
+.stat-chart-popup {
+  position: absolute;
+  z-index: 50;
 
+  width: 190px;
+
+  padding: 10px;
+
+  background: #fff;
+
+  border: 1px solid #dfe6ed;
+  border-radius: 10px;
+
+  box-shadow:
+    0 8px 20px rgba(15, 23, 42, .14);
+}
+
+.stat-chart-popup-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  padding-bottom: 7px;
+
+  border-bottom: 1px solid #edf1f5;
+}
+
+.stat-chart-popup-head strong {
+  display: block;
+
+  color: #334155;
+
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.stat-chart-popup-head span {
+  display: block;
+
+  margin-top: 2px;
+
+  color: #94a3b8;
+
+  font-size: 8px;
+}
+
+.stat-chart-popup-head button {
+  width: 20px;
+  height: 20px;
+
+  padding: 0;
+
+  border: 0;
+  background: transparent;
+
+  color: #94a3b8;
+
+  font-size: 16px;
+
+  cursor: pointer;
+}
+
+.stat-chart-popup-body {
+  display: grid;
+
+  gap: 5px;
+
+  margin-top: 8px;
+}
+
+.stat-chart-popup-body > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.stat-chart-popup-body span {
+  color: #64748b;
+
+  font-size: 8px;
+}
+
+.stat-chart-popup-body strong {
+  color: #475569;
+
+  font-size: 9px;
+  font-weight: 800;
+}
 /* =========================================================
    KPI
    ========================================================= */
