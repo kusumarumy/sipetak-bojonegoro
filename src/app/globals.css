@@ -3157,11 +3157,11 @@ html[data-theme="dark"]
 
   position: absolute;
 
-  top: 120px;
+  top: 112px;
   left: 110px;
 
   width: 330px;
-  height: 620px;
+  height: 540px;
   max-height: calc(100vh - 140px);
 
   display: flex;
