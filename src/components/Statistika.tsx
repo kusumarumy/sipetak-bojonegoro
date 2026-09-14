@@ -704,7 +704,7 @@ export default function Statistika({
             </div>
 
             <div className="statistik-subtitle">
-              Analisis bidang
+              Analisis Bidang Tanah Terdampak
             </div>
 
           </div>
