@@ -3314,93 +3314,241 @@ html[data-theme="dark"]
   border-radius: 20px;
 }
 
+/* =========================================================
+   POPUP DETAIL GRAFIK
+   ========================================================= */
+
 .stat-chart-popup {
   position: absolute;
+
+  left: 10px;
+  right: 10px;
+  bottom: 10px;
+
   z-index: 50;
 
-  width: 190px;
+  padding: 10px 11px;
 
-  padding: 10px;
-
-  background: #fff;
+  background: rgba(255, 255, 255, 0.98);
 
   border: 1px solid #dfe6ed;
   border-radius: 10px;
 
   box-shadow:
-    0 8px 20px rgba(15, 23, 42, .14);
+    0 8px 22px rgba(15, 23, 42, 0.16);
+
+  animation: statPopupIn .16s ease-out;
 }
+
+
+/* HEADER */
 
 .stat-chart-popup-head {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
+
+  gap: 8px;
 
   padding-bottom: 7px;
 
   border-bottom: 1px solid #edf1f5;
 }
 
-.stat-chart-popup-head strong {
-  display: block;
+.stat-chart-popup-kicker {
+  color: #94a3b8;
 
-  color: #334155;
+  font-size: 6px;
+  font-weight: 800;
 
-  font-size: 11px;
+  letter-spacing: .08em;
+}
+
+.stat-chart-popup-title {
+  margin-top: 2px;
+
+  color: #475569;
+
+  font-size: 10px;
   font-weight: 800;
 }
 
-.stat-chart-popup-head span {
-  display: block;
 
-  margin-top: 2px;
+/* CLOSE */
 
-  color: #94a3b8;
+.stat-chart-popup-close {
+  width: 22px;
+  height: 22px;
 
-  font-size: 8px;
-}
+  flex: 0 0 22px;
 
-.stat-chart-popup-head button {
-  width: 20px;
-  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   padding: 0;
 
-  border: 0;
-  background: transparent;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+
+  background: #fff;
 
   color: #94a3b8;
 
-  font-size: 16px;
+  font-size: 15px;
+  line-height: 1;
 
   cursor: pointer;
 }
 
-.stat-chart-popup-body {
+.stat-chart-popup-close:hover {
+  color: #9f1239;
+
+  border-color: #efc6d0;
+
+  background: #fff7f8;
+}
+
+
+/* CONTENT */
+
+.stat-chart-popup-content {
   display: grid;
 
-  gap: 5px;
+  grid-template-columns:
+    minmax(0, 1fr)
+    auto
+    auto;
 
-  margin-top: 8px;
-}
-
-.stat-chart-popup-body > div {
-  display: flex;
   align-items: center;
-  justify-content: space-between;
+
+  gap: 9px;
+
+  padding-top: 8px;
 }
 
-.stat-chart-popup-body span {
+.stat-chart-popup-label {
+  min-width: 0;
+
+  overflow: hidden;
+
+  color: #475569;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.stat-chart-popup-number {
+  color: #9f1239;
+
+  font-size: 18px;
+  font-weight: 800;
+
+  line-height: 1;
+}
+
+.stat-chart-popup-caption {
+  color: #94a3b8;
+
+  font-size: 7px;
+  font-weight: 600;
+}
+
+.stat-chart-popup-percent {
+  grid-column: 1 / -1;
+
   color: #64748b;
 
   font-size: 8px;
+  font-weight: 700;
 }
 
-.stat-chart-popup-body strong {
-  color: #475569;
+.stat-chart-popup-percent span {
+  margin-left: 4px;
 
-  font-size: 9px;
-  font-weight: 800;
+  color: #a1aab7;
+
+  font-weight: 500;
+}
+
+
+/* ANIMATION */
+
+@keyframes statPopupIn {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/* =========================================================
+   DARK MODE
+   ========================================================= */
+
+html[data-theme="dark"] .stat-chart-popup {
+  background: #2b2023;
+
+  border-color: #4b353a;
+
+  box-shadow:
+    0 8px 22px rgba(0, 0, 0, .35);
+}
+
+html[data-theme="dark"] .stat-chart-popup-head {
+  border-bottom-color: #4b353a;
+}
+
+html[data-theme="dark"] .stat-chart-popup-kicker {
+  color: #8f7f84;
+}
+
+html[data-theme="dark"] .stat-chart-popup-title {
+  color: #e2d4d8;
+}
+
+html[data-theme="dark"] .stat-chart-popup-close {
+  background: #241a1d;
+
+  border-color: #5a4147;
+
+  color: #a99a9f;
+}
+
+html[data-theme="dark"] .stat-chart-popup-close:hover {
+  color: #fff;
+
+  background: #351f25;
+
+  border-color: #9b1f3b;
+}
+
+html[data-theme="dark"] .stat-chart-popup-label {
+  color: #d8c9ce;
+}
+
+html[data-theme="dark"] .stat-chart-popup-number {
+  color: #d58a9a;
+}
+
+html[data-theme="dark"] .stat-chart-popup-caption {
+  color: #8f7f84;
+}
+
+html[data-theme="dark"] .stat-chart-popup-percent {
+  color: #bdaeb3;
+}
+
+html[data-theme="dark"] .stat-chart-popup-percent span {
+  color: #817277;
 }
 /* =========================================================
    KPI
