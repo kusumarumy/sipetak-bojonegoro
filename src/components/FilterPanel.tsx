@@ -689,7 +689,7 @@ const reset = () => {
             </div>
 
             <div className="filter-subtitle">
-              Seleksi dan sorot bidang pada peta
+              Seleksi dan Sorot Bidang Tanah
             </div>
 
           </div>
