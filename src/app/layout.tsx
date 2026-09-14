@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
-
+import { Toaster } from 'react-hot-toast';
 import './globals.css';
 import 'maplibre-gl/dist/maplibre-gl.css';
 
