@@ -58,34 +58,20 @@ const KATEGORI_DOKUMEN = new Set([
 
 export async function POST(req: Request) {
   try {
-    /* =====================================================
-       AUTH
-       ===================================================== */
-
     const sesi = await auth();
 
     if (!sesi?.user) {
-      return new NextResponse(
-        "Belum masuk",
-        { status: 401 }
-      );
+      return new NextResponse("Belum masuk", { status: 401 });
     }
 
-    /* =====================================================
-       VALIDASI REQUEST
-       ===================================================== */
-
     const body = await req.json();
-
-    const parsed =
-      Skema.safeParse(body);
+    const parsed = Skema.safeParse(body);
 
     if (!parsed.success) {
       return NextResponse.json(
         {
           pesan: "Berkas ditolak",
-          detail:
-            parsed.error.flatten(),
+          detail: parsed.error.flatten(),
         },
         { status: 400 }
       );
@@ -93,168 +79,72 @@ export async function POST(req: Request) {
 
     const d = parsed.data;
 
-    /* =====================================================
-       CEK BIDANG
-       ===================================================== */
-
-    const [b] =
-      await query<{
-        id: number;
-        status: StatusBidang;
-      }>(
-        `
-        SELECT
-          id,
-          status
-        FROM public.bidang_tanah
-        WHERE id = $1
-        `,
-        [d.bidang_id]
-      );
+    const [b] = await query<{
+      id: number;
+      status: StatusBidang;
+    }>(
+      `
+      SELECT id, status
+      FROM public.bidang_tanah
+      WHERE id = $1
+      `,
+      [d.bidang_id]
+    );
 
     if (!b) {
-      return new NextResponse(
-        "Bidang tidak ditemukan",
-        { status: 404 }
-      );
+      return new NextResponse("Bidang tidak ditemukan", { status: 404 });
     }
 
-    /* =====================================================
-       CEK RBAC
-       ===================================================== */
-
-    if (
-      !dapatMengubahAtribut(
-        sesi.user.peran,
-        b.status
-      )
-    ) {
-      return new NextResponse(
-        "Bidang terkunci untuk peran ini",
-        { status: 403 }
-      );
+    if (!dapatMengubahAtribut(sesi.user.peran, b.status)) {
+      return new NextResponse("Bidang terkunci untuk peran ini", { status: 403 });
     }
-
-    /* =====================================================
-       TENTUKAN FOLDER
-       ===================================================== */
 
     let folder = "lainnya";
 
-    if (
-      KATEGORI_FOTO.has(
-        d.kategori
-      )
-    ) {
+    if (KATEGORI_FOTO.has(d.kategori)) {
       folder = "foto";
-    } else if (
-      KATEGORI_DOKUMEN.has(
-        d.kategori
-      )
-    ) {
+    } else if (KATEGORI_DOKUMEN.has(d.kategori)) {
       folder = "dokumen";
     } else {
       return NextResponse.json(
-        {
-          pesan:
-            "Kategori berkas tidak dikenali",
-        },
+        { pesan: "Kategori berkas tidak dikenali" },
         { status: 400 }
       );
     }
 
-    /* =====================================================
-       EKSTENSI FILE
-       ===================================================== */
+    const ekstensi = d.nama_asli.includes(".")
+      ? (d.nama_asli.split(".").pop() ?? "bin")
+          .toLowerCase()
+          .replace(/[^a-z0-9]/g, "")
+      : "bin";
 
-    const ekstensi =
-      d.nama_asli.includes(".")
-        ? (
-            d.nama_asli
-              .split(".")
-              .pop() ?? "bin"
-          )
-            .toLowerCase()
-            .replace(
-              /[^a-z0-9]/g,
-              ""
-            )
-        : "bin";
+    const namaUnik = `\({Date.now()}-\){crypto.randomUUID()}.${ekstensi}`;
+    const object_key = `bidang/\({b.id}/\){folder}/\({d.kategori}/\){namaUnik}`;
 
-    /* =====================================================
-       NAMA OBJECT UNIK
-       ===================================================== */
+    console.log("[R2 PRESIGN]", {
+      bucket: process.env.BOJO_R2_BUCKET ? "configured" : "MISSING",
+      account: process.env.BOJO_R2_ACCOUNT_ID ? "configured" : "MISSING",
+      access: process.env.BOJO_R2_ACCESS_KEY_ID ? "configured" : "MISSING",
+      secret: process.env.BOJO_R2_SECRET_ACCESS_KEY ? "configured" : "MISSING",
+      bidang_id: b.id,
+      kategori: d.kategori,
+      object_key,
+      mime: d.mime,
+    });
 
-    const namaUnik =
-      `${Date.now()}-${crypto.randomUUID()}.${ekstensi}`;
-
-    /* =====================================================
-       OBJECT KEY R2
-
-       Bucket:
-       bojonegoro-dataset
-
-       Key:
-       bidang/191/foto/foto_bidang/...
-       ===================================================== */
-
-    const object_key =
-      `bidang/${b.id}/${folder}/${d.kategori}/${namaUnik}`;
-
-    console.log(
-      "[R2 PRESIGN]",
-      {
-        bucket:
-          process.env.R2_BUCKET
-            ? "configured"
-            : "MISSING",
-        account:
-          process.env.R2_ACCOUNT_ID
-            ? "configured"
-            : "MISSING",
-        access:
-          process.env.R2_ACCESS_KEY_ID
-            ? "configured"
-            : "MISSING",
-        secret:
-          process.env.R2_SECRET_ACCESS_KEY
-            ? "configured"
-            : "MISSING",
-        bidang_id: b.id,
-        kategori: d.kategori,
-        object_key,
-        mime: d.mime,
-      }
-    );
-
-    /* =====================================================
-       BUAT PRESIGNED URL
-       ===================================================== */
-
-    const url =
-      await urlUnggah(
-        object_key,
-        d.mime
-      );
+    const url = await urlUnggah(object_key, d.mime);
 
     return NextResponse.json({
       url,
       object_key,
     });
   } catch (error) {
-    console.error(
-      "POST /api/lampiran/presign ERROR:",
-      error
-    );
+    console.error("POST /api/lampiran/presign ERROR:", error);
 
     return NextResponse.json(
       {
-        pesan:
-          "Gagal membuat URL upload",
-        error:
-          error instanceof Error
-            ? error.message
-            : String(error),
+        pesan: "Gagal membuat URL upload",
+        error: error instanceof Error ? error.message : String(error),
       },
       { status: 500 }
     );
