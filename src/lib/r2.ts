@@ -60,6 +60,30 @@ export async function unggahObjek(
   body: Buffer | Uint8Array,
   mime: string
 ) {
+  console.log("R2 UPLOAD START", {
+    objectKey,
+    mime,
+    size: body.length,
+  });
+
+  try {
+    const result = await s3().send(
+      new PutObjectCommand({
+        Bucket: bucket(),
+        Key: objectKey,
+        Body: body,
+        ContentType: mime,
+      })
+    );
+
+    console.log("R2 UPLOAD SUCCESS", {
+      etag: result.ETag,
+    });
+  } catch (error) {
+    console.error("R2 UPLOAD FAILED", error);
+    throw error;
+  }
+}{
   await s3().send(
     new PutObjectCommand({
       Bucket: bucket(),
