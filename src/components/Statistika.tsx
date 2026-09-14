@@ -527,10 +527,6 @@ export default function Statistika({
   }, [bidang]);
 
 
-  /* =======================================================
-     DISTRIBUSI
-     ======================================================= */
-
   const kelurahan = useMemo(
     () =>
       hitung(
@@ -777,28 +773,23 @@ export default function Statistika({
 
           </section>
 
-
-          {/* =================================================
-              DISTRIBUSI KELURAHAN
-          ================================================= */}
-
           <section className="stat-card">
 
             <div className="stat-card-title-row">
 
               <div className="stat-card-title">
-                DISTRIBUSI
+                DISTRIBUSI BERDASARKAN KELURAHAN
               </div>
 
               <span>
-                KELURAHAN
+                TOP 7
               </span>
 
             </div>
 
             <Ranking
               data={kelurahan}
-              limit={6}
+              limit={7}
             />
 
           </section>
@@ -824,36 +815,26 @@ export default function Statistika({
 
           </div>
 
-
-          {/* =================================================
-              KECAMATAN
-          ================================================= */}
-
           <section className="stat-card">
 
             <div className="stat-card-title-row">
 
               <div className="stat-card-title">
-                DISTRIBUSI
+                DISTRIBUSI BERDASARKAN KECAMATAN
               </div>
 
               <span>
-                KECAMATAN
+                TOP 7
               </span>
 
             </div>
 
             <Ranking
               data={kecamatan}
-              limit={6}
+              limit={7}
             />
 
           </section>
-
-
-          {/* =================================================
-              FOOTER KPI
-          ================================================= */}
 
           <div className="stat-footer">
 
