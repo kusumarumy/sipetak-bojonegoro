@@ -2738,9 +2738,6 @@ html[data-theme="dark"]
   font-weight: 600;
 }
 
-/* =========================================================
-   STATUS / PENGGUNAAN
-   ========================================================= */
 
 .style-segment {
   display: flex;
@@ -3141,11 +3138,6 @@ html[data-theme="dark"]
   color: #9ca3af !important;
 }
 
-
-/* =========================================================
-   STATISTIKA — SMALL COMPACT FLYOUT
-   ========================================================= */
-
 .statistik-flyout {
   --stat-red: #9f1239;
   --stat-red-2: #be123c;
@@ -3169,8 +3161,6 @@ html[data-theme="dark"]
   left: 110px;
 
   width: 330px;
-
-  /* JANGAN memenuhi tinggi layar */
   height: 620px;
   max-height: calc(100vh - 140px);
 
@@ -3722,12 +3712,9 @@ html[data-theme="dark"]
 
 .stat-small-title {
   color: #475569;
-
-  font-size: 7px;
+  font-size: 10px;
   font-weight: 800;
-
   letter-spacing: 0.04em;
-
   line-height: 1;
 }
 
@@ -3747,28 +3734,18 @@ html[data-theme="dark"]
   font-size: 4.5px;
 }
 
-
-/* =========================================================
-   LEGEND
-   ========================================================= */
-
 .stat-legend {
   display: flex;
   flex-direction: column;
-
   gap: 3px;
 }
 
 .stat-legend-row {
   display: grid;
-
   grid-template-columns:
     4px minmax(0, 1fr) auto;
-
   align-items: center;
-
   gap: 4px;
-
   min-width: 0;
 }
 
@@ -3781,29 +3758,19 @@ html[data-theme="dark"]
 
 .stat-legend-name {
   min-width: 0;
-
   overflow: hidden;
-
   color: #64748b;
-
-  font-size: 6.5px;
+  font-size: 7.5px;
   font-weight: 500;
-
   white-space: nowrap;
   text-overflow: ellipsis;
 }
 
 .stat-legend-row strong {
   color: #475569;
-
-  font-size: 6.5px;
+  font-size: 7.5px;
   font-weight: 800;
 }
-
-
-/* =========================================================
-   FOOTER
-   ========================================================= */
 
 .stat-footer {
   display: grid;
@@ -3835,40 +3802,26 @@ html[data-theme="dark"]
 
 .stat-footer span {
   color: #a1aab7;
-
-  font-size: 5.5px;
+  font-size: 7px;
   font-weight: 800;
-
   letter-spacing: 0.04em;
 }
 
 .stat-footer strong {
   margin-top: 2px;
-
   color: #475569;
-
-  font-size: 10px;
+  font-size: 15px;
   font-weight: 800;
-
   line-height: 1;
 }
 
-
-/* =========================================================
-   LOADING
-   ========================================================= */
-
 .statistik-loading {
   min-height: 120px;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   gap: 5px;
-
   color: #94a3b8;
-
   font-size: 8px;
 }
 
