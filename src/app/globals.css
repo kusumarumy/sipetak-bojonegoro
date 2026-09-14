@@ -3404,10 +3404,6 @@ html[data-theme="dark"]
 }
 
 
-/* =========================================================
-   GENERIC CARD
-   ========================================================= */
-
 .stat-card {
   margin-top: 11px;
 
@@ -3584,108 +3580,6 @@ html[data-theme="dark"]
   text-transform: lowercase;
 }
 
-
-/* =========================================================
-   RANKING
-   ========================================================= */
-
-.stat-ranking {
-  display: flex;
-  flex-direction: column;
-
-  gap: 10px;
-}
-
-.stat-rank-item {
-  min-width: 0;
-}
-
-.stat-rank-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  min-width: 0;
-
-  margin-bottom: 4px;
-}
-
-.stat-rank-name {
-  display: flex;
-  align-items: center;
-
-  min-width: 0;
-
-  gap: 7px;
-
-  color: #64748b;
-
-  font-size: 9px;
-  font-weight: 500;
-}
-
-.stat-rank-name > span:last-child {
-  max-width: 270px;
-
-  overflow: hidden;
-
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-
-.stat-rank-no {
-  width: 17px;
-
-  flex: 0 0 17px;
-
-  color: #cbd5e1;
-
-  font-size: 7px;
-  font-weight: 800;
-
-  letter-spacing: 0.02em;
-}
-
-.stat-rank-head strong {
-  flex: 0 0 auto;
-
-  color: #475569;
-
-  font-size: 9px;
-  font-weight: 800;
-}
-
-.stat-rank-track {
-  width: 100%;
-  height: 4px;
-
-  overflow: hidden;
-
-  background: var(--stat-track);
-
-  border-radius: 10px;
-}
-
-.stat-rank-fill {
-  height: 100%;
-
-  background:
-    linear-gradient(
-      90deg,
-      #9f1239 0%,
-      #be123c 100%
-    );
-
-  border-radius: inherit;
-
-  transition: width 0.45s ease;
-}
-
-
-/* =========================================================
-   COMPOSITION GRID
-   ========================================================= */
-
 .stat-composition-grid {
   display: grid;
 
@@ -3696,6 +3590,121 @@ html[data-theme="dark"]
   margin-top: 11px;
 }
 
+/* =========================================================
+   VERTICAL BAR CHART
+   ========================================================= */
+
+.stat-vchart {
+  width: 100%;
+  margin-top: 3px;
+}
+
+.stat-vchart-bars {
+  height: 166px;
+
+  display: flex;
+  align-items: stretch;
+
+  gap: 7px;
+
+  padding: 0 2px;
+}
+
+.stat-vchart-item {
+  position: relative;
+
+  min-width: 0;
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  padding-top: 18px;
+}
+
+.stat-vchart-value {
+  position: absolute;
+
+  top: 0;
+
+  color: #475569;
+
+  font-size: 9px;
+  font-weight: 800;
+
+  line-height: 1;
+}
+
+.stat-vchart-bar-area {
+  position: relative;
+
+  width: 100%;
+  max-width: 32px;
+
+  flex: 1;
+
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+
+  background:
+    repeating-linear-gradient(
+      to top,
+      transparent 0,
+      transparent 32px,
+      #f1f5f9 32px,
+      #f1f5f9 33px
+    );
+
+  border-bottom: 1px solid #dfe5eb;
+
+  overflow: hidden;
+}
+
+.stat-vchart-bar {
+  width: 70%;
+  min-height: 3px;
+
+  border-radius: 5px 5px 0 0;
+
+  box-shadow:
+    0 -2px 5px rgba(15, 23, 42, 0.08);
+
+  transition:
+    height 0.45s ease,
+    transform 0.2s ease;
+}
+
+.stat-vchart-item:hover
+.stat-vchart-bar {
+  transform: scaleX(1.08);
+}
+
+.stat-vchart-label {
+  width: 100%;
+
+  margin-top: 7px;
+
+  padding: 0 1px;
+
+  color: #64748b;
+
+  font-size: 7px;
+  font-weight: 600;
+
+  line-height: 1.2;
+
+  text-align: center;
+
+  overflow: hidden;
+
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+
+  word-break: break-word;
+}
 
 /* =========================================================
    COMPOSITION CARD
