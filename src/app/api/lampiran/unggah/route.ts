@@ -18,8 +18,7 @@ export async function POST(req: NextRequest) {
     const file = form.get("file") as File | null;
     const bidangId = form.get("bidang_id") as string | null;
     const kategori = form.get("kategori") as string | null;
-    const namaAsli =
-      (form.get("nama_asli") as string) || "file";
+    const namaAsli = (form.get("nama_asli") as string) || "file";
 
     if (!file || !bidangId || !kategori) {
       return NextResponse.json(
@@ -32,9 +31,7 @@ export async function POST(req: NextRequest) {
       ? namaAsli.split(".").pop()
       : "bin";
 
-    const objectKey =
-      `bidang/${bidangId}/foto/${kategori}/${Date.now()}-${randomUUID()}.${ext}`;
-
+    const objectKey = `bidang/\({bidangId}/foto/\){kategori}/\({Date.now()}-\){randomUUID()}.${ext}`;
     const buffer = Buffer.from(await file.arrayBuffer());
 
     await unggahObjek(
@@ -62,10 +59,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json(
       {
-        error:
-          e instanceof Error
-            ? e.message
-            : "Gagal unggah",
+        error: e instanceof Error ? e.message : "Gagal unggah",
       },
       { status: 500 }
     );
