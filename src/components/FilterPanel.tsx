@@ -946,128 +946,135 @@ const reset = () => {
               }
             />
 
+{/* =============================================
+    FILTER AKTIF
+============================================= */}
 
-            {/* =============================================
-                FILTER AKTIF
-            ============================================= */}
+{jumlahFilter > 0 && (
 
-            {jumlahFilter > 0 && (
+  <div className="filter-active-box">
 
-              <div className="filter-active-box">
+    <div className="filter-active-head">
 
-                <div className="filter-active-head">
+      <span className="filter-active-dot" />
 
-                  <span className="filter-active-dot" />
-
-                  <span>
-                    {jumlahFilter} pilihan aktif
-                  </span>
-
-                </div>
-
-
-                <div className="filter-active-chips">
-
-  {status.map((value) => {
-
-    const item =
-      STATUS.find(
-        (statusItem) =>
-          statusItem.value === value
-      );
-
-    return (
-      <span
-        className="filter-summary-chip"
-        key={`s-${value}`}
-      >
-        {item?.label ?? value}
+      <span>
+        {jumlahFilter} pilihan aktif
       </span>
-    );
 
-  })}
+    </div>
 
-  {kecamatan.map(
-    (item) => (
-      <span
-        className="filter-summary-chip"
-        key={`k-${item}`}
-      >
-        {item}
-      </span>
-    )
-  )}
+    <div className="filter-active-chips">
 
-  {kelurahan.map(
-    (item) => (
-      <span
-        className="filter-summary-chip"
-        key={`l-${item}`}
-      >
-        {item}
-      </span>
-    )
-  )}
+      {status.map((value) => {
 
-  {tipehak.map(
-    (item) => (
-      <span
-        className="filter-summary-chip"
-        key={`h-${item}`}
-      >
-        {item}
-      </span>
-    )
-  )}
+        const item =
+          STATUS.find(
+            (statusItem) =>
+              statusItem.value === value
+          );
 
-  {penggunaan.map(
-    (item) => (
-      <span
-        className="filter-summary-chip"
-        key={`p-${item}`}
-      >
-        {item}
-      </span>
-    )
-  )}
+        return (
+          <span
+            className="filter-summary-chip"
+            key={`s-${value}`}
+          >
+            {item?.label ?? value}
+          </span>
+        );
+
+      })}
+
+      {kecamatan.map(
+        (item) => (
+          <span
+            className="filter-summary-chip"
+            key={`k-${item}`}
+          >
+            {item}
+          </span>
+        )
+      )}
+
+      {kelurahan.map(
+        (item) => (
+          <span
+            className="filter-summary-chip"
+            key={`l-${item}`}
+          >
+            {item}
+          </span>
+        )
+      )}
+
+      {tipehak.map(
+        (item) => (
+          <span
+            className="filter-summary-chip"
+            key={`h-${item}`}
+          >
+            {item}
+          </span>
+        )
+      )}
+
+      {penggunaan.map(
+        (item) => (
+          <span
+            className="filter-summary-chip"
+            key={`p-${item}`}
+          >
+            {item}
+          </span>
+        )
+      )}
+
+    </div>
+
+  </div>
+
+)}
+
+
+{/* =============================================
+    ACTION
+============================================= */}
+
+<div className="filter-actions">
+
+  <button
+    type="button"
+    className="filter-reset"
+    onClick={reset}
+  >
+    Reset
+  </button>
+
+  <button
+    type="button"
+    className="filter-apply"
+    onClick={terapkan}
+  >
+
+    <svg
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+    >
+      <path
+        d="m5 12 4 4L19 6"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+
+    Terapkan
+
+  </button>
 
 </div>
-            <div className="filter-actions">
-
-              <button
-                type="button"
-                className="filter-reset"
-                onClick={reset}
-              >
-                Reset
-              </button>
-
-
-              <button
-                type="button"
-                className="filter-apply"
-                onClick={terapkan}
-              >
-
-                <svg
-                  viewBox="0 0 24 24"
-                  aria-hidden="true"
-                >
-                  <path
-                    d="m5 12 4 4L19 6"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-
-                Terapkan
-              </button>
-
-            </div>
-
           </>
 
         )}
