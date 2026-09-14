@@ -968,81 +968,70 @@ const reset = () => {
 
                 <div className="filter-active-chips">
 
-                  {status && (
-                  {status.map((value) => {
+  {status.map((value) => {
 
-  const item =
-    STATUS.find(
-      (statusItem) =>
-        statusItem.value === value
+    const item =
+      STATUS.find(
+        (statusItem) =>
+          statusItem.value === value
+      );
+
+    return (
+      <span
+        className="filter-summary-chip"
+        key={`s-${value}`}
+      >
+        {item?.label ?? value}
+      </span>
     );
 
-  return (
-    <span
-      className="filter-summary-chip"
-      key={`s-${value}`}
-    >
-      {item?.label ?? value}
-    </span>
-  );
+  })}
 
-})}
+  {kecamatan.map(
+    (item) => (
+      <span
+        className="filter-summary-chip"
+        key={`k-${item}`}
+      >
+        {item}
+      </span>
+    )
+  )}
 
-                  {kecamatan.map(
-                    (item) => (
-                      <span
-                        className="filter-summary-chip"
-                        key={`k-${item}`}
-                      >
-                        {item}
-                      </span>
-                    )
-                  )}
+  {kelurahan.map(
+    (item) => (
+      <span
+        className="filter-summary-chip"
+        key={`l-${item}`}
+      >
+        {item}
+      </span>
+    )
+  )}
 
-                  {kelurahan.map(
-                    (item) => (
-                      <span
-                        className="filter-summary-chip"
-                        key={`l-${item}`}
-                      >
-                        {item}
-                      </span>
-                    )
-                  )}
+  {tipehak.map(
+    (item) => (
+      <span
+        className="filter-summary-chip"
+        key={`h-${item}`}
+      >
+        {item}
+      </span>
+    )
+  )}
 
-                  {tipehak.map(
-                    (item) => (
-                      <span
-                        className="filter-summary-chip"
-                        key={`h-${item}`}
-                      >
-                        {item}
-                      </span>
-                    )
-                  )}
+  {penggunaan.map(
+    (item) => (
+      <span
+        className="filter-summary-chip"
+        key={`p-${item}`}
+      >
+        {item}
+      </span>
+    )
+  )}
 
-                  {penggunaan.map(
-                    (item) => (
-                      <span
-                        className="filter-summary-chip"
-                        key={`p-${item}`}
-                      >
-                        {item}
-                      </span>
-                    )
-                  )}
-
-                </div>
-
-              </div>
-
-            )}
-
-
-            {/* =============================================
-                ACTION
-            ============================================= */}
-
+</div>
             <div className="filter-actions">
 
               <button
