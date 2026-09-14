@@ -693,7 +693,7 @@ return () => {
   }, []);
 
   function pasangInteraksi(map: MLMap) {
-    let hov: number | null = null;
+    let hov: string | number | null = null;
 
     map.on(
       'mousemove',
@@ -852,10 +852,12 @@ if (id === undefined) {
                 p.id
               );
 
-              sorot(
-                map,
-                f.id as number
-              );
+if (f.id !== undefined) {
+  sorot(
+    map,
+    f.id
+  );
+}
 
               popupRef.current?.remove();
             }
