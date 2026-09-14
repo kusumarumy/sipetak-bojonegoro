@@ -83,17 +83,7 @@ export async function unggahObjek(
     console.error("R2 UPLOAD FAILED", error);
     throw error;
   }
-}{
-  await s3().send(
-    new PutObjectCommand({
-      Bucket: bucket(),
-      Key: objectKey,
-      Body: body,
-      ContentType: mime,
-    })
-  );
 }
-
 export function urlUnggah(
   objectKey: string,
   mime: string,
