@@ -636,7 +636,7 @@ map.addLayer({
   type: 'line',
   source: 'bidang',
 
-  filter: ['==', 0, 1],
+  filter: ['==', ['get', '__filter_never_match__'], '__never__'],
 
   paint: {
     'line-color': '#FF1744',
