@@ -28,18 +28,18 @@ export type PewarnaanBidang =
 
 export interface FilterBidang {
   status: string;
-  kecamatan: string;
-  kelurahan: string;
-  tipehak: string;
-  penggunaan: string;
+  kecamatan: string[];
+  kelurahan: string[];
+  tipehak: string[];
+  penggunaan: string[];
 }
 
 export const FILTER_KOSONG: FilterBidang = {
   status: '',
-  kecamatan: '',
-  kelurahan: '',
-  tipehak: '',
-  penggunaan: '',
+  kecamatan: [],
+  kelurahan: [],
+  tipehak: [],
+  penggunaan: [],
 };
 
 interface AppState {
@@ -97,17 +97,38 @@ interface AppState {
 
 export const useApp = create<AppState>(
   (set, get) => ({
+
+    /* =====================================================
+       TEMA
+       ===================================================== */
+
     tema: 'auto',
 
+    /* =====================================================
+       BASEMAP
+       ===================================================== */
+
     basemap: 'esri',
+
+    /* =====================================================
+       TERRAIN
+       ===================================================== */
 
     dtm: 'off',
 
     exag: 1.8,
 
+    /* =====================================================
+       PEWARNAAN
+       ===================================================== */
+
     pewarnaan: 'status',
 
     labelNomor: false,
+
+    /* =====================================================
+       LAYER
+       ===================================================== */
 
     layerAktif: {
       traseg: true,
@@ -143,7 +164,13 @@ export const useApp = create<AppState>(
     memuatKartu: false,
 
     pesan: null,
+
+    /* =====================================================
+       SET TEMA
+       ===================================================== */
+
     setTema: (tema) => {
+
       localStorage.setItem(
         'dppt-tema',
         tema
@@ -226,7 +253,9 @@ export const useApp = create<AppState>(
        ===================================================== */
 
     pilihBidang: async (id) => {
+
       if (!id) {
+
         set({
           bidangTerpilih: null,
           kartu: null,
@@ -241,15 +270,18 @@ export const useApp = create<AppState>(
       });
 
       try {
+
         const r =
           await fetch(
             `/api/bidang/${id}`
           );
 
         if (!r.ok) {
+
           throw new Error(
             await r.text()
           );
+
         }
 
         set({
@@ -258,6 +290,7 @@ export const useApp = create<AppState>(
         });
 
       } catch (e: any) {
+
         set({
           memuatKartu: false,
 
@@ -265,6 +298,7 @@ export const useApp = create<AppState>(
             'Kartu bidang gagal dimuat. ' +
             e.message,
         });
+
       }
     },
 
@@ -273,12 +307,16 @@ export const useApp = create<AppState>(
        ===================================================== */
 
     muatUlangKartu: async () => {
+
       const id =
         get().bidangTerpilih;
 
       if (id) {
+
         await get().pilihBidang(id);
+
       }
+
     },
 
     /* =====================================================
@@ -307,5 +345,6 @@ export const useApp = create<AppState>(
 
     beriPesan: (pesan) =>
       set({ pesan }),
+
   })
 );
