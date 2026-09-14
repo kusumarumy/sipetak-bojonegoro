@@ -40,6 +40,7 @@ _s3 = new S3Client({
     accessKeyId: process.env.BOJO_R2_ACCESS_KEY_ID!,
     secretAccessKey: process.env.BOJO_R2_SECRET_ACCESS_KEY!,
   },
+  forcePathStyle: true,
 });
 
   return _s3;
