@@ -875,7 +875,7 @@ export default function Statistika({
               </div>
 
               <span>
-                TOP 7
+                TOP 5
               </span>
 
             </div>
