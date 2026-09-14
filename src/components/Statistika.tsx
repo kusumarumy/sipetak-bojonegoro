@@ -810,7 +810,33 @@ export default function Statistika({
             />
 
           </section>
+{/* =================================================
+              KECAMATAN
+          ================================================= */}
 
+          <section className="stat-card">
+
+            <div className="stat-card-title-row">
+
+              <div className="stat-card-title">
+                DISTRIBUSI KECAMATAN
+              </div>
+
+              <span>
+                TOP 5
+              </span>
+
+            </div>
+
+            <Ranking
+              data={kecamatan}
+              limit={7}
+              onBarClick={
+                handleKecamatanClick
+              }
+            />
+
+          </section>
 
           {/* =================================================
               KELURAHAN
@@ -862,33 +888,7 @@ export default function Statistika({
           </div>
 
 
-          {/* =================================================
-              KECAMATAN
-          ================================================= */}
-
-          <section className="stat-card">
-
-            <div className="stat-card-title-row">
-
-              <div className="stat-card-title">
-                DISTRIBUSI KECAMATAN
-              </div>
-
-              <span>
-                TOP 5
-              </span>
-
-            </div>
-
-            <Ranking
-              data={kecamatan}
-              limit={7}
-              onBarClick={
-                handleKecamatanClick
-              }
-            />
-
-          </section>
+          
 
 
           {/* =================================================
