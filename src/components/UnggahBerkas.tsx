@@ -13,11 +13,6 @@ import {
 import { dapatMelihatDokumenPribadi } from "@/lib/rbac";
 import { useApp } from "@/store/useApp";
 
-/* =========================================================
-   FOTO
-   Urutan mengikuti alur kerja petugas lapangan
-   ========================================================= */
-
 const FOTO: KategoriLampiran[] = [
   "foto_bidang",
   "foto_patok",
@@ -28,10 +23,6 @@ const FOTO: KategoriLampiran[] = [
   "foto_akses",
   "foto_pemilik_petugas",
 ];
-
-/* =========================================================
-   DOKUMEN
-   ========================================================= */
 
 const DOKUMEN: KategoriLampiran[] = [
   "dok_ktp",
@@ -62,10 +53,6 @@ export default function UnggahBerkas({
   const bolehPribadi =
     dapatMelihatDokumenPribadi(peran);
 
-  /* =======================================================
-     Ambil satu lampiran terbaru per kategori
-     ======================================================= */
-
   const perKategori = useMemo(() => {
     const map = new Map<
       string,
@@ -78,10 +65,6 @@ export default function UnggahBerkas({
 
     return map;
   }, [bidang.lampiran]);
-
-  /* =======================================================
-     KELENGKAPAN
-     ======================================================= */
 
   const wajibAda =
     WAJIB.filter((k) =>
@@ -365,10 +348,6 @@ export default function UnggahBerkas({
   );
 }
 
-/* =========================================================
-   KARTU FOTO
-   ========================================================= */
-
 function KartuFoto({
   kategori,
   lampiran,
@@ -386,28 +365,34 @@ function KartuFoto({
   sedang: boolean;
   onPilih: (file: File) => void;
 }) {
-  const input =
-    useRef<HTMLInputElement>(null);
+  const input = useRef<HTMLInputElement>(null);
 
-  const [src, setSrc] =
-    useState<string | null>(null);
+  const [src, setSrc] = useState<string | null>(null);
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const [previewLoading, setPreviewLoading] = useState(false);
 
   const terkunci =
     !!lampiran?.sensitif &&
     !bolehPribadi;
 
+  const ada = !!lampiran;
+
+  const dapatUnggah =
+    bolehEdit &&
+    !ada &&
+    !sedang &&
+    !terkunci;
+
   useEffect(() => {
     let batal = false;
 
     if (lampiran && !terkunci) {
-      fetch(
-        `/api/lampiran/${lampiran.id}`
-      )
+      setPreviewLoading(true);
+
+      fetch(`/api/lampiran/${lampiran.id}`)
         .then((response) => {
           if (!response.ok) {
-            throw new Error(
-              "Gagal memuat preview"
-            );
+            throw new Error("Gagal memuat preview");
           }
 
           return response.json();
@@ -417,13 +402,21 @@ function KartuFoto({
             setSrc(data.url ?? null);
           }
         })
-        .catch(() => {
+        .catch((error) => {
+          console.error("PREVIEW LAMPIRAN:", error);
+
           if (!batal) {
             setSrc(null);
+          }
+        })
+        .finally(() => {
+          if (!batal) {
+            setPreviewLoading(false);
           }
         });
     } else {
       setSrc(null);
+      setPreviewLoading(false);
     }
 
     return () => {
@@ -434,164 +427,303 @@ function KartuFoto({
     terkunci,
   ]);
 
-  const ada = !!lampiran;
-
-  const dapatUnggah =
-    bolehEdit &&
-    !ada &&
-    !sedang &&
-    !terkunci;
-
   const metadata =
     lampiran?.lat != null &&
     lampiran?.lon != null
-      ? `${lampiran.lat.toFixed(
-          5
-        )}, ${lampiran.lon.toFixed(5)}`
+      ? `${lampiran.lat.toFixed(5)}, ${lampiran.lon.toFixed(5)}`
       : null;
 
+  function bukaUpload() {
+    if (dapatUnggah) {
+      input.current?.click();
+    }
+  }
+
+  function bukaPreview() {
+    if (src && !terkunci) {
+      setPreviewOpen(true);
+    }
+  }
+
   return (
-    <div
-      className={[
-        "kb-photo-card",
-        ada
-          ? "is-uploaded"
-          : "is-empty",
-        sedang
-          ? "is-loading"
-          : "",
-        terkunci
-          ? "is-locked"
-          : "",
-      ]
-        .filter(Boolean)
-        .join(" ")}
-    >
-      <button
-        type="button"
-        className="kb-photo-main"
-        disabled={!dapatUnggah}
-        onClick={() =>
-          input.current?.click()
-        }
+    <>
+      <div
+        className={[
+          "kb-photo-card",
+          ada ? "is-uploaded" : "is-empty",
+          sedang ? "is-loading" : "",
+          terkunci ? "is-locked" : "",
+        ]
+          .filter(Boolean)
+          .join(" ")}
       >
-        <div className="kb-photo-preview">
-          {src ? (
-            <img
-              src={src}
-              alt={
-                KATEGORI_LABEL[
-                  kategori
-                ]
-              }
-            />
-          ) : (
-            <div className="kb-photo-placeholder">
-              <span>
-                {sedang
-                  ? "…"
-                  : ada
-                    ? "▧"
-                    : "+"}
+        {/* =================================================
+            AREA FOTO
+        ================================================== */}
+
+        <div
+          className={[
+            "kb-photo-main",
+            ada ? "is-previewable" : "",
+            dapatUnggah ? "is-upload-target" : "",
+          ]
+            .filter(Boolean)
+            .join(" ")}
+          role={ada && src ? "button" : undefined}
+          tabIndex={ada && src ? 0 : undefined}
+          onClick={() => {
+            if (ada && src) {
+              bukaPreview();
+            } else if (!ada) {
+              bukaUpload();
+            }
+          }}
+          onKeyDown={(event) => {
+            if (
+              (event.key === "Enter" ||
+                event.key === " ") &&
+              ada &&
+              src
+            ) {
+              event.preventDefault();
+              bukaPreview();
+            }
+          }}
+        >
+          <div className="kb-photo-preview">
+            {src ? (
+              <>
+                <img
+                  src={src}
+                  alt={KATEGORI_LABEL[kategori]}
+                  className="kb-photo-image"
+                />
+
+                <div className="kb-photo-preview-overlay">
+                  <span>⌕</span>
+                  <small>Lihat foto</small>
+                </div>
+              </>
+            ) : (
+              <div className="kb-photo-placeholder">
+                <span>
+                  {sedang
+                    ? "…"
+                    : previewLoading
+                      ? "…"
+                      : ada
+                        ? "▧"
+                        : "+"}
+                </span>
+
+                {!ada && (
+                  <small>
+                    {bolehEdit
+                      ? "Unggah foto"
+                      : "Belum tersedia"}
+                  </small>
+                )}
+              </div>
+            )}
+
+            {wajib && (
+              <span
+                className={
+                  ada
+                    ? "kb-badge-success"
+                    : "kb-badge-required"
+                }
+              >
+                {ada
+                  ? "✓ Tersimpan"
+                  : "Wajib"}
               </span>
-            </div>
-          )}
+            )}
 
-          {wajib && (
-            <span
-              className={
-                ada
-                  ? "kb-badge-success"
-                  : "kb-badge-required"
-              }
-            >
-              {ada
-                ? "✓ Tersimpan"
-                : "Wajib"}
-            </span>
-          )}
+            {!wajib && ada && (
+              <span className="kb-badge-success">
+                ✓ Tersimpan
+              </span>
+            )}
+          </div>
 
-          {!wajib && ada && (
-            <span className="kb-badge-success">
-              ✓ Tersimpan
+          <div className="kb-photo-info">
+            <strong>
+              {KATEGORI_LABEL[kategori]}
+            </strong>
+
+            <span>
+              {sedang
+                ? "Mengunggah..."
+                : ada
+                  ? src
+                    ? "Klik untuk melihat foto"
+                    : "Dokumentasi tersedia"
+                  : bolehEdit
+                    ? "Klik untuk unggah"
+                    : "Belum tersedia"}
             </span>
-          )}
+          </div>
         </div>
 
-        <div className="kb-photo-info">
-          <strong>
-            {KATEGORI_LABEL[kategori]}
-          </strong>
+        {/* =================================================
+            META DATA
+        ================================================== */}
 
-          <span>
+        {ada && !terkunci && (
+          <div className="kb-file-meta">
+            {metadata && (
+              <span>
+                ◉ {metadata}
+              </span>
+            )}
+
+            {lampiran?.diambil_pada && (
+              <span>
+                ◷{" "}
+                {new Date(
+                  lampiran.diambil_pada
+                ).toLocaleDateString(
+                  "id-ID",
+                  {
+                    day: "2-digit",
+                    month: "short",
+                    year: "numeric",
+                  }
+                )}
+              </span>
+            )}
+          </div>
+        )}
+
+        {terkunci && (
+          <div className="kb-locked-note">
+            Dokumen pribadi
+            <br />
+            tidak tersedia untuk peran ini.
+          </div>
+        )}
+
+        {/* =================================================
+            INPUT UPLOAD
+        ================================================== */}
+
+        <input
+          ref={input}
+          type="file"
+          hidden
+          accept="image/*"
+          onChange={(event) => {
+            const file =
+              event.target.files?.[0];
+
+            if (file) {
+              onPilih(file);
+            }
+
+            event.target.value = "";
+          }}
+        />
+
+        {/* =================================================
+            TOMBOL GANTI FOTO
+        ================================================== */}
+
+        {ada && bolehEdit && !terkunci && (
+          <button
+            type="button"
+            className="kb-photo-change"
+            onClick={() => input.current?.click()}
+            disabled={sedang}
+          >
             {sedang
               ? "Mengunggah..."
-              : ada
-                ? "Dokumentasi tersedia"
-                : bolehEdit
-                  ? "Klik untuk unggah"
-                  : "Belum tersedia"}
-          </span>
-        </div>
-      </button>
+              : "Ganti foto"}
+          </button>
+        )}
+      </div>
 
-      {ada && !terkunci && (
-        <div className="kb-file-meta">
-          {metadata && (
-            <span>
-              ◉ {metadata}
-            </span>
-          )}
+      {/* ===================================================
+          MODAL PREVIEW
+      =================================================== */}
 
-          {lampiran?.diambil_pada && (
-            <span>
-              ◷{" "}
-              {new Date(
-                lampiran.diambil_pada
-              ).toLocaleDateString(
-                "id-ID",
-                {
-                  day: "2-digit",
-                  month: "short",
-                  year: "numeric",
-                }
-              )}
-            </span>
-          )}
-        </div>
-      )}
-
-      {terkunci && (
-        <div className="kb-locked-note">
-          Dokumen pribadi
-          <br />
-          tidak tersedia untuk peran ini.
-        </div>
-      )}
-
-      <input
-        ref={input}
-        type="file"
-        hidden
-        accept="image/*"
-        onChange={(event) => {
-          const file =
-            event.target.files?.[0];
-
-          if (file) {
-            onPilih(file);
+      {previewOpen && src && (
+        <div
+          className="kb-preview-modal"
+          role="dialog"
+          aria-modal="true"
+          aria-label={`Preview ${KATEGORI_LABEL[kategori]}`}
+          onClick={() =>
+            setPreviewOpen(false)
           }
+        >
+          <div
+            className="kb-preview-dialog"
+            onClick={(event) =>
+              event.stopPropagation()
+            }
+          >
+            <div className="kb-preview-header">
+              <div>
+                <strong>
+                  {KATEGORI_LABEL[kategori]}
+                </strong>
 
-          event.target.value = "";
-        }}
-      />
-    </div>
+                {lampiran?.nama_asli && (
+                  <span>
+                    {lampiran.nama_asli}
+                  </span>
+                )}
+              </div>
+
+              <button
+                type="button"
+                className="kb-preview-close"
+                onClick={() =>
+                  setPreviewOpen(false)
+                }
+                aria-label="Tutup preview"
+              >
+                ×
+              </button>
+            </div>
+
+            <div className="kb-preview-body">
+              <img
+                src={src}
+                alt={KATEGORI_LABEL[kategori]}
+              />
+            </div>
+
+            <div className="kb-preview-footer">
+              {metadata && (
+                <span>
+                  ◉ {metadata}
+                </span>
+              )}
+
+              {lampiran?.diambil_pada && (
+                <span>
+                  ◷{" "}
+                  {new Date(
+                    lampiran.diambil_pada
+                  ).toLocaleDateString(
+                    "id-ID",
+                    {
+                      day: "2-digit",
+                      month: "long",
+                      year: "numeric",
+                    }
+                  )}
+                </span>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
-
-/* =========================================================
-   KARTU DOKUMEN
-   ========================================================= */
 
 function KartuDokumen({
   kategori,
