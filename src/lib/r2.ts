@@ -37,27 +37,6 @@ function s3(): S3Client {
     responseChecksumValidation: "WHEN_REQUIRED",
   });
 
-  // ↓↓↓ PAKSA buang header checksum yang tetap disuntik SDK,
-  //     agar tidak ikut ditandatangani ke presigned URL (penyebab 403 di R2)
-  _s3.middlewareStack.add(
-    (next) => async (args) => {
-      const req: any = (args as any).request;
-      if (req?.headers) {
-        for (const h of Object.keys(req.headers)) {
-          const k = h.toLowerCase();
-          if (
-            k.startsWith("x-amz-checksum-") ||
-            k.startsWith("x-amz-sdk-checksum-")
-          ) {
-            delete req.headers[h];
-          }
-        }
-      }
-      return next(args);
-    },
-    { step: "build", name: "stripChecksum", priority: "low" }
-  );
-
   return _s3;
 }
 
@@ -70,6 +49,7 @@ export const penyimpananSiap = () =>
     process.env.BOJO_R2_SECRET_ACCESS_KEY &&
     process.env.BOJO_R2_BUCKET
   );
+
 export async function unggahObjek(
   objectKey: string,
   body: Buffer | Uint8Array,
@@ -84,7 +64,12 @@ export async function unggahObjek(
     })
   );
 }
-export function urlUnggah(objectKey: string, mime: string, detik = 300) {
+
+export function urlUnggah(
+  objectKey: string,
+  mime: string,
+  detik = 300
+) {
   return getSignedUrl(
     s3(),
     new PutObjectCommand({
@@ -92,22 +77,31 @@ export function urlUnggah(objectKey: string, mime: string, detik = 300) {
       Key: objectKey,
       ContentType: mime,
     }),
-    { expiresIn: detik }
+    {
+      expiresIn: detik,
+    }
   );
 }
 
-export function urlBaca(objectKey: string, detik = 300) {
+export function urlBaca(
+  objectKey: string,
+  detik = 300
+) {
   return getSignedUrl(
     s3(),
     new GetObjectCommand({
       Bucket: bucket(),
       Key: objectKey,
     }),
-    { expiresIn: detik }
+    {
+      expiresIn: detik,
+    }
   );
 }
 
-export async function hapusObjek(objectKey: string) {
+export async function hapusObjek(
+  objectKey: string
+) {
   await s3().send(
     new DeleteObjectCommand({
       Bucket: bucket(),
