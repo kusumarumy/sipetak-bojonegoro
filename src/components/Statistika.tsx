@@ -19,6 +19,7 @@ type StatistikItem = {
   jumlah: number;
 };
 
+
 /* =========================================================
    UTILITAS
    ========================================================= */
@@ -31,7 +32,8 @@ function hitung(
 
   for (const item of data) {
     const value =
-      String(item[key] ?? '').trim() || 'Tidak diketahui';
+      String(item[key] ?? '').trim() ||
+      'Tidak diketahui';
 
     map.set(
       value,
@@ -95,7 +97,6 @@ function Donut({
         width={size}
         height={size}
       >
-        {/* TRACK */}
         <circle
           cx="50"
           cy="50"
@@ -105,7 +106,6 @@ function Donut({
           strokeWidth="12"
         />
 
-        {/* DATA */}
         {validData.map((item, index) => {
           const percentage =
             total > 0
@@ -127,9 +127,7 @@ function Donut({
               r={radius}
               fill="none"
               stroke={
-                colors[
-                  index % colors.length
-                ]
+                colors[index % colors.length]
               }
               strokeWidth="12"
               strokeDasharray={`${length} ${
@@ -158,7 +156,7 @@ function Donut({
 
 
 /* =========================================================
-   STATUS
+   STATUS DASHBOARD
    ========================================================= */
 
 function StatusDashboard({
@@ -181,6 +179,13 @@ function StatusDashboard({
         )
       : 0;
 
+  const colors = [
+    '#9F1239',
+    '#F59E0B',
+    '#16A34A',
+    '#E11D48',
+  ];
+
   return (
     <div className="stat-progress">
 
@@ -189,61 +194,48 @@ function StatusDashboard({
         <Donut
           data={data}
           total={total}
-          size={124}
+          size={105}
           centerText={`${verifiedPercent}%`}
           centerSub="verified"
-          colors={[
-            '#9F1239',
-            '#F59E0B',
-            '#16A34A',
-            '#E11D48',
-          ]}
+          colors={colors}
         />
 
       </div>
 
       <div className="stat-progress-list">
 
-        {data.map((item, index) => {
+        {data.map((item, index) => (
+          <div
+            className="stat-progress-row"
+            key={item.label}
+          >
 
-          const colors = [
-            '#9F1239',
-            '#F59E0B',
-            '#16A34A',
-            '#E11D48',
-          ];
+            <div className="stat-progress-name">
 
-          return (
-            <div
-              className="stat-progress-row"
-              key={item.label}
-            >
+              <span
+                className="stat-status-dot"
+                style={{
+                  background:
+                    colors[
+                      index % colors.length
+                    ],
+                }}
+              />
 
-              <div className="stat-progress-name">
-
-                <span
-                  className="stat-status-dot"
-                  style={{
-                    background:
-                      colors[index],
-                  }}
-                />
-
-                <span>
-                  {item.label}
-                </span>
-
-              </div>
-
-              <strong>
-                {item.jumlah.toLocaleString(
-                  'id-ID'
-                )}
-              </strong>
+              <span>
+                {item.label}
+              </span>
 
             </div>
-          );
-        })}
+
+            <strong>
+              {item.jumlah.toLocaleString(
+                'id-ID'
+              )}
+            </strong>
+
+          </div>
+        ))}
 
       </div>
 
@@ -259,14 +251,20 @@ function StatusDashboard({
 function Ranking({
   data,
   limit = 6,
+  onBarClick,
 }: {
   data: StatistikItem[];
   limit?: number;
+  onBarClick?: (
+    item: StatistikItem
+  ) => void;
 }) {
   const items = data.slice(0, limit);
 
   const max = Math.max(
-    ...items.map((item) => item.jumlah),
+    ...items.map(
+      (item) => item.jumlah
+    ),
     1
   );
 
@@ -277,6 +275,7 @@ function Ranking({
     '#D97706',
     '#EAB308',
     '#FACC15',
+    '#F97316',
   ];
 
   return (
@@ -290,17 +289,22 @@ function Ranking({
             (item.jumlah / max) * 100;
 
           return (
-            <div
+            <button
+              type="button"
               className="stat-vchart-item"
+              onClick={() =>
+                onBarClick?.(item)
+              }
               key={item.label}
+              title={`Klik untuk melihat ${item.label}`}
             >
 
-              {/* VALUE */}
               <div className="stat-vchart-value">
-                {item.jumlah.toLocaleString('id-ID')}
+                {item.jumlah.toLocaleString(
+                  'id-ID'
+                )}
               </div>
 
-              {/* BAR AREA */}
               <div className="stat-vchart-bar-area">
 
                 <div
@@ -309,14 +313,14 @@ function Ranking({
                     height: `${height}%`,
                     background:
                       barColors[
-                        index % barColors.length
+                        index %
+                          barColors.length
                       ],
                   }}
                 />
 
               </div>
 
-              {/* LABEL */}
               <div
                 className="stat-vchart-label"
                 title={item.label}
@@ -324,7 +328,7 @@ function Ranking({
                 {item.label}
               </div>
 
-            </div>
+            </button>
           );
         })}
 
@@ -334,8 +338,9 @@ function Ranking({
   );
 }
 
+
 /* =========================================================
-   COMPOSITION CARD
+   COMPOSITION
    ========================================================= */
 
 function Composition({
@@ -367,9 +372,11 @@ function Composition({
         <Donut
           data={data}
           total={total}
-          size={94}
+          size={82}
           centerText={
-            total.toLocaleString('id-ID')
+            total.toLocaleString(
+              'id-ID'
+            )
           }
           centerSub="bidang"
           colors={colors}
@@ -392,7 +399,8 @@ function Composition({
                 style={{
                   background:
                     colors[
-                      index % colors.length
+                      index %
+                        colors.length
                     ],
                 }}
               />
@@ -435,6 +443,13 @@ export default function Statistika({
 
   const [memuat, setMemuat] =
     useState(true);
+
+  /* ITEM YANG DIKLIK DI GRAFIK */
+  const [selectedStat, setSelectedStat] =
+    useState<{
+      title: string;
+      item: StatistikItem;
+    } | null>(null);
 
 
   /* =======================================================
@@ -527,6 +542,10 @@ export default function Statistika({
   }, [bidang]);
 
 
+  /* =======================================================
+     DATA STATISTIK
+     ======================================================= */
+
   const kelurahan = useMemo(
     () =>
       hitung(
@@ -595,6 +614,29 @@ export default function Statistika({
           (verified / total) * 100
         )
       : 0;
+
+
+  /* =======================================================
+     HANDLER GRAFIK
+     ======================================================= */
+
+  const handleKelurahanClick = (
+    item: StatistikItem
+  ) => {
+    setSelectedStat({
+      title: 'Kelurahan',
+      item,
+    });
+  };
+
+  const handleKecamatanClick = (
+    item: StatistikItem
+  ) => {
+    setSelectedStat({
+      title: 'Kecamatan',
+      item,
+    });
+  };
 
 
   /* =======================================================
@@ -719,9 +761,7 @@ export default function Statistika({
 
             </div>
 
-
             <div className="stat-kpi-divider" />
-
 
             <div className="stat-kpi-item">
 
@@ -735,9 +775,7 @@ export default function Statistika({
 
             </div>
 
-
             <div className="stat-kpi-divider" />
-
 
             <div className="stat-kpi-item">
 
@@ -757,7 +795,7 @@ export default function Statistika({
 
 
           {/* =================================================
-              PROGRESS
+              PROGRES
           ================================================= */}
 
           <section className="stat-card">
@@ -773,12 +811,17 @@ export default function Statistika({
 
           </section>
 
+
+          {/* =================================================
+              KELURAHAN
+          ================================================= */}
+
           <section className="stat-card">
 
             <div className="stat-card-title-row">
 
               <div className="stat-card-title">
-                DISTRIBUSI BERDASARKAN KELURAHAN
+                DISTRIBUSI KELURAHAN
               </div>
 
               <span>
@@ -790,6 +833,9 @@ export default function Statistika({
             <Ranking
               data={kelurahan}
               limit={7}
+              onBarClick={
+                handleKelurahanClick
+              }
             />
 
           </section>
@@ -815,12 +861,17 @@ export default function Statistika({
 
           </div>
 
+
+          {/* =================================================
+              KECAMATAN
+          ================================================= */}
+
           <section className="stat-card">
 
             <div className="stat-card-title-row">
 
               <div className="stat-card-title">
-                DISTRIBUSI BERDASARKAN KECAMATAN
+                DISTRIBUSI KECAMATAN
               </div>
 
               <span>
@@ -832,14 +883,23 @@ export default function Statistika({
             <Ranking
               data={kecamatan}
               limit={7}
+              onBarClick={
+                handleKecamatanClick
+              }
             />
 
           </section>
+
+
+          {/* =================================================
+              FOOTER
+          ================================================= */}
 
           <div className="stat-footer">
 
             <div>
               <span>REVISI</span>
+
               <strong>
                 {revision.toLocaleString(
                   'id-ID'
@@ -849,6 +909,7 @@ export default function Statistika({
 
             <div>
               <span>KECAMATAN</span>
+
               <strong>
                 {kecamatan.length}
               </strong>
@@ -856,9 +917,90 @@ export default function Statistika({
 
             <div>
               <span>KELURAHAN</span>
+
               <strong>
                 {kelurahan.length}
               </strong>
+            </div>
+
+          </div>
+
+        </div>
+
+      )}
+
+
+      {/* =====================================================
+          POPUP ATRIBUT GRAFIK
+          ===================================================== */}
+
+      {selectedStat && (
+
+        <div
+          className="stat-chart-popup"
+          role="dialog"
+          aria-label="Detail statistik"
+        >
+
+          <div className="stat-chart-popup-head">
+
+            <div>
+
+              <div className="stat-chart-popup-kicker">
+                DETAIL STATISTIK
+              </div>
+
+              <div className="stat-chart-popup-title">
+                {selectedStat.title}
+              </div>
+
+            </div>
+
+            <button
+              type="button"
+              className="stat-chart-popup-close"
+              onClick={() =>
+                setSelectedStat(null)
+              }
+              aria-label="Tutup detail"
+            >
+              ×
+            </button>
+
+          </div>
+
+
+          <div className="stat-chart-popup-content">
+
+            <div className="stat-chart-popup-label">
+              {selectedStat.item.label}
+            </div>
+
+            <div className="stat-chart-popup-number">
+              {selectedStat.item.jumlah.toLocaleString(
+                'id-ID'
+              )}
+            </div>
+
+            <div className="stat-chart-popup-caption">
+              bidang tanah
+            </div>
+
+            <div className="stat-chart-popup-percent">
+
+              {total > 0
+                ? (
+                    (selectedStat.item.jumlah /
+                      total) *
+                    100
+                  ).toFixed(1)
+                : '0.0'}
+              %
+
+              <span>
+                dari seluruh bidang
+              </span>
+
             </div>
 
           </div>
