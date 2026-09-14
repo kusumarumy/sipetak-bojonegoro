@@ -623,7 +623,7 @@ map.addLayer({
   type: 'fill',
   source: 'bidang',
 
-  filter: ['==', 0, 1],
+  filter: ['==', ['get', '__filter_never_match__'], '__never__'],
 
   paint: {
     'fill-color': '#FF1744',
@@ -1453,13 +1453,13 @@ const ekspresiFilterBidang = (
     filter.penggunaan
   );
 
-  /*
-   * Tidak ada filter aktif.
-   * Jangan highlight apa pun.
-   */
-  if (kondisi.length === 1) {
-    return ['==', 0, 1];
-  }
+ if (kondisi.length === 1) {
+  return [
+    '==',
+    ['get', '__filter_never_match__'],
+    '__never__'
+  ];
+}
 
   return kondisi;
 };
