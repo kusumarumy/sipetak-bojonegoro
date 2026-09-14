@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { randomUUID } from "crypto";
-import { unggahObjek, penyimpananSiap } from "@/lib/r2"; // sesuaikan path r2.ts Anda
+import { unggahObjek, penyimpananSiap } from "@/lib/r2"; 
 
-export const runtime = "nodejs"; // wajib: butuh Buffer/crypto, bukan edge
+export const runtime = "nodejs"; 
 
 export async function POST(req: NextRequest) {
   try {
@@ -26,7 +26,6 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // susun object key — samakan dengan pola presign Anda
     const ext = namaAsli.includes(".") ? namaAsli.split(".").pop() : "bin";
     const objectKey = `bidang/${bidangId}/foto/${kategori}/${Date.now()}-${randomUUID()}.${ext}`;
 
