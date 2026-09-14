@@ -3140,7 +3140,6 @@ html[data-theme="dark"]
   padding: 35px !important;
   color: #9ca3af !important;
 }
-
 .statistik-flyout {
   --stat-red: #9f1239;
   --stat-red-2: #be123c;
@@ -3163,11 +3162,12 @@ html[data-theme="dark"]
   position: absolute;
 
   top: 22px;
-  left: 128px;
+  left: 110px;
 
-  width: 880px;
-  max-width: calc(100vw - 160px);
+  width: 420px;
   height: calc(100vh - 44px);
+
+  max-width: calc(100vw - 120px);
 
   display: flex;
   flex-direction: column;
@@ -3175,17 +3175,16 @@ html[data-theme="dark"]
   background: #fff;
 
   border: 1px solid rgba(15, 23, 42, 0.08);
-  border-radius: 17px;
+  border-radius: 16px;
 
   box-shadow:
-    0 20px 50px rgba(15, 23, 42, 0.18),
-    0 6px 18px rgba(15, 23, 42, 0.08);
+    0 15px 35px rgba(15, 23, 42, 0.16),
+    0 4px 12px rgba(15, 23, 42, 0.08);
 
   overflow: hidden;
 
   z-index: 30;
 }
-
 .statistik-head {
   flex: 0 0 auto;
 
@@ -3424,14 +3423,12 @@ html[data-theme="dark"]
 .stat-progress {
   display: flex;
   align-items: center;
-
-  gap: 42px;
-
-  padding: 6px 5px;
+  gap: 18px;
+  padding: 4px 2px;
 }
 
 .stat-progress-chart {
-  flex: 0 0 220px;
+  flex: 0 0 120px;
 
   display: flex;
   align-items: center;
@@ -3444,18 +3441,45 @@ html[data-theme="dark"]
   display: flex;
   flex-direction: column;
 
-  gap: 17px;
+  gap: 10px;
 }
 
 .stat-progress-row {
   display: grid;
 
-  grid-template-columns:
-    minmax(180px, 1fr) 60px 55px 175px;
+  grid-template-columns: 1fr 42px;
 
   align-items: center;
 
-  gap: 12px;
+  gap: 8px;
+}
+
+.stat-progress-name {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+
+  color: #61748b;
+
+  font-size: 10px;
+}
+
+.stat-status-dot {
+  width: 8px;
+  height: 8px;
+
+  flex: 0 0 8px;
+
+  border-radius: 50%;
+}
+
+.stat-progress-row strong {
+  color: #43566d;
+
+  font-size: 10px;
+  font-weight: 800;
+
+  text-align: right;
 }
 
 .stat-progress-name {
@@ -3554,14 +3578,14 @@ html[data-theme="dark"]
 }
 
 .stat-vchart-bars {
-  height: 235px;
+  height: 165px;
 
   display: flex;
   align-items: stretch;
 
-  gap: 18px;
+  gap: 8px;
 
-  padding: 8px 12px 0;
+  padding: 10px 5px 0;
 
   border-bottom: 1px solid #dfe6ed;
 
@@ -3569,9 +3593,9 @@ html[data-theme="dark"]
     repeating-linear-gradient(
       to top,
       transparent 0,
-      transparent 49px,
-      #edf1f5 49px,
-      #edf1f5 50px
+      transparent 37px,
+      #edf1f5 37px,
+      #edf1f5 38px
     );
 }
 
@@ -3585,20 +3609,17 @@ html[data-theme="dark"]
   flex-direction: column;
   align-items: center;
 
-  padding-top: 21px;
+  padding-top: 18px;
 }
 
 .stat-vchart-value {
   position: absolute;
-
   top: 0;
 
   color: #43566d;
 
-  font-size: 15px;
+  font-size: 10px;
   font-weight: 800;
-
-  line-height: 1;
 }
 
 .stat-vchart-bar-area {
@@ -3611,36 +3632,31 @@ html[data-theme="dark"]
 }
 
 .stat-vchart-bar {
-  width: min(70px, 62%);
+  width: min(30px, 65%);
 
-  min-height: 4px;
+  min-height: 3px;
 
-  border-radius: 7px 7px 0 0;
+  border-radius: 5px 5px 0 0;
 
   box-shadow:
-    0 -2px 5px rgba(15, 23, 42, 0.08);
+    0 -1px 4px rgba(15, 23, 42, 0.08);
 
   transition:
-    height 0.5s ease,
+    height 0.4s ease,
     transform 0.2s ease;
-}
-
-.stat-vchart-item:hover
-.stat-vchart-bar {
-  transform: scaleX(1.06);
 }
 
 .stat-vchart-label {
   width: 100%;
 
-  margin-top: 10px;
+  margin-top: 7px;
 
   color: #61748b;
 
-  font-size: 12px;
+  font-size: 8px;
   font-weight: 500;
 
-  line-height: 1.25;
+  line-height: 1.2;
 
   text-align: center;
 
@@ -3844,22 +3860,16 @@ html[data-theme="dark"]
 }
 
 
-/* =========================================================
-   RESPONSIVE — MOBILE
-   ========================================================= */
-
 @media (max-width: 600px) {
-
   .statistik-flyout {
     top: 82px;
     left: 10px;
     right: 10px;
 
     width: auto;
-
     max-width: none;
 
-    max-height: calc(100vh - 94px);
+    height: calc(100vh - 94px);
 
     border-radius: 14px;
   }
