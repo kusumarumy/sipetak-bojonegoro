@@ -253,7 +253,7 @@ function StatusDashboard({
 
 
 /* =========================================================
-   RANKING
+   VERTICAL BAR CHART
    ========================================================= */
 
 function Ranking({
@@ -266,69 +266,73 @@ function Ranking({
   const items = data.slice(0, limit);
 
   const max = Math.max(
-    ...items.map(
-      (item) => item.jumlah
-    ),
+    ...items.map((item) => item.jumlah),
     1
   );
 
+  const barColors = [
+    '#991B1B',
+    '#B91C1C',
+    '#C2410C',
+    '#D97706',
+    '#EAB308',
+    '#FACC15',
+  ];
+
   return (
-    <div className="stat-ranking">
+    <div className="stat-vchart">
 
-      {items.map((item, index) => (
+      <div className="stat-vchart-bars">
 
-        <div
-          className="stat-rank-item"
-          key={item.label}
-        >
+        {items.map((item, index) => {
 
-          <div className="stat-rank-head">
+          const height =
+            (item.jumlah / max) * 100;
 
-            <div className="stat-rank-name">
+          return (
+            <div
+              className="stat-vchart-item"
+              key={item.label}
+            >
 
-              <span className="stat-rank-no">
-                {String(index + 1).padStart(
-                  2,
-                  '0'
-                )}
-              </span>
+              {/* VALUE */}
+              <div className="stat-vchart-value">
+                {item.jumlah.toLocaleString('id-ID')}
+              </div>
 
-              <span
+              {/* BAR AREA */}
+              <div className="stat-vchart-bar-area">
+
+                <div
+                  className="stat-vchart-bar"
+                  style={{
+                    height: `${height}%`,
+                    background:
+                      barColors[
+                        index % barColors.length
+                      ],
+                  }}
+                />
+
+              </div>
+
+              {/* LABEL */}
+              <div
+                className="stat-vchart-label"
                 title={item.label}
               >
                 {item.label}
-              </span>
+              </div>
 
             </div>
+          );
+        })}
 
-            <strong>
-              {item.jumlah.toLocaleString(
-                'id-ID'
-              )}
-            </strong>
-
-          </div>
-
-          <div className="stat-rank-track">
-
-            <div
-              className="stat-rank-fill"
-              style={{
-                width:
-                  `${(item.jumlah / max) * 100}%`,
-              }}
-            />
-
-          </div>
-
-        </div>
-
-      ))}
+      </div>
 
     </div>
   );
 }
-
 
 /* =========================================================
    COMPOSITION CARD
