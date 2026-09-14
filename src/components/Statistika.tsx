@@ -250,7 +250,7 @@ function StatusDashboard({
 
 function Ranking({
   data,
-  limit = 6,
+  limit = 7,
   onBarClick,
 }: {
   data: StatistikItem[];
