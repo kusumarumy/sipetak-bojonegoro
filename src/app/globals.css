@@ -3143,51 +3143,61 @@ html[data-theme="dark"]
 
 .statistik-flyout {
   --stat-red: #9f1239;
-  --stat-red-dark: #881337;
+  --stat-red-2: #be123c;
+  --stat-orange: #ea580c;
+  --stat-yellow: #eab308;
+
   --stat-green: #16a34a;
   --stat-amber: #f59e0b;
   --stat-pink: #e11d48;
+
   --stat-text: #334155;
   --stat-text-2: #475569;
   --stat-muted: #94a3b8;
+
   --stat-bg: #ffffff;
   --stat-soft: #f8fafc;
   --stat-track: #edf1f5;
   --stat-line: #e2e8f0;
+
   position: absolute;
-  top: 118px;
-  left: 110px;
-  width: 350px;
-  max-height: calc(100vh - 155px);
+
+  top: 22px;
+  left: 128px;
+
+  width: 880px;
+  max-width: calc(100vw - 160px);
+  height: calc(100vh - 44px);
+
   display: flex;
   flex-direction: column;
-  background: var(--stat-bg);
+
+  background: #fff;
+
   border: 1px solid rgba(15, 23, 42, 0.08);
-  border-radius: 15px;
+  border-radius: 17px;
+
   box-shadow:
-    0 18px 45px rgba(15, 23, 42, 0.15),
-    0 5px 14px rgba(15, 23, 42, 0.07);
+    0 20px 50px rgba(15, 23, 42, 0.18),
+    0 6px 18px rgba(15, 23, 42, 0.08);
+
   overflow: hidden;
+
   z-index: 30;
 }
-
-
-/* =========================================================
-   HEADER
-   ========================================================= */
 
 .statistik-head {
   flex: 0 0 auto;
 
-  height: 76px;
+  min-height: 108px;
 
   display: flex;
   align-items: center;
   justify-content: space-between;
 
-  padding: 12px 16px;
+  padding: 18px 25px;
 
-  background: #ffffff;
+  background: #fff;
 
   border-bottom: 1px solid var(--stat-line);
 }
@@ -3195,15 +3205,12 @@ html[data-theme="dark"]
 .statistik-heading {
   display: flex;
   align-items: center;
-
-  gap: 11px;
+  gap: 16px;
 }
 
 .statistik-icon {
-  width: 42px;
-  height: 42px;
-
-  flex: 0 0 42px;
+  width: 74px;
+  height: 74px;
 
   display: flex;
   align-items: center;
@@ -3211,43 +3218,38 @@ html[data-theme="dark"]
 
   color: var(--stat-red);
 
-  background: #fff5f7;
+  background: #fff7f8;
 
-  border: 1px solid #f3ccd5;
-  border-radius: 11px;
+  border: 1px solid #efc6d0;
+  border-radius: 15px;
 }
 
 .statistik-icon svg {
-  width: 22px;
-  height: 22px;
+  width: 35px;
+  height: 35px;
 }
 
 .statistik-title {
   color: #881337;
 
-  font-size: 17px;
+  font-size: 25px;
   font-weight: 800;
 
-  line-height: 1.15;
-  letter-spacing: 0.02em;
+  line-height: 1.1;
 }
 
 .statistik-subtitle {
-  margin-top: 3px;
+  margin-top: 5px;
 
-  color: var(--stat-muted);
+  color: #7b8ba1;
 
-  font-size: 10px;
+  font-size: 15px;
   font-weight: 500;
-
-  line-height: 1;
 }
 
 .statistik-close {
-  width: 34px;
-  height: 34px;
-
-  flex: 0 0 34px;
+  width: 48px;
+  height: 48px;
 
   display: flex;
   align-items: center;
@@ -3257,24 +3259,16 @@ html[data-theme="dark"]
 
   color: #64748b;
 
-  background: #ffffff;
+  background: #fff;
 
-  border: 1px solid var(--stat-line);
-  border-radius: 8px;
+  border: 1px solid #dbe3ec;
+  border-radius: 11px;
 
-  font-size: 21px;
-  font-weight: 400;
-
-  line-height: 1;
+  font-size: 29px;
+  font-weight: 300;
 
   cursor: pointer;
-
-  transition:
-    color 0.15s ease,
-    background 0.15s ease,
-    border-color 0.15s ease;
 }
-
 .statistik-close:hover {
   color: var(--stat-red);
 
@@ -3283,17 +3277,12 @@ html[data-theme="dark"]
   border-color: #efc5cf;
 }
 
-
-/* =========================================================
-   BODY
-   ========================================================= */
-
 .statistik-body {
   flex: 1 1 auto;
 
   min-height: 0;
 
-  padding: 12px 13px 15px;
+  padding: 14px 22px 18px;
 
   overflow-y: auto;
   overflow-x: hidden;
@@ -3303,127 +3292,112 @@ html[data-theme="dark"]
 }
 
 .statistik-body::-webkit-scrollbar {
-  width: 5px;
-}
-
-.statistik-body::-webkit-scrollbar-track {
-  background: transparent;
+  width: 6px;
 }
 
 .statistik-body::-webkit-scrollbar-thumb {
   background: #cbd5e1;
-
   border-radius: 20px;
 }
-
-
-/* =========================================================
-   KPI
-   ========================================================= */
-
 .stat-kpi {
-  min-height: 83px;
+  min-height: 108px;
 
-  display: flex;
+  display: grid;
+
+  grid-template-columns:
+    1.15fr 1px 1fr 1px 1fr;
+
   align-items: center;
 
-  padding: 13px 15px;
+  padding: 18px 30px;
 
   background:
     linear-gradient(
       135deg,
-      #f8fafc 0%,
-      #f4f6f8 100%
+      #fafbfc,
+      #f5f7f9
     );
 
-  border: 1px solid #dfe5eb;
-  border-radius: 12px;
-}
-
-.stat-kpi-main {
-  min-width: 0;
-  flex: 1.35;
+  border: 1px solid #dfe6ed;
+  border-radius: 13px;
 }
 
 .stat-kpi-main span,
 .stat-kpi-item span {
   display: block;
 
-  color: #94a3b8;
+  color: #718096;
 
-  font-size: 8px;
+  font-size: 12px;
   font-weight: 800;
 
-  letter-spacing: 0.08em;
-
-  line-height: 1;
+  letter-spacing: 0.04em;
 }
 
 .stat-kpi-main strong {
   display: block;
 
-  margin-top: 5px;
+  margin-top: 8px;
 
   color: var(--stat-red);
 
-  font-size: 30px;
+  font-size: 42px;
   font-weight: 800;
 
-  line-height: 0.95;
-  letter-spacing: -0.04em;
+  line-height: 1;
 }
 
 .stat-kpi-item {
-  flex: 1;
-
-  min-width: 0;
-
-  padding-left: 12px;
+  padding-left: 30px;
 }
 
 .stat-kpi-item strong {
   display: block;
 
-  margin-top: 7px;
+  margin-top: 8px;
 
-  color: var(--stat-text);
+  color: #475569;
 
-  font-size: 18px;
+  font-size: 32px;
   font-weight: 800;
 
   line-height: 1;
+}
+
+.stat-kpi-item:nth-of-type(1) strong {
+  color: #16a34a;
+}
+
+.stat-kpi-item:nth-of-type(2) strong {
+  color: #eab308;
 }
 
 .stat-kpi-divider {
   width: 1px;
-  height: 36px;
+  height: 55px;
 
-  flex: 0 0 1px;
-
-  background: #dce2e8;
+  background: #d8e0e8;
 }
 
 
 .stat-card {
-  margin-top: 11px;
+  margin-top: 14px;
 
-  padding: 13px 13px 14px;
+  padding: 18px 22px 20px;
 
-  background: #ffffff;
+  background: #fff;
 
-  border: 1px solid var(--stat-line);
-  border-radius: 12px;
+  border: 1px solid #dfe6ed;
+  border-radius: 13px;
 }
 
 .stat-card-title {
-  color: #475569;
+  color: #3f536b;
 
-  font-size: 10px;
+  font-size: 17px;
   font-weight: 800;
 
-  line-height: 1;
-
-  letter-spacing: 0.07em;
+  letter-spacing: 0.01em;
 }
 
 .stat-card-title-row {
@@ -3431,34 +3405,33 @@ html[data-theme="dark"]
   align-items: center;
   justify-content: space-between;
 
-  margin-bottom: 13px;
+  margin-bottom: 15px;
 }
 
 .stat-card-title-row > span {
-  color: #a1aab7;
+  padding: 6px 11px;
 
-  font-size: 8px;
+  color: #718096;
+
+  background: #f8fafc;
+
+  border: 1px solid #dce4ec;
+  border-radius: 8px;
+
+  font-size: 11px;
   font-weight: 700;
-
-  letter-spacing: 0.06em;
 }
-
-
-/* =========================================================
-   PROGRESS
-   ========================================================= */
-
 .stat-progress {
   display: flex;
   align-items: center;
 
-  gap: 18px;
+  gap: 42px;
 
-  margin-top: 11px;
+  padding: 6px 5px;
 }
 
 .stat-progress-chart {
-  flex: 0 0 auto;
+  flex: 0 0 220px;
 
   display: flex;
   align-items: center;
@@ -3468,80 +3441,71 @@ html[data-theme="dark"]
 .stat-progress-list {
   flex: 1;
 
-  min-width: 0;
-
   display: flex;
   flex-direction: column;
 
-  gap: 10px;
+  gap: 17px;
 }
 
 .stat-progress-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  display: grid;
 
-  min-width: 0;
+  grid-template-columns:
+    minmax(180px, 1fr) 60px 55px 175px;
+
+  align-items: center;
+
+  gap: 12px;
 }
 
 .stat-progress-name {
   display: flex;
   align-items: center;
 
-  min-width: 0;
+  gap: 12px;
 
-  gap: 7px;
+  color: #61748b;
 
-  color: #64748b;
-
-  font-size: 9px;
+  font-size: 15px;
   font-weight: 500;
 }
 
-.stat-progress-name span:last-child {
-  overflow: hidden;
-
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-
 .stat-status-dot {
-  width: 7px;
-  height: 7px;
+  width: 18px;
+  height: 18px;
 
-  flex: 0 0 7px;
+  flex: 0 0 18px;
 
   border-radius: 50%;
 }
 
 .stat-progress-row strong {
-  margin-left: 8px;
+  color: #43566d;
 
-  color: #475569;
-
-  font-size: 10px;
+  font-size: 15px;
   font-weight: 800;
+
+  text-align: right;
 }
 
+.stat-progress-row::after {
+  content: "";
+  height: 9px;
 
-/* =========================================================
-   DONUT
-   ========================================================= */
+  background: var(--stat-track);
 
+  border-radius: 20px;
+}
 .stat-donut {
   position: relative;
 
   display: flex;
   align-items: center;
   justify-content: center;
-
-  flex: 0 0 auto;
 }
 
 .stat-donut svg {
   display: block;
-
-  overflow: visible;
 }
 
 .stat-donut-center {
@@ -3551,35 +3515,27 @@ html[data-theme="dark"]
 
   display: flex;
   flex-direction: column;
+
   align-items: center;
   justify-content: center;
-
-  pointer-events: none;
 }
 
 .stat-donut-center strong {
-  color: var(--stat-text);
+  color: #40546b;
 
-  font-size: 18px;
+  font-size: 25px;
   font-weight: 800;
 
   line-height: 1;
-  letter-spacing: -0.03em;
 }
 
 .stat-donut-center span {
-  margin-top: 4px;
+  margin-top: 5px;
 
-  color: #94a3b8;
+  color: #718096;
 
-  font-size: 7px;
-  font-weight: 700;
-
-  line-height: 1;
-
-  text-transform: lowercase;
+  font-size: 12px;
 }
-
 .stat-composition-grid {
   display: grid;
 
@@ -3589,25 +3545,34 @@ html[data-theme="dark"]
 
   margin-top: 11px;
 }
-
 /* =========================================================
    VERTICAL BAR CHART
    ========================================================= */
 
 .stat-vchart {
   width: 100%;
-  margin-top: 3px;
 }
 
 .stat-vchart-bars {
-  height: 166px;
+  height: 235px;
 
   display: flex;
   align-items: stretch;
 
-  gap: 7px;
+  gap: 18px;
 
-  padding: 0 2px;
+  padding: 8px 12px 0;
+
+  border-bottom: 1px solid #dfe6ed;
+
+  background:
+    repeating-linear-gradient(
+      to top,
+      transparent 0,
+      transparent 49px,
+      #edf1f5 49px,
+      #edf1f5 50px
+    );
 }
 
 .stat-vchart-item {
@@ -3620,7 +3585,7 @@ html[data-theme="dark"]
   flex-direction: column;
   align-items: center;
 
-  padding-top: 18px;
+  padding-top: 21px;
 }
 
 .stat-vchart-value {
@@ -3628,88 +3593,62 @@ html[data-theme="dark"]
 
   top: 0;
 
-  color: #475569;
+  color: #43566d;
 
-  font-size: 9px;
+  font-size: 15px;
   font-weight: 800;
 
   line-height: 1;
 }
 
 .stat-vchart-bar-area {
-  position: relative;
-
   width: 100%;
-  max-width: 32px;
-
-  flex: 1;
+  height: 100%;
 
   display: flex;
   align-items: flex-end;
   justify-content: center;
-
-  background:
-    repeating-linear-gradient(
-      to top,
-      transparent 0,
-      transparent 32px,
-      #f1f5f9 32px,
-      #f1f5f9 33px
-    );
-
-  border-bottom: 1px solid #dfe5eb;
-
-  overflow: hidden;
 }
 
 .stat-vchart-bar {
-  width: 70%;
-  min-height: 3px;
+  width: min(70px, 62%);
 
-  border-radius: 5px 5px 0 0;
+  min-height: 4px;
+
+  border-radius: 7px 7px 0 0;
 
   box-shadow:
     0 -2px 5px rgba(15, 23, 42, 0.08);
 
   transition:
-    height 0.45s ease,
+    height 0.5s ease,
     transform 0.2s ease;
 }
 
 .stat-vchart-item:hover
 .stat-vchart-bar {
-  transform: scaleX(1.08);
+  transform: scaleX(1.06);
 }
 
 .stat-vchart-label {
   width: 100%;
 
-  margin-top: 7px;
+  margin-top: 10px;
 
-  padding: 0 1px;
+  color: #61748b;
 
-  color: #64748b;
+  font-size: 12px;
+  font-weight: 500;
 
-  font-size: 7px;
-  font-weight: 600;
-
-  line-height: 1.2;
+  line-height: 1.25;
 
   text-align: center;
 
   overflow: hidden;
 
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-
-  word-break: break-word;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
-
-/* =========================================================
-   COMPOSITION CARD
-   ========================================================= */
-
 .stat-composition {
   min-width: 0;
 
