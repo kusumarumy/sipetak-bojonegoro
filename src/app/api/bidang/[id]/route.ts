@@ -9,14 +9,6 @@ type Ctx = {
   params: Promise<{ id: string }>;
 };
 
-/* =========================================================
-   HELPER VALIDASI ANGKA
-   Input dari HTML selalu berupa string.
-   Contoh:
-   "1250" -> 1250
-   ""     -> null
-   ========================================================= */
-
 const angkaOpsional = z.preprocess(
   (value) => {
     if (value === undefined) {
@@ -56,10 +48,6 @@ const tahunOpsional = z.preprocess(
     .optional()
 );
 
-/* =========================================================
-   GET
-   ========================================================= */
-
 export async function GET(
   _req: Request,
   { params }: Ctx
@@ -74,9 +62,6 @@ export async function GET(
   const { id } = await params;
 
   try {
-    /* =====================================================
-       AMBIL DATA BIDANG
-       ===================================================== */
 
     const [b] = await query<any>(
       `
@@ -200,12 +185,8 @@ export async function GET(
       [id]
     );
 
-    /* =====================================================
-       DATABASE → FRONTEND
-       ===================================================== */
 
     const bidang = {
-      /* Identitas */
       id: String(b.id),
 
       kode:
@@ -213,20 +194,15 @@ export async function GET(
         b.bidang_id ??
         b.fid ??
         null,
-
       bidang_id: b.bidang_id,
       objectid: b.objectid,
       kodewilaya: b.kodewilaya,
       kode_bid: b.kode_bid,
       fid: b.fid,
-
-      /* Lokasi */
       desa: b.kelurahan,
       kelurahan: b.kelurahan,
       kecamatan: b.kecamatan,
       rt_rw: b.rt_rw,
-
-      /* Luas */
       luas_m2: b.luas_tnh,
       luas_tnh: b.luas_tnh,
       luastertul: b.luastertul,
@@ -235,16 +211,10 @@ export async function GET(
         b.luas_terdampak_m2,
       luas_sisa_m2:
         b.luas_sisa_m2,
-
-      /* Geometri */
       sumbergeom: b.sumbergeom,
       shape_leng: b.shape_leng,
       shape_area: b.shape_area,
-
-      /* Penggunaan */
       penggunaan: b.penggunaan,
-
-      /* Legalitas */
       tipehak: b.tipehak,
       tipeproduk: b.tipeproduk,
       nib: b.nib,
@@ -253,13 +223,9 @@ export async function GET(
       nomor_hak: b.nomor_hak,
       alas_hak: b.alas_hak,
       beban_hak: b.beban_hak,
-
-      /* Pengukuran */
       tahun: b.tahun,
       alatukur: b.alatukur,
       metodukur: b.metodukur,
-
-      /* Pemilik */
       pemilik: b.nama_milik
         ? [
             {
@@ -278,21 +244,17 @@ export async function GET(
             },
           ]
         : [],
-
       nama_milik: b.nama_milik,
       ttl_milik: b.ttl_milik,
       krja_milik: b.krja_milik,
       almt_milik: b.almt_milik,
       nik_milik: b.nik_milik,
-
-      /* Penyewa / penggarap */
       nama_sewa: b.nama_sewa,
       ttl_sewa: b.ttl_sewa,
       krja_sewa: b.krja_sewa,
       almt_sewa: b.almt_sewa,
       nik_sewa: b.nik_sewa,
       nomor_hp: b.nomor_hp,
-
       penyewa: b.nama_sewa
         ? [
             {
@@ -311,30 +273,20 @@ export async function GET(
             },
           ]
         : [],
-
-      /* Tanah */
       hub_tnh: b.hub_tnh,
       kode_wwc: b.kode_wwc,
       jenis_tnh: b.jenis_tnh,
       ruang_atbt: b.ruang_atbt,
       luas_atbt: b.luas_atbt,
       dampak_tnh: b.dampak_tnh,
-
-      /* Bangunan */
       jml_bgn: b.jml_bgn,
       bangunan: [],
-
-      /* Foto */
       foto_tnh: b.foto_tnh,
       path: b.path,
-
-      /* Metadata */
       nama: b.nama,
       layer: b.layer,
       date_updt: b.date_updt,
       created_at: b.created_at,
-
-      /* Workflow */
       status: b.status,
       catatan_supervisor:
         b.catatan_supervisor,
@@ -346,11 +298,7 @@ export async function GET(
         b.dikirim_pada,
       diverifikasi_pada:
         b.diverifikasi_pada,
-
-      /* Lampiran */
       lampiran: [],
-
-      /* Riwayat */
       riwayat: hasilRiwayat.map((r) => ({
         id: r.id,
         aksi: r.aksi,
@@ -383,164 +331,98 @@ export async function GET(
   }
 }
 
-/* =========================================================
-   PATCH SCHEMA
-
-   Kolom yang memang ada di public.bidang_tanah
-   ========================================================= */
-
 const SkemaUbah = z.object({
-  /* Lokasi */
   kecamatan:
     z.string().max(120).nullish(),
-
   kelurahan:
     z.string().max(120).nullish(),
-
   rt_rw:
     z.string().max(120).nullish(),
-
   kodewilaya:
     z.string().max(120).nullish(),
-
   kode_bid:
     z.string().max(120).nullish(),
-
-  /* Legalitas */
   tipehak:
     z.string().max(120).nullish(),
-
   tipeproduk:
     z.string().max(120).nullish(),
-
   nib:
     z.string().max(100).nullish(),
-
   tahun:
     tahunOpsional,
-
   surat_hak:
     z.string().max(160).nullish(),
-
   nomor_hak:
     z.string().max(160).nullish(),
-
   alas_hak:
     z.string().max(160).nullish(),
-
   beban_hak:
     z.string().max(160).nullish(),
-
-  /* Penggunaan */
   penggunaan:
     z.string().max(120).nullish(),
-
   hub_tnh:
     z.string().max(120).nullish(),
-
   sta_tnh:
     z.string().max(120).nullish(),
-
   dampak_tnh:
     z.string().max(160).nullish(),
-
-  /* Pengukuran */
   alatukur:
     z.string().max(120).nullish(),
-
   metodukur:
     z.string().max(120).nullish(),
-
   luas_tnh:
     angkaOpsional,
-
   luastertul:
     angkaOpsional,
-
   luaspeta:
     angkaOpsional,
-
   luas_atbt:
     angkaOpsional,
-
   ruang_atbt:
     z.string().max(120).nullish(),
-
-  /* Dampak */
   luas_terdampak_m2:
     angkaOpsional,
-
   luas_sisa_m2:
     angkaOpsional,
-
-  /* Pemilik */
   nama_milik:
     z.string().max(160).nullish(),
-
   ttl_milik:
     z.string().max(160).nullish(),
-
   krja_milik:
     z.string().max(120).nullish(),
-
   almt_milik:
     z.string().max(240).nullish(),
-
   nik_milik:
     z.string().max(32).nullish(),
-
-  /* Penyewa */
   nama_sewa:
     z.string().max(160).nullish(),
-
   ttl_sewa:
     z.string().max(160).nullish(),
-
   krja_sewa:
     z.string().max(120).nullish(),
-
   almt_sewa:
     z.string().max(240).nullish(),
-
   nik_sewa:
     z.string().max(32).nullish(),
-
   nomor_hp:
     z.string().max(40).nullish(),
-
-  /* Tanaman */
   jenis_tnm:
     z.string().max(160).nullish(),
-
   jumlah_tnm:
     angkaOpsional,
-
-  /* Benda lain */
   jenis_bnd:
     z.string().max(160).nullish(),
-
   jumlah_bnd:
     angkaOpsional,
-
-  /* Bangunan */
   jml_bgn:
     angkaOpsional,
-
-  /* Workflow / pendataan */
   petugas_nama:
     z.string().max(160).nullish(),
-
   tanggal_ukur:
     z.string().nullish(),
-
-  /* Metadata */
   date_updt:
     z.string().nullish(),
 });
-
-/* =========================================================
-   PATCH
-   ========================================================= */
 
 export async function PATCH(
   req: Request,
@@ -568,9 +450,6 @@ export async function PATCH(
   const { id } = await params;
 
   try {
-    /* =====================================================
-       CEK BIDANG
-       ===================================================== */
 
     const [row] =
       await query<{
@@ -591,10 +470,6 @@ export async function PATCH(
       );
     }
 
-    /* =====================================================
-       CEK RBAC
-       ===================================================== */
-
     if (
       !dapatMengubahAtribut(
         sesi.user.peran,
@@ -606,11 +481,6 @@ export async function PATCH(
         { status: 403 }
       );
     }
-
-    /* =====================================================
-       VALIDASI BODY
-       ===================================================== */
-
     const parsed =
       SkemaUbah.safeParse(
         await req.json()
@@ -627,10 +497,6 @@ export async function PATCH(
       );
     }
 
-    /* =====================================================
-       AMBIL FIELD YANG DIKIRIM
-       ===================================================== */
-
     const isi = Object.entries(
       parsed.data
     ).filter(
@@ -644,17 +510,9 @@ export async function PATCH(
       });
     }
 
-    /* =====================================================
-       TRANSAKSI
-       UPDATE + AUDIT
-       ===================================================== */
-
     await transaksi(
       sesi.user.id,
       async (c) => {
-        /* ===============================================
-           AMBIL DATA LAMA
-           =============================================== */
 
         const hasilLama =
           await c.query<any>(
