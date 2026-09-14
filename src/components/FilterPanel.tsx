@@ -350,63 +350,54 @@ export default function FilterPanel({
     useState(true);
 
 
-  /* =======================================================
-     STATE FILTER
-     ======================================================= */
+/* =======================================================
+   STATE FILTER
+   ======================================================= */
 
-  const [status, setStatus] =
-    useState(
-      filterBidang.status ?? ''
-    );
+const [status, setStatus] =
+  useState<string[]>(
+    Array.isArray(filterBidang.status)
+      ? filterBidang.status
+      : filterBidang.status
+        ? [filterBidang.status]
+        : []
+  );
 
-  const [kecamatan, setKecamatan] =
-    useState<string[]>(
-      Array.isArray(
-        filterBidang.kecamatan
-      )
-        ? filterBidang.kecamatan
-        : filterBidang.kecamatan
-          ? [filterBidang.kecamatan]
-          : []
-    );
+const [kecamatan, setKecamatan] =
+  useState<string[]>(
+    Array.isArray(filterBidang.kecamatan)
+      ? filterBidang.kecamatan
+      : filterBidang.kecamatan
+        ? [filterBidang.kecamatan]
+        : []
+  );
 
-  const [kelurahan, setKelurahan] =
-    useState<string[]>(
-      Array.isArray(
-        filterBidang.kelurahan
-      )
-        ? filterBidang.kelurahan
-        : filterBidang.kelurahan
-          ? [filterBidang.kelurahan]
-          : []
-    );
+const [kelurahan, setKelurahan] =
+  useState<string[]>(
+    Array.isArray(filterBidang.kelurahan)
+      ? filterBidang.kelurahan
+      : filterBidang.kelurahan
+        ? [filterBidang.kelurahan]
+        : []
+  );
 
-  const [tipehak, setTipehak] =
-    useState<string[]>(
-      Array.isArray(
-        filterBidang.tipehak
-      )
-        ? filterBidang.tipehak
-        : filterBidang.tipehak
-          ? [filterBidang.tipehak]
-          : []
-    );
+const [tipehak, setTipehak] =
+  useState<string[]>(
+    Array.isArray(filterBidang.tipehak)
+      ? filterBidang.tipehak
+      : filterBidang.tipehak
+        ? [filterBidang.tipehak]
+        : []
+  );
 
-  const [penggunaan, setPenggunaan] =
-    useState<string[]>(
-      Array.isArray(
-        filterBidang.penggunaan
-      )
-        ? filterBidang.penggunaan
-        : filterBidang.penggunaan
-          ? [filterBidang.penggunaan]
-          : []
-    );
-
-
-  /* =======================================================
-     FETCH
-     ======================================================= */
+const [penggunaan, setPenggunaan] =
+  useState<string[]>(
+    Array.isArray(filterBidang.penggunaan)
+      ? filterBidang.penggunaan
+      : filterBidang.penggunaan
+        ? [filterBidang.penggunaan]
+        : []
+  );
 
   useEffect(() => {
 
@@ -544,88 +535,73 @@ export default function FilterPanel({
     );
 
 
-  /* =======================================================
-     HASIL FILTER
-     ======================================================= */
+const hasilFilter = useMemo(() => {
 
-  const hasilFilter =
-    useMemo(() => {
+  return data.filter((item) => {
 
-      return data.filter(
-        (item) => {
+    if (
+      !cocok(
+        item.status,
+        status
+      )
+    ) {
+      return false;
+    }
 
-          if (
-            status &&
-            item.status !== status
-          ) {
-            return false;
-          }
+    if (
+      !cocok(
+        item.kecamatan,
+        kecamatan
+      )
+    ) {
+      return false;
+    }
 
-          if (
-            !cocok(
-              item.kecamatan,
-              kecamatan
-            )
-          ) {
-            return false;
-          }
+    if (
+      !cocok(
+        item.kelurahan,
+        kelurahan
+      )
+    ) {
+      return false;
+    }
 
-          if (
-            !cocok(
-              item.kelurahan,
-              kelurahan
-            )
-          ) {
-            return false;
-          }
+    if (
+      !cocok(
+        item.tipehak,
+        tipehak
+      )
+    ) {
+      return false;
+    }
 
-          if (
-            !cocok(
-              item.tipehak,
-              tipehak
-            )
-          ) {
-            return false;
-          }
+    if (
+      !cocok(
+        item.penggunaan,
+        penggunaan
+      )
+    ) {
+      return false;
+    }
 
-          if (
-            !cocok(
-              item.penggunaan,
-              penggunaan
-            )
-          ) {
-            return false;
-          }
+    return true;
+  });
 
-          return true;
-        }
-      );
+}, [
+  data,
+  status,
+  kecamatan,
+  kelurahan,
+  tipehak,
+  penggunaan,
+]);
 
-    }, [
-      data,
-      status,
-      kecamatan,
-      kelurahan,
-      tipehak,
-      penggunaan,
-    ]);
-
-
-  /* =======================================================
-     JUMLAH FILTER
-     ======================================================= */
-
-  const jumlahFilter =
-    (status ? 1 : 0) +
-    kecamatan.length +
-    kelurahan.length +
-    tipehak.length +
-    penggunaan.length;
-
-
-  /* =======================================================
-     TERAPKAN
-     ======================================================= */
+const jumlahFilter =
+  status.length +
+  kecamatan.length +
+  kelurahan.length +
+  tipehak.length +
+  penggunaan.length;
 
   const terapkan = () => {
 
@@ -648,37 +624,27 @@ export default function FilterPanel({
   };
 
 
-  /* =======================================================
-     RESET
-     ======================================================= */
+const reset = () => {
 
-  const reset = () => {
+  setStatus([]);
 
-    setStatus('');
+  setKecamatan([]);
+  setKelurahan([]);
+  setTipehak([]);
+  setPenggunaan([]);
 
-    setKecamatan([]);
+  setFilterBidang({
 
-    setKelurahan([]);
+    status: [],
 
-    setTipehak([]);
+    kecamatan: [],
+    kelurahan: [],
+    tipehak: [],
+    penggunaan: [],
 
-    setPenggunaan([]);
+  });
 
-    setFilterBidang({
-
-      status: '',
-
-      kecamatan: [],
-
-      kelurahan: [],
-
-      tipehak: [],
-
-      penggunaan: [],
-
-    });
-
-  };
+};
 
 
   /* =======================================================
@@ -820,81 +786,81 @@ export default function FilterPanel({
 
             </div>
 
+<div className="filter-modern-group">
 
-            {/* =============================================
-                STATUS
-            ============================================= */}
+  <div className="filter-modern-label-row">
 
-            <div className="filter-modern-group">
+    <label>
+      Status Verifikasi
+    </label>
 
-              <div className="filter-modern-label-row">
+    {status.length > 0 && (
+      <button
+        type="button"
+        className="filter-clear-mini"
+        onClick={() => setStatus([])}
+      >
+        Hapus
+      </button>
+    )}
 
-                <label>
-                  Status Verifikasi
-                </label>
+  </div>
 
-                {status && (
-                  <button
-                    type="button"
-                    className="filter-clear-mini"
-                    onClick={() =>
-                      setStatus('')
-                    }
-                  >
-                    Hapus
-                  </button>
-                )}
+  <div className="filter-status-grid">
 
-              </div>
+    <button
+      type="button"
+      className={`filter-status-option ${
+        status.length === 0
+          ? 'is-selected'
+          : ''
+      }`}
+      onClick={() => setStatus([])}
+    >
+      Semua
+    </button>
 
+    {STATUS.map((item) => {
 
-              <div className="filter-status-grid">
+      const selected =
+        status.includes(item.value);
 
-                <button
-                  type="button"
-                  className={`filter-status-option ${
-                    !status
-                      ? 'is-selected'
-                      : ''
-                  }`}
-                  onClick={() =>
-                    setStatus('')
-                  }
-                >
-                  Semua
-                </button>
+      return (
+        <button
+          type="button"
+          key={item.value}
+          className={`filter-status-option status-${item.value} ${
+            selected
+              ? 'is-selected'
+              : ''
+          }`}
+          onClick={() => {
 
-                {STATUS.map(
-                  (item) => (
-                    <button
-                      type="button"
-                      key={item.value}
-                      className={`filter-status-option status-${item.value} ${
-                        status ===
-                        item.value
-                          ? 'is-selected'
-                          : ''
-                      }`}
-                      onClick={() =>
-                        setStatus(
-                          item.value
-                        )
-                      }
-                    >
-                      {item.label}
-                    </button>
-                  )
-                )}
+            if (selected) {
+              setStatus(
+                status.filter(
+                  (value) =>
+                    value !== item.value
+                )
+              );
+            } else {
+              setStatus([
+                ...status,
+                item.value
+              ]);
+            }
 
-              </div>
+          }}
+        >
+          {item.label}
+        </button>
+      );
 
-            </div>
+    })}
 
+  </div>
 
-            {/* =============================================
-                KECAMATAN
-            ============================================= */}
-
+</div>
             <MultiSelect
               label="Kecamatan"
               values={kecamatan}
@@ -1003,16 +969,24 @@ export default function FilterPanel({
                 <div className="filter-active-chips">
 
                   {status && (
-                    <span className="filter-summary-chip">
-                      {
-                        STATUS.find(
-                          (item) =>
-                            item.value ===
-                            status
-                        )?.label
-                      }
-                    </span>
-                  )}
+                  {status.map((value) => {
+
+  const item =
+    STATUS.find(
+      (statusItem) =>
+        statusItem.value === value
+    );
+
+  return (
+    <span
+      className="filter-summary-chip"
+      key={`s-${value}`}
+    >
+      {item?.label ?? value}
+    </span>
+  );
+
+})}
 
                   {kecamatan.map(
                     (item) => (
