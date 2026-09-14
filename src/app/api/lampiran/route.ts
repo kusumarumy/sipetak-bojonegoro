@@ -4,49 +4,14 @@ import { auth } from "@/lib/auth";
 import { query, transaksi } from "@/lib/db";
 
 const Skema = z.object({
-  bidang_id: z
-    .string()
-    .regex(/^\d+$/, "ID bidang tidak valid"),
-
-  kategori: z
-    .string()
-    .min(3)
-    .max(40),
-
-  object_key: z
-    .string()
-    .min(5)
-    .max(500),
-
-  nama_asli: z
-    .string()
-    .max(200)
-    .optional(),
-
-  mime: z
-    .string()
-    .max(80)
-    .optional(),
-
-  ukuran_byte: z
-    .number()
-    .int()
-    .positive()
-    .max(25 * 1024 * 1024)
-    .optional(),
-
-  lat: z
-    .number()
-    .min(-90)
-    .max(90)
-    .nullish(),
-
-  lon: z
-    .number()
-    .min(-180)
-    .max(180)
-    .nullish(),
-
+  bidang_id: z.string().regex(/^\d+$/, "ID bidang tidak valid"),
+  kategori: z.string().min(3).max(40),
+  object_key: z.string().min(5).max(500),
+  nama_asli: z.string().max(200).optional(),
+  mime: z.string().max(80).optional(),
+  ukuran_byte: z.number().int().positive().max(25 * 1024 * 1024).optional(),
+  lat: z.number().min(-90).max(90).nullish(),
+  lon: z.number().min(-180).max(180).nullish(),
   diambil_pada: z.string().nullish(),
 });
 
@@ -54,7 +19,7 @@ export async function POST(req: Request) {
   const sesi = await auth();
 
   if (!sesi?.user) {
-    return new NextResponse("Belum masuk", { status: 401 });
+    return NextResponse.json({ pesan: "Belum masuk" }, { status: 401 });
   }
 
   try {
@@ -62,56 +27,35 @@ export async function POST(req: Request) {
 
     if (!parsed.success) {
       return NextResponse.json(
-        {
-          pesan: "Metadata tidak valid",
-          detail: parsed.error.flatten(),
-        },
+        { pesan: "Metadata tidak valid", detail: parsed.error.flatten() },
         { status: 400 }
       );
     }
 
     const d = parsed.data;
 
-    const [bidang] = await query<{ id: number }>(
-      `
-      SELECT id
-      FROM public.bidang_tanah
-      WHERE id = $1
-      `,
-      [d.bidang_id]
-    );
-
-    if (!bidang) {
-      return new NextResponse("Bidang tidak ditemukan", { status: 404 });
-    }
-
     const [row] = await transaksi(sesi.user.id, async (c) => {
       const hasil = await c.query(
         `
         INSERT INTO public.lampiran (
-          bidang_id,
-          kategori,
-          object_key,
-          nama_asli,
-          mime,
-          ukuran_byte,
-          lat,
-          lon,
-          diambil_pada,
-          diunggah_oleh
+          bidang_id, kategori, object_key, nama_asli, mime,
+          ukuran_byte, lat, lon, diambil_pada, diunggah_oleh
         )
         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+        ON CONFLICT (object_key) 
+        DO UPDATE SET
+          kategori = EXCLUDED.kategori,
+          nama_asli = EXCLUDED.nama_asli,
+          mime = EXCLUDED.mime,
+          ukuran_byte = EXCLUDED.ukuran_byte,
+          lat = EXCLUDED.lat,
+          lon = EXCLUDED.lon,
+          diambil_pada = EXCLUDED.diambil_pada,
+          diunggah_oleh = EXCLUDED.diunggah_oleh,
+          diunggah_pada = NOW()
         RETURNING
-          id,
-          kategori,
-          nama_asli,
-          mime,
-          ukuran_byte,
-          lat,
-          lon,
-          diambil_pada,
-          sensitif,
-          diunggah_pada
+          id, kategori, nama_asli, mime, ukuran_byte,
+          lat, lon, diambil_pada, sensitif, diunggah_pada
         `,
         [
           Number(d.bidang_id),
@@ -131,8 +75,13 @@ export async function POST(req: Request) {
     });
 
     return NextResponse.json(row);
-  } catch (error) {
+  } catch (error: any) {
     console.error("POST /api/lampiran ERROR:", error);
+
+    // Menangani error jika bidang_id tidak ditemukan via Foreign Key (error code PostgreSQL 23503)
+    if (error?.code === "23503") {
+      return NextResponse.json({ pesan: "Bidang tidak ditemukan" }, { status: 404 });
+    }
 
     return NextResponse.json(
       {
@@ -148,31 +97,21 @@ export async function GET(req: Request) {
   const sesi = await auth();
 
   if (!sesi?.user) {
-    return new NextResponse("Belum masuk", { status: 401 });
+    return NextResponse.json({ pesan: "Belum masuk" }, { status: 401 });
   }
 
   try {
     const bidang_id = new URL(req.url).searchParams.get("bidang_id");
 
     if (!bidang_id || !/^\d+$/.test(bidang_id)) {
-      return new NextResponse("bidang_id tidak valid", { status: 400 });
+      return NextResponse.json({ pesan: "bidang_id tidak valid" }, { status: 400 });
     }
 
     const rows = await query(
       `
       SELECT
-        id,
-        kategori,
-        object_key,
-        nama_asli,
-        mime,
-        ukuran_byte,
-        lat,
-        lon,
-        diambil_pada,
-        sensitif,
-        diunggah_pada,
-        diunggah_oleh
+        id, kategori, object_key, nama_asli, mime, ukuran_byte,
+        lat, lon, diambil_pada, sensitif, diunggah_pada, diunggah_oleh
       FROM public.lampiran
       WHERE bidang_id = $1
       ORDER BY kategori, diunggah_pada DESC
