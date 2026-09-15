@@ -94,23 +94,31 @@ const [grupTerbuka, setGrupTerbuka] =
 
           ) : (
 
-            <>
-              <div className="layer-panel-heading">
-              <div className="layer-panel-heading">
-            
-              <div className="flyout-kicker">
-                LAYER
-              </div>
-            
-              <div className="flyout-subtitle">
-                Kelola tampilan dan data peta
-              </div>
-            
-            </div>
-            </div>
-            </>
+  <div className="layer-panel-heading">
 
-          )}
+    <div className="layer-panel-icon">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 3l9 5-9 5-9-5 9-5z" />
+        <path d="M4 12l8 4 8-4" />
+        <path d="M4 16l8 5 8-5" />
+      </svg>
+    </div>
+
+    <div className="layer-panel-text">
+
+      <div className="layer-panel-title">
+        LAYER
+      </div>
+
+      <div className="layer-panel-subtitle">
+        Kelola tampilan dan data peta
+      </div>
+
+    </div>
+
+  </div>
+
+)}
 
         </div>
 
