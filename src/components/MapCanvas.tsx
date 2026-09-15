@@ -115,7 +115,141 @@ const {
   pilihBidang,
   beriPesan
 } = useApp();
+useEffect(() => {
+  const handleFokusBidang = (
+    event: Event
+  ) => {
+    const customEvent =
+      event as CustomEvent<{
+        id?: string | number;
+      }>;
 
+    const id =
+      customEvent.detail?.id;
+
+    const map =
+      mapRef.current;
+
+    if (
+      id === undefined ||
+      !map
+    ) {
+      return;
+    }
+
+    const fokus = () => {
+      if (!map.isStyleLoaded()) {
+        return;
+      }
+
+      if (!map.getSource('bidang')) {
+        return;
+      }
+
+      const features =
+        map.querySourceFeatures('bidang');
+
+      const feature =
+        features.find(
+          (f) =>
+            String(f.id) ===
+            String(id)
+        );
+
+      if (!feature) {
+        console.warn(
+          'Bidang tidak ditemukan di source:',
+          id
+        );
+
+        return;
+      }
+
+      // Highlight bidang
+      if (
+        feature.id !== undefined
+      ) {
+        sorot(
+          map,
+          feature.id
+        );
+      }
+
+      // Hitung bounds geometry bidang
+      const bounds =
+        new maplibregl.LngLatBounds();
+
+      const tambahKoordinat = (
+        coords: any
+      ) => {
+        if (!Array.isArray(coords)) {
+          return;
+        }
+
+        if (
+          coords.length >= 2 &&
+          typeof coords[0] === 'number' &&
+          typeof coords[1] === 'number'
+        ) {
+          bounds.extend(
+            coords as [number, number]
+          );
+
+          return;
+        }
+
+        for (const c of coords) {
+          tambahKoordinat(c);
+        }
+      };
+
+      if (
+        feature.geometry?.coordinates
+      ) {
+        tambahKoordinat(
+          feature.geometry.coordinates
+        );
+      }
+
+      if (bounds.isEmpty()) {
+        return;
+      }
+
+      map.fitBounds(bounds, {
+        padding: {
+          top: 170,
+          bottom: 120,
+          left: 470,
+          right: 430
+        },
+        duration: 900,
+        maxZoom: 18
+      });
+    };
+
+    /*
+     * Kalau source sudah siap,
+     * langsung fokus.
+     */
+    if (map.isStyleLoaded()) {
+      fokus();
+    } else {
+      map.once('load', fokus);
+    }
+  };
+
+  window.addEventListener(
+    'fokus-bidang',
+    handleFokusBidang
+  );
+
+  return () => {
+    window.removeEventListener(
+      'fokus-bidang',
+      handleFokusBidang
+    );
+  };
+}, []);
   useEffect(() => {
     if (!ref.current || mapRef.current) return;
 
@@ -584,12 +718,19 @@ map.addLayer({
   ],
   '#00E5FF',
 
+  // bidang yang sedang dipilih
+  [
+    'boolean',
+    ['feature-state', 'sel'],
+    false
+  ],
+  '#A51F35',
+
   // warna normal
   pewarnaan === 'status'
     ? ekspresiStatus()
     : ekspresiPenggunaan()
 ],
-
     'fill-opacity': [
   'case',
 
@@ -1684,14 +1825,12 @@ function warnaiTema(
 
     // bidang terpilih
     [
-      'boolean',
-      ['feature-state', 'sel'],
-      false
-    ],
+  'boolean',
+  ['feature-state', 'sel'],
+  false
+],
 
-    gelap
-      ? '#FFFFFF'
-      : '#1E2733',
+'#A51F35',
 
     // normal
     gelap
