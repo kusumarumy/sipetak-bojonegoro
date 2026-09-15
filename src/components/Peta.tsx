@@ -9,6 +9,7 @@ import KartuBidang from './KartuBidang';
 import BasemapPanel from './BasemapPanel';
 import DaftarBidang from './DaftarBidang';
 import Statistika from './Statistika';
+import SearchPanel from './SearchPanel';
 import FilterPanel from './FilterPanel';
 import { useApp } from '@/store/useApp';
 
@@ -423,7 +424,13 @@ export default function Peta({
           }
         />
       )}
-
+{panelAktif === 'search' && (
+  <SearchPanel
+    onClose={() =>
+      setPanelAktif(null)
+    }
+  />
+)}
       {/* =====================================================
           TERRAIN / LAYER
           ===================================================== */}
