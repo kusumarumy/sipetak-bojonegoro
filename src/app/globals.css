@@ -5795,6 +5795,33 @@ html[data-theme="dark"] .stat-kpi-label,
 html[data-theme="dark"] .stat-card-label {
   color: #8793a0;
 }
+html[data-theme="dark"] .stat-composition {
+  background: #2b2023;
+  border-color: #4b353a;
+  color: #263238;
+}
+
+html[data-theme="dark"] .stat-composition-title {
+  color: #64748b;
+}
+
+html[data-theme="dark"] .stat-composition-label {
+  color: #607080;
+}
+
+html[data-theme="dark"] .stat-composition-value {
+  color: #263238;
+}
+
+html[data-theme="dark"] .stat-footer {
+  background: #2b2023;
+  border-color: #4b353a;
+  color: #607080;
+}
+
+html[data-theme="dark"] .stat-footer strong {
+  color: #263238;
+}
 .stat-kpi {
   min-height: 62px;
 
