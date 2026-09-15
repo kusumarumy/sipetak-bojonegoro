@@ -311,14 +311,16 @@ if (geometry?.coordinates) {
   }
 };
 
-    if (ADA_ORTHO) {
-      sources.ortho = {
-        type: 'raster',
-        url: `pmtiles://${ORTHO}`,
-        tileSize: 256,
-        attribution: 'Orthophoto DPPT Bojonegoro 2026'
-      };
-    }
+    sources.ortho = {
+  type: 'raster',
+  tiles: [
+    `${process.env.NEXT_PUBLIC_R2_BASE_URL}/orthophoto/{z}/{x}/{y}.png`,
+  ],
+  tileSize: 256,
+  minzoom: 18,
+  maxzoom: 21,
+  attribution: 'Orthophoto DPPT Bojonegoro 2026',
+};
 
 if (DTM.trace) {
   sources.dem_trace = {
@@ -380,17 +382,18 @@ if (DTM.kawasan) {
     }
   },
 
-  {
-    id: 'bm-esri',
-    type: 'raster',
-    source: 'esri',
-    layout: {
-      visibility:
-        basemap === 'esri'
-          ? 'visible'
-          : 'none'
-    }
-  },
+{
+  id: 'bm-esri',
+  type: 'raster',
+  source: 'esri',
+  layout: {
+    visibility:
+      basemap === 'esri' ||
+      basemap === 'ortho'
+        ? 'visible'
+        : 'none'
+  }
+},
 
   {
     id: 'bm-google-hybrid',
@@ -429,7 +432,7 @@ if (DTM.kawasan) {
   }
 ];
 
-   if (ADA_ORTHO) {
+if (ADA_ORTHO) {
   layersAwal.push({
     id: 'bm-ortho',
     type: 'raster',
@@ -1275,23 +1278,22 @@ useEffect(() => {
     }
   ];
 
-  for (const item of basemapLayers) {
-    if (!map.getLayer(item.id)) {
-      continue;
-    }
-
-    map.setLayoutProperty(
-      item.id,
-      'visibility',
-      item.basemap === basemap
-        ? 'visible'
-        : 'none'
-    );
+for (const item of basemapLayers) {
+  if (!map.getLayer(item.id)) {
+    continue;
   }
 
-  /**
-   * Orthophoto belum tersedia.
-   */
+  const visible =
+    item.id === 'bm-esri'
+      ? basemap === 'esri' || basemap === 'ortho'
+      : item.basemap === basemap;
+
+  map.setLayoutProperty(
+    item.id,
+    'visibility',
+    visible ? 'visible' : 'none'
+  );
+}
   if (
     basemap === 'ortho' &&
     !ADA_ORTHO
