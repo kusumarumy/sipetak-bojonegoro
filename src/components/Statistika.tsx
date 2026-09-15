@@ -442,12 +442,15 @@ export default function Statistika({
         const fc =
           await response.json();
 
-        const data: Bidang[] =
-          (fc.features ?? []).map(
-            (feature: any) => ({
-              ...feature.properties,
-            })
-          );
+const data: Bidang[] =
+  (fc.features ?? []).map(
+    (feature: any) => ({
+      ...feature.properties,
+      id:
+        feature.id ??
+        feature.properties?.id,
+    })
+  );
 
         setBidang(data);
 
