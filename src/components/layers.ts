@@ -214,7 +214,7 @@ export const KONTUR = {
 
 export const DTM = {
   trace:
-    `${process.env.NEXT_PUBLIC_R2_BASE_URL ?? ''}/dtm_rencana/{z}/{x}/{y}.png`,
+    `${process.env.NEXT_PUBLIC_R2_BASE_URL ?? ''}/dtm_trase/{z}/{x}/{y}.png`,
 
   kawasan:
     `${process.env.NEXT_PUBLIC_R2_BASE_URL ?? ''}/dtm_kawasan/{z}/{x}/{y}.png`
