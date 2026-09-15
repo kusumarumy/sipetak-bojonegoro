@@ -48,6 +48,7 @@ const {
   exag,
   pewarnaan,
   labelNomor,
+  modeAnalisis,
   layerAktif,
   tema,
   filterBidang,
