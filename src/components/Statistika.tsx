@@ -902,7 +902,93 @@ const totalBidangMultiKepemilikan =
 
           </div>
 
+{/* =================================================
+    ANALISIS KEPEMILIKAN
+================================================= */}
 
+<section className="stat-card stat-kepemilikan">
+
+  <div className="stat-card-title-row">
+
+    <div className="stat-card-title">
+      ANALISIS KEPEMILIKAN
+    </div>
+
+    <span>
+      MULTI-BIDANG
+    </span>
+
+  </div>
+
+  <div className="stat-kepemilikan-summary">
+
+    <div>
+      <strong>
+        {totalPemilikMultiBidang.toLocaleString('id-ID')}
+      </strong>
+
+      <span>
+        pemilik
+      </span>
+    </div>
+
+    <div>
+      <strong>
+        {totalBidangMultiKepemilikan.toLocaleString('id-ID')}
+      </strong>
+
+      <span>
+        bidang
+      </span>
+    </div>
+
+  </div>
+
+  {kepemilikan.length > 0 ? (
+
+    <div className="stat-kepemilikan-list">
+
+      {kepemilikan
+        .slice(0, 5)
+        .map((item) => (
+
+          <button
+            key={item.nama}
+            type="button"
+            className="stat-kepemilikan-item"
+          >
+
+            <div className="stat-kepemilikan-info">
+
+              <strong>
+                {item.nama}
+              </strong>
+
+              <span>
+                {item.jumlah.toLocaleString('id-ID')} bidang
+              </span>
+
+            </div>
+
+            <span className="stat-kepemilikan-arrow">
+              →
+            </span>
+
+          </button>
+
+        ))}
+
+    </div>
+
+  ) : (
+
+    <div className="stat-empty">
+      Belum terdapat pemilik dengan lebih dari satu bidang.
+    </div>
+
+  )}
+
+</section>
           
 
 
