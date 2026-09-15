@@ -759,9 +759,6 @@ main.body {
 
   color: #173b68;
 }
-/* =========================================================
-   LAYER PANEL
-   ========================================================= */
 
 .flyout-panel {
   --layer-text: #263238;
@@ -777,11 +774,6 @@ main.body {
 
   --layer-check-border: #aeb8c4;
 }
-
-
-/* =========================================================
-   HEADER LAYER
-   ========================================================= */
 
 .layer-panel-heading {
   display: flex;
@@ -2105,10 +2097,6 @@ html[data-theme="dark"] .layer-group-head:hover .group-icon {
   cursor: pointer;
 }
 
-/* =========================================================
-   FLYOUT PANEL — DARK MODE
-   ========================================================= */
-
 html[data-theme="dark"] .flyout-panel {
   background: #241a1d;
   border-color: #4b353a;
@@ -2116,10 +2104,6 @@ html[data-theme="dark"] .flyout-panel {
   box-shadow:
     0 10px 30px rgba(0, 0, 0, .38);
 }
-
-/* =========================================================
-   FILTER FLYOUT
-   ========================================================= */
 
 .filter-flyout {
   position: fixed;
@@ -3387,10 +3371,6 @@ html[data-theme="dark"] .flyout-close:hover {
 
   color: #ffffff;
 }
-/* =========================================================
-   LAYER — DARK MODE
-   ========================================================= */
-
 html[data-theme="dark"] .flyout-panel {
   --layer-text: #f1e9eb;
   --layer-text-secondary: #c7b8bc;
@@ -3684,7 +3664,7 @@ html[data-theme="dark"] .option-row {
   }
 
   .flyout-panel {
-    left: 68px;
+    left: 82px;
 
     width: min(
       320px,
@@ -4264,10 +4244,6 @@ html[data-theme="light"] {
 }
 
 
-/* =========================================================
-   DARK MODE
-   ========================================================= */
-
 html[data-theme="dark"] .search-flyout {
   background: #241a1d;
 
@@ -4387,23 +4363,13 @@ html[data-theme="dark"] .search-result-arrow {
   color: #d58a9a;
 }
 
-
-/* =========================================================
-   TABLET
-   ========================================================= */
-
 @media (max-width: 900px) {
   .search-flyout {
-    left: 88px;
+    left: 82px;
 
     width: 320px;
   }
 }
-
-
-/* =========================================================
-   MOBILE
-   ========================================================= */
 
 @media (max-width: 600px) {
   .search-flyout {
@@ -5455,11 +5421,6 @@ html[data-theme="dark"]
   animation: flyoutIn .18s ease-out;
 }
 
-
-/* =========================================================
-   HEADER
-   ========================================================= */
-
 .statistik-head {
   flex: 0 0 auto;
 
@@ -5586,10 +5547,6 @@ html[data-theme="dark"]
   border-radius: 20px;
 }
 
-/* =========================================================
-   POPUP DETAIL GRAFIK
-   ========================================================= */
-
 .stat-chart-popup {
   position: absolute;
 
@@ -5611,9 +5568,6 @@ html[data-theme="dark"]
 
   animation: statPopupIn .16s ease-out;
 }
-
-
-/* HEADER */
 
 .stat-chart-popup-head {
   display: flex;
@@ -5761,11 +5715,6 @@ html[data-theme="dark"]
   }
 }
 
-
-/* =========================================================
-   DARK MODE
-   ========================================================= */
-
 html[data-theme="dark"] .stat-chart-popup {
   background: #2b2023;
 
@@ -5821,11 +5770,31 @@ html[data-theme="dark"] .stat-chart-popup-percent {
 
 html[data-theme="dark"] .stat-chart-popup-percent span {
   color: #817277;
-}
-/* =========================================================
-   KPI
+}/* =========================================================
+   STATISTIK — KPI & CARD TETAP PUTIH DI DARK MODE
    ========================================================= */
 
+html[data-theme="dark"] .stat-kpi,
+html[data-theme="dark"] .stat-card {
+  background: #ffffff;
+  border-color: #e3e8ee;
+  color: #263238;
+}
+
+html[data-theme="dark"] .stat-kpi-title,
+html[data-theme="dark"] .stat-card-title {
+  color: #64748b;
+}
+
+html[data-theme="dark"] .stat-kpi-value,
+html[data-theme="dark"] .stat-card-value {
+  color: #263238;
+}
+
+html[data-theme="dark"] .stat-kpi-label,
+html[data-theme="dark"] .stat-card-label {
+  color: #8793a0;
+}
 .stat-kpi {
   min-height: 62px;
 
@@ -6427,7 +6396,7 @@ html[data-theme="dark"] .stat-vchart-label {
 
 @media (max-width: 900px) {
   .statistik-flyout {
-    left: 88px;
+    left: 82px;
     width: 320px;
   }
 }
@@ -6828,9 +6797,6 @@ html[data-theme="dark"] .statistik-loading {
   background: #881337;
 }
 
-/* =========================================================
-   DARK MODE
-   ========================================================= */
 
 html[data-theme="dark"] .filter-flyout {
   background: #241a1d;
@@ -6934,21 +6900,12 @@ html[data-theme="dark"] .filter-apply:hover {
   background: #b32649;
 }
 
-/* =========================================================
-   TABLET
-   ========================================================= */
-
 @media (max-width: 900px) {
   .filter-flyout {
-    left: 88px;
+    left: 82px;
     width: 320px;
   }
 }
-
-
-/* =========================================================
-   MOBILE
-   ========================================================= */
 
 @media (max-width: 600px) {
   .filter-flyout {
