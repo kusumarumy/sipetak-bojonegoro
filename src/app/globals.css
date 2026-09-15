@@ -288,7 +288,7 @@ header.bar {
 
   border-radius: 999px;
 
-  background: #2388d9;
+  background: #ffcc00;
 
   box-shadow:
     inset 0 0 0 1px rgba(0, 0, 0, .06);
@@ -327,12 +327,12 @@ header.bar {
 }
 
 .theme-switch.dark .theme-switch-track {
-  background: #243447;
+  background: #002c60;
 }
 
 .theme-switch.dark .theme-switch-thumb {
   transform: translateX(22px);
-  color: #26384d;
+  color: #008fff;
 }
 
 .theme-switch:hover .theme-switch-track {
