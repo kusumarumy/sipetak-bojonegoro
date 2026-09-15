@@ -1237,14 +1237,26 @@ for (const def of [
       return;
     }
 
-    map.setPaintProperty(
-      'bidang',
-      'fill-color',
+map.setPaintProperty(
+  'bidang',
+  'fill-color',
+  [
+    'case',
 
-      pewarnaan === 'status'
-        ? ekspresiStatus()
-        : ekspresiPenggunaan()
-    );
+    // hasil analisis
+    [
+      'boolean',
+      ['feature-state', 'analisis'],
+      false
+    ],
+    '#00E5FF',
+
+    // warna normal
+    pewarnaan === 'status'
+      ? ekspresiStatus()
+      : ekspresiPenggunaan()
+  ]
+);
 
   }, [pewarnaan]);
 
