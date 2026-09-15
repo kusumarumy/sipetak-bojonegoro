@@ -541,70 +541,6 @@ const data: Bidang[] =
     [bidang]
   );
 
-const kepemilikan = useMemo(() => {
-  const map = new Map<
-    string,
-    {
-      nama: string;
-      jumlah: number;
-      ids: (string | number)[];
-    }
-  >();
-
-  for (const item of bidang) {
-    const namaAsli =
-      String(item.nama_milik ?? '').trim();
-
-    if (!namaAsli) continue;
-
-    const key = namaAsli
-      .replace(/\s+/g, ' ')
-      .toUpperCase();
-
-    const existing = map.get(key);
-
-    if (existing) {
-      existing.jumlah += 1;
-
-      if (item.id !== undefined) {
-        existing.ids.push(item.id);
-      }
-    } else {
-      map.set(key, {
-        nama: namaAsli,
-        jumlah: 1,
-        ids:
-          item.id !== undefined
-            ? [item.id]
-            : [],
-      });
-    }
-  }
-
-  return Array.from(map.values())
-    .filter((item) => item.jumlah > 1)
-    .sort((a, b) => {
-      if (b.jumlah !== a.jumlah) {
-        return b.jumlah - a.jumlah;
-      }
-
-      return a.nama.localeCompare(
-        b.nama,
-        'id-ID'
-      );
-    });
-}, [bidang]);
-
-const totalPemilikMultiBidang =
-  kepemilikan.length;
-
-const totalBidangMultiKepemilikan =
-  kepemilikan.reduce(
-    (total, item) =>
-      total + item.jumlah,
-    0
-  );
-
   const total = bidang.length;
 
   const verified =
@@ -633,24 +569,6 @@ const totalBidangMultiKepemilikan =
         )
       : 0;
 
-
-const handleKepemilikanClick = (
-  item: {
-    nama: string;
-    jumlah: number;
-    ids: (string | number)[];
-  }
-) => {
-  if (!item.ids.length) return;
-
-  window.dispatchEvent(
-    new CustomEvent('analisis-bidang', {
-      detail: {
-        ids: item.ids,
-      },
-    })
-  );
-};
 
   const handleKelurahanClick = (
     item: StatistikItem
@@ -919,102 +837,6 @@ const handleKepemilikanClick = (
 
           </div>
 
-{/* =================================================
-    ANALISIS KEPEMILIKAN
-================================================= */}
-
-<section className="stat-card stat-kepemilikan">
-
-  <div className="stat-card-title-row">
-
-    <div className="stat-card-title">
-      ANALISIS KEPEMILIKAN
-    </div>
-
-    <span>
-      MULTI-BIDANG
-    </span>
-
-  </div>
-
-  <div className="stat-kepemilikan-summary">
-
-    <div>
-      <strong>
-        {totalPemilikMultiBidang.toLocaleString('id-ID')}
-      </strong>
-
-      <span>
-        pemilik
-      </span>
-    </div>
-
-    <div>
-      <strong>
-        {totalBidangMultiKepemilikan.toLocaleString('id-ID')}
-      </strong>
-
-      <span>
-        bidang
-      </span>
-    </div>
-
-  </div>
-
-  {kepemilikan.length > 0 ? (
-
-    <div className="stat-kepemilikan-list">
-
-      {kepemilikan
-        .slice(0, 5)
-        .map((item) => (
-
-<button
-  key={item.nama}
-  type="button"
-  className="stat-kepemilikan-item"
-  onClick={() =>
-    handleKepemilikanClick(item)
-  }
->
-
-            <div className="stat-kepemilikan-info">
-
-              <strong>
-                {item.nama}
-              </strong>
-
-              <span>
-                {item.jumlah.toLocaleString('id-ID')} bidang
-              </span>
-
-            </div>
-
-            <span className="stat-kepemilikan-arrow">
-              →
-            </span>
-
-          </button>
-
-        ))}
-
-    </div>
-
-  ) : (
-
-    <div className="stat-empty">
-      Belum terdapat pemilik dengan lebih dari satu bidang.
-    </div>
-
-  )}
-
-</section>
-          
-
-
-          {/* =================================================
-              FOOTER
-          ================================================= */}
 
           <div className="stat-footer">
 
