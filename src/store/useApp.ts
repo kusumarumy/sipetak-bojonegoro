@@ -21,11 +21,9 @@ export type SumberDTM =
 export type PewarnaanBidang =
   | 'status'
   | 'penggunaan';
-
-/* =========================================================
-   FILTER BIDANG
-   ========================================================= */
-
+export type ModeAnalisis =
+  | 'none'
+  | 'kepemilikan';
 export interface FilterBidang {
   status: string[];
   kecamatan: string[];
@@ -49,47 +47,39 @@ interface AppState {
   exag: number;
   pewarnaan: PewarnaanBidang;
   labelNomor: boolean;
-
+  modeAnalisis: ModeAnalisis;
   layerAktif: Record<string, boolean>;
-
-  /* FILTER */
   filterBidang: FilterBidang;
-
   bidangTerpilih: string | null;
   kartu: Bidang | null;
   memuatKartu: boolean;
   pesan: string | null;
-
   setTema: (t: Tema) => void;
   setBasemap: (b: Basemap) => void;
   setDTM: (d: SumberDTM) => void;
   setExag: (n: number) => void;
   setPewarnaan: (p: PewarnaanBidang) => void;
   setLabelNomor: (v: boolean) => void;
-
+  setModeAnalisis: (
+    mode: ModeAnalisis
+  ) => void;
+  resetModeAnalisis: () => void;
   toggleLayer: (
     id: string,
     v: boolean
   ) => void;
-
-  /* FILTER */
   setFilterBidang: (
     filter: FilterBidang
   ) => void;
-
   resetFilterBidang: () => void;
-
   pilihBidang: (
     id: string | null
   ) => Promise<void>;
-
   muatUlangKartu: () => Promise<void>;
-
   setStatusLokal: (
     id: string,
     s: StatusBidang
   ) => void;
-
   beriPesan: (
     p: string | null
   ) => void;
@@ -110,26 +100,14 @@ export const useApp = create<AppState>(
 
     basemap: 'esri',
 
-    /* =====================================================
-       TERRAIN
-       ===================================================== */
-
     dtm: 'off',
 
     exag: 1.8,
 
-    /* =====================================================
-       PEWARNAAN
-       ===================================================== */
-
     pewarnaan: 'status',
 
     labelNomor: false,
-
-    /* =====================================================
-       LAYER
-       ===================================================== */
-
+    modeAnalisis: 'none',
     layerAktif: {
       traseg: true,
       bidang: true,
@@ -218,9 +196,15 @@ export const useApp = create<AppState>(
     setLabelNomor: (labelNomor) =>
       set({ labelNomor }),
 
-    /* =====================================================
-       LAYER
-       ===================================================== */
+    setModeAnalisis: (modeAnalisis) =>
+      set({
+        modeAnalisis,
+      }),
+
+    resetModeAnalisis: () =>
+      set({
+        modeAnalisis: 'none',
+      }),
 
     toggleLayer: (id, v) =>
       set((s) => ({
