@@ -212,23 +212,13 @@ export const KONTUR = {
   }
 };
 
-
-/* =========================================================
-   DTM
-========================================================= */
-
 export const DTM = {
   trace:
-    process.env.NEXT_PUBLIC_TILES_DTM_TRACE ?? '',
+    `${process.env.NEXT_PUBLIC_R2_BASE_URL ?? ''}/dtm_rencana/{z}/{x}/{y}.png`,
 
   kawasan:
-    process.env.NEXT_PUBLIC_TILES_DTM_KAWASAN ?? ''
+    `${process.env.NEXT_PUBLIC_R2_BASE_URL ?? ''}/dtm_kawasan/{z}/{x}/{y}.png`
 };
-
-
-/* =========================================================
-   ORTHOPHOTO
-========================================================= */
 
 export const ORTHO =
   process.env.NEXT_PUBLIC_TILES_ORTHO ?? '';
