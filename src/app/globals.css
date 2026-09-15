@@ -6416,23 +6416,12 @@ html[data-theme="dark"] .stat-vchart-label {
   }
 }
 
-
-/* =========================================================
-   TABLET
-   ========================================================= */
-
 @media (max-width: 900px) {
   .statistik-flyout {
     left: 82px;
     width: 320px;
   }
 }
-
-
-/* =========================================================
-   MOBILE
-   ========================================================= */
-
 @media (max-width: 600px) {
   .statistik-flyout {
     top: 82px;
@@ -6486,11 +6475,6 @@ html[data-theme="dark"] .stat-vchart-label {
   }
 }
 
-
-/* =========================================================
-   DARK MODE
-   ========================================================= */
-
 html[data-theme="dark"] .statistik-flyout {
   background: #241a1d;
   border-color: #4b353a;
@@ -6538,6 +6522,91 @@ html[data-theme="dark"] .statistik-loading {
   color: #a99a9f;
 }
 
+html[data-theme="dark"] .statistik-flyout {
+  --stat-text: #c9b9be;
+  --stat-text-2: #b9a7ad;
+  --stat-muted: #95838a;
+}
+
+html[data-theme="dark"] .stat-kpi-main span,
+html[data-theme="dark"] .stat-kpi-item span {
+  color: #95838a;
+}
+
+html[data-theme="dark"] .stat-kpi-item strong {
+  color: #c9b9be;
+}
+
+html[data-theme="dark"] .stat-card-title {
+  color: #c9b9be;
+}
+
+html[data-theme="dark"] .stat-card-title-row > span {
+  color: #a9969d;
+  background: #35272b;
+  border-color: #4b353a;
+}
+
+html[data-theme="dark"] .stat-progress-name {
+  color: #b9a7ad;
+}
+
+html[data-theme="dark"] .stat-progress-row strong {
+  color: #c9b9be;
+}
+
+html[data-theme="dark"] .stat-donut-center strong {
+  color: #c9b9be;
+}
+
+html[data-theme="dark"] .stat-donut-center span {
+  color: #95838a;
+}
+
+html[data-theme="dark"] .stat-vchart-value {
+  color: #c9b9be;
+}
+
+html[data-theme="dark"] .stat-vchart-label {
+  color: #a9969d;
+}
+
+html[data-theme="dark"] .stat-composition {
+  color: #c9b9be;
+}
+
+html[data-theme="dark"] .stat-small-title {
+  color: #c9b9be;
+}
+
+html[data-theme="dark"] .stat-legend-name {
+  color: #a9969d;
+}
+
+html[data-theme="dark"] .stat-legend-row strong {
+  color: #c9b9be;
+}
+
+html[data-theme="dark"] .stat-footer span {
+  color: #95838a;
+}
+
+html[data-theme="dark"] .stat-footer strong {
+  color: #c9b9be;
+}
+
+html[data-theme="dark"] .stat-footer > div + div {
+  border-left-color: #4b353a;
+}
+
+html[data-theme="dark"] .statistik-loading {
+  color: #a9969d;
+}
+
+html[data-theme="dark"] .statistik-loading span {
+  border-color: #4b353a;
+  border-top-color: #d58a9a;
+}
 .filter-flyout {
   --filter-red: #9f1239;
   --filter-red-2: #be123c;
