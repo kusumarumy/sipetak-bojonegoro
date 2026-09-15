@@ -1210,12 +1210,14 @@ function sorot(
       };
 
       for (const f of fc.features) {
-        if (f.geometry?.coordinates) {
-          tambahKoordinat(
-            f.geometry.coordinates
-          );
-        }
-      }
+  const geometry = f.geometry as any;
+
+  if (geometry?.coordinates) {
+    tambahKoordinat(
+      geometry.coordinates
+    );
+  }
+}
 
       if (!b.isEmpty()) {
         map.fitBounds(b, {
