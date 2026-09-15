@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import maplibregl, { Map as MLMap, Popup } from 'maplibre-gl';
 import { Protocol } from 'pmtiles';
 import { useApp, type Basemap } from '@/store/useApp';
@@ -462,7 +462,24 @@ layersAwal.push({
     });
 
 mapRef.current = map;
+const perbaruiInfoPeta = () => {
+  const center = map.getCenter();
 
+  setInfoPeta({
+    lon: center.lng,
+    lat: center.lat,
+    zoom: map.getZoom(),
+    pitch: map.getPitch(),
+    bearing: map.getBearing()
+  });
+};
+
+map.on('move', perbaruiInfoPeta);
+map.on('zoom', perbaruiInfoPeta);
+map.on('rotate', perbaruiInfoPeta);
+map.on('pitch', perbaruiInfoPeta);
+
+perbaruiInfoPeta();
 const resizeObserver = new ResizeObserver(() => {
   map.resize();
 });
@@ -1647,12 +1664,20 @@ useEffect(() => {
 
   }, [tema]);
 
-  return (
-    <div
-      ref={ref}
-      className="canvas"
-    />
-  );
+ return (
+  <div
+    ref={ref}
+    className="canvas"
+  >
+    <div className="map-info">
+  <span>Lon {infoPeta.lon.toFixed(5)}</span>
+  <span>Lat {infoPeta.lat.toFixed(5)}</span>
+  <span>Zoom {infoPeta.zoom.toFixed(1)}</span>
+  <span>Kemiringan {infoPeta.pitch.toFixed(0)}°</span>
+  <span>Arah {infoPeta.bearing.toFixed(0)}°</span>
+</div>
+  </div>
+);
 }
 
 const ekspresiFilterBidang = (
