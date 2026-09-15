@@ -203,13 +203,13 @@ useEffect(() => {
         }
       };
 
-      if (
-        feature.geometry?.coordinates
-      ) {
-        tambahKoordinat(
-          feature.geometry.coordinates
-        );
-      }
+      const geometry = feature.geometry as any;
+
+if (geometry?.coordinates) {
+  tambahKoordinat(
+    geometry.coordinates
+  );
+}
 
       if (bounds.isEmpty()) {
         return;
