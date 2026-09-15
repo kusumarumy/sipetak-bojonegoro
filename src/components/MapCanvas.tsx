@@ -35,6 +35,13 @@ export default function MapCanvas() {
   const ref = useRef<HTMLDivElement>(null);
   const mapRef = useRef<MLMap | null>(null);
   const popupRef = useRef<Popup | null>(null);
+  const [infoPeta, setInfoPeta] = useState({
+    lon: 0,
+    lat: 0,
+    zoom: 0,
+    pitch: 0,
+    bearing: 0
+  });
 const terpilihRef =
   useRef<string | number | null>(null);
 const analisisRef =
