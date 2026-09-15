@@ -40,7 +40,8 @@ export default function MapCanvas() {
   const popupRef = useRef<Popup | null>(null);
 const terpilihRef =
   useRef<string | number | null>(null);
-
+const analisisRef =
+  useRef<(string | number)[]>([]);
 const {
   basemap,
   setBasemap,
@@ -513,39 +514,61 @@ map.addLayer({
   source: 'bidang',
 
   paint: {
-    'fill-color':
-      ekspresiStatus(),
+'fill-color': [
+  'case',
+
+  // hasil analisis
+  [
+    'boolean',
+    ['feature-state', 'analisis'],
+    false
+  ],
+  '#00E5FF',
+
+  // warna normal
+  pewarnaan === 'status'
+    ? ekspresiStatus()
+    : ekspresiPenggunaan()
+],
 
     'fill-opacity': [
-      'case',
+  'case',
 
-      // bidang hasil filter
-      [
-        'boolean',
-        ['feature-state', 'filter'],
-        false
-      ],
-      0.92,
+  // hasil analisis
+  [
+    'boolean',
+    ['feature-state', 'analisis'],
+    false
+  ],
+  0.88,
 
-      // bidang yang sedang dipilih
-      [
-        'boolean',
-        ['feature-state', 'sel'],
-        false
-      ],
-      0.95,
+  // bidang hasil filter
+  [
+    'boolean',
+    ['feature-state', 'filter'],
+    false
+  ],
+  0.92,
 
-      // hover
-      [
-        'boolean',
-        ['feature-state', 'hov'],
-        false
-      ],
-      0.74,
+  // bidang yang sedang dipilih
+  [
+    'boolean',
+    ['feature-state', 'sel'],
+    false
+  ],
+  0.95,
 
-      // normal
-      0.35
-    ]
+  // hover
+  [
+    'boolean',
+    ['feature-state', 'hov'],
+    false
+  ],
+  0.74,
+
+  // normal
+  0.35
+]
   }
 });
 
@@ -565,45 +588,61 @@ map.addLayer({
   source: 'bidang',
 
   paint: {
-    'line-color': [
-      'case',
+'line-color': [
+  'case',
 
-      [
-        'boolean',
-        ['feature-state', 'filter'],
-        false
-      ],
-      '#FFFFFF',
+  // hasil analisis
+  [
+    'boolean',
+    ['feature-state', 'analisis'],
+    false
+  ],
+  '#00E5FF',
 
-      [
-        'boolean',
-        ['feature-state', 'sel'],
-        false
-      ],
-      '#FFFFFF',
+  [
+    'boolean',
+    ['feature-state', 'filter'],
+    false
+  ],
+  '#FFFFFF',
 
-      'rgba(14,23,32,.45)'
-    ],
+  [
+    'boolean',
+    ['feature-state', 'sel'],
+    false
+  ],
+  '#FFFFFF',
+
+  'rgba(14,23,32,.45)'
+],
 
     'line-width': [
-      'case',
+  'case',
 
-      [
-        'boolean',
-        ['feature-state', 'filter'],
-        false
-      ],
-      2.2,
+  // hasil analisis
+  [
+    'boolean',
+    ['feature-state', 'analisis'],
+    false
+  ],
+  2.5,
 
-      [
-        'boolean',
-        ['feature-state', 'sel'],
-        false
-      ],
-      3,
+  [
+    'boolean',
+    ['feature-state', 'filter'],
+    false
+  ],
+  2.2,
 
-      0.6
-    ],
+  [
+    'boolean',
+    ['feature-state', 'sel'],
+    false
+  ],
+  3,
+
+  0.6
+],
 
     'line-opacity': [
       'case',
