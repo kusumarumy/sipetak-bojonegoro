@@ -8,7 +8,6 @@ import {
   LAYERS,
   KONTUR,
   DTM,
-  ORTHO,
   WARNA_PENGGUNAAN
 } from './layers';
 import {
@@ -24,8 +23,6 @@ const siap = (url?: string) =>
   !!url &&
   !url.includes('contoh.id') &&
   (url.startsWith('http') || url.startsWith('/'));
-
-const ADA_ORTHO = siap(ORTHO);
 
 const ADA_KONTUR = {
   lidar: siap(KONTUR.lidar.url),
@@ -311,13 +308,13 @@ if (geometry?.coordinates) {
   }
 };
 
-    sources.ortho = {
+sources.ortho = {
   type: 'raster',
   tiles: [
-    `${process.env.NEXT_PUBLIC_R2_BASE_URL}/orthophoto/{z}/{x}/{y}.png`,
+    'https://dppt-bojonegoro.ruli-andaru.workers.dev/orthophoto/{z}/{x}/{y}.png',
   ],
   tileSize: 256,
-  minzoom: 18,
+  minzoom: 17,
   maxzoom: 21,
   attribution: 'Orthophoto DPPT Bojonegoro 2026',
 };
@@ -432,19 +429,17 @@ if (DTM.kawasan) {
   }
 ];
 
-if (ADA_ORTHO) {
-  layersAwal.push({
-    id: 'bm-ortho',
-    type: 'raster',
-    source: 'ortho',
-    layout: {
-      visibility:
-        basemap === 'ortho'
-          ? 'visible'
-          : 'none'
-    }
-  });
-}
+layersAwal.push({
+  id: 'bm-ortho',
+  type: 'raster',
+  source: 'ortho',
+  layout: {
+    visibility:
+      basemap === 'ortho'
+        ? 'visible'
+        : 'none'
+  }
+});
     const map = new maplibregl.Map({
       container: ref.current,
 
@@ -1294,27 +1289,6 @@ for (const item of basemapLayers) {
     visible ? 'visible' : 'none'
   );
 }
-  if (
-    basemap === 'ortho' &&
-    !ADA_ORTHO
-  ) {
-    /**
-     * Fallback ke OSM.
-     */
-    if (
-      map.getLayer('bm-osm')
-    ) {
-      map.setLayoutProperty(
-        'bm-osm',
-        'visibility',
-        'visible'
-      );
-    }
-
-    beriPesan(
-      'Orthophoto belum tersedia — isi NEXT_PUBLIC_TILES_ORTHO di .env setelah tiling selesai.'
-    );
-  }
 
 }, [basemap, beriPesan]);
   useEffect(() => {
