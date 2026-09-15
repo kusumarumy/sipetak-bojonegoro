@@ -5776,8 +5776,8 @@ html[data-theme="dark"] .stat-chart-popup-percent span {
 
 html[data-theme="dark"] .stat-kpi,
 html[data-theme="dark"] .stat-card {
-  background: #ffffff;
-  border-color: #e3e8ee;
+  background: #2b2023;
+  border-color: #4b353a;
   color: #263238;
 }
 
