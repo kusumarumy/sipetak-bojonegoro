@@ -759,7 +759,6 @@ main.body {
 
   color: #173b68;
 }
-
 /* =========================================================
    LAYER PANEL
    ========================================================= */
@@ -785,36 +784,64 @@ main.body {
    ========================================================= */
 
 .layer-panel-heading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
   min-width: 0;
 }
 
-.flyout-kicker {
-  margin-bottom: 3px;
+.layer-panel-icon {
+  width: 32px;
+  height: 32px;
 
-  font-size: 10px;
-  font-weight: 700;
+  flex: 0 0 32px;
 
-  letter-spacing: .12em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: var(--layer-accent);
+
+  background: var(--layer-accent-soft);
+  border: 1px solid rgba(124, 0, 0, .13);
+  border-radius: 9px;
+}
+
+.layer-panel-icon svg {
+  width: 18px;
+  height: 18px;
+
+  fill: none;
+  stroke: currentColor;
+
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.layer-panel-text {
+  min-width: 0;
+}
+
+.layer-panel-title {
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.2;
+
+  letter-spacing: .08em;
   text-transform: uppercase;
 
-  color: #7c0000;
+  color: var(--layer-accent);
 }
 
-.flyout-title {
-  font-size: 17px;
-  font-weight: 600;
-  line-height: 1.25;
+.layer-panel-subtitle {
+  margin-top: 3px;
 
-  color: #263238;
-}
+  font-size: 10px;
+  line-height: 1.35;
 
-.flyout-subtitle {
-  margin-top: 4px;
-
-  font-size: 11px;
-  line-height: 1.4;
-
-  color: #8793a0;
+  color: var(--layer-text-muted);
 }
 
 
@@ -827,17 +854,17 @@ main.body {
   align-items: center;
   justify-content: space-between;
 
-  padding: 4px 5px 9px;
+  padding: 4px 5px 8px;
 }
 
 .layer-manager-title {
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 700;
 
   letter-spacing: .1em;
   text-transform: uppercase;
 
-  color: #8793a0;
+  color: var(--layer-text-muted);
 }
 
 .layer-manager-subtitle {
@@ -849,16 +876,16 @@ main.body {
   align-items: center;
   justify-content: center;
 
-  min-width: 32px;
-  height: 20px;
+  min-width: 28px;
+  height: 19px;
 
-  padding: 0 7px;
+  padding: 0 6px;
 
   border-radius: 999px;
 
-  background: rgba(124, 0, 0, .07);
+  background: var(--layer-accent-soft);
 
-  color: #7c0000;
+  color: var(--layer-accent);
 
   font-size: 9px;
   font-weight: 700;
@@ -872,14 +899,25 @@ main.body {
 .layer-groups {
   display: flex;
   flex-direction: column;
+  gap: 5px;
 }
 
+
+/* =========================================================
+   GROUP
+   ========================================================= */
+
 .layer-group {
-  border-top: 1px solid var(--layer-border);
+  overflow: hidden;
+
+  background: #fff;
+
+  border: 1px solid var(--layer-border);
+  border-radius: 10px;
 }
 
 .layer-group:first-child {
-  border-top: 0;
+  border-top: 1px solid var(--layer-border);
 }
 
 
@@ -889,23 +927,23 @@ main.body {
 
 .layer-group-head {
   width: 100%;
-
-  min-height: 54px;
+  min-height: 40px;
 
   display: flex;
   align-items: center;
   justify-content: space-between;
 
-  padding: 8px 4px;
+  padding: 6px 9px;
 
   border: 0;
-  border-bottom: 1px solid #dfe5ec;
 
   background: transparent;
 
   cursor: pointer;
 
-  color: #334155;
+  color: var(--layer-text);
+
+  text-align: left;
 
   transition:
     background .15s ease,
@@ -913,7 +951,7 @@ main.body {
 }
 
 .layer-group-head:hover {
-  background: #f8fafc;
+  background: var(--layer-hover);
 }
 
 .layer-group-left {
@@ -924,19 +962,519 @@ main.body {
   gap: 7px;
 }
 
-.layer-group-title {
-  font-size: 11px;
-  font-weight: 750;
-  letter-spacing: .12em;
-  text-transform: uppercase;
 
-  color: #64748b;
+/* =========================================================
+   CHEVRON
+   ========================================================= */
 
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+.group-chevron {
+  width: 14px;
+  height: 14px;
+
+  flex: 0 0 14px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #a0aab5;
+
+  transition:
+    transform .18s ease,
+    color .18s ease;
 }
 
+.group-chevron.expanded {
+  transform: rotate(90deg);
+
+  color: var(--layer-accent);
+}
+
+.group-chevron svg {
+  width: 12px;
+  height: 12px;
+}
+
+
+/* =========================================================
+   GROUP ICON
+   ========================================================= */
+
+.group-icon {
+  width: 24px;
+  height: 24px;
+
+  flex: 0 0 24px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 7px;
+
+  background: var(--layer-accent-soft);
+
+  color: var(--layer-accent);
+
+  font-size: 13px;
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   GROUP TITLE
+   ========================================================= */
+
+.layer-group-title {
+  min-width: 0;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  font-size: 10px;
+  font-weight: 700;
+
+  letter-spacing: .05em;
+  text-transform: uppercase;
+
+  color: #596675;
+}
+
+
+/* =========================================================
+   GROUP COUNT
+   ========================================================= */
+
+.group-count {
+  min-width: 22px;
+  height: 19px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0 5px;
+
+  border-radius: 999px;
+
+  background: #f3f5f7;
+
+  color: #7b8794;
+
+  font-size: 9px;
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   LAYER LIST
+   ========================================================= */
+
+.layer-list {
+  padding: 3px 7px 7px;
+
+  border-top: 1px solid #edf0f3;
+
+  background: #fafbfc;
+}
+
+
+/* =========================================================
+   LAYER ITEM
+   ========================================================= */
+
+.layer-item {
+  border-radius: 7px;
+}
+
+.layer-item + .layer-item {
+  margin-top: 2px;
+}
+
+
+/* =========================================================
+   LAYER ROW
+   ========================================================= */
+
+.layer-row {
+  position: relative;
+
+  min-height: 34px;
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 0 7px;
+
+  border-radius: 7px;
+
+  cursor: pointer;
+
+  color: #5d6976;
+
+  transition:
+    background .15s ease,
+    color .15s ease;
+}
+
+.layer-row:hover {
+  background: #f0f3f5;
+}
+
+.layer-item.active > .layer-row {
+  background: var(--layer-accent-soft);
+
+  color: #343d46;
+}
+
+
+/* =========================================================
+   CUSTOM CHECKBOX
+   ========================================================= */
+
+.layer-row input {
+  position: absolute;
+
+  opacity: 0;
+  pointer-events: none;
+}
+
+.gis-check {
+  width: 15px;
+  height: 15px;
+
+  flex: 0 0 15px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid var(--layer-check-border);
+  border-radius: 4px;
+
+  background: #fff;
+
+  color: transparent;
+
+  transition:
+    background .15s ease,
+    border-color .15s ease,
+    color .15s ease;
+}
+
+.gis-check span {
+  font-size: 10px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.layer-row input:checked + .gis-check {
+  background: var(--layer-accent);
+  border-color: var(--layer-accent);
+
+  color: #fff;
+}
+
+
+/* =========================================================
+   LAYER SWATCH
+   ========================================================= */
+
+.layer-swatch {
+  width: 13px;
+  height: 13px;
+
+  flex: 0 0 13px;
+
+  border-radius: 4px;
+
+  border: 1px solid rgba(0, 0, 0, .08);
+}
+
+.layer-swatch.line {
+  height: 0;
+
+  border: 0;
+  border-top-width: 3px;
+  border-top-style: solid;
+
+  border-radius: 0;
+
+  background: transparent !important;
+}
+
+
+/* =========================================================
+   LAYER NAME
+   ========================================================= */
+
+.layer-name {
+  min-width: 0;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  font-size: 10px;
+  font-weight: 600;
+
+  color: inherit;
+}
+
+
+/* =========================================================
+   TAMPILAN BIDANG
+   ========================================================= */
+
+.layer-properties {
+  margin: 2px 7px 7px;
+
+  padding: 9px;
+
+  background: #fff;
+
+  border: 1px solid #e5e8eb;
+  border-radius: 9px;
+}
+
+.property-title {
+  margin-bottom: 8px;
+
+  font-size: 8px;
+  font-weight: 800;
+
+  letter-spacing: .08em;
+
+  color: #98a2ad;
+}
+
+.property-block + .property-block {
+  margin-top: 9px;
+}
+
+.property-label {
+  margin-bottom: 5px;
+
+  font-size: 9px;
+  font-weight: 700;
+
+  color: #5f6b76;
+}
+
+
+/* =========================================================
+   PEWARNAAN BIDANG
+   ========================================================= */
+
+.style-segment {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+
+  gap: 2px;
+
+  padding: 2px;
+
+  background: #f2f4f6;
+
+  border: 1px solid #e3e7eb;
+  border-radius: 7px;
+}
+
+.style-segment button {
+  min-height: 27px;
+
+  padding: 0 5px;
+
+  border: 0;
+  border-radius: 5px;
+
+  background: transparent;
+
+  color: #7b8794;
+
+  font-size: 8px;
+  font-weight: 800;
+
+  letter-spacing: .03em;
+
+  cursor: pointer;
+
+  transition:
+    background .15s ease,
+    color .15s ease;
+}
+
+.style-segment button:hover {
+  color: #56616c;
+}
+
+.style-segment button.active {
+  background: #fff;
+
+  color: var(--layer-accent);
+
+  box-shadow: 0 1px 3px rgba(0, 0, 0, .07);
+}
+
+
+/* =========================================================
+   LABEL
+   ========================================================= */
+
+.option-row {
+  min-height: 29px;
+
+  display: flex;
+  align-items: center;
+  gap: 7px;
+
+  cursor: pointer;
+
+  font-size: 10px;
+
+  color: #5f6b76;
+}
+
+.option-row input {
+  position: absolute;
+
+  opacity: 0;
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.panel-footer {
+  height: 30px;
+
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  padding: 0 3px;
+
+  color: #87919c;
+
+  font-size: 9px;
+  font-weight: 600;
+}
+
+.footer-dot {
+  width: 6px;
+  height: 6px;
+
+  flex: 0 0 6px;
+
+  border-radius: 50%;
+
+  background: var(--layer-accent);
+
+  box-shadow:
+    0 0 0 3px rgba(124, 0, 0, .08);
+}
+/* =========================================================
+   LAYER — DARK MODE
+   ========================================================= */
+
+html[data-theme="dark"] .layer-panel-icon {
+  color: #f87171;
+  background: rgba(248, 113, 113, .10);
+  border-color: rgba(248, 113, 113, .18);
+}
+
+html[data-theme="dark"] .layer-panel-title {
+  color: #fca5a5;
+}
+
+html[data-theme="dark"] .layer-panel-subtitle {
+  color: #8f9aa5;
+}
+
+html[data-theme="dark"] .layer-group {
+  background: #1d2125;
+  border-color: #30363b;
+}
+
+html[data-theme="dark"] .layer-group-head:hover {
+  background: #252a2f;
+}
+
+html[data-theme="dark"] .layer-group-title {
+  color: #c5ccd2;
+}
+
+html[data-theme="dark"] .group-icon {
+  background: rgba(248, 113, 113, .10);
+  color: #f87171;
+}
+
+html[data-theme="dark"] .group-count {
+  background: #292f34;
+  color: #8f9aa5;
+}
+
+html[data-theme="dark"] .layer-list {
+  background: #191d21;
+  border-top-color: #30363b;
+}
+
+html[data-theme="dark"] .layer-row {
+  color: #aeb7bf;
+}
+
+html[data-theme="dark"] .layer-row:hover {
+  background: #252a2f;
+}
+
+html[data-theme="dark"] .layer-item.active > .layer-row {
+  background: rgba(248, 113, 113, .08);
+  color: #d9dee2;
+}
+
+html[data-theme="dark"] .gis-check {
+  background: #1d2125;
+  border-color: #4a535b;
+}
+
+html[data-theme="dark"] .layer-properties {
+  background: #1d2125;
+  border-color: #30363b;
+}
+
+html[data-theme="dark"] .property-label {
+  color: #c5ccd2;
+}
+
+html[data-theme="dark"] .style-segment {
+  background: #292f34;
+  border-color: #383f45;
+}
+
+html[data-theme="dark"] .style-segment button {
+  color: #929ca5;
+}
+
+html[data-theme="dark"] .style-segment button.active {
+  background: #1d2125;
+  color: #fca5a5;
+}
+
+html[data-theme="dark"] .option-row {
+  color: #aeb7bf;
+}
+
+html[data-theme="dark"] .panel-footer {
+  color: #8f9aa5;
+}
+
+html[data-theme="dark"] .footer-dot {
+  background: #f87171;
+}
 .group-count {
   min-width: 27px;
   height: 24px;
