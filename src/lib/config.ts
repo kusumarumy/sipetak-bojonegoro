@@ -99,69 +99,38 @@ export const BASEMAPS: Basemap[] = [
 ];
 
 export const TERRAIN_OPTIONS = {
-  aws: {
-    id: "aws",
-
-    label: "AWS Terrarium 30 m",
+  trace: {
+    id: "trace",
+    label: "DTM Rencana Trase",
 
     tiles: [
-      "https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png",
+      `${R2}/dtm_rencana/{z}/{x}/{y}.png`,
     ],
 
     encoding: "terrarium" as const,
 
-    minzoom: 0,
-    maxzoom: 14,
-
-    bounds: [
-      -180,
-      -85.0511,
-      180,
-      85.0511,
-    ] as [
-      number,
-      number,
-      number,
-      number
-    ],
+    minzoom: 13,
+    maxzoom: 21,
 
     adjustable: false,
   },
 
-  r2: {
-    id: "r2",
-
-    label: "DTM 3 m",
+  kawasan: {
+    id: "kawasan",
+    label: "DTM Kawasan",
 
     tiles: [
-      `${R2}/dtm/{z}/{x}/{y}.png`,
+      `${R2}/dtm_kawasan/{z}/{x}/{y}.png`,
     ],
 
     encoding: "terrarium" as const,
 
-    minzoom: 8,
-    maxzoom: 16,
-
-    /*
-     * Sesuaikan dengan extent DTM Bojonegoro
-     * kalau nanti ingin dibatasi.
-     */
-    bounds: [
-      111.5,
-      -7.5,
-      112.5,
-      -6.5,
-    ] as [
-      number,
-      number,
-      number,
-      number
-    ],
+    minzoom: 13,
+    maxzoom: 21,
 
     adjustable: false,
   },
 } as const;
-
 
 export type TerrainKey =
   keyof typeof TERRAIN_OPTIONS;
