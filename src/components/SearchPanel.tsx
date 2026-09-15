@@ -101,7 +101,17 @@ export default function SearchPanel({
 const bukaBidang = (
   item: HasilBidang
 ) => {
-  pilihBidang(String(item.id));
+  const id = String(item.id);
+
+  // Buka Kartu Bidang
+  pilihBidang(id);
+
+  // Minta peta memfokuskan bidang
+  window.dispatchEvent(
+    new CustomEvent('fokus-bidang', {
+      detail: { id },
+    })
+  );
 };
 
   return (
