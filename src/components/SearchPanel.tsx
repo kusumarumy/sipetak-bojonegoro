@@ -98,11 +98,11 @@ export default function SearchPanel({
       .slice(0, 20);
   })();
 
-  const bukaBidang = (
-    item: HasilBidang
-  ) => {
-    pilihBidang(item.id);
-  };
+const bukaBidang = (
+  item: HasilBidang
+) => {
+  pilihBidang(String(item.id));
+};
 
   return (
     <aside className="search-flyout">
