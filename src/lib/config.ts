@@ -40,20 +40,16 @@ export const BASEMAPS: Basemap[] = [
     attribution: "Esri, Maxar",
     maxzoom: 19,
   },
-  {
-    id: "ortho",
-
-    labelKey: "bm_ortho",
-
-    tiles: [
-      `${R2}/orthophoto/tiles/{z}/{x}/{y}.webp`,
-    ],
-
-    attribution: "Orthophoto DPPT Bojonegoro 2026",
-
-    minzoom: 15,
-    maxzoom: 21,
-  },
+{
+  id: "ortho",
+  labelKey: "bm_ortho",
+  tiles: [
+    `${R2}/orthophoto/{z}/{x}/{y}.png`,
+  ],
+  attribution: "Orthophoto DPPT Bojonegoro 2026",
+  minzoom: 13,
+  maxzoom: 20,
+},
 
   {
     id: "google-hybrid",
