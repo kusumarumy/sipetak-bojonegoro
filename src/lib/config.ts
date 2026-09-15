@@ -101,10 +101,10 @@ export const BASEMAPS: Basemap[] = [
 export const TERRAIN_OPTIONS = {
   trace: {
     id: "trace",
-    label: "DTM Rencana Trase",
+    label: "DTM Trase",
 
     tiles: [
-      `${R2}/dtm_rencana/{z}/{x}/{y}.png`,
+      `${R2}/dtm_trase/{z}/{x}/{y}.png`,
     ],
 
     encoding: "terrarium" as const,
