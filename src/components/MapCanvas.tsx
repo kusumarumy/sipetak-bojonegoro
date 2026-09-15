@@ -42,6 +42,65 @@ const terpilihRef =
   useRef<string | number | null>(null);
 const analisisRef =
   useRef<(string | number)[]>([]);
+  useEffect(() => {
+  const handleAnalisisBidang = (
+    event: Event
+  ) => {
+    const customEvent =
+      event as CustomEvent<{
+        ids?: (string | number)[];
+      }>;
+
+    const ids =
+      customEvent.detail?.ids ?? [];
+
+    // Hapus highlight analisis sebelumnya
+    for (const id of analisisRef.current) {
+      mapRef.current?.setFeatureState(
+        {
+          source: 'bidang',
+          id,
+        },
+        {
+          analisis: false,
+        }
+      );
+    }
+
+    analisisRef.current = [];
+
+    if (!mapRef.current || ids.length === 0) {
+      return;
+    }
+
+    // Highlight bidang hasil analisis
+    for (const id of ids) {
+      mapRef.current.setFeatureState(
+        {
+          source: 'bidang',
+          id,
+        },
+        {
+          analisis: true,
+        }
+      );
+    }
+
+    analisisRef.current = ids;
+  };
+
+  window.addEventListener(
+    'analisis-bidang',
+    handleAnalisisBidang
+  );
+
+  return () => {
+    window.removeEventListener(
+      'analisis-bidang',
+      handleAnalisisBidang
+    );
+  };
+}, []);
 const {
   basemap,
   setBasemap,
@@ -724,6 +783,20 @@ return () => {
   resizeObserver.disconnect();
 
   popupRef.current?.remove();
+
+  for (const id of analisisRef.current) {
+    map.setFeatureState(
+      {
+        source: 'bidang',
+        id,
+      },
+      {
+        analisis: false,
+      }
+    );
+  }
+
+  analisisRef.current = [];
 
   map.remove();
 
@@ -1594,28 +1667,38 @@ function warnaiTema(
     )
   ) {
 
-    map.setPaintProperty(
-      'bidang-ln',
-      'line-color',
+   map.setPaintProperty(
+  'bidang-ln',
+  'line-color',
 
-      [
-        'case',
+  [
+    'case',
 
-        [
-          'boolean',
-          ['feature-state', 'sel'],
-          false
-        ],
+    // hasil analisis
+    [
+      'boolean',
+      ['feature-state', 'analisis'],
+      false
+    ],
+    '#00E5FF',
 
-        gelap
-          ? '#FFFFFF'
-          : '#1E2733',
+    // bidang terpilih
+    [
+      'boolean',
+      ['feature-state', 'sel'],
+      false
+    ],
 
-        gelap
-          ? 'rgba(14,23,32,.85)'
-          : 'rgba(30,39,51,.5)'
-      ]
-    );
+    gelap
+      ? '#FFFFFF'
+      : '#1E2733',
+
+    // normal
+    gelap
+      ? 'rgba(14,23,32,.85)'
+      : 'rgba(30,39,51,.5)'
+  ]
+);
   }
 
   if (
