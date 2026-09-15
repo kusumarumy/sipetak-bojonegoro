@@ -7096,51 +7096,42 @@ html[data-theme="dark"] .filter-apply:hover {
 
   color: var(--dim);
 }
-/* =========================================================
-   MAP INFO — BOTTOM LEFT
-   ========================================================= */
-
 .map-info {
   position: absolute;
-  left: 86px;
+  left: 88px;
   bottom: 10px;
   z-index: 100;
 
   display: flex;
   align-items: center;
-  gap: 0;
 
   width: max-content;
   max-width: calc(100vw - 110px);
 
-  padding: 0 16px;
-
-  background: #ffffff;
+  background: #fff;
   border: 1px solid rgba(0, 0, 0, 0.12);
-  border-radius: 9px;
+  border-radius: 8px;
 
-  box-shadow:
-    0 2px 8px rgba(0, 0, 0, 0.18);
+  box-shadow: 0 2px 7px rgba(0, 0, 0, 0.16);
 
   color: #263238;
 
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
-  line-height: 36px;
+  line-height: 30px;
 
   white-space: nowrap;
+  overflow: hidden;
   pointer-events: none;
 }
 
 .map-info span {
   display: inline-flex;
   align-items: center;
+  padding: 0 12px;
 }
 
 .map-info span + span {
-  margin-left: 14px;
-  padding-left: 14px;
-
   border-left: 1px solid #d8dde1;
 }
 
