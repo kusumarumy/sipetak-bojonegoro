@@ -3,6 +3,9 @@
 import { useEffect, useMemo, useState } from 'react';
 
 type Bidang = {
+  id?: string | number;
+  kode_bid?: string;
+  nama_milik?: string;
   status?: string;
   kelurahan?: string;
   kecamatan?: string;
@@ -18,11 +21,6 @@ type StatistikItem = {
   label: string;
   jumlah: number;
 };
-
-
-/* =========================================================
-   UTILITAS
-   ========================================================= */
 
 function hitung(
   data: Bidang[],
@@ -48,11 +46,6 @@ function hitung(
     }))
     .sort((a, b) => b.jumlah - a.jumlah);
 }
-
-
-/* =========================================================
-   DONUT
-   ========================================================= */
 
 function Donut({
   data,
@@ -154,11 +147,6 @@ function Donut({
   );
 }
 
-
-/* =========================================================
-   STATUS DASHBOARD
-   ========================================================= */
-
 function StatusDashboard({
   data,
   total,
@@ -242,11 +230,6 @@ function StatusDashboard({
     </div>
   );
 }
-
-
-/* =========================================================
-   VERTICAL BAR CHART
-   ========================================================= */
 
 function Ranking({
   data,
@@ -338,11 +321,6 @@ function Ranking({
   );
 }
 
-
-/* =========================================================
-   COMPOSITION
-   ========================================================= */
-
 function Composition({
   title,
   data,
@@ -429,11 +407,6 @@ function Composition({
   );
 }
 
-
-/* =========================================================
-   MAIN
-   ========================================================= */
-
 export default function Statistika({
   onClose,
 }: Props) {
@@ -443,18 +416,11 @@ export default function Statistika({
 
   const [memuat, setMemuat] =
     useState(true);
-
-  /* ITEM YANG DIKLIK DI GRAFIK */
   const [selectedStat, setSelectedStat] =
     useState<{
       title: string;
       item: StatistikItem;
     } | null>(null);
-
-
-  /* =======================================================
-     FETCH
-     ======================================================= */
 
   useEffect(() => {
 
@@ -505,11 +471,6 @@ export default function Statistika({
 
   }, []);
 
-
-  /* =======================================================
-     STATUS
-     ======================================================= */
-
   const status = useMemo(() => {
 
     const values = [
@@ -540,12 +501,7 @@ export default function Statistika({
     }));
 
   }, [bidang]);
-
-
-  /* =======================================================
-     DATA STATISTIK
-     ======================================================= */
-
+  
   const kelurahan = useMemo(
     () =>
       hitung(
@@ -582,10 +538,69 @@ export default function Statistika({
     [bidang]
   );
 
+const kepemilikan = useMemo(() => {
+  const map = new Map<
+    string,
+    {
+      nama: string;
+      jumlah: number;
+      ids: (string | number)[];
+    }
+  >();
 
-  /* =======================================================
-     KPI
-     ======================================================= */
+  for (const item of bidang) {
+    const namaAsli =
+      String(item.nama_milik ?? '').trim();
+
+    if (!namaAsli) continue;
+
+    const key = namaAsli
+      .replace(/\s+/g, ' ')
+      .toUpperCase();
+
+    const existing = map.get(key);
+
+    if (existing) {
+      existing.jumlah += 1;
+
+      if (item.id !== undefined) {
+        existing.ids.push(item.id);
+      }
+    } else {
+      map.set(key, {
+        nama: namaAsli,
+        jumlah: 1,
+        ids:
+          item.id !== undefined
+            ? [item.id]
+            : [],
+      });
+    }
+  }
+
+  return Array.from(map.values())
+    .filter((item) => item.jumlah > 1)
+    .sort((a, b) => {
+      if (b.jumlah !== a.jumlah) {
+        return b.jumlah - a.jumlah;
+      }
+
+      return a.nama.localeCompare(
+        b.nama,
+        'id-ID'
+      );
+    });
+}, [bidang]);
+
+const totalPemilikMultiBidang =
+  kepemilikan.length;
+
+const totalBidangMultiKepemilikan =
+  kepemilikan.reduce(
+    (total, item) =>
+      total + item.jumlah,
+    0
+  );
 
   const total = bidang.length;
 
