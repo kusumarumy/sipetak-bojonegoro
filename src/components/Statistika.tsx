@@ -634,9 +634,23 @@ const totalBidangMultiKepemilikan =
       : 0;
 
 
-  /* =======================================================
-     HANDLER GRAFIK
-     ======================================================= */
+const handleKepemilikanClick = (
+  item: {
+    nama: string;
+    jumlah: number;
+    ids: (string | number)[];
+  }
+) => {
+  if (!item.ids.length) return;
+
+  window.dispatchEvent(
+    new CustomEvent('analisis-bidang', {
+      detail: {
+        ids: item.ids,
+      },
+    })
+  );
+};
 
   const handleKelurahanClick = (
     item: StatistikItem
@@ -955,11 +969,14 @@ const totalBidangMultiKepemilikan =
         .slice(0, 5)
         .map((item) => (
 
-          <button
-            key={item.nama}
-            type="button"
-            className="stat-kepemilikan-item"
-          >
+<button
+  key={item.nama}
+  type="button"
+  className="stat-kepemilikan-item"
+  onClick={() =>
+    handleKepemilikanClick(item)
+  }
+>
 
             <div className="stat-kepemilikan-info">
 
