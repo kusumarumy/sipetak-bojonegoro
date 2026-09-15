@@ -3274,7 +3274,7 @@ html[data-theme="light"] {
   position: absolute;
 
   top: 112px;
-  left: 110px;
+  left: 82px;
 
   width: 330px;
   height: 460px;
@@ -4891,7 +4891,7 @@ html[data-theme="dark"]
 
   position: absolute;
 
-  top: 112px;
+  top: 82px;
   left: 110px;
 
   width: 330px;
@@ -6004,10 +6004,6 @@ html[data-theme="dark"] .statistik-loading {
   color: #a99a9f;
 }
 
-/* =========================================================
-   FILTER FLYOUT
-   ========================================================= */
-
 .filter-flyout {
   --filter-red: #9f1239;
   --filter-red-2: #be123c;
@@ -6023,7 +6019,7 @@ html[data-theme="dark"] .statistik-loading {
   position: absolute;
 
   top: 112px;
-  left: 110px;
+  left: 82px;
 
   width: 330px;
   height: 540px;
