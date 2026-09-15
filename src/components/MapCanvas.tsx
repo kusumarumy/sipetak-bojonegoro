@@ -326,6 +326,8 @@ if (DTM.trace) {
     tiles: [DTM.trace],
     tileSize: 256,
     encoding: 'terrarium',
+    minzoom: 13,
+    maxzoom: 21,
   };
 }
 
@@ -335,6 +337,8 @@ if (DTM.kawasan) {
     tiles: [DTM.kawasan],
     tileSize: 256,
     encoding: 'terrarium',
+    minzoom: 13,
+    maxzoom: 21,
   };
 }
 
@@ -1373,6 +1377,12 @@ const urlDTM =
     : DTM.kawasan;
 
 if (!urlDTM) {
+  map.setTerrain(null);
+
+  if (map.getLayer('hillshade')) {
+    map.removeLayer('hillshade');
+  }
+
   beriPesan(
     `DTM ${
       dtm === 'trace'
@@ -1384,6 +1394,7 @@ if (!urlDTM) {
         : 'NEXT_PUBLIC_TILES_DTM_KAWASAN'
     } di .env.`
   );
+
   return;
 }
 
