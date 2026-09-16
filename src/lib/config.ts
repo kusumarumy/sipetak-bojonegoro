@@ -7,7 +7,7 @@ export const MAP = {
   zoom: 12.4,
   pitch: 18,
   bearing: 18,
-  maxPitch: 75,
+  maxPitch: 85,
 };
 
 export type Basemap = {
