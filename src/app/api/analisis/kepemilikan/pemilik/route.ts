@@ -13,20 +13,15 @@ export async function GET() {
 
   try {
     const pemilik = await query<{
-      nik: string;
       nama: string;
       jumlah_bidang: number;
     }>(`
       SELECT
-        TRIM(nik_milik) AS nik,
-        COALESCE(
-          MAX(NULLIF(TRIM(nama_milik), '')),
-          ''
-        ) AS nama,
+        TRIM(nama_milik) AS nama,
         COUNT(*)::int AS jumlah_bidang
       FROM public.bidang_tanah
-      WHERE NULLIF(TRIM(nik_milik), '') IS NOT NULL
-      GROUP BY TRIM(nik_milik)
+      WHERE NULLIF(TRIM(nama_milik), '') IS NOT NULL
+      GROUP BY TRIM(nama_milik)
       ORDER BY nama ASC
     `);
 
