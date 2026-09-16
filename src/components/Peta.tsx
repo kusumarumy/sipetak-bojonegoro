@@ -26,7 +26,15 @@ const MapCanvas = dynamic(
   () => import('./MapCanvas'),
   { ssr: false }
 );
-
+type Ringkasan = {
+  total: number;
+  draft: number;
+  terkirim: number;
+  terverifikasi: number;
+  revisi: number;
+  haTerdampak: number;
+  km: number;
+};
 type PanelAktif =
   | 'terrain'
   | 'basemap'
