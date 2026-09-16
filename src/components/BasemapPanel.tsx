@@ -8,8 +8,8 @@ const PILIHAN: {
   icon: string;
 }[] = [
   {
-    id: 'osm',
-    label: 'OSM',
+    id: 'esri-streets',
+    label: 'Esri Streets Map',
     icon: '🌍',
   },
   {
