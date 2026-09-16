@@ -1,20 +1,6 @@
 export type Peran = 'pendata' | 'supervisor' | 'pelihat' | 'pengembang';
 export type StatusBidang = 'draft' | 'terkirim' | 'terverifikasi' | 'revisi';
 
-export const STATUS_LABEL: Record<StatusBidang, string> = {
-  draft: 'Draft',
-  terkirim: 'Menunggu verifikasi',
-  terverifikasi: 'Terverifikasi',
-  revisi: 'Perlu revisi'
-};
-
-export const STATUS_WARNA: Record<StatusBidang, string> = {
-  draft: '#93A3B3',
-  terkirim: '#66B3E5',
-  terverifikasi: '#4FC49E',
-  revisi: '#E0708F'
-};
-
 export type KategoriLampiran =
   | 'foto_bidang' | 'foto_bangunan_depan' | 'foto_bangunan_kiri' | 'foto_bangunan_kanan'
   | 'foto_bangunan_belakang' | 'foto_patok' 
