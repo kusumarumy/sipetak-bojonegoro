@@ -327,7 +327,7 @@ sources.ortho = {
 };
 
 if (DTM.trace) {
-  sources.dem_trace = {
+  sources.dtm_trace = {
     type: 'raster-dem',
     tiles: [DTM.trace],
     tileSize: 256,
@@ -338,7 +338,7 @@ if (DTM.trace) {
 }
 
 if (DTM.kawasan) {
-  sources.dem_kawasan = {
+  sources.dtm_kawasan = {
     type: 'raster-dem',
     tiles: [DTM.kawasan],
     tileSize: 256,
@@ -1315,48 +1315,27 @@ for (const item of basemapLayers) {
 }
 
 }, [basemap, beriPesan]);
-  useEffect(() => {
+useEffect(() => {
+  const map = mapRef.current;
 
-    const map =
-      mapRef.current;
+  if (!map) return;
 
-    if (
-      !map?.isStyleLoaded()
-    ) {
-      return;
-    }
+  const terapkanDTM = () => {
+    if (!map.isStyleLoaded()) return;
 
-    /**
-     * DTM OFF
-     */
+    // =========================
+    // DTM OFF
+    // =========================
     if (dtm === 'off') {
-
       map.setTerrain(null);
 
-      if (
-        map.getLayer(
-          'hillshade'
-        )
-      ) {
-        map.removeLayer(
-          'hillshade'
-        );
-      }
-
-      for (
-        const d
-        of [
-          KONTUR.lidar,
-          KONTUR.foto
-        ]
-      ) {
-        if (
-          map.getLayer(
-            d.id
-          )
-        ) {
+      for (const def of [
+        KONTUR.lidar,
+        KONTUR.foto
+      ]) {
+        if (map.getLayer(def.id)) {
           map.setLayoutProperty(
-            d.id,
+            def.id,
             'visibility',
             'none'
           );
@@ -1371,87 +1350,99 @@ for (const item of basemapLayers) {
       return;
     }
 
-const urlDTM =
-  dtm === 'trace'
-    ? DTM.trace
-    : DTM.kawasan;
-
-if (!urlDTM) {
-  map.setTerrain(null);
-
-  if (map.getLayer('hillshade')) {
-    map.removeLayer('hillshade');
-  }
-
-  beriPesan(
-    `DTM ${
+    // =========================
+    // PILIH DTM
+    // =========================
+    const src =
       dtm === 'trace'
-        ? 'DTM Rencana Trace 0.5 m'
-        : 'DTM Kawasan 1.5 m'
-    } belum tersedia — isi ${
+        ? 'dtm_trace'
+        : 'dtm_kawasan';
+
+    const urlDTM =
       dtm === 'trace'
-        ? 'NEXT_PUBLIC_TILES_DTM_TRACE'
-        : 'NEXT_PUBLIC_TILES_DTM_KAWASAN'
-    } di .env.`
-  );
+        ? DTM.trace
+        : DTM.kawasan;
 
-  return;
-}
+    if (!urlDTM) {
+      map.setTerrain(null);
 
-const src =
-  dtm === 'trace'
-    ? 'dem_trace'
-    : 'dem_kawasan';
-    if (
-      map.getLayer(
-        'hillshade'
-      )
-    ) {
-      map.removeLayer(
-        'hillshade'
+      beriPesan(
+        `DTM ${
+          dtm === 'trace'
+            ? 'Rencana Trace'
+            : 'Kawasan'
+        } belum tersedia.`
       );
+
+      return;
     }
 
-    map.addLayer({
-      id: 'hillshade',
+    // =========================
+    // PASTIKAN SOURCE ADA
+    // =========================
+    if (!map.getSource(src)) {
+      console.warn(
+        'Source DTM tidak ditemukan:',
+        src
+      );
 
-      type: 'hillshade',
+      beriPesan(
+        `Source ${
+          dtm === 'trace'
+            ? 'DTM Rencana Trace'
+            : 'DTM Kawasan'
+        } belum tersedia.`
+      );
 
-      source: src,
+      return;
+    }
 
-      paint: {
-        'hillshade-exaggeration':
-          0.45
-      }
-    });
-
-    /**
-     * Terrain
-     */
+    // =========================
+    // TERRAIN 3D
+    // =========================
     map.setTerrain({
       source: src,
       exaggeration: exag
     });
 
-for (const def of [
-  KONTUR.lidar,
-  KONTUR.foto
-]) {
-  if (map.getLayer(def.id)) {
-    map.setLayoutProperty(
-      def.id,
-      'visibility',
-      'none'
-    );
-  }
-}
+    // Kontur tidak diperlukan ketika
+    // terrain sedang aktif
+    for (const def of [
+      KONTUR.lidar,
+      KONTUR.foto
+    ]) {
+      if (map.getLayer(def.id)) {
+        map.setLayoutProperty(
+          def.id,
+          'visibility',
+          'none'
+        );
+      }
+    }
 
+    // Kamera dibuat miring agar relief terlihat
     map.easeTo({
       pitch: 52,
       duration: 850
     });
+  };
 
-  }, [dtm, exag]);
+  if (map.isStyleLoaded()) {
+    terapkanDTM();
+  } else {
+    map.once(
+      'load',
+      terapkanDTM
+    );
+  }
+
+  return () => {
+    map.off(
+      'load',
+      terapkanDTM
+    );
+  };
+}, [dtm, exag]);
 
   useEffect(() => {
 
@@ -1883,19 +1874,4 @@ function warnaiTema(
     );
   }
 
-  if (
-    map.getLayer(
-      'hillshade'
-    )
-  ) {
-
-    map.setPaintProperty(
-      'hillshade',
-      'hillshade-shadow-color',
-
-      gelap
-        ? '#0B1219'
-        : '#4A5A78'
-    );
-  }
 }
