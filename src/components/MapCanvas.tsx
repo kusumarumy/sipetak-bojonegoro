@@ -1397,16 +1397,10 @@ useEffect(() => {
       return;
     }
 
-    // =========================
-    // TERRAIN 3D
-    // =========================
     map.setTerrain({
       source: src,
       exaggeration: exag
     });
-
-    // Kontur tidak diperlukan ketika
-    // terrain sedang aktif
     for (const def of [
       KONTUR.lidar,
       KONTUR.foto
