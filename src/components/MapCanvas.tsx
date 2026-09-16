@@ -1007,14 +1007,6 @@ export default function MapCanvas() {
           source: 'bidang',
 
           paint: {
-
-            // --------------------------------------------
-            // WARNA
-            // --------------------------------------------
-            // State interaksi tetap override.
-            // Warna normal berasal dari layers.ts.
-            // --------------------------------------------
-
            'fill-color': [
   'case',
 
@@ -1040,7 +1032,7 @@ export default function MapCanvas() {
     false
   ],
 
-  '#A51F35',
+  '#FFD600',
 
   // Bidang normal → MAGENTA
   '#A51F35'
