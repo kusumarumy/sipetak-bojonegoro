@@ -184,11 +184,6 @@ export const DTM = {
 export const ORTHO =
   process.env.NEXT_PUBLIC_TILES_ORTHO ?? '';
 
-
-/* =========================================================
-   PEWARNAAN BERDASARKAN PENGGUNAAN
-========================================================= */
-
 export const WARNA_PENGGUNAAN:
   Record<string, string> = {
 
@@ -213,22 +208,6 @@ export const WARNA_PENGGUNAAN:
   '(belum diisi)':
     '#7C8896'
 };
-
-
-/* =========================================================
-   PEWARNAAN BERDASARKAN KETERDAMPAKAN
-========================================================= */
-
-/**
- * Semakin merah:
- * semakin besar bagian bidang yang masuk ROW.
- *
- * < 25%     → rendah
- * 25–50%    → sedang
- * 50–70%    → tinggi
- * ≥ 70%     → sangat tinggi
- * belum ukur → belum tersedia
- */
 
 export const WARNA_DAMPAK:
   [string, string][] = [
@@ -258,11 +237,6 @@ export const WARNA_DAMPAK:
     '#7C8896'
   ]
 ];
-
-
-/* =========================================================
-   LABEL LAYER
-========================================================= */
 
 export const LABEL_LAYER:
   Record<string, string> = {
