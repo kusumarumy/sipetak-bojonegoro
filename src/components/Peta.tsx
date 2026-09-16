@@ -14,7 +14,7 @@ import RiwayatAksi from './RiwayatAksi';
 import { useApp } from '@/store/useApp';
 import KepemilikanPanel from './KepemilikanPanel';
 import logoBojonegoro from '../../data/icon/bojonegoro.png';
-
+import type { Peran } from '@/types';
 const MapCanvas = dynamic(
   () => import('./MapCanvas'),
   { ssr: false }
