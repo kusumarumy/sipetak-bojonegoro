@@ -54,11 +54,6 @@ export default function KepemilikanPanel({
     null
   );
 
-  /*
-   * Ambil daftar pemilik.
-   * NIK menjadi value dropdown karena NIK adalah
-   * identitas unik pemilik.
-   */
   useEffect(() => {
     let aktif = true;
 
@@ -111,9 +106,6 @@ export default function KepemilikanPanel({
     };
   }, []);
 
-  /*
-   * Ambil seluruh bidang berdasarkan NIK pemilik.
-   */
   useEffect(() => {
     let aktif = true;
 
@@ -175,10 +167,6 @@ export default function KepemilikanPanel({
     };
   }, [nikAktif]);
 
-  /*
-   * Highlight semua bidang milik orang yang dipilih
-   * di MapCanvas.
-   */
   useEffect(() => {
     const ids = bidang
       .map((b) => b.id)
@@ -309,22 +297,21 @@ export default function KepemilikanPanel({
             Nama Pemilik
           </label>
 
-          <select
-            id="pilih-pemilik"
-            value={nikAktif}
-            onChange={(e) =>
-              setNikAktif(e.target.value)
-            }
-            disabled={
-              memuatPemilik ||
-              pemilik.length === 0
-            }
-          >
-            <option value="">
-              {memuatPemilik
-                ? 'Memuat pemilik...'
-                : 'Pilih pemilik'}
-            </option>
+<select
+  id="pilih-pemilik"
+  value={nikAktif}
+  onChange={(e) =>
+    setNikAktif(e.target.value)
+  }
+  disabled={pemilik.length === 0}
+>
+<option value="">
+  {memuatPemilik
+    ? 'Memuat pemilik...'
+    : pemilik.length === 0
+      ? 'Tidak ada pemilik'
+      : 'Pilih pemilik'}
+</option>
 
             {pemilik.map((p) => (
               <option
