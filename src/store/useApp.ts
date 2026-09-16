@@ -102,7 +102,7 @@ export const useApp = create<AppState>(
 
     dtm: 'off',
 
-    exag: 1.8,
+    exag: 5,
 
     pewarnaan: 'status',
 
