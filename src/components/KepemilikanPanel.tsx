@@ -108,8 +108,9 @@ export default function KepemilikanPanel({
   useEffect(() => {
     let aktif = true;
 
-    if (!nikAktif) {
+    if (!namaAktif) {
       setBidang([]);
+      setMemuatBidang(false);
       return;
     }
 
@@ -119,13 +120,13 @@ export default function KepemilikanPanel({
         setError(null);
 
         const res = await fetch(
-  `/api/analisis/kepemilikan/${encodeURIComponent(
-    namaAktif
-  )}`,
-  {
-    cache: 'no-store',
-  }
-);
+          `/api/analisis/kepemilikan/${encodeURIComponent(
+            namaAktif
+          )}`,
+          {
+            cache: 'no-store',
+          }
+        );
 
         if (!res.ok) {
           throw new Error(
@@ -196,16 +197,16 @@ export default function KepemilikanPanel({
   const pemilikAktif = useMemo(
     () =>
       pemilik.find(
-        (p) => p.nik === nikAktif
+        (p) => p.nama === namaAktif
       ) ?? null,
-    [pemilik, nikAktif]
+    [pemilik, namaAktif]
   );
 
   const totalLuas = useMemo(
     () =>
       bidang.reduce(
         (total, b) =>
-          total + (b.luas_tnh ?? 0),
+          total + (Number(b.luas_tnh) || 0),
         0
       ),
     [bidang]
@@ -216,7 +217,7 @@ export default function KepemilikanPanel({
       bidang.reduce(
         (total, b) =>
           total +
-          (b.luas_terdampak_m2 ?? 0),
+          (Number(b.luas_terdampak_m2) || 0),
         0
       ),
     [bidang]
@@ -227,7 +228,7 @@ export default function KepemilikanPanel({
       bidang.reduce(
         (total, b) =>
           total +
-          (b.luas_sisa_m2 ?? 0),
+          (Number(b.luas_sisa_m2) || 0),
         0
       ),
     [bidang]
@@ -237,24 +238,15 @@ export default function KepemilikanPanel({
     () =>
       bidang.filter(
         (b) =>
-          (b.luas_terdampak_m2 ?? 0) > 0
+          (Number(b.luas_terdampak_m2) || 0) > 0
       ).length,
     [bidang]
   );
 
   function formatLuas(value: number) {
-    return new Intl.NumberFormat(
-      'id-ID',
-      {
-        maximumFractionDigits: 2,
-      }
-    ).format(value);
-  }
-
-  function formatNIK(nik: string) {
-    if (nik.length <= 4) return nik;
-
-    return `••••••••••••${nik.slice(-4)}`;
+    return new Intl.NumberFormat('id-ID', {
+      maximumFractionDigits: 2,
+    }).format(value);
   }
 
   function fokusBidang(id: number) {
@@ -276,7 +268,7 @@ export default function KepemilikanPanel({
           </div>
 
           <div className="panel-subtitle">
-            Analisis bidang berdasarkan NIK pemilik
+            Analisis bidang berdasarkan nama pemilik
           </div>
         </div>
 
@@ -296,26 +288,26 @@ export default function KepemilikanPanel({
             Nama Pemilik
           </label>
 
-<select
-  id="pilih-pemilik"
-value={namaAktif}
-onChange={(e) =>
-  setNamaAktif(e.target.value)
-}
-  disabled={pemilik.length === 0}
->
-<option value="">
-  {memuatPemilik
-    ? 'Memuat pemilik...'
-    : pemilik.length === 0
-      ? 'Tidak ada pemilik'
-      : 'Pilih pemilik'}
-</option>
+          <select
+            id="pilih-pemilik"
+            value={namaAktif}
+            onChange={(e) =>
+              setNamaAktif(e.target.value)
+            }
+            disabled={pemilik.length === 0}
+          >
+            <option value="">
+              {memuatPemilik
+                ? 'Memuat pemilik...'
+                : pemilik.length === 0
+                  ? 'Tidak ada pemilik'
+                  : 'Pilih pemilik'}
+            </option>
 
             {pemilik.map((p) => (
               <option
                 key={p.nama}
-value={p.nama}
+                value={p.nama}
               >
                 {p.nama || '(Nama tidak tersedia)'} ·{' '}
                 {p.jumlah_bidang} bidang
@@ -337,10 +329,6 @@ value={p.nama}
                 {pemilikAktif.nama ||
                   '(Nama tidak tersedia)'}
               </div>
-
-              <div className="owner-nik">
-                NIK {formatNIK(pemilikAktif.nik)}
-              </div>
             </div>
 
             <div className="analysis-stats">
@@ -361,10 +349,7 @@ value={p.nama}
               <div className="analysis-stat">
                 <span>Terdampak</span>
                 <strong>
-                  {formatLuas(
-                    totalTerdampak
-                  )}{' '}
-                  m²
+                  {formatLuas(totalTerdampak)} m²
                 </strong>
               </div>
 
@@ -443,7 +428,7 @@ value={p.nama}
                       <span>
                         Luas{' '}
                         {formatLuas(
-                          b.luas_tnh ?? 0
+                          Number(b.luas_tnh) || 0
                         )}{' '}
                         m²
                       </span>
@@ -451,8 +436,9 @@ value={p.nama}
                       <span>
                         Dampak{' '}
                         {formatLuas(
-                          b.luas_terdampak_m2 ??
-                            0
+                          Number(
+                            b.luas_terdampak_m2
+                          ) || 0
                         )}{' '}
                         m²
                       </span>
