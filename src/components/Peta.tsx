@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
-
 import ControlPanel from './ControlPanel';
 import Sidebar from './Sidebar';
 import KartuBidang from './KartuBidang';
@@ -354,221 +353,211 @@ export default function Peta({
 
       </header>
 
-      {/* =====================================================
-          SIDEBAR
-          ===================================================== */}
+{/* =====================================================
+    SIDEBAR
+    ===================================================== */}
 
-      <Sidebar
-        aktif={panelAktif}
-        onChange={setPanelAktif}
-      />
+<Sidebar
+  aktif={panelAktif}
+  onChange={setPanelAktif}
+/>
 
-      {/* =====================================================
-          BASEMAP
-          ===================================================== */}
+{/* =====================================================
+    BASEMAP
+    ===================================================== */}
 
-      {panelAktif === 'basemap' && (
-        <BasemapPanel
-          onClose={() =>
-            setPanelAktif(null)
-          }
-        />
-      )}
-{panelAktif === 'kepemilikan' && (
-  <KepemilikanPanel
+{panelAktif === 'basemap' && (
+  <BasemapPanel
     onClose={() => setPanelAktif(null)}
   />
 )}
-      {/* =====================================================
-          DAFTAR BIDANG
-          ===================================================== */}
 
-      {panelAktif === 'bidang' && (
-        <DaftarBidang
-          onClose={() =>
-            setPanelAktif(null)
-          }
-        />
-      )}
+{/* =====================================================
+    DAFTAR BIDANG
+    ===================================================== */}
 
-      {/* =====================================================
-          STATISTIKA
-          ===================================================== */}
-
-      {panelAktif === 'statistika' && (
-        <Statistika
-          onClose={() =>
-            setPanelAktif(null)
-          }
-        />
-      )}
-{panelAktif === 'search' && (
-  <SearchPanel
-    onClose={() =>
-      setPanelAktif(null)
-    }
+{panelAktif === 'bidang' && (
+  <DaftarBidang
+    onClose={() => setPanelAktif(null)}
   />
 )}
-      <ControlPanel
-        mode={
-          panelAktif === 'terrain' ||
-          panelAktif === 'layer'
-            ? panelAktif
-            : null
-        }
-        onClose={() =>
-          setPanelAktif(null)
-        }
-      />
+
+{/* =====================================================
+    STATISTIKA
+    ===================================================== */}
+
+{panelAktif === 'statistika' && (
+  <Statistika
+    onClose={() => setPanelAktif(null)}
+  />
+)}
+
+{/* =====================================================
+    SEARCH
+    ===================================================== */}
+
+{panelAktif === 'search' && (
+  <SearchPanel
+    onClose={() => setPanelAktif(null)}
+  />
+)}
+
+{/* =====================================================
+    TERRAIN / LAYER
+    ===================================================== */}
+
+<ControlPanel
+  mode={
+    panelAktif === 'terrain' ||
+    panelAktif === 'layer'
+      ? panelAktif
+      : null
+  }
+  onClose={() => setPanelAktif(null)}
+/>
+
 {/* =====================================================
     FILTER
     ===================================================== */}
 
 {panelAktif === 'filter' && (
   <FilterPanel
-    onClose={() =>
-      setPanelAktif(null)
-    }
+    onClose={() => setPanelAktif(null)}
   />
 )}
-      {/* =====================================================
-          MAIN
-          ===================================================== */}
 
-      <main className="body">
+{/* =====================================================
+    MAIN
+    ===================================================== */}
 
-        <div className="mapwrap">
+<main className="body">
 
-          <MapCanvas />
+  <div className="mapwrap">
 
-          <div className="legend">
+    <MapCanvas />
 
-            {pewarnaan === 'status' ? (
+    {/* =================================================
+        ANALISIS KEPEMILIKAN
+        ================================================= */}
 
-              angka.map(
-                ([s, n]) => (
-                  <div
-                    className="li"
-                    key={s}
-                  >
+    {panelAktif === 'kepemilikan' && (
+      <KepemilikanPanel
+        onClose={() => setPanelAktif(null)}
+      />
+    )}
 
-                    <span
-                      className="swatch"
-                      style={{
-                        background:
-                          STATUS_WARNA[s],
-                      }}
-                    />
+    {/* =================================================
+        LEGEND
+        ================================================= */}
 
-                    <span>
-                      {STATUS_LABEL[s]}
-                    </span>
+    <div className="legend">
 
-                    <b>
-                      {n.toLocaleString(
-                        'id-ID'
-                      )}
-                    </b>
+      {pewarnaan === 'status' ? (
 
-                  </div>
-                )
-              )
+        angka.map(([s, n]) => (
+          <div
+            className="li"
+            key={s}
+          >
 
-            ) : (
+            <span
+              className="swatch"
+              style={{
+                background: STATUS_WARNA[s],
+              }}
+            />
 
-              <>
+            <span>
+              {STATUS_LABEL[s]}
+            </span>
 
-                {Object.entries(
-                  WARNA_PENGGUNAAN
-                ).map(
-                  ([nama, warna]) => (
-                    <div
-                      className="li"
-                      key={nama}
-                    >
-
-                      <span
-                        className="swatch"
-                        style={{
-                          background:
-                            warna,
-                        }}
-                      />
-
-                      <span>
-                        {nama}
-                      </span>
-
-                      <b>
-                        {(
-                          jumlahPenggunaan[
-                            nama
-                          ] ?? 0
-                        ).toLocaleString(
-                          'id-ID'
-                        )}
-                      </b>
-
-                    </div>
-                  )
-                )}
-
-                {/* BELUM DIISI */}
-
-                <div className="li">
-
-                  <span
-                    className="swatch"
-                    style={{
-                      background: '#888',
-                    }}
-                  />
-
-                  <span>
-                    Belum diisi
-                  </span>
-
-                  <b>
-                    {(
-                      jumlahPenggunaan[
-                        'Belum diisi'
-                      ] ?? 0
-                    ).toLocaleString(
-                      'id-ID'
-                    )}
-                  </b>
-
-                </div>
-
-              </>
-
-            )}
+            <b>
+              {n.toLocaleString('id-ID')}
+            </b>
 
           </div>
+        ))
 
-        </div>
+      ) : (
 
-        {/* =================================================
-            TOAST
-            ================================================= */}
+        <>
+          {Object.entries(WARNA_PENGGUNAAN).map(
+            ([nama, warna]) => (
+              <div
+                className="li"
+                key={nama}
+              >
 
-        {pesan && (
-          <div className="toast">
-            {pesan}
+                <span
+                  className="swatch"
+                  style={{
+                    background: warna,
+                  }}
+                />
+
+                <span>
+                  {nama}
+                </span>
+
+                <b>
+                  {(
+                    jumlahPenggunaan[nama] ?? 0
+                  ).toLocaleString('id-ID')}
+                </b>
+
+              </div>
+            )
+          )}
+
+          <div className="li">
+
+            <span
+              className="swatch"
+              style={{
+                background: '#888',
+              }}
+            />
+
+            <span>
+              Belum diisi
+            </span>
+
+            <b>
+              {(
+                jumlahPenggunaan['Belum diisi'] ?? 0
+              ).toLocaleString('id-ID')}
+            </b>
+
           </div>
-        )}
+        </>
 
-        {/* =================================================
-            KARTU BIDANG
-            ================================================= */}
+      )}
 
-        {kartu && (
-          <KartuBidang
-            peran={pengguna.peran}
-          />
-        )}
+    </div>
 
-      </main>
+  </div>
+
+  {/* =================================================
+      TOAST
+      ================================================= */}
+
+  {pesan && (
+    <div className="toast">
+      {pesan}
+    </div>
+  )}
+
+  {/* =================================================
+      KARTU BIDANG
+      ================================================= */}
+
+  {kartu && (
+    <KartuBidang
+      peran={pengguna.peran}
+    />
+  )}
+
+</main>
 
     </div>
   );
