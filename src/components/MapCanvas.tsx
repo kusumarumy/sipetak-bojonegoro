@@ -371,12 +371,12 @@ if (DTM.kawasan) {
   },
 
   {
-    id: 'bm-osm',
+    id: 'bm-esri-streets',
     type: 'raster',
-    source: 'osm',
+    source: 'esri-streets',
     layout: {
       visibility:
-        basemap === 'osm'
+        basemap === 'esri-streets'
           ? 'visible'
           : 'none'
     },
@@ -1271,8 +1271,8 @@ useEffect(() => {
     basemap: Basemap;
   }[] = [
     {
-      id: 'bm-osm',
-      basemap: 'osm'
+      id: 'bm-esri-streets',
+      basemap: 'esri-streets'
     },
     {
       id: 'bm-esri',
@@ -1800,7 +1800,7 @@ function warnaiTema(
   );
 
   map.setPaintProperty(
-    'bm-osm',
+    'bm-esri-streets',
     'raster-brightness-max',
     gelap
       ? 0.84
