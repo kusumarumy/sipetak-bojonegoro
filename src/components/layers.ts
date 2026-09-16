@@ -18,7 +18,7 @@ export const LAYERS: DefLayer[] = [
   nama: 'Trase rencana',
   sumber: 'traseg',
   tipe: 'line',
-  warna: '#D32F2F',
+  warna: '#00E5FF',
   garis: true,
   lebar: 4,
   opasitas: 1,
