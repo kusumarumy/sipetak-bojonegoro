@@ -1,0 +1,500 @@
+'use client';
+
+import { useEffect, useMemo, useState } from 'react';
+
+type Pemilik = {
+  nik: string;
+  nama: string;
+  jumlah_bidang: number;
+};
+
+type BidangKepemilikan = {
+  id: number;
+  bidang_id: string | null;
+  nib: string | null;
+
+  nama_milik: string | null;
+  nik_milik: string | null;
+
+  nama_sewa: string | null;
+  nik_sewa: string | null;
+
+  kecamatan: string | null;
+  kelurahan: string | null;
+
+  luas_tnh: number | null;
+  luas_terdampak_m2: number | null;
+  luas_sisa_m2: number | null;
+
+  dampak_tnh: string | null;
+  penggunaan: string | null;
+  sta_tnh: string | null;
+};
+
+type Props = {
+  onClose: () => void;
+};
+
+export default function KepemilikanPanel({
+  onClose,
+}: Props) {
+  const [pemilik, setPemilik] = useState<Pemilik[]>([]);
+  const [nikAktif, setNikAktif] = useState('');
+  const [bidang, setBidang] = useState<
+    BidangKepemilikan[]
+  >([]);
+
+  const [memuatPemilik, setMemuatPemilik] =
+    useState(true);
+
+  const [memuatBidang, setMemuatBidang] =
+    useState(false);
+
+  const [error, setError] = useState<string | null>(
+    null
+  );
+
+  /*
+   * Ambil daftar pemilik.
+   * NIK menjadi value dropdown karena NIK adalah
+   * identitas unik pemilik.
+   */
+  useEffect(() => {
+    let aktif = true;
+
+    async function muatPemilik() {
+      try {
+        setMemuatPemilik(true);
+        setError(null);
+
+        const res = await fetch(
+          '/api/analisis/kepemilikan/pemilik',
+          {
+            cache: 'no-store',
+          }
+        );
+
+        if (!res.ok) {
+          throw new Error(
+            'Gagal mengambil daftar pemilik.'
+          );
+        }
+
+        const data = await res.json();
+
+        if (!aktif) return;
+
+        setPemilik(
+          Array.isArray(data)
+            ? data
+            : data.pemilik ?? []
+        );
+      } catch (err) {
+        if (!aktif) return;
+
+        setError(
+          err instanceof Error
+            ? err.message
+            : 'Gagal mengambil data pemilik.'
+        );
+      } finally {
+        if (aktif) {
+          setMemuatPemilik(false);
+        }
+      }
+    }
+
+    muatPemilik();
+
+    return () => {
+      aktif = false;
+    };
+  }, []);
+
+  /*
+   * Ambil seluruh bidang berdasarkan NIK pemilik.
+   */
+  useEffect(() => {
+    let aktif = true;
+
+    if (!nikAktif) {
+      setBidang([]);
+      return;
+    }
+
+    async function muatBidang() {
+      try {
+        setMemuatBidang(true);
+        setError(null);
+
+        const res = await fetch(
+          `/api/analisis/kepemilikan/${encodeURIComponent(
+            nikAktif
+          )}`,
+          {
+            cache: 'no-store',
+          }
+        );
+
+        if (!res.ok) {
+          throw new Error(
+            'Gagal mengambil data bidang.'
+          );
+        }
+
+        const data = await res.json();
+
+        if (!aktif) return;
+
+        setBidang(
+          Array.isArray(data)
+            ? data
+            : data.bidang ?? []
+        );
+      } catch (err) {
+        if (!aktif) return;
+
+        setBidang([]);
+
+        setError(
+          err instanceof Error
+            ? err.message
+            : 'Gagal mengambil data bidang.'
+        );
+      } finally {
+        if (aktif) {
+          setMemuatBidang(false);
+        }
+      }
+    }
+
+    muatBidang();
+
+    return () => {
+      aktif = false;
+    };
+  }, [nikAktif]);
+
+  /*
+   * Highlight semua bidang milik orang yang dipilih
+   * di MapCanvas.
+   */
+  useEffect(() => {
+    const ids = bidang
+      .map((b) => b.id)
+      .filter(
+        (id): id is number =>
+          typeof id === 'number'
+      );
+
+    window.dispatchEvent(
+      new CustomEvent('analisis-bidang', {
+        detail: {
+          ids,
+        },
+      })
+    );
+
+    return () => {
+      window.dispatchEvent(
+        new CustomEvent('analisis-bidang', {
+          detail: {
+            ids: [],
+          },
+        })
+      );
+    };
+  }, [bidang]);
+
+  const pemilikAktif = useMemo(
+    () =>
+      pemilik.find(
+        (p) => p.nik === nikAktif
+      ) ?? null,
+    [pemilik, nikAktif]
+  );
+
+  const totalLuas = useMemo(
+    () =>
+      bidang.reduce(
+        (total, b) =>
+          total + (b.luas_tnh ?? 0),
+        0
+      ),
+    [bidang]
+  );
+
+  const totalTerdampak = useMemo(
+    () =>
+      bidang.reduce(
+        (total, b) =>
+          total +
+          (b.luas_terdampak_m2 ?? 0),
+        0
+      ),
+    [bidang]
+  );
+
+  const totalSisa = useMemo(
+    () =>
+      bidang.reduce(
+        (total, b) =>
+          total +
+          (b.luas_sisa_m2 ?? 0),
+        0
+      ),
+    [bidang]
+  );
+
+  const jumlahTerdampak = useMemo(
+    () =>
+      bidang.filter(
+        (b) =>
+          (b.luas_terdampak_m2 ?? 0) > 0
+      ).length,
+    [bidang]
+  );
+
+  function formatLuas(value: number) {
+    return new Intl.NumberFormat(
+      'id-ID',
+      {
+        maximumFractionDigits: 2,
+      }
+    ).format(value);
+  }
+
+  function formatNIK(nik: string) {
+    if (nik.length <= 4) return nik;
+
+    return `••••••••••••${nik.slice(-4)}`;
+  }
+
+  function fokusBidang(id: number) {
+    window.dispatchEvent(
+      new CustomEvent('fokus-bidang', {
+        detail: {
+          id,
+        },
+      })
+    );
+  }
+
+  return (
+    <section className="panel panel-kepemilikan">
+      <div className="panel-header">
+        <div>
+          <div className="panel-title">
+            Analisis Kepemilikan
+          </div>
+
+          <div className="panel-subtitle">
+            Analisis bidang berdasarkan NIK pemilik
+          </div>
+        </div>
+
+        <button
+          type="button"
+          className="panel-close"
+          onClick={onClose}
+          aria-label="Tutup"
+        >
+          ×
+        </button>
+      </div>
+
+      <div className="panel-body">
+        <div className="form-group">
+          <label htmlFor="pilih-pemilik">
+            Nama Pemilik
+          </label>
+
+          <select
+            id="pilih-pemilik"
+            value={nikAktif}
+            onChange={(e) =>
+              setNikAktif(e.target.value)
+            }
+            disabled={
+              memuatPemilik ||
+              pemilik.length === 0
+            }
+          >
+            <option value="">
+              {memuatPemilik
+                ? 'Memuat pemilik...'
+                : 'Pilih pemilik'}
+            </option>
+
+            {pemilik.map((p) => (
+              <option
+                key={p.nik}
+                value={p.nik}
+              >
+                {p.nama || '(Nama tidak tersedia)'} ·{' '}
+                {p.jumlah_bidang} bidang
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {error && (
+          <div className="panel-error">
+            {error}
+          </div>
+        )}
+
+        {pemilikAktif && (
+          <>
+            <div className="owner-card">
+              <div className="owner-name">
+                {pemilikAktif.nama ||
+                  '(Nama tidak tersedia)'}
+              </div>
+
+              <div className="owner-nik">
+                NIK {formatNIK(pemilikAktif.nik)}
+              </div>
+            </div>
+
+            <div className="analysis-stats">
+              <div className="analysis-stat">
+                <span>Jumlah bidang</span>
+                <strong>
+                  {bidang.length}
+                </strong>
+              </div>
+
+              <div className="analysis-stat">
+                <span>Total luas</span>
+                <strong>
+                  {formatLuas(totalLuas)} m²
+                </strong>
+              </div>
+
+              <div className="analysis-stat">
+                <span>Terdampak</span>
+                <strong>
+                  {formatLuas(
+                    totalTerdampak
+                  )}{' '}
+                  m²
+                </strong>
+              </div>
+
+              <div className="analysis-stat">
+                <span>Bidang terdampak</span>
+                <strong>
+                  {jumlahTerdampak}
+                </strong>
+              </div>
+
+              <div className="analysis-stat">
+                <span>Luas sisa</span>
+                <strong>
+                  {formatLuas(totalSisa)} m²
+                </strong>
+              </div>
+            </div>
+
+            <div className="analysis-section-title">
+              Daftar bidang
+              <span>
+                {memuatBidang
+                  ? 'Memuat...'
+                  : `${bidang.length} bidang`}
+              </span>
+            </div>
+
+            <div className="analysis-list">
+              {memuatBidang && (
+                <div className="analysis-empty">
+                  Memuat data bidang...
+                </div>
+              )}
+
+              {!memuatBidang &&
+                bidang.length === 0 && (
+                  <div className="analysis-empty">
+                    Tidak ada bidang untuk pemilik
+                    ini.
+                  </div>
+                )}
+
+              {!memuatBidang &&
+                bidang.map((b) => (
+                  <button
+                    key={b.id}
+                    type="button"
+                    className="analysis-field"
+                    onClick={() =>
+                      fokusBidang(b.id)
+                    }
+                  >
+                    <div className="analysis-field-top">
+                      <strong>
+                        {b.bidang_id ||
+                          b.nib ||
+                          `Bidang ${b.id}`}
+                      </strong>
+
+                      <span>
+                        Lihat di peta →
+                      </span>
+                    </div>
+
+                    <div className="analysis-field-location">
+                      {[
+                        b.kelurahan,
+                        b.kecamatan,
+                      ]
+                        .filter(Boolean)
+                        .join(' · ') ||
+                        'Lokasi tidak tersedia'}
+                    </div>
+
+                    <div className="analysis-field-info">
+                      <span>
+                        Luas{' '}
+                        {formatLuas(
+                          b.luas_tnh ?? 0
+                        )}{' '}
+                        m²
+                      </span>
+
+                      <span>
+                        Dampak{' '}
+                        {formatLuas(
+                          b.luas_terdampak_m2 ??
+                            0
+                        )}{' '}
+                        m²
+                      </span>
+                    </div>
+
+                    {b.nama_sewa && (
+                      <div className="analysis-field-renter">
+                        Disewa oleh:{' '}
+                        <strong>
+                          {b.nama_sewa}
+                        </strong>
+                      </div>
+                    )}
+                  </button>
+                ))}
+            </div>
+          </>
+        )}
+
+        {!pemilikAktif &&
+          !memuatPemilik &&
+          !error && (
+            <div className="analysis-empty">
+              Pilih nama pemilik untuk melihat
+              bidang yang dimiliki.
+            </div>
+          )}
+      </div>
+    </section>
+  );
+}
