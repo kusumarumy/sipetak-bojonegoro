@@ -87,8 +87,20 @@ export default function RiwayatAksi({
   onClose,
 }: Props) {
   const [data, setData] = useState<AuditLog[]>([]);
-  const [memuat, setMemuat] = useState(true);
-  const [filter, setFilter] = useState('semua');
+const [memuat, setMemuat] = useState(true);
+const [filter, setFilter] = useState('semua');
+
+const [sortKolom, setSortKolom] = useState('pada');
+const [sortArah, setSortArah] = useState<'asc' | 'desc'>('desc');
+
+  const ubahSort = (kolom: string) => {
+  if (sortKolom === kolom) {
+    setSortArah(sortArah === 'asc' ? 'desc' : 'asc');
+  } else {
+    setSortKolom(kolom);
+    setSortArah('asc');
+  }
+};
 
   /* =======================================================
      AMBIL DATA RIWAYAT
@@ -184,16 +196,92 @@ export default function RiwayatAksi({
      ======================================================= */
 
   const dataTampil = useMemo(() => {
-    if (filter === 'semua') {
-      return data;
+  const hasil =
+    filter === 'semua'
+      ? [...data]
+      : data.filter(
+          (d) =>
+            d.aksi?.toUpperCase() ===
+            filter.toUpperCase()
+        );
+
+  hasil.sort((a, b) => {
+    let nilaiA: string | number = '';
+    let nilaiB: string | number = '';
+
+    switch (sortKolom) {
+      case 'pada':
+        nilaiA = a.pada
+          ? new Date(a.pada).getTime()
+          : 0;
+        nilaiB = b.pada
+          ? new Date(b.pada).getTime()
+          : 0;
+        break;
+
+      case 'nama_akun':
+        nilaiA = a.nama_akun ?? '';
+        nilaiB = b.nama_akun ?? '';
+        break;
+
+      case 'nib':
+        nilaiA = a.nib ?? '';
+        nilaiB = b.nib ?? '';
+        break;
+
+      case 'record_id':
+        nilaiA = Number(a.record_id ?? 0);
+        nilaiB = Number(b.record_id ?? 0);
+        break;
+
+      case 'bidang_id':
+        nilaiA = a.bidang_id ?? '';
+        nilaiB = b.bidang_id ?? '';
+        break;
+
+      case 'aksi':
+        nilaiA = a.aksi ?? '';
+        nilaiB = b.aksi ?? '';
+        break;
+
+      case 'kolom':
+        nilaiA = a.kolom ?? '';
+        nilaiB = b.kolom ?? '';
+        break;
+
+      case 'nilai_lama':
+        nilaiA = fmtNilai(a.nilai_lama);
+        nilaiB = fmtNilai(b.nilai_lama);
+        break;
+
+      case 'nilai_baru':
+        nilaiA = fmtNilai(a.nilai_baru);
+        nilaiB = fmtNilai(b.nilai_baru);
+        break;
     }
 
-    return data.filter(
-      (d) =>
-        d.aksi?.toUpperCase() ===
-        filter.toUpperCase()
-    );
-  }, [data, filter]);
+    let hasilSort = 0;
+
+    if (
+      typeof nilaiA === 'number' &&
+      typeof nilaiB === 'number'
+    ) {
+      hasilSort = nilaiA - nilaiB;
+    } else {
+      hasilSort = String(nilaiA).localeCompare(
+        String(nilaiB),
+        'id-ID',
+        { numeric: true }
+      );
+    }
+
+    return sortArah === 'asc'
+      ? hasilSort
+      : -hasilSort;
+  });
+
+  return hasil;
+}, [data, filter, sortKolom, sortArah]);
 
   /* =======================================================
      RENDER
@@ -335,24 +423,59 @@ export default function RiwayatAksi({
 
               <tr>
 
-                <th>WAKTU</th>
-
-                <th>NAMA AKUN</th>
-
-                <th>NIB</th>
-
-                <th>RECORD ID</th>
-
-                <th>BIDANG ID</th>
-
-                <th>AKSI</th>
-
-                <th>KOLOM</th>
-
-                <th>NILAI LAMA</th>
-
-                <th>NILAI BARU</th>
-
+                <th>
+                  <button onClick={() => ubahSort('pada')}>
+                    WAKTU {sortKolom === 'pada' ? (sortArah === 'asc' ? '↑' : '↓') : '↕'}
+                  </button>
+                </th>
+                
+                <th>
+                  <button onClick={() => ubahSort('nama_akun')}>
+                    NAMA AKUN {sortKolom === 'nama_akun' ? (sortArah === 'asc' ? '↑' : '↓') : '↕'}
+                  </button>
+                </th>
+                
+                <th>
+                  <button onClick={() => ubahSort('nib')}>
+                    NIB {sortKolom === 'nib' ? (sortArah === 'asc' ? '↑' : '↓') : '↕'}
+                  </button>
+                </th>
+                
+                <th>
+                  <button onClick={() => ubahSort('record_id')}>
+                    RECORD ID {sortKolom === 'record_id' ? (sortArah === 'asc' ? '↑' : '↓') : '↕'}
+                  </button>
+                </th>
+                
+                <th>
+                  <button onClick={() => ubahSort('bidang_id')}>
+                    BIDANG ID {sortKolom === 'bidang_id' ? (sortArah === 'asc' ? '↑' : '↓') : '↕'}
+                  </button>
+                </th>
+                
+                <th>
+                  <button onClick={() => ubahSort('aksi')}>
+                    AKSI {sortKolom === 'aksi' ? (sortArah === 'asc' ? '↑' : '↓') : '↕'}
+                  </button>
+                </th>
+                
+                <th>
+                  <button onClick={() => ubahSort('kolom')}>
+                    KOLOM {sortKolom === 'kolom' ? (sortArah === 'asc' ? '↑' : '↓') : '↕'}
+                  </button>
+                </th>
+                
+                <th>
+                  <button onClick={() => ubahSort('nilai_lama')}>
+                    NILAI LAMA {sortKolom === 'nilai_lama' ? (sortArah === 'asc' ? '↑' : '↓') : '↕'}
+                  </button>
+                </th>
+                
+                <th>
+                  <button onClick={() => ubahSort('nilai_baru')}>
+                    NILAI BARU {sortKolom === 'nilai_baru' ? (sortArah === 'asc' ? '↑' : '↓') : '↕'}
+                  </button>
+                </th>
               </tr>
 
             </thead>
