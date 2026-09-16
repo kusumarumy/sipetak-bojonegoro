@@ -726,7 +726,7 @@ main.body {
 .flyout-panel {
   position: fixed;
   left: 82px;
-  top: 104px;
+  top: 111px;
   width: 330px;
   max-height: calc(100vh - 120px);
   overflow: hidden;
@@ -6642,84 +6642,50 @@ html[data-theme="dark"] .statistik-loading span {
   border-color: #4b353a;
   border-top-color: #d58a9a;
 }
-/* =========================================================
-   ANALISIS KEPEMILIKAN
-   SELARAS DENGAN STATISTIKA
-   ========================================================= */
 
 .panel-kepemilikan {
   --kep-red: #9f1239;
   --kep-red-2: #be123c;
-
   --kep-text: #334155;
   --kep-text-2: #475569;
   --kep-muted: #94a3b8;
-
   --kep-bg: #ffffff;
   --kep-soft: #f8fafc;
   --kep-track: #edf1f5;
   --kep-line: #e2e8f0;
-
   position: absolute;
-
-  /* SAMA DENGAN STATISTIKA */
-  top: 82px;
-  left: 110px;
-
+  top: 111px;
+  left: 82px;
   width: 330px;
-  height: 540px;
+  height: 470px;
   max-height: calc(100vh - 140px);
-
   display: flex;
   flex-direction: column;
-
   background: var(--kep-bg);
-
   border: 1px solid rgba(15, 23, 42, 0.08);
   border-radius: 13px;
-
   box-shadow:
     0 10px 25px rgba(15, 23, 42, 0.14),
     0 3px 8px rgba(15, 23, 42, 0.07);
-
   overflow: hidden;
-
   z-index: 30;
-
   animation: flyoutIn .18s ease-out;
 }
 
-
-/* =========================================================
-   HEADER
-   SAMA PROPORSINYA DENGAN STATISTIKA
-   ========================================================= */
-
 .panel-kepemilikan .panel-header {
   flex: 0 0 auto;
-
   height: 58px;
   min-height: 58px;
-
   display: flex;
   align-items: center;
   justify-content: space-between;
-
   padding: 7px 11px;
-
   background: #fff;
-
   border-bottom: 1px solid var(--kep-line);
 }
 
-
-/* =========================================================
-   TITLE
-   ========================================================= */
-
 .panel-kepemilikan .panel-title {
   color: #881337;
-
   font-size: 14px;
   font-weight: 800;
 
@@ -6728,70 +6694,42 @@ html[data-theme="dark"] .statistik-loading span {
 
 .panel-kepemilikan .panel-subtitle {
   margin-top: 3px;
-
   color: #7b8ba1;
-
   font-size: 8px;
   font-weight: 500;
-
   line-height: 1;
 }
-
-
-/* =========================================================
-   CLOSE
-   ========================================================= */
 
 .panel-kepemilikan .panel-close {
   width: 28px;
   height: 28px;
-
   flex: 0 0 28px;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   padding: 0;
-
   color: #64748b;
-
   background: #fff;
-
   border: 1px solid #dbe3ec;
   border-radius: 8px;
-
   font-size: 18px;
   font-weight: 300;
   line-height: 1;
-
   cursor: pointer;
 }
 
 .panel-kepemilikan .panel-close:hover {
   color: var(--kep-red);
-
   background: #fff5f7;
-
   border-color: #efc5cf;
 }
 
-
-/* =========================================================
-   BODY
-   SAMA DENGAN STATISTIKA
-   ========================================================= */
-
 .panel-kepemilikan .panel-body {
   flex: 1 1 auto;
-
   min-height: 0;
-
   padding: 8px;
-
   overflow-y: auto;
   overflow-x: hidden;
-
   scrollbar-width: thin;
   scrollbar-color: #cbd5e1 transparent;
 }
@@ -6806,47 +6744,33 @@ html[data-theme="dark"] .statistik-loading span {
 }
 
 
-/* =========================================================
-   FORM
-   ========================================================= */
-
 .panel-kepemilikan .form-group {
   display: flex;
   flex-direction: column;
-
   gap: 5px;
-
   margin-bottom: 7px;
 }
 
 .panel-kepemilikan .form-group label {
   color: #718096;
-
   font-size: 7px;
   font-weight: 800;
-
   letter-spacing: .03em;
 }
 
 .panel-kepemilikan .form-group select {
   width: 100%;
-  height: 34px;
-
+  height: 30px;
   padding: 0 30px 0 10px;
-
   color: #475569;
   background: #f8fafc;
-
   border: 1px solid #dfe6ed;
   border-radius: 8px;
-
   font-family: inherit;
   font-size: 9px;
   font-weight: 600;
-
   outline: none;
   cursor: pointer;
-
   transition:
     border-color .15s ease,
     background .15s ease,
@@ -6860,7 +6784,6 @@ html[data-theme="dark"] .statistik-loading span {
 
 .panel-kepemilikan .form-group select:focus {
   border-color: var(--kep-red);
-
   box-shadow:
     0 0 0 3px rgba(159, 18, 57, .08);
 }
@@ -6869,12 +6792,6 @@ html[data-theme="dark"] .statistik-loading span {
   opacity: .55;
   cursor: not-allowed;
 }
-
-
-/* =========================================================
-   PEMILIK TERPILIH
-   STYLE MENGIKUTI STAT-CARD
-   ========================================================= */
 
 .panel-kepemilikan .owner-card {
   margin-top: 7px;
@@ -6911,12 +6828,6 @@ html[data-theme="dark"] .statistik-loading span {
 
   line-height: 1;
 }
-
-
-/* =========================================================
-   ANALYSIS STATS
-   CARD STYLE SEPERTI STAT-KPI / STAT-CARD
-   ========================================================= */
 
 .panel-kepemilikan .analysis-stats {
   display: grid;
@@ -6976,11 +6887,6 @@ html[data-theme="dark"] .statistik-loading span {
   grid-column: 1 / -1;
 }
 
-
-/* =========================================================
-   SECTION TITLE
-   ========================================================= */
-
 .panel-kepemilikan .analysis-section-title {
   display: flex;
   align-items: center;
@@ -7003,23 +6909,12 @@ html[data-theme="dark"] .statistik-loading span {
   font-weight: 700;
 }
 
-
-/* =========================================================
-   LIST
-   ========================================================= */
-
 .panel-kepemilikan .analysis-list {
   display: flex;
   flex-direction: column;
 
   gap: 5px;
 }
-
-
-/* =========================================================
-   BIDANG CARD
-   STYLE SEPERTI STAT-CARD
-   ========================================================= */
 
 .panel-kepemilikan .analysis-field {
   width: 100%;
@@ -7061,11 +6956,6 @@ html[data-theme="dark"] .statistik-loading span {
   transform: translateY(0);
 }
 
-
-/* =========================================================
-   FIELD HEADER
-   ========================================================= */
-
 .panel-kepemilikan .analysis-field-top {
   display: flex;
   align-items: center;
@@ -7096,11 +6986,6 @@ html[data-theme="dark"] .statistik-loading span {
   font-weight: 800;
 }
 
-
-/* =========================================================
-   LOCATION
-   ========================================================= */
-
 .panel-kepemilikan .analysis-field-location {
   margin-top: 3px;
 
@@ -7113,11 +6998,6 @@ html[data-theme="dark"] .statistik-loading span {
   font-size: 7px;
   font-weight: 500;
 }
-
-
-/* =========================================================
-   LUAS / DAMPAK
-   ========================================================= */
 
 .panel-kepemilikan .analysis-field-info {
   display: flex;
@@ -7137,11 +7017,6 @@ html[data-theme="dark"] .statistik-loading span {
   display: inline-flex;
   align-items: center;
 }
-
-
-/* =========================================================
-   PENYEWA
-   ========================================================= */
 
 .panel-kepemilikan .analysis-field-renter {
   margin-top: 5px;
@@ -7185,10 +7060,6 @@ html[data-theme="dark"] .statistik-loading span {
   height: 16px;
 }
 
-/* =========================================================
-   EMPTY
-   ========================================================= */
-
 .panel-kepemilikan .analysis-empty {
   padding: 18px 10px;
 
@@ -7199,11 +7070,6 @@ html[data-theme="dark"] .statistik-loading span {
   font-size: 8px;
   line-height: 1.5;
 }
-
-
-/* =========================================================
-   ERROR
-   ========================================================= */
 
 .panel-kepemilikan .panel-error {
   margin-top: 7px;
@@ -7219,12 +7085,6 @@ html[data-theme="dark"] .statistik-loading span {
   font-size: 8px;
   line-height: 1.4;
 }
-
-
-/* =========================================================
-   DARK MODE
-   SAMA DENGAN STATISTIKA
-   ========================================================= */
 
 html[data-theme="dark"] .panel-kepemilikan {
   --kep-text: #c9b9be;
@@ -7242,11 +7102,6 @@ html[data-theme="dark"] .panel-kepemilikan {
   box-shadow:
     0 10px 30px rgba(0, 0, 0, .38);
 }
-
-
-/* =========================================================
-   DARK HEADER
-   ========================================================= */
 
 html[data-theme="dark"] .panel-kepemilikan .panel-header {
   background: #241a1d;
@@ -7278,11 +7133,6 @@ html[data-theme="dark"] .panel-kepemilikan .panel-close:hover {
   color: #fff;
 }
 
-
-/* =========================================================
-   DARK BODY
-   ========================================================= */
-
 html[data-theme="dark"] .panel-kepemilikan .panel-body {
   background: #241a1d;
 
@@ -7294,11 +7144,6 @@ html[data-theme="dark"]
 .panel-body::-webkit-scrollbar-thumb {
   background: #5a4147;
 }
-
-
-/* =========================================================
-   DARK FORM
-   ========================================================= */
 
 html[data-theme="dark"]
 .panel-kepemilikan
@@ -7346,11 +7191,6 @@ option {
   color: #e2d4d8;
 }
 
-
-/* =========================================================
-   DARK OWNER
-   ========================================================= */
-
 html[data-theme="dark"] .panel-kepemilikan .owner-card {
   background:
     linear-gradient(
@@ -7369,12 +7209,6 @@ html[data-theme="dark"] .panel-kepemilikan .owner-name {
 html[data-theme="dark"] .panel-kepemilikan .owner-nik {
   color: #95838a;
 }
-
-
-/* =========================================================
-   DARK STAT
-   ========================================================= */
-
 html[data-theme="dark"]
 .panel-kepemilikan
 .analysis-stat {
@@ -7397,11 +7231,6 @@ strong {
   color: #c9b9be;
 }
 
-
-/* =========================================================
-   DARK SECTION
-   ========================================================= */
-
 html[data-theme="dark"]
 .panel-kepemilikan
 .analysis-section-title {
@@ -7415,10 +7244,6 @@ span {
   color: #95838a;
 }
 
-
-/* =========================================================
-   DARK FIELD
-   ========================================================= */
 
 html[data-theme="dark"]
 .panel-kepemilikan
@@ -12560,7 +12385,7 @@ html[data-theme="dark"] .gate-foot {
 .basemap-flyout {
   position: fixed;
   left: 82px;
-  top: 104px;
+  top: 111px;
   width: 250px;
   max-height: calc(100vh - 120px);
   overflow: hidden;
