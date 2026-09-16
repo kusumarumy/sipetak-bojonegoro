@@ -332,8 +332,8 @@ if (DTM.trace) {
     tiles: [DTM.trace],
     tileSize: 256,
     encoding: 'terrarium',
-    minzoom: 13,
-    maxzoom: 21,
+    minzoom: 10,
+    maxzoom: 18,
   };
 }
 
@@ -343,11 +343,11 @@ if (DTM.kawasan) {
     tiles: [DTM.kawasan],
     tileSize: 256,
     encoding: 'terrarium',
-    minzoom: 13,
-    maxzoom: 21,
+    minzoom: 10,
+    maxzoom: 18,
   };
 }
-
+    
     if (ADA_KONTUR.lidar) {
       sources.kontur_lidar = {
         type: 'vector',
