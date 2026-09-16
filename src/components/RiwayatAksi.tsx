@@ -4,21 +4,27 @@ import { useEffect, useMemo, useState } from 'react';
 
 type AuditLog = {
   id?: number | string;
-  tabel?: string;
+
+  // Identitas bidang
+  nib?: string;
   record_id?: number | string;
   bidang_id?: string;
+
+  // Aksi
   aksi?: string;
   kolom?: string;
 
+  // Nilai perubahan
   nilai_lama?: any;
   nilai_baru?: any;
 
-  // dari audit_log
-  pada?: string;
+  // Pengguna
   nama_akun?: string;
-
   pengguna_id?: string;
   ip_address?: string;
+
+  // Waktu
+  pada?: string;
 };
 
 type Props = {
@@ -85,7 +91,7 @@ export default function RiwayatAksi({
   const [filter, setFilter] = useState('semua');
 
   /* =======================================================
-     AMBIL DATA
+     AMBIL DATA RIWAYAT
      ======================================================= */
 
   useEffect(() => {
@@ -107,11 +113,31 @@ export default function RiwayatAksi({
 
         const hasil = await r.json();
 
+        /*
+         * API mengembalikan array langsung:
+         *
+         * [
+         *   {
+         *     id: "6",
+         *     nib: "...",
+         *     record_id: 191,
+         *     bidang_id: "...",
+         *     aksi: "DELETE",
+         *     kolom: "kode_bid",
+         *     nilai_lama: "111",
+         *     nilai_baru: "",
+         *     nama_akun: "Pendata Lapangan",
+         *     pada: "2026-09-11T10:03:58.515Z"
+         *   }
+         * ]
+         */
+
         setData(
           Array.isArray(hasil)
             ? hasil
             : []
         );
+
       } catch (err) {
         console.error(
           'Gagal mengambil riwayat aksi:',
@@ -119,6 +145,7 @@ export default function RiwayatAksi({
         );
 
         setData([]);
+
       } finally {
         setMemuat(false);
       }
@@ -153,7 +180,7 @@ export default function RiwayatAksi({
   }, [data]);
 
   /* =======================================================
-     FILTER
+     FILTER DATA
      ======================================================= */
 
   const dataTampil = useMemo(() => {
@@ -209,6 +236,10 @@ export default function RiwayatAksi({
 
           <div className="daftar-actions">
 
+            {/* =================================================
+                SEMUA
+                ================================================= */}
+
             <button
               type="button"
               className={
@@ -222,6 +253,10 @@ export default function RiwayatAksi({
             >
               SEMUA ({jumlah.semua})
             </button>
+
+            {/* =================================================
+                INPUT
+                ================================================= */}
 
             <button
               type="button"
@@ -237,6 +272,10 @@ export default function RiwayatAksi({
               INPUT ({jumlah.input})
             </button>
 
+            {/* =================================================
+                UPDATE
+                ================================================= */}
+
             <button
               type="button"
               className={
@@ -250,6 +289,10 @@ export default function RiwayatAksi({
             >
               UPDATE ({jumlah.update})
             </button>
+
+            {/* =================================================
+                DELETE
+                ================================================= */}
 
             <button
               type="button"
@@ -265,6 +308,10 @@ export default function RiwayatAksi({
               DELETE ({jumlah.delete})
             </button>
 
+            {/* =================================================
+                TUTUP
+                ================================================= */}
+
             <button
               type="button"
               className="daftar-close"
@@ -276,9 +323,9 @@ export default function RiwayatAksi({
           </div>
         </div>
 
-        {/* =================================================
+        {/* ===================================================
             TABLE
-            ================================================= */}
+            =================================================== */}
 
         <div className="daftar-table-wrap">
 
@@ -287,44 +334,70 @@ export default function RiwayatAksi({
             <thead>
 
               <tr>
+
                 <th>WAKTU</th>
+
                 <th>NAMA AKUN</th>
-                <th>TABEL</th>
+
+                <th>NIB</th>
+
                 <th>RECORD ID</th>
+
                 <th>BIDANG ID</th>
+
                 <th>AKSI</th>
+
                 <th>KOLOM</th>
+
                 <th>NILAI LAMA</th>
+
                 <th>NILAI BARU</th>
+
               </tr>
 
             </thead>
 
             <tbody>
 
+              {/* =================================================
+                  LOADING
+                  ================================================= */}
+
               {memuat ? (
 
                 <tr>
+
                   <td
                     colSpan={9}
                     className="daftar-empty"
                   >
                     Memuat riwayat aksi...
                   </td>
+
                 </tr>
 
               ) : dataTampil.length === 0 ? (
 
+                /* ===============================================
+                   EMPTY
+                   =============================================== */
+
                 <tr>
+
                   <td
                     colSpan={9}
                     className="daftar-empty"
                   >
                     Tidak ada riwayat aksi.
                   </td>
+
                 </tr>
 
               ) : (
+
+                /* ===============================================
+                   DATA
+                   =============================================== */
 
                 dataTampil.map((item, i) => (
 
@@ -334,63 +407,96 @@ export default function RiwayatAksi({
                     }
                   >
 
-                    {/* WAKTU */}
+                    {/* =========================================
+                        WAKTU
+                        ========================================= */}
+
                     <td>
                       {fmtTanggal(
                         item.pada
                       )}
                     </td>
 
-                    {/* NAMA AKUN */}
+                    {/* =========================================
+                        NAMA AKUN
+                        ========================================= */}
+
                     <td>
                       {item.nama_akun ?? '—'}
                     </td>
 
-                    {/* TABEL */}
-                    <td>
-                      {item.tabel ?? '—'}
+                    {/* =========================================
+                        NIB
+                        ========================================= */}
+
+                    <td className="kode">
+                      {item.nib ?? '—'}
                     </td>
 
-                    {/* RECORD ID */}
+                    {/* =========================================
+                        RECORD ID
+                        ========================================= */}
+
                     <td className="angka">
                       {item.record_id ?? '—'}
                     </td>
 
-                    {/* BIDANG ID */}
+                    {/* =========================================
+                        BIDANG ID
+                        ========================================= */}
+
                     <td className="kode">
                       {item.bidang_id ?? '—'}
                     </td>
 
-                    {/* AKSI */}
+                    {/* =========================================
+                        AKSI
+                        ========================================= */}
+
                     <td>
+
                       <span
                         className={`status-daftar audit-${
                           item.aksi?.toLowerCase() ?? ''
                         }`}
                       >
+
                         <span className="status-dot" />
 
-                        {labelAksi[
-                          item.aksi?.toUpperCase() ?? ''
-                        ] ??
+                        {
+                          labelAksi[
+                            item.aksi?.toUpperCase() ?? ''
+                          ] ??
                           item.aksi ??
-                          '—'}
+                          '—'
+                        }
+
                       </span>
+
                     </td>
 
-                    {/* KOLOM */}
+                    {/* =========================================
+                        KOLOM
+                        ========================================= */}
+
                     <td>
                       {item.kolom ?? '—'}
                     </td>
 
-                    {/* NILAI LAMA */}
+                    {/* =========================================
+                        NILAI LAMA
+                        ========================================= */}
+
                     <td>
                       {fmtNilai(
                         item.nilai_lama
                       )}
                     </td>
 
-                    {/* NILAI BARU */}
+                    {/* =========================================
+                        NILAI BARU
+                        ========================================= */}
+
                     <td>
                       {fmtNilai(
                         item.nilai_baru
