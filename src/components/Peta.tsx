@@ -439,42 +439,29 @@ export default function Peta({
 
     <MapCanvas />
 
-{/* =================================================
-    ANALISIS KEPEMILIKAN
-    ================================================= */}
+    {/* ANALISIS KEPEMILIKAN */}
+    {panelAktif === 'kepemilikan' && (
+      <KepemilikanPanel
+        onClose={() => setPanelAktif(null)}
+      />
+    )}
 
-{panelAktif === 'kepemilikan' && (
-  <KepemilikanPanel
-    onClose={() => setPanelAktif(null)}
-  />
-)}
+    {/* TOAST */}
+    {pesan && (
+      <div className="toast">
+        {pesan}
+      </div>
+    )}
 
-{/* =================================================
-    LEGEND
-    ================================================= */}
+    {/* KARTU BIDANG */}
+    {kartu && (
+      <KartuBidang
+        peran={pengguna.peran}
+      />
+    )}
 
-
-{/* =================================================
-    TOAST
-    ================================================= */}
-
-{pesan && (
-  <div className="toast">
-    {pesan}
   </div>
-)}
 
-{/* =================================================
-    KARTU BIDANG
-    ================================================= */}
-
-{kartu && (
-  <KartuBidang
-    peran={pengguna.peran}
-  />
-)}
-
-</div>
 </main>
 
 </div>
