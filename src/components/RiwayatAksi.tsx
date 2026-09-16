@@ -3,26 +3,33 @@
 import { useEffect, useMemo, useState } from 'react';
 
 type AuditLog = {
-  id?: number;
+  id?: number | string;
   tabel?: string;
   record_id?: number | string;
   bidang_id?: string;
   aksi?: string;
   kolom?: string;
 
-  // Dipakai kalau ada di tabel audit_log
   nilai_lama?: any;
   nilai_baru?: any;
 
-  // kemungkinan nama field waktu
-  created_at?: string;
-  waktu?: string;
-  timestamp?: string;
+  // Waktu dari audit_log
+  pada?: string;
+
+  // Nama pengguna dari audit_log
+  nama_akun?: string;
+
+  pengguna_id?: string;
+  ip_address?: string;
 };
 
 type Props = {
   onClose: () => void;
 };
+
+/* =========================================================
+   FORMAT TANGGAL
+   ========================================================= */
 
 const fmtTanggal = (value?: string) => {
   if (!value) return '—';
@@ -39,8 +46,14 @@ const fmtTanggal = (value?: string) => {
   });
 };
 
+/* =========================================================
+   FORMAT NILAI
+   ========================================================= */
+
 const fmtNilai = (value: any) => {
-  if (value == null || value === '') return '—';
+  if (value == null || value === '') {
+    return '—';
+  }
 
   if (typeof value === 'object') {
     return JSON.stringify(value);
@@ -49,11 +62,19 @@ const fmtNilai = (value: any) => {
   return String(value);
 };
 
+/* =========================================================
+   LABEL AKSI
+   ========================================================= */
+
 const labelAksi: Record<string, string> = {
   INPUT: 'INPUT',
   UPDATE: 'UPDATE',
   DELETE: 'DELETE',
 };
+
+/* =========================================================
+   COMPONENT
+   ========================================================= */
 
 export default function RiwayatAksi({
   onClose,
@@ -62,23 +83,50 @@ export default function RiwayatAksi({
   const [memuat, setMemuat] = useState(true);
   const [filter, setFilter] = useState('semua');
 
+  /* =======================================================
+     AMBIL DATA AUDIT LOG
+     ======================================================= */
+
   useEffect(() => {
     const ambilData = async () => {
       try {
         setMemuat(true);
 
-        const r = await fetch('/api/riwayat');
+        const r = await fetch('/api/riwayat', {
+          cache: 'no-store',
+        });
 
         if (!r.ok) {
           const pesan = await r.text();
+
           throw new Error(
             pesan || `HTTP ${r.status}`
           );
         }
 
         const hasil = await r.json();
-        setData(Array.isArray(hasil) ? hasil : []);
-        
+
+        /*
+         * API /api/riwayat mengembalikan ARRAY langsung.
+         *
+         * Contoh:
+         * [
+         *   {
+         *     id: "6",
+         *     tabel: "bidang_tanah",
+         *     aksi: "DELETE",
+         *     pada: "...",
+         *     nama_akun: "Pendata Lapangan"
+         *   }
+         * ]
+         */
+
+        setData(
+          Array.isArray(hasil)
+            ? hasil
+            : []
+        );
+
       } catch (err) {
         console.error(
           'Gagal mengambil riwayat aksi:',
@@ -86,6 +134,7 @@ export default function RiwayatAksi({
         );
 
         setData([]);
+
       } finally {
         setMemuat(false);
       }
@@ -93,6 +142,10 @@ export default function RiwayatAksi({
 
     ambilData();
   }, []);
+
+  /* =======================================================
+     JUMLAH AKSI
+     ======================================================= */
 
   const jumlah = useMemo(() => {
     return {
@@ -115,6 +168,10 @@ export default function RiwayatAksi({
     };
   }, [data]);
 
+  /* =======================================================
+     FILTER DATA
+     ======================================================= */
+
   const dataTampil = useMemo(() => {
     if (filter === 'semua') {
       return data;
@@ -127,11 +184,19 @@ export default function RiwayatAksi({
     );
   }, [data, filter]);
 
+  /* =======================================================
+     RENDER
+     ======================================================= */
+
   return (
     <div className="daftar-flyout">
+
       <section className="daftar-bidang">
 
-        {/* HEADER */}
+        {/* =================================================
+            HEADER
+            ================================================= */}
+
         <div className="daftar-head">
 
           <div className="daftar-title">
@@ -149,17 +214,23 @@ export default function RiwayatAksi({
             </strong>
 
             <span>
-              dari {data.length.toLocaleString(
+              dari{' '}
+              {data.length.toLocaleString(
                 'id-ID'
-              )} aktivitas
+              )}{' '}
+              aktivitas
             </span>
 
           </div>
 
           <div className="daftar-actions">
 
-            {/* SEMUA */}
+            {/* =================================================
+                SEMUA
+                ================================================= */}
+
             <button
+              type="button"
               className={
                 filter === 'semua'
                   ? 'active'
@@ -172,8 +243,12 @@ export default function RiwayatAksi({
               SEMUA ({jumlah.semua})
             </button>
 
-            {/* INPUT */}
+            {/* =================================================
+                INPUT
+                ================================================= */}
+
             <button
+              type="button"
               className={
                 filter === 'INPUT'
                   ? 'active'
@@ -186,8 +261,12 @@ export default function RiwayatAksi({
               INPUT ({jumlah.input})
             </button>
 
-            {/* UPDATE */}
+            {/* =================================================
+                UPDATE
+                ================================================= */}
+
             <button
+              type="button"
               className={
                 filter === 'UPDATE'
                   ? 'active'
@@ -200,8 +279,12 @@ export default function RiwayatAksi({
               UPDATE ({jumlah.update})
             </button>
 
-            {/* DELETE */}
+            {/* =================================================
+                DELETE
+                ================================================= */}
+
             <button
+              type="button"
               className={
                 filter === 'DELETE'
                   ? 'active'
@@ -214,7 +297,10 @@ export default function RiwayatAksi({
               DELETE ({jumlah.delete})
             </button>
 
-            {/* CLOSE */}
+            {/* =================================================
+                TUTUP
+                ================================================= */}
+
             <button
               type="button"
               className="daftar-close"
@@ -226,49 +312,81 @@ export default function RiwayatAksi({
           </div>
         </div>
 
-        {/* TABLE */}
+        {/* ===================================================
+            TABLE
+            =================================================== */}
+
         <div className="daftar-table-wrap">
 
           <table className="daftar-table">
 
             <thead>
+
               <tr>
+
                 <th>WAKTU</th>
+
+                <th>NAMA AKUN</th>
+
                 <th>TABEL</th>
+
                 <th>RECORD ID</th>
+
                 <th>BIDANG ID</th>
+
                 <th>AKSI</th>
+
                 <th>KOLOM</th>
+
                 <th>NILAI LAMA</th>
+
                 <th>NILAI BARU</th>
+
               </tr>
+
             </thead>
 
             <tbody>
 
+              {/* =================================================
+                  LOADING
+                  ================================================= */}
+
               {memuat ? (
 
                 <tr>
+
                   <td
-                    colSpan={8}
+                    colSpan={9}
                     className="daftar-empty"
                   >
                     Memuat riwayat aksi...
                   </td>
+
                 </tr>
 
               ) : dataTampil.length === 0 ? (
 
+                /* ===============================================
+                   EMPTY
+                   =============================================== */
+
                 <tr>
+
                   <td
-                    colSpan={8}
+                    colSpan={9}
                     className="daftar-empty"
                   >
                     Tidak ada riwayat aksi.
                   </td>
+
                 </tr>
 
               ) : (
+
+                /* ===============================================
+                   DATA
+                   =============================================== */
 
                 dataTampil.map((item, i) => (
 
@@ -278,58 +396,96 @@ export default function RiwayatAksi({
                     }
                   >
 
-                    {/* WAKTU */}
+                    {/* =========================================
+                        WAKTU
+                        ========================================= */}
+
                     <td>
                       {fmtTanggal(
-                        item.created_at ??
-                        item.waktu ??
-                        item.timestamp
+                        item.pada
                       )}
                     </td>
 
-                    {/* TABEL */}
+                    {/* =========================================
+                        NAMA AKUN
+                        ========================================= */}
+
+                    <td>
+                      {item.nama_akun ?? '—'}
+                    </td>
+
+                    {/* =========================================
+                        TABEL
+                        ========================================= */}
+
                     <td>
                       {item.tabel ?? '—'}
                     </td>
 
-                    {/* RECORD ID */}
+                    {/* =========================================
+                        RECORD ID
+                        ========================================= */}
+
                     <td className="angka">
                       {item.record_id ?? '—'}
                     </td>
 
-                    {/* BIDANG ID */}
+                    {/* =========================================
+                        BIDANG ID
+                        ========================================= */}
+
                     <td className="kode">
                       {item.bidang_id ?? '—'}
                     </td>
 
-                    {/* AKSI */}
+                    {/* =========================================
+                        AKSI
+                        ========================================= */}
+
                     <td>
+
                       <span
-                        className={`status-daftar audit-${item.aksi?.toLowerCase()}`}
+                        className={`status-daftar audit-${
+                          item.aksi?.toLowerCase() ?? ''
+                        }`}
                       >
+
                         <span className="status-dot" />
 
-                        {labelAksi[
-                          item.aksi?.toUpperCase() ?? ''
-                        ] ??
+                        {
+                          labelAksi[
+                            item.aksi?.toUpperCase() ?? ''
+                          ] ??
                           item.aksi ??
-                          '—'}
+                          '—'
+                        }
+
                       </span>
+
                     </td>
 
-                    {/* KOLOM */}
+                    {/* =========================================
+                        KOLOM
+                        ========================================= */}
+
                     <td>
                       {item.kolom ?? '—'}
                     </td>
 
-                    {/* NILAI LAMA */}
+                    {/* =========================================
+                        NILAI LAMA
+                        ========================================= */}
+
                     <td>
                       {fmtNilai(
                         item.nilai_lama
                       )}
                     </td>
 
-                    {/* NILAI BARU */}
+                    {/* =========================================
+                        NILAI BARU
+                        ========================================= */}
+
                     <td>
                       {fmtNilai(
                         item.nilai_baru
@@ -348,6 +504,7 @@ export default function RiwayatAksi({
         </div>
 
       </section>
+
     </div>
   );
 }
