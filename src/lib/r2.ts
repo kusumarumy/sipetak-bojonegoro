@@ -29,8 +29,10 @@ function s3(): S3Client {
 console.log("R2 CONFIG CHECK", {
   account: process.env.BOJO_R2_ACCOUNT_ID,
   bucket: process.env.BOJO_R2_BUCKET,
-  accessKey: process.env.BOJO_R2_ACCESS_KEY_ID?.slice(0, 6),
-  secretLength: process.env.BOJO_R2_SECRET_ACCESS_KEY?.length,
+  configured: !!(
+    process.env.BOJO_R2_ACCESS_KEY_ID &&
+    process.env.BOJO_R2_SECRET_ACCESS_KEY
+  ),
 });
 
 _s3 = new S3Client({
