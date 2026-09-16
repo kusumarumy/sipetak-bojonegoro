@@ -47,6 +47,7 @@ type PanelAktif =
   | 'filter'
   | 'search'
   | 'riwayat'
+  | 'kepemilikan'
   | null;
 export default function Peta({
   pengguna,
