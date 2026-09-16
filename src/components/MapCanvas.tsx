@@ -321,7 +321,7 @@ sources.ortho = {
     'https://dppt-bojonegoro.ruli-andaru.workers.dev/orthophoto/{z}/{x}/{y}.png',
   ],
   tileSize: 256,
-  minzoom: 17,
+  minzoom: 10,
   maxzoom: 21,
   attribution: 'Orthophoto DPPT Bojonegoro 2026',
 };
