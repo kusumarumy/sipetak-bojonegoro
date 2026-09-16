@@ -52,7 +52,28 @@ function IconBidang() {
     </svg>
   );
 }
+function IconKepemilikan() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+    >
+      <circle
+        cx="9"
+        cy="8"
+        r="3"
+      />
+      <path d="M3.5 20a5.5 5.5 0 0 1 11 0" />
 
+      <circle
+        cx="17"
+        cy="10"
+        r="2.2"
+      />
+      <path d="M14.5 19a4.5 4.5 0 0 1 6 0" />
+    </svg>
+  );
+}
 function IconStatistika() {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -116,6 +137,11 @@ const MENU = [
     label: 'Daftar bidang',
     icon: <IconBidang />,
   },
+  {
+  id: 'kepemilikan' as const,
+  label: 'Analisis Kepemilikan',
+  icon: <IconKepemilikan />,
+},
   {
     id: 'statistika' as const,
     label: 'Statistika',
