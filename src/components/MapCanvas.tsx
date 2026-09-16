@@ -77,7 +77,8 @@ const analisisRef =
       return;
     }
 
-    // Highlight bidang hasil analisis
+
+    
     for (const id of ids) {
       mapRef.current.setFeatureState(
         {
@@ -169,7 +170,6 @@ useEffect(() => {
         return;
       }
 
-      // Highlight bidang
       if (
         feature.id !== undefined
       ) {
@@ -732,30 +732,40 @@ map.addLayer({
   source: 'bidang',
 
   paint: {
-'fill-color': [
+'fill-opacity': [
   'case',
 
-  // hasil analisis
   [
     'boolean',
     ['feature-state', 'analisis'],
     false
   ],
-  '#00E5FF',
+  0.88,
 
-  // bidang yang sedang dipilih
+  [
+    'boolean',
+    ['feature-state', 'filter'],
+    false
+  ],
+  0.92,
+
   [
     'boolean',
     ['feature-state', 'sel'],
     false
   ],
-  '#A51F35',
+  0.95,
 
-  // warna normal
-  pewarnaan === 'status'
-    ? ekspresiStatus()
-    : ekspresiPenggunaan()
-],
+  [
+    'boolean',
+    ['feature-state', 'hov'],
+    false
+  ],
+  0.74,
+
+  // normal
+  0.28
+]
     'fill-opacity': [
   'case',
 
