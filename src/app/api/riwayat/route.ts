@@ -13,9 +13,13 @@ export async function GET() {
 
   try {
     const data = await query(`
-      SELECT *
-      FROM public.audit_log
-      ORDER BY id DESC
+      SELECT
+        a.*,
+        b.nib
+      FROM public.audit_log a
+      LEFT JOIN public.bidang_tanah b
+        ON b.id = a.record_id
+      ORDER BY a.id DESC
     `);
 
     return NextResponse.json(data, {
