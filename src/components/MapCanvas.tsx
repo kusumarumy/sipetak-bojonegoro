@@ -58,7 +58,6 @@ const analisisRef =
     const ids =
       customEvent.detail?.ids ?? [];
 
-    // Hapus highlight analisis sebelumnya
     for (const id of analisisRef.current) {
       mapRef.current?.setFeatureState(
         {
@@ -77,8 +76,6 @@ const analisisRef =
       return;
     }
 
-
-    
     for (const id of ids) {
       mapRef.current.setFeatureState(
         {
@@ -231,10 +228,6 @@ if (geometry?.coordinates) {
       });
     };
 
-    /*
-     * Kalau source sudah siap,
-     * langsung fokus.
-     */
     if (map.isStyleLoaded()) {
       fokus();
     } else {
