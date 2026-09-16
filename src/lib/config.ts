@@ -10,21 +10,6 @@ export const MAP = {
   maxPitch: 85,
 };
 
-export type Basemap = {
-  id:
-    | "esri-streets"
-    | "esri"
-    | "ortho"
-    | "google-hybrid"
-    | "google-streets"
-    | "opentopo";
-  labelKey: string;
-  tiles: string[];
-  attribution: string;
-  minzoom?: number;
-  maxzoom?: number;
-};
-
 export const TERRAIN_OPTIONS = {
   trace: {
     id: "trace",
