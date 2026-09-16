@@ -2142,48 +2142,30 @@ html[data-theme="dark"] .flyout-panel {
 
 .filter-flyout {
   position: fixed;
-
   left: 82px;
   top: 111px;
-
   width: 360px;
-  height: 550px;
-
+  height: 470px;
   display: flex;
   flex-direction: column;
-
   background: #fff;
-
   border: 1px solid #dce3eb;
   border-radius: 14px;
-
   box-shadow:
     0 12px 32px rgba(15, 23, 42, 0.16),
     0 2px 8px rgba(15, 23, 42, 0.06);
-
   overflow: hidden;
-
   z-index: 950;
-
   animation: flyoutIn 0.18s ease-out;
 }
 
-
-/* =========================================================
-   HEADER
-   ========================================================= */
-
 .filter-head {
   min-height: 62px;
-
   display: flex;
   align-items: center;
   justify-content: space-between;
-
   padding: 10px 12px;
-
   background: #fff;
-
   border-bottom: 1px solid #e7ebf0;
 }
 
@@ -5430,11 +5412,11 @@ html[data-theme="dark"]
 
   position: absolute;
 
-  top: 82px;
-  left: 110px;
+  top: 110px;
+  left: 82px;
 
   width: 330px;
-  height: 540px;
+  height: 470px;
   max-height: calc(100vh - 140px);
 
   display: flex;
