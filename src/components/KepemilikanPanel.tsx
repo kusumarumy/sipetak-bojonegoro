@@ -119,13 +119,13 @@ export default function KepemilikanPanel({
         setError(null);
 
         const res = await fetch(
-          `/api/analisis/kepemilikan/${encodeURIComponent(
-  namaAktif
-)}`
-          {
-            cache: 'no-store',
-          }
-        );
+  `/api/analisis/kepemilikan/${encodeURIComponent(
+    namaAktif
+  )}`,
+  {
+    cache: 'no-store',
+  }
+);
 
         if (!res.ok) {
           throw new Error(
