@@ -12,7 +12,7 @@ export const MAP = {
 
 export type Basemap = {
   id:
-    | "osm"
+    | "esri-streets"
     | "esri"
     | "ortho"
     | "google-hybrid"
