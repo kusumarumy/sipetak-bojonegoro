@@ -1,5 +1,6 @@
 export const R2 =
-  process.env.NEXT_PUBLIC_R2_BASE_URL ?? "";
+  process.env.NEXT_PUBLIC_R2_BASE_URL ??
+  "https://dppt-bojonegoro.ruli-andaru.workers.dev";
 export const MAP = {
   center: [111.879, -7.168] as [number, number],
   zoom: 12.4,
@@ -105,8 +106,8 @@ export const TERRAIN_OPTIONS = {
 
     encoding: "terrarium" as const,
 
-    minzoom: 13,
-    maxzoom: 21,
+    minzoom: 10,
+    maxzoom: 18,
 
     adjustable: false,
   },
@@ -121,8 +122,8 @@ export const TERRAIN_OPTIONS = {
 
     encoding: "terrarium" as const,
 
-    minzoom: 13,
-    maxzoom: 21,
+    minzoom: 10,
+    maxzoom: 18,
 
     adjustable: false,
   },
