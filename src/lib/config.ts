@@ -25,64 +25,6 @@ export type Basemap = {
   maxzoom?: number;
 };
 
-export const BASEMAPS: Basemap[] = [
-  {
-    id: "osm",
-    labelKey: "bm_map",
-    tiles: [
-      "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
-    ],
-    attribution: "© OpenStreetMap",
-    maxzoom: 19,
-  },
-  {
-    id: "esri",
-    labelKey: "bm_sat",
-    tiles: [
-      "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-    ],
-    attribution: "Esri, Maxar",
-    maxzoom: 19,
-  },
-  {
-    id: "ortho",
-    labelKey: "bm_ortho",
-    tiles: [
-      `${R2}/orthophoto/{z}/{x}/{y}.png`,
-    ],
-    attribution: "Orthophoto DPPT Bojonegoro 2026",
-    minzoom: 13,
-    maxzoom: 20,
-  },
-  {
-    id: "google-hybrid",
-    labelKey: "bm_hybrid",
-    tiles: [
-      "https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}",
-    ],
-    attribution: "© Google Maps",
-    maxzoom: 20,
-  },
-  {
-    id: "google-streets",
-    labelKey: "bm_streets",
-    tiles: [
-      "https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}",
-    ],
-    attribution: "© Google Maps",
-    maxzoom: 20,
-  },
-  {
-    id: "opentopo",
-    labelKey: "bm_opentopo",
-    tiles: [
-      "https://tile.opentopomap.org/{z}/{x}/{y}.png",
-    ],
-    attribution: "© OpenTopoMap",
-    maxzoom: 17,
-  },
-];
-
 export const TERRAIN_OPTIONS = {
   trace: {
     id: "trace",
