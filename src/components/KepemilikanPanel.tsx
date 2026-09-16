@@ -287,11 +287,11 @@ function IconKepemilikan() {
         <IconKepemilikan />
       </span>
 
-      <span>Analisis Kepemilikan</span>
+      <span>ANALISIS KEPEMILIKAN BIDANG</span>
     </div>
 
     <div className="panel-subtitle">
-      Analisis bidang berdasarkan nama pemilik
+      Analisis bidang tanah berdasarkan nama pemilik
     </div>
   </div>
 
