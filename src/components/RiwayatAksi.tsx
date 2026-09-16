@@ -420,65 +420,134 @@ const [sortArah, setSortArah] = useState<'asc' | 'desc'>('desc');
           <table className="daftar-table">
 
             <thead>
-
-              <tr>
-
-                <th>
-                  <button onClick={() => ubahSort('pada')}>
-                    WAKTU {sortKolom === 'pada' ? (sortArah === 'asc' ? '↑' : '↓') : '↕'}
-                  </button>
-                </th>
-                
-                <th>
-                  <button onClick={() => ubahSort('nama_akun')}>
-                    NAMA AKUN {sortKolom === 'nama_akun' ? (sortArah === 'asc' ? '↑' : '↓') : '↕'}
-                  </button>
-                </th>
-                
-                <th>
-                  <button onClick={() => ubahSort('nib')}>
-                    NIB {sortKolom === 'nib' ? (sortArah === 'asc' ? '↑' : '↓') : '↕'}
-                  </button>
-                </th>
-                
-                <th>
-                  <button onClick={() => ubahSort('record_id')}>
-                    RECORD ID {sortKolom === 'record_id' ? (sortArah === 'asc' ? '↑' : '↓') : '↕'}
-                  </button>
-                </th>
-                
-                <th>
-                  <button onClick={() => ubahSort('bidang_id')}>
-                    BIDANG ID {sortKolom === 'bidang_id' ? (sortArah === 'asc' ? '↑' : '↓') : '↕'}
-                  </button>
-                </th>
-                
-                <th>
-                  <button onClick={() => ubahSort('aksi')}>
-                    AKSI {sortKolom === 'aksi' ? (sortArah === 'asc' ? '↑' : '↓') : '↕'}
-                  </button>
-                </th>
-                
-                <th>
-                  <button onClick={() => ubahSort('kolom')}>
-                    KOLOM {sortKolom === 'kolom' ? (sortArah === 'asc' ? '↑' : '↓') : '↕'}
-                  </button>
-                </th>
-                
-                <th>
-                  <button onClick={() => ubahSort('nilai_lama')}>
-                    NILAI LAMA {sortKolom === 'nilai_lama' ? (sortArah === 'asc' ? '↑' : '↓') : '↕'}
-                  </button>
-                </th>
-                
-                <th>
-                  <button onClick={() => ubahSort('nilai_baru')}>
-                    NILAI BARU {sortKolom === 'nilai_baru' ? (sortArah === 'asc' ? '↑' : '↓') : '↕'}
-                  </button>
-                </th>
-              </tr>
-
-            </thead>
+            <tr>
+              <th>
+                <button
+                  className="sort-header"
+                  onClick={() => ubahSort('pada')}
+                >
+                  <span>WAKTU</span>
+                  <span className="sort-icon">
+                    {sortKolom === 'pada'
+                      ? sortArah === 'asc' ? '↑' : '↓'
+                      : '↕'}
+                  </span>
+                </button>
+              </th>
+          
+              <th>
+                <button
+                  className="sort-header"
+                  onClick={() => ubahSort('nama_akun')}
+                >
+                  <span>NAMA AKUN</span>
+                  <span className="sort-icon">
+                    {sortKolom === 'nama_akun'
+                      ? sortArah === 'asc' ? '↑' : '↓'
+                      : '↕'}
+                  </span>
+                </button>
+              </th>
+          
+              <th>
+                <button
+                  className="sort-header"
+                  onClick={() => ubahSort('nib')}
+                >
+                  <span>NIB</span>
+                  <span className="sort-icon">
+                    {sortKolom === 'nib'
+                      ? sortArah === 'asc' ? '↑' : '↓'
+                      : '↕'}
+                  </span>
+                </button>
+              </th>
+          
+              <th>
+                <button
+                  className="sort-header"
+                  onClick={() => ubahSort('record_id')}
+                >
+                  <span>RECORD ID</span>
+                  <span className="sort-icon">
+                    {sortKolom === 'record_id'
+                      ? sortArah === 'asc' ? '↑' : '↓'
+                      : '↕'}
+                  </span>
+                </button>
+              </th>
+          
+              <th>
+                <button
+                  className="sort-header"
+                  onClick={() => ubahSort('bidang_id')}
+                >
+                  <span>BIDANG ID</span>
+                  <span className="sort-icon">
+                    {sortKolom === 'bidang_id'
+                      ? sortArah === 'asc' ? '↑' : '↓'
+                      : '↕'}
+                  </span>
+                </button>
+              </th>
+          
+              <th>
+                <button
+                  className="sort-header"
+                  onClick={() => ubahSort('aksi')}
+                >
+                  <span>AKSI</span>
+                  <span className="sort-icon">
+                    {sortKolom === 'aksi'
+                      ? sortArah === 'asc' ? '↑' : '↓'
+                      : '↕'}
+                  </span>
+                </button>
+              </th>
+          
+              <th>
+                <button
+                  className="sort-header"
+                  onClick={() => ubahSort('kolom')}
+                >
+                  <span>KOLOM</span>
+                  <span className="sort-icon">
+                    {sortKolom === 'kolom'
+                      ? sortArah === 'asc' ? '↑' : '↓'
+                      : '↕'}
+                  </span>
+                </button>
+              </th>
+          
+              <th>
+                <button
+                  className="sort-header"
+                  onClick={() => ubahSort('nilai_lama')}
+                >
+                  <span>NILAI LAMA</span>
+                  <span className="sort-icon">
+                    {sortKolom === 'nilai_lama'
+                      ? sortArah === 'asc' ? '↑' : '↓'
+                      : '↕'}
+                  </span>
+                </button>
+              </th>
+          
+              <th>
+                <button
+                  className="sort-header"
+                  onClick={() => ubahSort('nilai_baru')}
+                >
+                  <span>NILAI BARU</span>
+                  <span className="sort-icon">
+                    {sortKolom === 'nilai_baru'
+                      ? sortArah === 'asc' ? '↑' : '↓'
+                      : '↕'}
+                  </span>
+                </button>
+              </th>
+            </tr>
+          </thead>
 
             <tbody>
 
