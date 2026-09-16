@@ -10,6 +10,7 @@ import DaftarBidang from './DaftarBidang';
 import Statistika from './Statistika';
 import SearchPanel from './SearchPanel';
 import FilterPanel from './FilterPanel';
+import RiwayatAksi from './RiwayatAksi';
 import { useApp } from '@/store/useApp';
 import KepemilikanPanel from './KepemilikanPanel';
 import {
@@ -391,6 +392,15 @@ export default function Peta({
 
 {panelAktif === 'bidang' && (
   <DaftarBidang
+    onClose={() => setPanelAktif(null)}
+  />
+)}
+
+{/* =====================================================
+    RIWAYAT AKSI
+    ===================================================== */}
+{panelAktif === 'riwayat' && (
+  <RiwayatAksi
     onClose={() => setPanelAktif(null)}
   />
 )}
