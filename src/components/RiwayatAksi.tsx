@@ -748,213 +748,335 @@ export default function RiwayatAksi({
           ===================================================== */}
 
       <style jsx>{`
+  /* =================================================
+     PANEL RIWAYAT
+     ================================================= */
+
+  .daftar-flyout {
+    position: relative;
+    z-index: 20;
+  }
+
+  .daftar-bidang {
+    background: #ffffff !important;
+    border: 1px solid #d9e2ef !important;
+    border-radius: 14px !important;
+    overflow: hidden !important;
+    box-shadow:
+      0 8px 24px rgba(15, 35, 70, 0.12),
+      0 2px 6px rgba(15, 35, 70, 0.06) !important;
+  }
+
+
+  /* =================================================
+     HEADER PANEL
+     ================================================= */
+
+  .daftar-head {
+    background: #ffffff !important;
+    border-bottom: 1px solid #d9e2ef !important;
+  }
 
-        /* -----------------------------------------------
-           HEADER TABLE
-           ----------------------------------------------- */
+  .daftar-title {
+    color: #0b2a6f !important;
+  }
 
-        .daftar-table th {
-          padding: 10px 12px !important;
-          background: rgba(
-            248,
-            250,
-            252,
-            0.9
-          ) !important;
+  .daftar-title > span:first-child {
+    color: #0b2a6f !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.08em !important;
+  }
 
-          border-bottom:
-            1px solid
-            rgba(
-              148,
-              163,
-              184,
-              0.22
-            ) !important;
+  .daftar-title strong {
+    color: #6654c8 !important;
+    font-weight: 700 !important;
+  }
 
-          white-space: nowrap;
-        }
+  .daftar-title > span:last-child {
+    color: #7b8ba3 !important;
+  }
 
 
-        /* -----------------------------------------------
-           SORT HEADER
-           ----------------------------------------------- */
+  /* =================================================
+     FILTER BUTTON
+     ================================================= */
 
-        .daftar-table th .sort-header {
-          all: unset !important;
+  .daftar-actions button {
+    background: #f3f6fb !important;
+    border: 1px solid #d5dfed !important;
+    color: #5d6d84 !important;
 
-          display: inline-flex !important;
+    border-radius: 8px !important;
 
-          align-items: center !important;
+    font-size: 10px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.02em !important;
 
-          gap: 5px !important;
+    transition:
+      background 0.15s ease,
+      border-color 0.15s ease,
+      color 0.15s ease,
+      transform 0.15s ease !important;
+  }
 
-          cursor: pointer !important;
+  .daftar-actions button:hover {
+    background: #eaf0f8 !important;
+    border-color: #c3d0e2 !important;
+    color: #0b2a6f !important;
+  }
 
-          color: #64748b !important;
+  .daftar-actions button.active {
+    background: #6654c8 !important;
+    border-color: #6654c8 !important;
+    color: #ffffff !important;
 
-          font-family: inherit !important;
+    box-shadow:
+      0 3px 8px rgba(102, 84, 200, 0.20) !important;
+  }
 
-          font-size: 11px !important;
+  .daftar-actions button.active:hover {
+    background: #5948b8 !important;
+    border-color: #5948b8 !important;
+  }
 
-          font-weight: 600 !important;
 
-          letter-spacing: 0.02em !important;
+  /* =================================================
+     TOMBOL TUTUP
+     ================================================= */
 
-          line-height: 1 !important;
+  .daftar-actions .daftar-close {
+    background: #f7f9fc !important;
+    border-color: #d5dfed !important;
+    color: #53657d !important;
+  }
 
-          padding: 2px 0 !important;
+  .daftar-actions .daftar-close:hover {
+    background: #edf2f8 !important;
+    color: #0b2a6f !important;
+  }
 
-          margin: 0 !important;
 
-          border: none !important;
+  /* =================================================
+     TABLE HEADER
+     ================================================= */
 
-          border-radius: 0 !important;
+  .daftar-table th {
+    padding: 11px 14px !important;
 
-          background:
-            transparent !important;
+    background: #f3f6fb !important;
 
-          box-shadow: none !important;
+    color: #61728a !important;
 
-          outline: none !important;
-        }
+    border-bottom: 1px solid #d9e2ef !important;
 
+    font-size: 10px !important;
+    font-weight: 700 !important;
 
-        /* -----------------------------------------------
-           HOVER
-           ----------------------------------------------- */
+    letter-spacing: 0.035em !important;
 
-        .daftar-table th
-          .sort-header:hover {
+    white-space: nowrap;
+  }
 
-          color: #4f46e5 !important;
 
-          background:
-            transparent !important;
+  /* =================================================
+     SORT HEADER
+     ================================================= */
 
-          border: none !important;
+  .daftar-table th .sort-header {
+    all: unset !important;
 
-          box-shadow: none !important;
-        }
+    display: inline-flex !important;
+    align-items: center !important;
 
+    gap: 5px !important;
 
-        /* -----------------------------------------------
-           FOCUS
-           ----------------------------------------------- */
+    cursor: pointer !important;
 
-        .daftar-table th
-          .sort-header:focus,
-        .daftar-table th
-          .sort-header:focus-visible {
+    color: #61728a !important;
 
-          outline: none !important;
+    font-family: inherit !important;
+    font-size: 10px !important;
+    font-weight: 700 !important;
 
-          border: none !important;
+    letter-spacing: 0.035em !important;
+    line-height: 1 !important;
 
-          box-shadow: none !important;
+    padding: 3px 0 !important;
+    margin: 0 !important;
 
-          background:
-            transparent !important;
-        }
+    border: none !important;
+    border-radius: 0 !important;
 
+    background: transparent !important;
+    box-shadow: none !important;
+    outline: none !important;
+  }
 
-        /* -----------------------------------------------
-           ACTIVE / CLICK
-           ----------------------------------------------- */
+  .daftar-table th .sort-header:hover {
+    color: #0b2a6f !important;
+    background: transparent !important;
+  }
 
-        .daftar-table th
-          .sort-header:active {
+  .daftar-table th .sort-header:focus,
+  .daftar-table th .sort-header:focus-visible {
+    outline: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
 
-          transform:
-            translateY(1px);
+  .daftar-table th .sort-header:active {
+    transform: translateY(1px);
+    background: transparent !important;
+  }
 
-          background:
-            transparent !important;
 
-          border: none !important;
-        }
+  /* =================================================
+     SORT ICON
+     ================================================= */
 
+  .sort-icon {
+    display: inline-flex !important;
 
-        /* -----------------------------------------------
-           SORT ICON
-           ----------------------------------------------- */
+    align-items: center !important;
+    justify-content: center !important;
 
-        .sort-icon {
+    width: 12px !important;
 
-          display: inline-flex !important;
+    color: #9aa9bd !important;
 
-          align-items: center !important;
+    font-size: 11px !important;
+    font-weight: 500 !important;
 
-          justify-content: center !important;
+    line-height: 1 !important;
 
-          width: 12px !important;
+    transition: color 0.15s ease;
+  }
 
-          font-size: 12px !important;
+  .daftar-table th .sort-header:hover .sort-icon {
+    color: #6654c8 !important;
+  }
 
-          line-height: 1 !important;
 
-          font-weight: 500 !important;
+  /* =================================================
+     TABLE BODY
+     ================================================= */
 
-          color: #94a3b8 !important;
-        }
+  .daftar-table tbody tr {
+    background: #ffffff !important;
 
+    border-bottom: 1px solid #e3e9f2 !important;
 
-        .daftar-table th
-          .sort-header:hover
-          .sort-icon {
+    transition:
+      background 0.15s ease !important;
+  }
 
-          color: #4f46e5 !important;
-        }
+  .daftar-table tbody tr:hover {
+    background: #f5f8fd !important;
+  }
 
+  .daftar-table td {
+    color: #34465e !important;
 
-        /* -----------------------------------------------
-           ROW HOVER
-           ----------------------------------------------- */
+    border-bottom: 1px solid #e3e9f2 !important;
 
-        .daftar-table tbody tr {
+    font-size: 11px !important;
+  }
 
-          transition:
-            background
-            0.15s ease;
-        }
 
+  /* =================================================
+     NIB / BIDANG ID
+     ================================================= */
 
-        .daftar-table tbody tr:hover {
+  .daftar-table .kode {
+    color: #5547c8 !important;
 
-          background:
-            rgba(
-              99,
-              102,
-              241,
-              0.035
-            );
-        }
+    font-weight: 600 !important;
 
+    font-variant-numeric: tabular-nums;
+  }
 
-        /* -----------------------------------------------
-           KODE / NIB / BIDANG ID
-           ----------------------------------------------- */
 
-        .daftar-table .kode {
+  /* =================================================
+     RECORD ID
+     ================================================= */
 
-          color: #5b4bd8;
+  .daftar-table .angka {
+    color: #53657d !important;
 
-          font-weight: 500;
-        }
+    font-variant-numeric: tabular-nums;
 
+    font-weight: 500;
+  }
 
-        /* -----------------------------------------------
-           ANGKA
-           ----------------------------------------------- */
 
-        .daftar-table .angka {
+  /* =================================================
+     STATUS AKSI
+     ================================================= */
 
-          color: #475569;
+  .status-daftar {
+    display: inline-flex !important;
 
-          font-variant-numeric:
-            tabular-nums;
-        }
+    align-items: center !important;
+    gap: 6px !important;
 
-      `}</style>
+    padding: 4px 7px !important;
+
+    border-radius: 6px !important;
+
+    font-size: 9px !important;
+    font-weight: 700 !important;
+
+    letter-spacing: 0.03em !important;
+  }
+
+  .status-dot {
+    width: 6px !important;
+    height: 6px !important;
+
+    border-radius: 50% !important;
+
+    background: currentColor !important;
+
+    flex: 0 0 auto;
+  }
+
+
+  /* INPUT */
+
+  .audit-input {
+    color: #2f7a58 !important;
+    background: #edf8f2 !important;
+  }
+
+
+  /* UPDATE */
+
+  .audit-update {
+    color: #4e67a8 !important;
+    background: #eef3fb !important;
+  }
+
+
+  /* DELETE */
+
+  .audit-delete {
+    color: #a45b5b !important;
+    background: #fbefef !important;
+  }
+
+
+  /* =================================================
+     EMPTY / LOADING
+     ================================================= */
+
+  .daftar-empty {
+    color: #7b8ba3 !important;
+
+    background: #ffffff !important;
+
+    font-size: 11px !important;
+  }
+`}</style>
 
     </div>
   );
