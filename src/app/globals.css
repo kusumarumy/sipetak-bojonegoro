@@ -6644,535 +6644,27 @@ html[data-theme="dark"] .statistik-loading span {
 }
 /* =========================================================
    ANALISIS KEPEMILIKAN
+   SELARAS DENGAN STATISTIKA
    ========================================================= */
 
 .panel-kepemilikan {
-  width: 380px;
-  max-width: calc(100vw - 82px);
-
-  color: var(--text);
-  background: var(--panel);
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-}
-
-
-/* =========================
-   HEADER
-   ========================= */
-
-.panel-kepemilikan .panel-header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 14px;
-
-  padding: 16px 17px 13px;
-
-  border-bottom: 1px solid var(--border);
-}
-
-.panel-kepemilikan .panel-title {
-  font-size: 14px;
-  font-weight: 700;
-  line-height: 1.25;
-  letter-spacing: -0.01em;
-  color: var(--text);
-}
-
-.panel-kepemilikan .panel-subtitle {
-  margin-top: 4px;
-
-  font-size: 10px;
-  line-height: 1.4;
-
-  color: var(--muted);
-}
-
-.panel-kepemilikan .panel-close {
-  width: 28px;
-  height: 28px;
-
-  display: grid;
-  place-items: center;
-
-  flex: 0 0 auto;
-
-  padding: 0;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-
-  background: var(--panel-soft);
-  color: var(--muted);
-
-  font-size: 19px;
-  line-height: 1;
-
-  cursor: pointer;
-
-  transition:
-    background 0.15s ease,
-    color 0.15s ease,
-    border-color 0.15s ease;
-}
-
-.panel-kepemilikan .panel-close:hover {
-  background: var(--hover);
-  color: var(--text);
-  border-color: var(--border-strong);
-}
-
-
-/* =========================
-   BODY
-   ========================= */
-
-.panel-kepemilikan .panel-body {
-  max-height: calc(100vh - 150px);
-  overflow-y: auto;
-
-  padding: 14px 15px 16px;
-}
-
-.panel-kepemilikan .panel-body::-webkit-scrollbar {
-  width: 5px;
-}
-
-.panel-kepemilikan .panel-body::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.panel-kepemilikan .panel-body::-webkit-scrollbar-thumb {
-  background: var(--scrollbar);
-  border-radius: 999px;
-}
-
-
-/* =========================
-   SELECT PEMILIK
-   ========================= */
-
-.panel-kepemilikan .form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.panel-kepemilikan .form-group label {
-  font-size: 10px;
-  font-weight: 650;
-  color: var(--muted);
-}
-
-.panel-kepemilikan .form-group select {
-  width: 100%;
-  height: 38px;
-
-  padding: 0 34px 0 11px;
-
-  border: 1px solid var(--border);
-  border-radius: 9px;
-
-  background: var(--panel-soft);
-  color: var(--text);
-
-  font-family: inherit;
-  font-size: 11px;
-
-  outline: none;
-  cursor: pointer;
-
-  transition:
-    border-color 0.15s ease,
-    background 0.15s ease,
-    box-shadow 0.15s ease;
-}
-
-.panel-kepemilikan .form-group select:hover {
-  border-color: var(--border-strong);
-}
-
-.panel-kepemilikan .form-group select:focus {
-  border-color: #6c4dff;
-  box-shadow: 0 0 0 3px rgba(108, 77, 255, 0.10);
-}
-
-.panel-kepemilikan .form-group select:disabled {
-  opacity: 0.55;
-  cursor: not-allowed;
-}
-
-
-/* =========================
-   PEMILIK TERPILIH
-   ========================= */
-
-.panel-kepemilikan .owner-card {
-  margin-top: 12px;
-
-  padding: 12px 13px;
-
-  border: 1px solid var(--border);
-  border-radius: 10px;
-
-  background:
-    linear-gradient(
-      135deg,
-      rgba(108, 77, 255, 0.08),
-      var(--panel-soft)
-    );
-}
-
-.panel-kepemilikan .owner-name {
-  font-size: 13px;
-  font-weight: 700;
-  line-height: 1.3;
-
-  color: var(--text);
-}
-
-.panel-kepemilikan .owner-nik {
-  margin-top: 4px;
-
-  font-size: 9px;
-  line-height: 1.3;
-
-  color: var(--muted);
-}
-
-
-/* =========================
-   STATISTIK
-   ========================= */
-
-.panel-kepemilikan .analysis-stats {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-
-  gap: 7px;
-
-  margin-top: 9px;
-}
-
-.panel-kepemilikan .analysis-stat {
-  min-width: 0;
-
-  padding: 9px 10px;
-
-  border: 1px solid var(--border);
-  border-radius: 9px;
-
-  background: var(--panel-soft);
-}
-
-.panel-kepemilikan .analysis-stat span {
-  display: block;
-
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-
-  font-size: 9px;
-  line-height: 1.3;
-
-  color: var(--muted);
-}
-
-.panel-kepemilikan .analysis-stat strong {
-  display: block;
-
-  margin-top: 4px;
-
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-
-  font-size: 12px;
-  line-height: 1.25;
-
-  font-weight: 700;
-
-  color: var(--text);
-}
-
-/* statistik terakhir full width */
-.panel-kepemilikan .analysis-stat:last-child {
-  grid-column: 1 / -1;
-}
-
-
-/* =========================
-   JUDUL DAFTAR
-   ========================= */
-
-.panel-kepemilikan .analysis-section-title {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  margin: 16px 1px 8px;
-
-  font-size: 11px;
-  font-weight: 700;
-
-  color: var(--text);
-}
-
-.panel-kepemilikan .analysis-section-title span {
-  font-size: 9px;
-  font-weight: 500;
-
-  color: var(--muted);
-}
-
-
-/* =========================
-   LIST BIDANG
-   ========================= */
-
-.panel-kepemilikan .analysis-list {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.panel-kepemilikan .analysis-field {
-  width: 100%;
-
-  padding: 10px 11px;
-
-  border: 1px solid var(--border);
-  border-radius: 9px;
-
-  background: var(--panel-soft);
-  color: var(--text);
-
-  text-align: left;
-
-  font-family: inherit;
-
-  cursor: pointer;
-
-  transition:
-    border-color 0.15s ease,
-    background 0.15s ease,
-    transform 0.15s ease;
-}
-
-.panel-kepemilikan .analysis-field:hover {
-  border-color: rgba(108, 77, 255, 0.45);
-
-  background:
-    linear-gradient(
-      135deg,
-      rgba(108, 77, 255, 0.06),
-      var(--panel-soft)
-    );
-
-  transform: translateY(-1px);
-}
-
-.panel-kepemilikan .analysis-field:active {
-  transform: translateY(0);
-}
-
-
-/* =========================
-   FIELD HEADER
-   ========================= */
-
-.panel-kepemilikan .analysis-field-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  gap: 10px;
-}
-
-.panel-kepemilikan .analysis-field-top strong {
-  min-width: 0;
-
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-
-  font-size: 11px;
-  font-weight: 700;
-
-  color: var(--text);
-}
-
-.panel-kepemilikan .analysis-field-top span {
-  flex: 0 0 auto;
-
-  font-size: 8px;
-  font-weight: 600;
-
-  color: #6c4dff;
-}
-
-
-/* =========================
-   LOKASI
-   ========================= */
-
-.panel-kepemilikan .analysis-field-location {
-  margin-top: 4px;
-
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-
-  font-size: 9px;
-
-  color: var(--muted);
-}
-
-
-/* =========================
-   LUAS / DAMPAK
-   ========================= */
-
-.panel-kepemilikan .analysis-field-info {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px 12px;
-
-  margin-top: 8px;
-
-  font-size: 9px;
-
-  color: var(--muted);
-}
-
-.panel-kepemilikan .analysis-field-info span {
-  display: inline-flex;
-  align-items: center;
-}
-
-
-/* =========================
-   PENYEWA
-   ========================= */
-
-.panel-kepemilikan .analysis-field-renter {
-  margin-top: 7px;
-  padding-top: 7px;
-
-  border-top: 1px solid var(--border);
-
-  font-size: 9px;
-
-  color: var(--muted);
-}
-
-.panel-kepemilikan .analysis-field-renter strong {
-  color: var(--text);
-  font-weight: 650;
-}
-
-
-/* =========================
-   EMPTY / ERROR
-   ========================= */
-
-.panel-kepemilikan .analysis-empty {
-  padding: 20px 12px;
-
-  text-align: center;
-
-  font-size: 10px;
-  line-height: 1.5;
-
-  color: var(--muted);
-}
-
-.panel-kepemilikan .panel-error {
-  margin-top: 10px;
-
-  padding: 9px 10px;
-
-  border: 1px solid rgba(220, 53, 69, 0.18);
-  border-radius: 8px;
-
-  background: rgba(220, 53, 69, 0.07);
-
-  color: #c62828;
-
-  font-size: 10px;
-  line-height: 1.4;
-}
-
-
-/* =========================================================
-   DARK MODE
-   ========================================================= */
-
-[data-theme='dark'] .panel-kepemilikan {
-  --panel: rgba(20, 23, 29, 0.94);
-  --panel-soft: rgba(255, 255, 255, 0.045);
-
-  --text: #f1f3f6;
-  --muted: #9299a5;
-
-  --border: rgba(255, 255, 255, 0.09);
-  --border-strong: rgba(255, 255, 255, 0.16);
-
-  --hover: rgba(255, 255, 255, 0.07);
-  --scrollbar: rgba(255, 255, 255, 0.18);
-}
-
-
-/* =========================================================
-   LIGHT MODE
-   ========================================================= */
-
-[data-theme='light'] .panel-kepemilikan,
-:root:not([data-theme='dark']) .panel-kepemilikan {
-  --panel: rgba(255, 255, 255, 0.96);
-  --panel-soft: rgba(0, 0, 0, 0.025);
-
-  --text: #20242b;
-  --muted: #737b87;
-
-  --border: rgba(20, 25, 35, 0.09);
-  --border-strong: rgba(20, 25, 35, 0.16);
-
-  --hover: rgba(0, 0, 0, 0.045);
-  --scrollbar: rgba(0, 0, 0, 0.18);
-}
-
-
-/* =========================================================
-   DARK SELECT OPTION
-   ========================================================= */
-
-[data-theme='dark']
-  .panel-kepemilikan
-  .form-group
-  select
-  option {
-  background: #171a20;
-  color: #f1f3f6;
-}
-.filter-flyout {
-  --filter-red: #9f1239;
-  --filter-red-2: #be123c;
-
-  --filter-text: #334155;
-  --filter-text-2: #475569;
-  --filter-muted: #94a3b8;
-
-  --filter-bg: #ffffff;
-  --filter-soft: #f8fafc;
-  --filter-line: #e2e8f0;
+  --kep-red: #9f1239;
+  --kep-red-2: #be123c;
+
+  --kep-text: #334155;
+  --kep-text-2: #475569;
+  --kep-muted: #94a3b8;
+
+  --kep-bg: #ffffff;
+  --kep-soft: #f8fafc;
+  --kep-track: #edf1f5;
+  --kep-line: #e2e8f0;
 
   position: absolute;
 
-  top: 112px;
-  left: 82px;
+  /* SAMA DENGAN STATISTIKA */
+  top: 82px;
+  left: 110px;
 
   width: 330px;
   height: 540px;
@@ -7181,7 +6673,7 @@ html[data-theme="dark"] .statistik-loading span {
   display: flex;
   flex-direction: column;
 
-  background: var(--filter-bg);
+  background: var(--kep-bg);
 
   border: 1px solid rgba(15, 23, 42, 0.08);
   border-radius: 13px;
@@ -7197,6 +6689,853 @@ html[data-theme="dark"] .statistik-loading span {
   animation: flyoutIn .18s ease-out;
 }
 
+
+/* =========================================================
+   HEADER
+   SAMA PROPORSINYA DENGAN STATISTIKA
+   ========================================================= */
+
+.panel-kepemilikan .panel-header {
+  flex: 0 0 auto;
+
+  height: 58px;
+  min-height: 58px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 7px 11px;
+
+  background: #fff;
+
+  border-bottom: 1px solid var(--kep-line);
+}
+
+
+/* =========================================================
+   TITLE
+   ========================================================= */
+
+.panel-kepemilikan .panel-title {
+  color: #881337;
+
+  font-size: 14px;
+  font-weight: 800;
+
+  line-height: 1;
+}
+
+.panel-kepemilikan .panel-subtitle {
+  margin-top: 3px;
+
+  color: #7b8ba1;
+
+  font-size: 8px;
+  font-weight: 500;
+
+  line-height: 1;
+}
+
+
+/* =========================================================
+   CLOSE
+   ========================================================= */
+
+.panel-kepemilikan .panel-close {
+  width: 28px;
+  height: 28px;
+
+  flex: 0 0 28px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+
+  color: #64748b;
+
+  background: #fff;
+
+  border: 1px solid #dbe3ec;
+  border-radius: 8px;
+
+  font-size: 18px;
+  font-weight: 300;
+  line-height: 1;
+
+  cursor: pointer;
+}
+
+.panel-kepemilikan .panel-close:hover {
+  color: var(--kep-red);
+
+  background: #fff5f7;
+
+  border-color: #efc5cf;
+}
+
+
+/* =========================================================
+   BODY
+   SAMA DENGAN STATISTIKA
+   ========================================================= */
+
+.panel-kepemilikan .panel-body {
+  flex: 1 1 auto;
+
+  min-height: 0;
+
+  padding: 8px;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
+}
+
+.panel-kepemilikan .panel-body::-webkit-scrollbar {
+  width: 4px;
+}
+
+.panel-kepemilikan .panel-body::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 20px;
+}
+
+
+/* =========================================================
+   FORM
+   ========================================================= */
+
+.panel-kepemilikan .form-group {
+  display: flex;
+  flex-direction: column;
+
+  gap: 5px;
+
+  margin-bottom: 7px;
+}
+
+.panel-kepemilikan .form-group label {
+  color: #718096;
+
+  font-size: 7px;
+  font-weight: 800;
+
+  letter-spacing: .03em;
+}
+
+.panel-kepemilikan .form-group select {
+  width: 100%;
+  height: 34px;
+
+  padding: 0 30px 0 10px;
+
+  color: #475569;
+  background: #f8fafc;
+
+  border: 1px solid #dfe6ed;
+  border-radius: 8px;
+
+  font-family: inherit;
+  font-size: 9px;
+  font-weight: 600;
+
+  outline: none;
+  cursor: pointer;
+
+  transition:
+    border-color .15s ease,
+    background .15s ease,
+    box-shadow .15s ease;
+}
+
+.panel-kepemilikan .form-group select:hover {
+  border-color: #cbd5e1;
+  background: #f5f7f9;
+}
+
+.panel-kepemilikan .form-group select:focus {
+  border-color: var(--kep-red);
+
+  box-shadow:
+    0 0 0 3px rgba(159, 18, 57, .08);
+}
+
+.panel-kepemilikan .form-group select:disabled {
+  opacity: .55;
+  cursor: not-allowed;
+}
+
+
+/* =========================================================
+   PEMILIK TERPILIH
+   STYLE MENGIKUTI STAT-CARD
+   ========================================================= */
+
+.panel-kepemilikan .owner-card {
+  margin-top: 7px;
+
+  padding: 9px 10px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #fafbfc,
+      #f5f7f9
+    );
+
+  border: 1px solid #dfe6ed;
+  border-radius: 9px;
+}
+
+.panel-kepemilikan .owner-name {
+  color: #3f536b;
+
+  font-size: 11px;
+  font-weight: 800;
+
+  line-height: 1.2;
+}
+
+.panel-kepemilikan .owner-nik {
+  margin-top: 3px;
+
+  color: #94a3b8;
+
+  font-size: 7px;
+  font-weight: 600;
+
+  line-height: 1;
+}
+
+
+/* =========================================================
+   ANALYSIS STATS
+   CARD STYLE SEPERTI STAT-KPI / STAT-CARD
+   ========================================================= */
+
+.panel-kepemilikan .analysis-stats {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 6px;
+
+  margin-top: 7px;
+}
+
+.panel-kepemilikan .analysis-stat {
+  min-width: 0;
+
+  padding: 8px;
+
+  background: #fff;
+
+  border: 1px solid #dfe6ed;
+  border-radius: 8px;
+}
+
+.panel-kepemilikan .analysis-stat span {
+  display: block;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  color: #718096;
+
+  font-size: 7px;
+  font-weight: 800;
+
+  line-height: 1;
+}
+
+.panel-kepemilikan .analysis-stat strong {
+  display: block;
+
+  margin-top: 4px;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  color: #475569;
+
+  font-size: 15px;
+  font-weight: 800;
+
+  line-height: 1;
+}
+
+.panel-kepemilikan .analysis-stat:last-child {
+  grid-column: 1 / -1;
+}
+
+
+/* =========================================================
+   SECTION TITLE
+   ========================================================= */
+
+.panel-kepemilikan .analysis-section-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin: 11px 1px 6px;
+
+  color: #3f536b;
+
+  font-size: 10px;
+  font-weight: 800;
+
+  line-height: 1;
+}
+
+.panel-kepemilikan .analysis-section-title span {
+  color: #94a3b8;
+
+  font-size: 7px;
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   LIST
+   ========================================================= */
+
+.panel-kepemilikan .analysis-list {
+  display: flex;
+  flex-direction: column;
+
+  gap: 5px;
+}
+
+
+/* =========================================================
+   BIDANG CARD
+   STYLE SEPERTI STAT-CARD
+   ========================================================= */
+
+.panel-kepemilikan .analysis-field {
+  width: 100%;
+
+  padding: 8px 9px;
+
+  color: #475569;
+  background: #fff;
+
+  border: 1px solid #dfe6ed;
+  border-radius: 8px;
+
+  text-align: left;
+
+  font-family: inherit;
+
+  cursor: pointer;
+
+  transition:
+    border-color .15s ease,
+    background .15s ease,
+    transform .15s ease;
+}
+
+.panel-kepemilikan .analysis-field:hover {
+  background:
+    linear-gradient(
+      135deg,
+      #fff8fa,
+      #f8fafc
+    );
+
+  border-color: #efc6d0;
+
+  transform: translateY(-1px);
+}
+
+.panel-kepemilikan .analysis-field:active {
+  transform: translateY(0);
+}
+
+
+/* =========================================================
+   FIELD HEADER
+   ========================================================= */
+
+.panel-kepemilikan .analysis-field-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 8px;
+}
+
+.panel-kepemilikan .analysis-field-top strong {
+  min-width: 0;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  color: #3f536b;
+
+  font-size: 9px;
+  font-weight: 800;
+}
+
+.panel-kepemilikan .analysis-field-top span {
+  flex: 0 0 auto;
+
+  color: var(--kep-red);
+
+  font-size: 7px;
+  font-weight: 800;
+}
+
+
+/* =========================================================
+   LOCATION
+   ========================================================= */
+
+.panel-kepemilikan .analysis-field-location {
+  margin-top: 3px;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  color: #94a3b8;
+
+  font-size: 7px;
+  font-weight: 500;
+}
+
+
+/* =========================================================
+   LUAS / DAMPAK
+   ========================================================= */
+
+.panel-kepemilikan .analysis-field-info {
+  display: flex;
+  flex-wrap: wrap;
+
+  gap: 4px 10px;
+
+  margin-top: 6px;
+
+  color: #718096;
+
+  font-size: 7px;
+  font-weight: 600;
+}
+
+.panel-kepemilikan .analysis-field-info span {
+  display: inline-flex;
+  align-items: center;
+}
+
+
+/* =========================================================
+   PENYEWA
+   ========================================================= */
+
+.panel-kepemilikan .analysis-field-renter {
+  margin-top: 5px;
+  padding-top: 5px;
+
+  color: #94a3b8;
+
+  border-top: 1px solid #edf1f5;
+
+  font-size: 7px;
+  font-weight: 500;
+}
+
+.panel-kepemilikan .analysis-field-renter strong {
+  color: #475569;
+
+  font-weight: 800;
+}
+
+
+/* =========================================================
+   EMPTY
+   ========================================================= */
+
+.panel-kepemilikan .analysis-empty {
+  padding: 18px 10px;
+
+  color: #94a3b8;
+
+  text-align: center;
+
+  font-size: 8px;
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   ERROR
+   ========================================================= */
+
+.panel-kepemilikan .panel-error {
+  margin-top: 7px;
+
+  padding: 8px 9px;
+
+  color: #9f1239;
+  background: #fff5f7;
+
+  border: 1px solid #efc6d0;
+  border-radius: 7px;
+
+  font-size: 8px;
+  line-height: 1.4;
+}
+
+
+/* =========================================================
+   DARK MODE
+   SAMA DENGAN STATISTIKA
+   ========================================================= */
+
+html[data-theme="dark"] .panel-kepemilikan {
+  --kep-text: #c9b9be;
+  --kep-text-2: #b9a7ad;
+  --kep-muted: #95838a;
+
+  --kep-bg: #241a1d;
+  --kep-soft: #2b2023;
+  --kep-line: #4b353a;
+
+  background: #241a1d;
+
+  border-color: #4b353a;
+
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, .38);
+}
+
+
+/* =========================================================
+   DARK HEADER
+   ========================================================= */
+
+html[data-theme="dark"] .panel-kepemilikan .panel-header {
+  background: #241a1d;
+
+  border-bottom-color: #4b353a;
+}
+
+html[data-theme="dark"] .panel-kepemilikan .panel-title {
+  color: #e7b7c1;
+}
+
+html[data-theme="dark"] .panel-kepemilikan .panel-subtitle {
+  color: #a99a9f;
+}
+
+html[data-theme="dark"] .panel-kepemilikan .panel-close {
+  background: #2b2023;
+
+  border-color: #5a4147;
+
+  color: #c9b5ba;
+}
+
+html[data-theme="dark"] .panel-kepemilikan .panel-close:hover {
+  background: #351f25;
+
+  border-color: #9b1f3b;
+
+  color: #fff;
+}
+
+
+/* =========================================================
+   DARK BODY
+   ========================================================= */
+
+html[data-theme="dark"] .panel-kepemilikan .panel-body {
+  background: #241a1d;
+
+  scrollbar-color: #5a4147 transparent;
+}
+
+html[data-theme="dark"]
+.panel-kepemilikan
+.panel-body::-webkit-scrollbar-thumb {
+  background: #5a4147;
+}
+
+
+/* =========================================================
+   DARK FORM
+   ========================================================= */
+
+html[data-theme="dark"]
+.panel-kepemilikan
+.form-group
+label {
+  color: #95838a;
+}
+
+html[data-theme="dark"]
+.panel-kepemilikan
+.form-group
+select {
+  color: #c9b9be;
+
+  background: #2b2023;
+
+  border-color: #4b353a;
+}
+
+html[data-theme="dark"]
+.panel-kepemilikan
+.form-group
+select:hover {
+  background: #35272b;
+
+  border-color: #5a4147;
+}
+
+html[data-theme="dark"]
+.panel-kepemilikan
+.form-group
+select:focus {
+  border-color: #9b1f3b;
+
+  box-shadow:
+    0 0 0 3px rgba(155, 31, 59, .12);
+}
+
+html[data-theme="dark"]
+.panel-kepemilikan
+.form-group
+select
+option {
+  background: #2b2023;
+  color: #e2d4d8;
+}
+
+
+/* =========================================================
+   DARK OWNER
+   ========================================================= */
+
+html[data-theme="dark"] .panel-kepemilikan .owner-card {
+  background:
+    linear-gradient(
+      135deg,
+      #2b2023,
+      #241a1d
+    );
+
+  border-color: #4b353a;
+}
+
+html[data-theme="dark"] .panel-kepemilikan .owner-name {
+  color: #c9b9be;
+}
+
+html[data-theme="dark"] .panel-kepemilikan .owner-nik {
+  color: #95838a;
+}
+
+
+/* =========================================================
+   DARK STAT
+   ========================================================= */
+
+html[data-theme="dark"]
+.panel-kepemilikan
+.analysis-stat {
+  background: #2b2023;
+
+  border-color: #4b353a;
+}
+
+html[data-theme="dark"]
+.panel-kepemilikan
+.analysis-stat
+span {
+  color: #95838a;
+}
+
+html[data-theme="dark"]
+.panel-kepemilikan
+.analysis-stat
+strong {
+  color: #c9b9be;
+}
+
+
+/* =========================================================
+   DARK SECTION
+   ========================================================= */
+
+html[data-theme="dark"]
+.panel-kepemilikan
+.analysis-section-title {
+  color: #c9b9be;
+}
+
+html[data-theme="dark"]
+.panel-kepemilikan
+.analysis-section-title
+span {
+  color: #95838a;
+}
+
+
+/* =========================================================
+   DARK FIELD
+   ========================================================= */
+
+html[data-theme="dark"]
+.panel-kepemilikan
+.analysis-field {
+  color: #c9b9be;
+
+  background: #2b2023;
+
+  border-color: #4b353a;
+}
+
+html[data-theme="dark"]
+.panel-kepemilikan
+.analysis-field:hover {
+  background:
+    linear-gradient(
+      135deg,
+      #35272b,
+      #2b2023
+    );
+
+  border-color: #9b1f3b;
+}
+
+html[data-theme="dark"]
+.panel-kepemilikan
+.analysis-field-top
+strong {
+  color: #c9b9be;
+}
+
+html[data-theme="dark"]
+.panel-kepemilikan
+.analysis-field-top
+span {
+  color: #d58a9a;
+}
+
+html[data-theme="dark"]
+.panel-kepemilikan
+.analysis-field-location {
+  color: #95838a;
+}
+
+html[data-theme="dark"]
+.panel-kepemilikan
+.analysis-field-info {
+  color: #a9969d;
+}
+
+html[data-theme="dark"]
+.panel-kepemilikan
+.analysis-field-renter {
+  color: #95838a;
+
+  border-top-color: #4b353a;
+}
+
+html[data-theme="dark"]
+.panel-kepemilikan
+.analysis-field-renter
+strong {
+  color: #c9b9be;
+}
+
+
+/* =========================================================
+   DARK EMPTY / ERROR
+   ========================================================= */
+
+html[data-theme="dark"]
+.panel-kepemilikan
+.analysis-empty {
+  color: #95838a;
+}
+
+html[data-theme="dark"]
+.panel-kepemilikan
+.panel-error {
+  color: #d58a9a;
+
+  background: #351f25;
+
+  border-color: #5a4147;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   SAMA DENGAN STATISTIKA
+   ========================================================= */
+
+@media (max-width: 900px) {
+  .panel-kepemilikan {
+    left: 82px;
+    width: 320px;
+  }
+}
+
+
+@media (max-width: 600px) {
+  .panel-kepemilikan {
+    top: 82px;
+    left: 10px;
+    right: 10px;
+
+    width: auto;
+
+    height: 560px;
+    max-height: calc(100vh - 94px);
+
+    border-radius: 12px;
+  }
+
+  .panel-kepemilikan .panel-header {
+    height: 52px;
+    min-height: 52px;
+
+    padding: 6px 9px;
+  }
+
+  .panel-kepemilikan .panel-title {
+    font-size: 13px;
+  }
+
+  .panel-kepemilikan .panel-subtitle {
+    font-size: 7px;
+  }
+
+  .panel-kepemilikan .panel-close {
+    width: 27px;
+    height: 27px;
+
+    font-size: 16px;
+  }
+
+  .panel-kepemilikan .panel-body {
+    padding: 7px;
+  }
+}
 
 /* =========================================================
    HEADER
