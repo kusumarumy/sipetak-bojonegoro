@@ -13,13 +13,6 @@ import FilterPanel from './FilterPanel';
 import RiwayatAksi from './RiwayatAksi';
 import { useApp } from '@/store/useApp';
 import KepemilikanPanel from './KepemilikanPanel';
-import {
-  STATUS_LABEL,
-  STATUS_WARNA,
-  type Peran,
-  type StatusBidang,
-} from '@/types';
-
 import logoBojonegoro from '../../data/icon/bojonegoro.png';
 
 const MapCanvas = dynamic(
@@ -71,18 +64,6 @@ export default function Peta({
   const [tema, setTema] =
     useState<'light' | 'dark'>('light');
 
-  const [jumlahPenggunaan, setJumlahPenggunaan] =
-    useState<Record<string, number>>({
-      Kosong: 0,
-      'Tanah Persawahan': 0,
-      'Tanah Perkampungan': 0,
-      'Tanah Perumahan': 0,
-      'Lain-lain': 0,
-      'Tanah Tidak Ada Bangunan': 0,
-      'Belum diisi': 0,
-    });
-
-
   useEffect(() => {
     const saved =
       localStorage.getItem('dppt-tema');
@@ -116,10 +97,6 @@ export default function Peta({
       next;
   };
 
-  // =========================================================
-  // TOAST
-  // =========================================================
-
   useEffect(() => {
     if (!pesan) return;
 
@@ -132,64 +109,9 @@ export default function Peta({
     };
   }, [pesan, beriPesan]);
 
-   useEffect(() => {
-    fetch('/api/bidang')
-      .then((r) => r.json())
-      .then((fc) => {
-        const counts: Record<string, number> = {
-          Kosong: 0,
-          'Tanah Persawahan': 0,
-          'Tanah Perkampungan': 0,
-          'Tanah Perumahan': 0,
-          'Lain-lain': 0,
-          'Tanah Tidak Ada Bangunan': 0,
-          'Belum diisi': 0,
-        };
-
-        for (
-          const f of fc.features ?? []
-        ) {
-          const value =
-            f.properties?.penggunaan;
-
-          if (
-            value === null ||
-            value === undefined ||
-            value === ''
-          ) {
-            counts['Belum diisi']++;
-          } else if (
-            value in counts
-          ) {
-            counts[value]++;
-          }
-        }
-
-        setJumlahPenggunaan(counts);
-      })
-      .catch(() => {});
-  }, []);
-
-  // =========================================================
-  // RINGKASAN STATUS
-  // =========================================================
-
-  const angka: [
-    StatusBidang,
-    number
-  ][] = [
-    ['draft', ringkasan.draft],
-    ['terkirim', ringkasan.terkirim],
-    ['terverifikasi', ringkasan.terverifikasi],
-    ['revisi', ringkasan.revisi],
-  ];
 
   return (
     <div className="shell">
-
-      {/* =====================================================
-          HEADER
-          ===================================================== */}
 
       <header className="bar">
 
