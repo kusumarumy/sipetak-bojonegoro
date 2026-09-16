@@ -4,7 +4,7 @@ import { query } from '@/lib/db';
 
 export async function GET(
   _request: Request,
-  { params }: { params: Promise<{ nik: string }> }
+  { params }: { params: Promise<{ nama: string }> }
 ) {
   const sesi = await auth();
 
@@ -15,13 +15,13 @@ export async function GET(
   }
 
   try {
-    const { nik } = await params;
+    const { nama } = await params;
 
-    const nikBersih = nik?.trim();
+    const namaBersih = nama?.trim();
 
-    if (!nikBersih) {
+    if (!namaBersih) {
       return NextResponse.json(
-        { error: 'NIK tidak valid.' },
+        { error: 'Nama pemilik tidak valid.' },
         { status: 400 }
       );
     }
@@ -30,20 +30,15 @@ export async function GET(
       id: number;
       bidang_id: string | null;
       nib: string | null;
-
       nama_milik: string | null;
       nik_milik: string | null;
-
       nama_sewa: string | null;
       nik_sewa: string | null;
-
       kecamatan: string | null;
       kelurahan: string | null;
-
       luas_tnh: number | null;
       luas_terdampak_m2: number | null;
       luas_sisa_m2: number | null;
-
       dampak_tnh: string | null;
       penggunaan: string | null;
       sta_tnh: string | null;
@@ -53,34 +48,24 @@ export async function GET(
         id,
         bidang_id,
         nib,
-
         nama_milik,
         nik_milik,
-
         nama_sewa,
         nik_sewa,
-
         kecamatan,
         kelurahan,
-
         luas_tnh,
         luas_terdampak_m2,
         luas_sisa_m2,
-
         dampak_tnh,
         penggunaan,
         sta_tnh
-
       FROM public.bidang_tanah
-
-      WHERE TRIM(nik_milik) = $1
-
+      WHERE TRIM(nama_milik) = $1
       ORDER BY bidang_id ASC
       `,
-      [nikBersih]
+      [namaBersih]
     );
-
-    const jumlahBidang = bidang.length;
 
     const totalLuas = bidang.reduce(
       (total, b) =>
@@ -90,13 +75,15 @@ export async function GET(
 
     const totalLuasTerdampak = bidang.reduce(
       (total, b) =>
-        total + (Number(b.luas_terdampak_m2) || 0),
+        total +
+        (Number(b.luas_terdampak_m2) || 0),
       0
     );
 
     const totalLuasSisa = bidang.reduce(
       (total, b) =>
-        total + (Number(b.luas_sisa_m2) || 0),
+        total +
+        (Number(b.luas_sisa_m2) || 0),
       0
     );
 
@@ -106,33 +93,23 @@ export async function GET(
           Number(b.luas_terdampak_m2) > 0
       ).length;
 
-    const namaPemilik =
-      bidang.find(
-        (b) =>
-          b.nama_milik &&
-          b.nama_milik.trim()
-      )?.nama_milik ?? '';
-
     return NextResponse.json({
       pemilik: {
-        nama: namaPemilik,
-        nik: nikBersih,
+        nama: namaBersih,
       },
-
       ringkasan: {
-        jumlahBidang,
+        jumlahBidang: bidang.length,
         totalLuas,
         totalLuasTerdampak,
         totalLuasSisa,
         jumlahBidangTerdampak,
       },
-
       bidang,
     });
 
   } catch (error) {
     console.error(
-      'GET /api/analisis/kepemilikan/[nik] ERROR:',
+      'GET /api/analisis/kepemilikan/[nama] ERROR:',
       error
     );
 
