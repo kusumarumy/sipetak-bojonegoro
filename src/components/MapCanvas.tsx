@@ -92,19 +92,6 @@ export default function MapCanvas() {
     beriPesan
   } = useApp();
 
-  // ====================================================
-  // DEFINISI BIDANG DARI LAYERS.TS
-  // ====================================================
-
-  const defBidang =
-    LAYERS.find(
-      (l) => l.id === 'bidang'
-    );
-
-  // ====================================================
-  // ANALISIS BIDANG
-  // ====================================================
-
   useEffect(() => {
     const handleAnalisisBidang = (
       event: Event
@@ -1050,97 +1037,90 @@ export default function MapCanvas() {
             // Warna normal berasal dari layers.ts.
             // --------------------------------------------
 
-            'fill-color': [
-              'case',
+           'fill-color': [
+  'case',
 
-              // Hasil analisis
-              [
-                'boolean',
-                [
-                  'feature-state',
-                  'analisis'
-                ],
-                false
-              ],
+  // Bidang yang sedang dianalisis → CYAN
+  [
+    'boolean',
+    [
+      'feature-state',
+      'analisis'
+    ],
+    false
+  ],
 
-              '#00E5FF',
+  '#00E5FF',
 
-              // Bidang terpilih
-              [
-                'boolean',
-                [
-                  'feature-state',
-                  'sel'
-                ],
-                false
-              ],
+  // Bidang yang dipilih → MAGENTA
+  [
+    'boolean',
+    [
+      'feature-state',
+      'sel'
+    ],
+    false
+  ],
 
-              '#A51F35',
+  '#A51F35',
 
-              // Normal
-              defBidang?.warna ??
-                '#E9967A'
-            ],
+  // Bidang normal → MAGENTA
+  '#A51F35'
+],
+'fill-opacity': [
+  'case',
 
-            // --------------------------------------------
-            // OPACITY
-            // --------------------------------------------
+  // Analisis
+  [
+    'boolean',
+    [
+      'feature-state',
+      'analisis'
+    ],
+    false
+  ],
 
-            'fill-opacity': [
-              'case',
+  0.88,
 
-              // Analisis
-              [
-                'boolean',
-                [
-                  'feature-state',
-                  'analisis'
-                ],
-                false
-              ],
+  // Filter
+  [
+    'boolean',
+    [
+      'feature-state',
+      'filter'
+    ],
+    false
+  ],
 
-              0.88,
+  0.92,
 
-              // Filter
-              [
-                'boolean',
-                [
-                  'feature-state',
-                  'filter'
-                ],
-                false
-              ],
+  // Selected
+  [
+    'boolean',
+    [
+      'feature-state',
+      'sel'
+    ],
+    false
+  ],
 
-              0.92,
+  0.95,
 
-              // Selected
-              [
-                'boolean',
-                [
-                  'feature-state',
-                  'sel'
-                ],
-                false
-              ],
+  // Hover
+  [
+    'boolean',
+    [
+      'feature-state',
+      'hov'
+    ],
+    false
+  ],
 
-              0.95,
+  0.74,
 
-              // Hover
-              [
-                'boolean',
-                [
-                  'feature-state',
-                  'hov'
-                ],
-                false
-              ],
-
-              0.74,
-
-              // Normal
-              defBidang?.opasitas ??
-                0.50
-            ]
+  // Normal
+  0.50
+]
           }
         });
 
