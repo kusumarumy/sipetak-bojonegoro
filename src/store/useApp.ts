@@ -6,7 +6,7 @@ import type { Bidang, StatusBidang } from '@/types';
 export type Tema = 'auto' | 'light' | 'dark';
 
 export type Basemap =
-  | 'osm'
+  | 'esri-streets'
   | 'esri'
   | 'ortho'
   | 'google-hybrid'
