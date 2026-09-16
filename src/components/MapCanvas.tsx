@@ -735,59 +735,48 @@ map.addLayer({
         false
       ],
       '#00E5FF',
-
-      // bidang yang sedang dipilih
       [
         'boolean',
         ['feature-state', 'sel'],
         false
       ],
       '#A51F35',
-
-      // warna normal
-      pewarnaan === 'status'
-        ? ekspresiStatus()
-        : ekspresiPenggunaan()
+      '#E9967A'
     ],
 
-    'fill-opacity': [
-      'case',
+'fill-opacity': [
+  'case',
 
-      // hasil analisis
-      [
-        'boolean',
-        ['feature-state', 'analisis'],
-        false
-      ],
-      0.88,
+  [
+    'boolean',
+    ['feature-state', 'analisis'],
+    false
+  ],
+  0.88,
 
-      // bidang hasil filter
-      [
-        'boolean',
-        ['feature-state', 'filter'],
-        false
-      ],
-      0.92,
+  [
+    'boolean',
+    ['feature-state', 'filter'],
+    false
+  ],
+  0.92,
 
-      // bidang yang sedang dipilih
-      [
-        'boolean',
-        ['feature-state', 'sel'],
-        false
-      ],
-      0.95,
+  [
+    'boolean',
+    ['feature-state', 'sel'],
+    false
+  ],
+  0.95,
 
-      // hover
-      [
-        'boolean',
-        ['feature-state', 'hov'],
-        false
-      ],
-      0.74,
+  [
+    'boolean',
+    ['feature-state', 'hov'],
+    false
+  ],
+  0.74,
 
-      // normal
-      0.35
-    ]
+  0.50
+]
   }
 });
 
