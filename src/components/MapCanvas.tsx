@@ -14,11 +14,6 @@ import {
   DTM
 } from './layers';
 
-import {
-  STATUS_WARNA,
-  STATUS_LABEL,
-  type StatusBidang
-} from '@/types';
 
 const pmtiles = new Protocol();
 let protokolTerpasang = false;
@@ -1571,28 +1566,6 @@ export default function MapCanvas() {
               </b>
             </div>
 
-            <div>
-              <span>
-                Status
-              </span>
-
-              <b
-                style="
-                  font-family:var(--f-body);
-                  color:${
-                    STATUS_WARNA[
-                      p.status as StatusBidang
-                    ]
-                  }
-                "
-              >
-                ${
-                  STATUS_LABEL[
-                    p.status as StatusBidang
-                  ]
-                }
-              </b>
-            </div>
 
           </div>
 
