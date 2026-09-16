@@ -184,30 +184,6 @@ export const DTM = {
 export const ORTHO =
   process.env.NEXT_PUBLIC_TILES_ORTHO ?? '';
 
-export const WARNA_PENGGUNAAN:
-  Record<string, string> = {
-
-  'Kosong':
-    '#D9DDE3',
-
-  'Tanah Persawahan':
-    '#6FC7A4',
-
-  'Tanah Perkampungan':
-    '#E0708F',
-
-  'Tanah Perumahan':
-    '#B49BE5',
-
-  'Lain-lain':
-    '#93A3B3',
-
-  'Tanah Tidak Ada Bangunan':
-    '#8FBFD9',
-
-  '(belum diisi)':
-    '#7C8896'
-};
 
 export const WARNA_DAMPAK:
   [string, string][] = [
