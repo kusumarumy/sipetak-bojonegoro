@@ -258,30 +258,52 @@ export default function KepemilikanPanel({
       })
     );
   }
-
+function IconKepemilikan() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      width="17"
+      height="17"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <circle cx="9" cy="8" r="3" />
+      <path d="M3.5 19c.6-3 2.4-5 5.5-5s4.9 2 5.5 5" />
+      <path d="M16 11a3 3 0 1 0-1.2-5.75" />
+      <path d="M16 14c2.6.1 4.2 1.8 4.7 4.5" />
+    </svg>
+  );
+}
   return (
     <section className="panel panel-kepemilikan">
       <div className="panel-header">
-        <div>
-          <div className="panel-title">
-            Analisis Kepemilikan
-          </div>
+  <div>
+    <div className="panel-title panel-title-with-icon">
+      <span className="panel-title-icon">
+        <IconKepemilikan />
+      </span>
 
-          <div className="panel-subtitle">
-            Analisis bidang berdasarkan nama pemilik
-          </div>
-        </div>
+      <span>Analisis Kepemilikan</span>
+    </div>
 
-        <button
-          type="button"
-          className="panel-close"
-          onClick={onClose}
-          aria-label="Tutup"
-        >
-          ×
-        </button>
-      </div>
+    <div className="panel-subtitle">
+      Analisis bidang berdasarkan nama pemilik
+    </div>
+  </div>
 
+  <button
+    type="button"
+    className="panel-close"
+    onClick={onClose}
+    aria-label="Tutup"
+  >
+    ×
+  </button>
+</div>
       <div className="panel-body">
         <div className="form-group">
           <label htmlFor="pilih-pemilik">
