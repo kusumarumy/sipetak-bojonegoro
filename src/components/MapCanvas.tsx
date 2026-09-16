@@ -28,26 +28,13 @@ const siap = (url?: string) =>
   !url.includes('contoh.id') &&
   (url.startsWith('http') ||
     url.startsWith('/'));
-
-// ======================================================
-// KONFIGURASI KONTUR
-// ======================================================
-
 const ADA_KONTUR = {
   lidar: siap(KONTUR.lidar.url),
   foto: siap(KONTUR.foto.url)
 };
 
-// ======================================================
-// TRASE
-// ======================================================
-
 const TRASEG_URL =
   'https://raw.githubusercontent.com/kusumarumy/sipetak-bojonegoro/main/data/wgs84/traseg.geojson';
-
-// ======================================================
-// KOMPONEN MAP
-// ======================================================
 
 export default function MapCanvas() {
   const ref =
@@ -450,10 +437,6 @@ export default function MapCanvas() {
         maxzoom: 18
       };
     }
-
-    // --------------------------------------------------
-    // KONTUR
-    // --------------------------------------------------
 
     if (ADA_KONTUR.lidar) {
       sources.kontur_lidar = {
