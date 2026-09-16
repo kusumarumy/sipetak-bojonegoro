@@ -77,8 +77,8 @@ export default function RiwayatAksi({
         }
 
         const hasil = await r.json();
-
-        setData(hasil.data ?? []);
+        setData(Array.isArray(hasil) ? hasil : []);
+        
       } catch (err) {
         console.error(
           'Gagal mengambil riwayat aksi:',
