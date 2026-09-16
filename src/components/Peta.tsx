@@ -118,10 +118,6 @@ export default function Peta({
       current;
   }, []);
 
-  // =========================================================
-  // TOGGLE TEMA
-  // =========================================================
-
   const toggleTema = () => {
     const next =
       tema === 'dark'
@@ -155,11 +151,7 @@ export default function Peta({
     };
   }, [pesan, beriPesan]);
 
-  // =========================================================
-  // JUMLAH PENGGUNAAN
-  // =========================================================
-
-  useEffect(() => {
+   useEffect(() => {
     fetch('/api/bidang')
       .then((r) => r.json())
       .then((fc) => {
@@ -197,6 +189,19 @@ export default function Peta({
       .catch(() => {});
   }, []);
 
+  // =========================================================
+  // RINGKASAN STATUS
+  // =========================================================
+
+  const angka: [
+    StatusBidang,
+    number
+  ][] = [
+    ['draft', ringkasan.draft],
+    ['terkirim', ringkasan.terkirim],
+    ['terverifikasi', ringkasan.terverifikasi],
+    ['revisi', ringkasan.revisi],
+  ];
 
   return (
     <div className="shell">
