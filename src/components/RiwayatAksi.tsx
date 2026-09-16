@@ -87,20 +87,29 @@ export default function RiwayatAksi({
   onClose,
 }: Props) {
   const [data, setData] = useState<AuditLog[]>([]);
-const [memuat, setMemuat] = useState(true);
-const [filter, setFilter] = useState('semua');
+  const [memuat, setMemuat] = useState(true);
+  const [filter, setFilter] = useState('semua');
 
-const [sortKolom, setSortKolom] = useState('pada');
-const [sortArah, setSortArah] = useState<'asc' | 'desc'>('desc');
+  // SORT
+  const [sortKolom, setSortKolom] = useState('pada');
+  const [sortArah, setSortArah] = useState<'asc' | 'desc'>('desc');
+
+  /* =======================================================
+     FUNGSI SORT
+     ======================================================= */
 
   const ubahSort = (kolom: string) => {
-  if (sortKolom === kolom) {
-    setSortArah(sortArah === 'asc' ? 'desc' : 'asc');
-  } else {
-    setSortKolom(kolom);
-    setSortArah('asc');
-  }
-};
+    if (sortKolom === kolom) {
+      setSortArah(
+        sortArah === 'asc'
+          ? 'desc'
+          : 'asc'
+      );
+    } else {
+      setSortKolom(kolom);
+      setSortArah('asc');
+    }
+  };
 
   /* =======================================================
      AMBIL DATA RIWAYAT
@@ -125,31 +134,11 @@ const [sortArah, setSortArah] = useState<'asc' | 'desc'>('desc');
 
         const hasil = await r.json();
 
-        /*
-         * API mengembalikan array langsung:
-         *
-         * [
-         *   {
-         *     id: "6",
-         *     nib: "...",
-         *     record_id: 191,
-         *     bidang_id: "...",
-         *     aksi: "DELETE",
-         *     kolom: "kode_bid",
-         *     nilai_lama: "111",
-         *     nilai_baru: "",
-         *     nama_akun: "Pendata Lapangan",
-         *     pada: "2026-09-11T10:03:58.515Z"
-         *   }
-         * ]
-         */
-
         setData(
           Array.isArray(hasil)
             ? hasil
             : []
         );
-
       } catch (err) {
         console.error(
           'Gagal mengambil riwayat aksi:',
@@ -157,7 +146,6 @@ const [sortArah, setSortArah] = useState<'asc' | 'desc'>('desc');
         );
 
         setData([]);
-
       } finally {
         setMemuat(false);
       }
@@ -192,96 +180,135 @@ const [sortArah, setSortArah] = useState<'asc' | 'desc'>('desc');
   }, [data]);
 
   /* =======================================================
-     FILTER DATA
+     FILTER + SORT DATA
      ======================================================= */
 
   const dataTampil = useMemo(() => {
-  const hasil =
-    filter === 'semua'
-      ? [...data]
-      : data.filter(
-          (d) =>
-            d.aksi?.toUpperCase() ===
-            filter.toUpperCase()
+    const hasil =
+      filter === 'semua'
+        ? [...data]
+        : data.filter(
+            (d) =>
+              d.aksi?.toUpperCase() ===
+              filter.toUpperCase()
+          );
+
+    hasil.sort((a, b) => {
+      let nilaiA: string | number = '';
+      let nilaiB: string | number = '';
+
+      switch (sortKolom) {
+        case 'pada':
+          nilaiA = a.pada
+            ? new Date(a.pada).getTime()
+            : 0;
+
+          nilaiB = b.pada
+            ? new Date(b.pada).getTime()
+            : 0;
+          break;
+
+        case 'nama_akun':
+          nilaiA = a.nama_akun ?? '';
+          nilaiB = b.nama_akun ?? '';
+          break;
+
+        case 'nib':
+          nilaiA = a.nib ?? '';
+          nilaiB = b.nib ?? '';
+          break;
+
+        case 'record_id':
+          nilaiA = Number(
+            a.record_id ?? 0
+          );
+
+          nilaiB = Number(
+            b.record_id ?? 0
+          );
+          break;
+
+        case 'bidang_id':
+          nilaiA = a.bidang_id ?? '';
+          nilaiB = b.bidang_id ?? '';
+          break;
+
+        case 'aksi':
+          nilaiA = a.aksi ?? '';
+          nilaiB = b.aksi ?? '';
+          break;
+
+        case 'kolom':
+          nilaiA = a.kolom ?? '';
+          nilaiB = b.kolom ?? '';
+          break;
+
+        case 'nilai_lama':
+          nilaiA = fmtNilai(
+            a.nilai_lama
+          );
+
+          nilaiB = fmtNilai(
+            b.nilai_lama
+          );
+          break;
+
+        case 'nilai_baru':
+          nilaiA = fmtNilai(
+            a.nilai_baru
+          );
+
+          nilaiB = fmtNilai(
+            b.nilai_baru
+          );
+          break;
+      }
+
+      let hasilSort = 0;
+
+      if (
+        typeof nilaiA === 'number' &&
+        typeof nilaiB === 'number'
+      ) {
+        hasilSort = nilaiA - nilaiB;
+      } else {
+        hasilSort = String(
+          nilaiA
+        ).localeCompare(
+          String(nilaiB),
+          'id-ID',
+          {
+            numeric: true,
+          }
         );
+      }
 
-  hasil.sort((a, b) => {
-    let nilaiA: string | number = '';
-    let nilaiB: string | number = '';
+      return sortArah === 'asc'
+        ? hasilSort
+        : -hasilSort;
+    });
 
-    switch (sortKolom) {
-      case 'pada':
-        nilaiA = a.pada
-          ? new Date(a.pada).getTime()
-          : 0;
-        nilaiB = b.pada
-          ? new Date(b.pada).getTime()
-          : 0;
-        break;
+    return hasil;
+  }, [
+    data,
+    filter,
+    sortKolom,
+    sortArah,
+  ]);
 
-      case 'nama_akun':
-        nilaiA = a.nama_akun ?? '';
-        nilaiB = b.nama_akun ?? '';
-        break;
+  /* =======================================================
+     ICON SORT
+     ======================================================= */
 
-      case 'nib':
-        nilaiA = a.nib ?? '';
-        nilaiB = b.nib ?? '';
-        break;
-
-      case 'record_id':
-        nilaiA = Number(a.record_id ?? 0);
-        nilaiB = Number(b.record_id ?? 0);
-        break;
-
-      case 'bidang_id':
-        nilaiA = a.bidang_id ?? '';
-        nilaiB = b.bidang_id ?? '';
-        break;
-
-      case 'aksi':
-        nilaiA = a.aksi ?? '';
-        nilaiB = b.aksi ?? '';
-        break;
-
-      case 'kolom':
-        nilaiA = a.kolom ?? '';
-        nilaiB = b.kolom ?? '';
-        break;
-
-      case 'nilai_lama':
-        nilaiA = fmtNilai(a.nilai_lama);
-        nilaiB = fmtNilai(b.nilai_lama);
-        break;
-
-      case 'nilai_baru':
-        nilaiA = fmtNilai(a.nilai_baru);
-        nilaiB = fmtNilai(b.nilai_baru);
-        break;
-    }
-
-    let hasilSort = 0;
-
-    if (
-      typeof nilaiA === 'number' &&
-      typeof nilaiB === 'number'
-    ) {
-      hasilSort = nilaiA - nilaiB;
-    } else {
-      hasilSort = String(nilaiA).localeCompare(
-        String(nilaiB),
-        'id-ID',
-        { numeric: true }
-      );
+  const iconSort = (kolom: string) => {
+    if (sortKolom !== kolom) {
+      return '↕';
     }
 
     return sortArah === 'asc'
-      ? hasilSort
-      : -hasilSort;
-  });
-
-  return hasil;
-}, [data, filter, sortKolom, sortArah]);
+      ? '↑'
+      : '↓';
+  };
 
   /* =======================================================
      RENDER
@@ -324,9 +351,7 @@ const [sortArah, setSortArah] = useState<'asc' | 'desc'>('desc');
 
           <div className="daftar-actions">
 
-            {/* =================================================
-                SEMUA
-                ================================================= */}
+            {/* SEMUA */}
 
             <button
               type="button"
@@ -342,9 +367,7 @@ const [sortArah, setSortArah] = useState<'asc' | 'desc'>('desc');
               SEMUA ({jumlah.semua})
             </button>
 
-            {/* =================================================
-                INPUT
-                ================================================= */}
+            {/* INPUT */}
 
             <button
               type="button"
@@ -360,9 +383,7 @@ const [sortArah, setSortArah] = useState<'asc' | 'desc'>('desc');
               INPUT ({jumlah.input})
             </button>
 
-            {/* =================================================
-                UPDATE
-                ================================================= */}
+            {/* UPDATE */}
 
             <button
               type="button"
@@ -378,9 +399,7 @@ const [sortArah, setSortArah] = useState<'asc' | 'desc'>('desc');
               UPDATE ({jumlah.update})
             </button>
 
-            {/* =================================================
-                DELETE
-                ================================================= */}
+            {/* DELETE */}
 
             <button
               type="button"
@@ -396,9 +415,7 @@ const [sortArah, setSortArah] = useState<'asc' | 'desc'>('desc');
               DELETE ({jumlah.delete})
             </button>
 
-            {/* =================================================
-                TUTUP
-                ================================================= */}
+            {/* TUTUP */}
 
             <button
               type="button"
@@ -420,134 +437,163 @@ const [sortArah, setSortArah] = useState<'asc' | 'desc'>('desc');
           <table className="daftar-table">
 
             <thead>
-            <tr>
-              <th>
-                <button
-                  className="sort-header"
-                  onClick={() => ubahSort('pada')}
-                >
-                  <span>WAKTU</span>
-                  <span className="sort-icon">
-                    {sortKolom === 'pada'
-                      ? sortArah === 'asc' ? '↑' : '↓'
-                      : '↕'}
-                  </span>
-                </button>
-              </th>
-          
-              <th>
-                <button
-                  className="sort-header"
-                  onClick={() => ubahSort('nama_akun')}
-                >
-                  <span>NAMA AKUN</span>
-                  <span className="sort-icon">
-                    {sortKolom === 'nama_akun'
-                      ? sortArah === 'asc' ? '↑' : '↓'
-                      : '↕'}
-                  </span>
-                </button>
-              </th>
-          
-              <th>
-                <button
-                  className="sort-header"
-                  onClick={() => ubahSort('nib')}
-                >
-                  <span>NIB</span>
-                  <span className="sort-icon">
-                    {sortKolom === 'nib'
-                      ? sortArah === 'asc' ? '↑' : '↓'
-                      : '↕'}
-                  </span>
-                </button>
-              </th>
-          
-              <th>
-                <button
-                  className="sort-header"
-                  onClick={() => ubahSort('record_id')}
-                >
-                  <span>RECORD ID</span>
-                  <span className="sort-icon">
-                    {sortKolom === 'record_id'
-                      ? sortArah === 'asc' ? '↑' : '↓'
-                      : '↕'}
-                  </span>
-                </button>
-              </th>
-          
-              <th>
-                <button
-                  className="sort-header"
-                  onClick={() => ubahSort('bidang_id')}
-                >
-                  <span>BIDANG ID</span>
-                  <span className="sort-icon">
-                    {sortKolom === 'bidang_id'
-                      ? sortArah === 'asc' ? '↑' : '↓'
-                      : '↕'}
-                  </span>
-                </button>
-              </th>
-          
-              <th>
-                <button
-                  className="sort-header"
-                  onClick={() => ubahSort('aksi')}
-                >
-                  <span>AKSI</span>
-                  <span className="sort-icon">
-                    {sortKolom === 'aksi'
-                      ? sortArah === 'asc' ? '↑' : '↓'
-                      : '↕'}
-                  </span>
-                </button>
-              </th>
-          
-              <th>
-                <button
-                  className="sort-header"
-                  onClick={() => ubahSort('kolom')}
-                >
-                  <span>KOLOM</span>
-                  <span className="sort-icon">
-                    {sortKolom === 'kolom'
-                      ? sortArah === 'asc' ? '↑' : '↓'
-                      : '↕'}
-                  </span>
-                </button>
-              </th>
-          
-              <th>
-                <button
-                  className="sort-header"
-                  onClick={() => ubahSort('nilai_lama')}
-                >
-                  <span>NILAI LAMA</span>
-                  <span className="sort-icon">
-                    {sortKolom === 'nilai_lama'
-                      ? sortArah === 'asc' ? '↑' : '↓'
-                      : '↕'}
-                  </span>
-                </button>
-              </th>
-          
-              <th>
-                <button
-                  className="sort-header"
-                  onClick={() => ubahSort('nilai_baru')}
-                >
-                  <span>NILAI BARU</span>
-                  <span className="sort-icon">
-                    {sortKolom === 'nilai_baru'
-                      ? sortArah === 'asc' ? '↑' : '↓'
-                      : '↕'}
-                  </span>
-                </button>
-              </th>
-            </tr>
-          </thead>
+              <tr>
+
+                {/* WAKTU */}
+
+                <th>
+                  <button
+                    type="button"
+                    className="sort-header"
+                    onClick={() =>
+                      ubahSort('pada')
+                    }
+                  >
+                    <span>WAKTU</span>
+                    <span className="sort-icon">
+                      {iconSort('pada')}
+                    </span>
+                  </button>
+                </th>
+
+                {/* NAMA AKUN */}
+
+                <th>
+                  <button
+                    type="button"
+                    className="sort-header"
+                    onClick={() =>
+                      ubahSort('nama_akun')
+                    }
+                  >
+                    <span>NAMA AKUN</span>
+                    <span className="sort-icon">
+                      {iconSort('nama_akun')}
+                    </span>
+                  </button>
+                </th>
+
+                {/* NIB */}
+
+                <th>
+                  <button
+                    type="button"
+                    className="sort-header"
+                    onClick={() =>
+                      ubahSort('nib')
+                    }
+                  >
+                    <span>NIB</span>
+                    <span className="sort-icon">
+                      {iconSort('nib')}
+                    </span>
+                  </button>
+                </th>
+
+                {/* RECORD ID */}
+
+                <th>
+                  <button
+                    type="button"
+                    className="sort-header"
+                    onClick={() =>
+                      ubahSort('record_id')
+                    }
+                  >
+                    <span>RECORD ID</span>
+                    <span className="sort-icon">
+                      {iconSort('record_id')}
+                    </span>
+                  </button>
+                </th>
+
+                {/* BIDANG ID */}
+
+                <th>
+                  <button
+                    type="button"
+                    className="sort-header"
+                    onClick={() =>
+                      ubahSort('bidang_id')
+                    }
+                  >
+                    <span>BIDANG ID</span>
+                    <span className="sort-icon">
+                      {iconSort('bidang_id')}
+                    </span>
+                  </button>
+                </th>
+
+                {/* AKSI */}
+
+                <th>
+                  <button
+                    type="button"
+                    className="sort-header"
+                    onClick={() =>
+                      ubahSort('aksi')
+                    }
+                  >
+                    <span>AKSI</span>
+                    <span className="sort-icon">
+                      {iconSort('aksi')}
+                    </span>
+                  </button>
+                </th>
+
+                {/* KOLOM */}
+
+                <th>
+                  <button
+                    type="button"
+                    className="sort-header"
+                    onClick={() =>
+                      ubahSort('kolom')
+                    }
+                  >
+                    <span>KOLOM</span>
+                    <span className="sort-icon">
+                      {iconSort('kolom')}
+                    </span>
+                  </button>
+                </th>
+
+                {/* NILAI LAMA */}
+
+                <th>
+                  <button
+                    type="button"
+                    className="sort-header"
+                    onClick={() =>
+                      ubahSort('nilai_lama')
+                    }
+                  >
+                    <span>NILAI LAMA</span>
+                    <span className="sort-icon">
+                      {iconSort('nilai_lama')}
+                    </span>
+                  </button>
+                </th>
+
+                {/* NILAI BARU */}
+
+                <th>
+                  <button
+                    type="button"
+                    className="sort-header"
+                    onClick={() =>
+                      ubahSort('nilai_baru')
+                    }
+                  >
+                    <span>NILAI BARU</span>
+                    <span className="sort-icon">
+                      {iconSort('nilai_baru')}
+                    </span>
+                  </button>
+                </th>
+
+              </tr>
+            </thead>
 
             <tbody>
 
@@ -570,9 +616,9 @@ const [sortArah, setSortArah] = useState<'asc' | 'desc'>('desc');
 
               ) : dataTampil.length === 0 ? (
 
-                /* ===============================================
+                /* =================================================
                    EMPTY
-                   =============================================== */
+                   ================================================= */
 
                 <tr>
 
@@ -587,9 +633,9 @@ const [sortArah, setSortArah] = useState<'asc' | 'desc'>('desc');
 
               ) : (
 
-                /* ===============================================
+                /* =================================================
                    DATA
-                   =============================================== */
+                   ================================================= */
 
                 dataTampil.map((item, i) => (
 
@@ -599,9 +645,7 @@ const [sortArah, setSortArah] = useState<'asc' | 'desc'>('desc');
                     }
                   >
 
-                    {/* =========================================
-                        WAKTU
-                        ========================================= */}
+                    {/* WAKTU */}
 
                     <td>
                       {fmtTanggal(
@@ -609,47 +653,42 @@ const [sortArah, setSortArah] = useState<'asc' | 'desc'>('desc');
                       )}
                     </td>
 
-                    {/* =========================================
-                        NAMA AKUN
-                        ========================================= */}
+                    {/* NAMA AKUN */}
 
                     <td>
-                      {item.nama_akun ?? '—'}
+                      {item.nama_akun ??
+                        '—'}
                     </td>
 
-                    {/* =========================================
-                        NIB
-                        ========================================= */}
+                    {/* NIB */}
 
                     <td className="kode">
-                      {item.nib ?? '—'}
+                      {item.nib ??
+                        '—'}
                     </td>
 
-                    {/* =========================================
-                        RECORD ID
-                        ========================================= */}
+                    {/* RECORD ID */}
 
                     <td className="angka">
-                      {item.record_id ?? '—'}
+                      {item.record_id ??
+                        '—'}
                     </td>
 
-                    {/* =========================================
-                        BIDANG ID
-                        ========================================= */}
+                    {/* BIDANG ID */}
 
                     <td className="kode">
-                      {item.bidang_id ?? '—'}
+                      {item.bidang_id ??
+                        '—'}
                     </td>
 
-                    {/* =========================================
-                        AKSI
-                        ========================================= */}
+                    {/* AKSI */}
 
                     <td>
 
                       <span
                         className={`status-daftar audit-${
-                          item.aksi?.toLowerCase() ?? ''
+                          item.aksi?.toLowerCase() ??
+                          ''
                         }`}
                       >
 
@@ -657,7 +696,8 @@ const [sortArah, setSortArah] = useState<'asc' | 'desc'>('desc');
 
                         {
                           labelAksi[
-                            item.aksi?.toUpperCase() ?? ''
+                            item.aksi?.toUpperCase() ??
+                              ''
                           ] ??
                           item.aksi ??
                           '—'
@@ -667,17 +707,14 @@ const [sortArah, setSortArah] = useState<'asc' | 'desc'>('desc');
 
                     </td>
 
-                    {/* =========================================
-                        KOLOM
-                        ========================================= */}
+                    {/* KOLOM */}
 
                     <td>
-                      {item.kolom ?? '—'}
+                      {item.kolom ??
+                        '—'}
                     </td>
 
-                    {/* =========================================
-                        NILAI LAMA
-                        ========================================= */}
+                    {/* NILAI LAMA */}
 
                     <td>
                       {fmtNilai(
@@ -685,9 +722,7 @@ const [sortArah, setSortArah] = useState<'asc' | 'desc'>('desc');
                       )}
                     </td>
 
-                    {/* =========================================
-                        NILAI BARU
-                        ========================================= */}
+                    {/* NILAI BARU */}
 
                     <td>
                       {fmtNilai(
@@ -707,6 +742,219 @@ const [sortArah, setSortArah] = useState<'asc' | 'desc'>('desc');
         </div>
 
       </section>
+
+      {/* =====================================================
+          STYLE SORT HEADER
+          ===================================================== */}
+
+      <style jsx>{`
+
+        /* -----------------------------------------------
+           HEADER TABLE
+           ----------------------------------------------- */
+
+        .daftar-table th {
+          padding: 10px 12px !important;
+          background: rgba(
+            248,
+            250,
+            252,
+            0.9
+          ) !important;
+
+          border-bottom:
+            1px solid
+            rgba(
+              148,
+              163,
+              184,
+              0.22
+            ) !important;
+
+          white-space: nowrap;
+        }
+
+
+        /* -----------------------------------------------
+           SORT HEADER
+           ----------------------------------------------- */
+
+        .daftar-table th .sort-header {
+          all: unset !important;
+
+          display: inline-flex !important;
+
+          align-items: center !important;
+
+          gap: 5px !important;
+
+          cursor: pointer !important;
+
+          color: #64748b !important;
+
+          font-family: inherit !important;
+
+          font-size: 11px !important;
+
+          font-weight: 600 !important;
+
+          letter-spacing: 0.02em !important;
+
+          line-height: 1 !important;
+
+          padding: 2px 0 !important;
+
+          margin: 0 !important;
+
+          border: none !important;
+
+          border-radius: 0 !important;
+
+          background:
+            transparent !important;
+
+          box-shadow: none !important;
+
+          outline: none !important;
+        }
+
+
+        /* -----------------------------------------------
+           HOVER
+           ----------------------------------------------- */
+
+        .daftar-table th
+          .sort-header:hover {
+
+          color: #4f46e5 !important;
+
+          background:
+            transparent !important;
+
+          border: none !important;
+
+          box-shadow: none !important;
+        }
+
+
+        /* -----------------------------------------------
+           FOCUS
+           ----------------------------------------------- */
+
+        .daftar-table th
+          .sort-header:focus,
+        .daftar-table th
+          .sort-header:focus-visible {
+
+          outline: none !important;
+
+          border: none !important;
+
+          box-shadow: none !important;
+
+          background:
+            transparent !important;
+        }
+
+
+        /* -----------------------------------------------
+           ACTIVE / CLICK
+           ----------------------------------------------- */
+
+        .daftar-table th
+          .sort-header:active {
+
+          transform:
+            translateY(1px);
+
+          background:
+            transparent !important;
+
+          border: none !important;
+        }
+
+
+        /* -----------------------------------------------
+           SORT ICON
+           ----------------------------------------------- */
+
+        .sort-icon {
+
+          display: inline-flex !important;
+
+          align-items: center !important;
+
+          justify-content: center !important;
+
+          width: 12px !important;
+
+          font-size: 12px !important;
+
+          line-height: 1 !important;
+
+          font-weight: 500 !important;
+
+          color: #94a3b8 !important;
+        }
+
+
+        .daftar-table th
+          .sort-header:hover
+          .sort-icon {
+
+          color: #4f46e5 !important;
+        }
+
+
+        /* -----------------------------------------------
+           ROW HOVER
+           ----------------------------------------------- */
+
+        .daftar-table tbody tr {
+
+          transition:
+            background
+            0.15s ease;
+        }
+
+
+        .daftar-table tbody tr:hover {
+
+          background:
+            rgba(
+              99,
+              102,
+              241,
+              0.035
+            );
+        }
+
+
+        /* -----------------------------------------------
+           KODE / NIB / BIDANG ID
+           ----------------------------------------------- */
+
+        .daftar-table .kode {
+
+          color: #5b4bd8;
+
+          font-weight: 500;
+        }
+
+
+        /* -----------------------------------------------
+           ANGKA
+           ----------------------------------------------- */
+
+        .daftar-table .angka {
+
+          color: #475569;
+
+          font-variant-numeric:
+            tabular-nums;
+        }
+
+      `}</style>
 
     </div>
   );
