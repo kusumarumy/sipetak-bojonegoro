@@ -7160,7 +7160,30 @@ html[data-theme="dark"] .statistik-loading span {
 
   font-weight: 800;
 }
+.panel-title-with-icon {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
 
+.panel-title-icon {
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 26px;
+
+  color: var(--kep-red);
+  background: rgba(159, 18, 57, 0.08);
+  border: 1px solid rgba(159, 18, 57, 0.12);
+  border-radius: 7px;
+}
+
+.panel-title-icon svg {
+  width: 16px;
+  height: 16px;
+}
 
 /* =========================================================
    EMPTY
