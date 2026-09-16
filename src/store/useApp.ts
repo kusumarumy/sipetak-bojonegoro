@@ -87,40 +87,23 @@ interface AppState {
 
 export const useApp = create<AppState>(
   (set, get) => ({
-
-    /* =====================================================
-       TEMA
-       ===================================================== */
-
     tema: 'auto',
-
-    /* =====================================================
-       BASEMAP
-       ===================================================== */
-
     basemap: 'esri',
-
     dtm: 'off',
-
-    exag: 5,
-
+    exag: 1.8,
     pewarnaan: 'status',
-
     labelNomor: false,
     modeAnalisis: 'none',
     layerAktif: {
       traseg: true,
       bidang: true,
-
       sawah: false,
       hutan: false,
       pemukiman: false,
       pemakaman: false,
-
       jalan: false,
       rel_kereta: false,
       sungai: false,
-
       kabel_sutet: false,
       tiang_sutet: false,
       pipa_exxon: false,
