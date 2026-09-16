@@ -3,7 +3,6 @@
 import { useEffect, useMemo, useState } from 'react';
 
 type Pemilik = {
-  nik: string;
   nama: string;
   jumlah_bidang: number;
 };
@@ -39,7 +38,7 @@ export default function KepemilikanPanel({
   onClose,
 }: Props) {
   const [pemilik, setPemilik] = useState<Pemilik[]>([]);
-  const [nikAktif, setNikAktif] = useState('');
+  const [namaAktif, setNamaAktif] = useState('');
   const [bidang, setBidang] = useState<
     BidangKepemilikan[]
   >([]);
@@ -121,8 +120,8 @@ export default function KepemilikanPanel({
 
         const res = await fetch(
           `/api/analisis/kepemilikan/${encodeURIComponent(
-            nikAktif
-          )}`,
+  namaAktif
+)}`
           {
             cache: 'no-store',
           }
@@ -165,7 +164,7 @@ export default function KepemilikanPanel({
     return () => {
       aktif = false;
     };
-  }, [nikAktif]);
+  }, [namaAktif]);
 
   useEffect(() => {
     const ids = bidang
@@ -299,10 +298,10 @@ export default function KepemilikanPanel({
 
 <select
   id="pilih-pemilik"
-  value={nikAktif}
-  onChange={(e) =>
-    setNikAktif(e.target.value)
-  }
+value={namaAktif}
+onChange={(e) =>
+  setNamaAktif(e.target.value)
+}
   disabled={pemilik.length === 0}
 >
 <option value="">
@@ -315,8 +314,8 @@ export default function KepemilikanPanel({
 
             {pemilik.map((p) => (
               <option
-                key={p.nik}
-                value={p.nik}
+                key={p.nama}
+value={p.nama}
               >
                 {p.nama || '(Nama tidak tersedia)'} ·{' '}
                 {p.jumlah_bidang} bidang
