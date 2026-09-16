@@ -91,7 +91,7 @@ export const useApp = create<AppState>(
     basemap: 'esri',
     dtm: 'off',
     exag: 1.8,
-    pewarnaan: 'status',
+    pewarnaan: 'penggunaan',
     labelNomor: false,
     modeAnalisis: 'none',
     layerAktif: {
