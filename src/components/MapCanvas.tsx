@@ -1399,7 +1399,7 @@ useEffect(() => {
 
     map.setTerrain({
       source: src,
-      exaggeration: exag
+      exaggeration: 1
     });
     for (const def of [
       KONTUR.lidar,
