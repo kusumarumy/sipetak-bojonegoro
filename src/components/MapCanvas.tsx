@@ -1326,6 +1326,7 @@ useEffect(() => {
     // DTM OFF
     // =========================
     if (dtm === 'off') {
+      // Matikan terrain sepenuhnya
       map.setTerrain(null);
 
       for (const def of [
@@ -1385,21 +1386,34 @@ useEffect(() => {
         src
       );
 
+      map.setTerrain(null);
+
       beriPesan(
         `Source ${
           dtm === 'trace'
             ? 'DTM Rencana Trace'
-            : 'DTM Kawasan'
+            : 'Kawasan'
         } belum tersedia.`
       );
 
       return;
     }
 
+    // =========================
+    // MATIKAN TERRAIN LAMA
+    // =========================
+    map.setTerrain(null);
+
+    // =========================
+    // DTM MENJADI TERRAIN UTAMA
+    // =========================
     map.setTerrain({
       source: src,
       exaggeration: 1
     });
+
+    // Kontur dimatikan karena relief sekarang
+    // berasal langsung dari DTM
     for (const def of [
       KONTUR.lidar,
       KONTUR.foto
@@ -1413,7 +1427,6 @@ useEffect(() => {
       }
     }
 
-    // Kamera dibuat miring agar relief terlihat
     map.easeTo({
       pitch: 52,
       duration: 850
@@ -1435,7 +1448,8 @@ useEffect(() => {
       terapkanDTM
     );
   };
-}, [dtm, exag]);
+
+}, [dtm]);
 
   useEffect(() => {
 
