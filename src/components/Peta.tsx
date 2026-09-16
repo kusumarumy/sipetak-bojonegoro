@@ -12,7 +12,7 @@ import Statistika from './Statistika';
 import SearchPanel from './SearchPanel';
 import FilterPanel from './FilterPanel';
 import { useApp } from '@/store/useApp';
-
+import KepemilikanPanel from './KepemilikanPanel';
 import {
   STATUS_LABEL,
   STATUS_WARNA,
@@ -429,6 +429,11 @@ export default function Peta({
     onClose={() =>
       setPanelAktif(null)
     }
+  />
+)}
+      {panelAktif === 'kepemilikan' && (
+  <KepemilikanPanel
+    onClose={() => setPanelAktif(null)}
   />
 )}
       {/* =====================================================
