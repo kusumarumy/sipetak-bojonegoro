@@ -1,35 +1,45 @@
 import { NextResponse } from 'next/server';
-import { createClient } from '@/lib/supabase/server';
+import { auth } from '@/lib/auth';
+import { query } from '@/lib/db';
 
 export async function GET() {
+  const sesi = await auth();
+
+  if (!sesi?.user) {
+    return new NextResponse('Belum masuk', {
+      status: 401,
+    });
+  }
+
   try {
-    const supabase = await createClient();
+    const data = await query(`
+      SELECT *
+      FROM public.audit_log
+      ORDER BY id DESC
+    `);
 
-    const { data, error } = await supabase
-      .from('audit_log')
-      .select('*')
-      .order('id', { ascending: false });
-
-    if (error) {
-      console.error('Gagal mengambil audit_log:', error);
-
-      return NextResponse.json(
-        {
-          error: error.message,
-        },
-        { status: 500 }
-      );
-    }
-
-    return NextResponse.json(data ?? []);
+    return NextResponse.json(data, {
+      headers: {
+        'Cache-Control': 'private, no-store',
+      },
+    });
   } catch (error) {
-    console.error('Error API riwayat:', error);
+    console.error(
+      'GET /api/riwayat ERROR:',
+      error
+    );
 
     return NextResponse.json(
       {
-        error: 'Terjadi kesalahan saat mengambil riwayat aksi',
+        pesan: 'Gagal memuat riwayat aksi',
+        error:
+          error instanceof Error
+            ? error.message
+            : String(error),
       },
-      { status: 500 }
+      {
+        status: 500,
+      }
     );
   }
 }
