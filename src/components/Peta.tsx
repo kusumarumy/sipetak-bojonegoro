@@ -20,7 +20,6 @@ import {
   type StatusBidang,
 } from '@/types';
 
-import { WARNA_PENGGUNAAN } from './layers';
 import logoBojonegoro from '../../data/icon/bojonegoro.png';
 
 const MapCanvas = dynamic(
@@ -59,34 +58,18 @@ export default function Peta({
   ringkasan: Ringkasan;
   keluar: () => Promise<void>;
 }) {
-  // =========================================================
-  // APP STATE
-  // =========================================================
 
   const {
     kartu,
     pesan,
     beriPesan,
-    pewarnaan,
   } = useApp();
-
-  // =========================================================
-  // PANEL
-  // =========================================================
 
   const [panelAktif, setPanelAktif] =
     useState<PanelAktif>(null);
 
-  // =========================================================
-  // TEMA
-  // =========================================================
-
   const [tema, setTema] =
     useState<'light' | 'dark'>('light');
-
-  // =========================================================
-  // JUMLAH PENGGUNAAN
-  // =========================================================
 
   const [jumlahPenggunaan, setJumlahPenggunaan] =
     useState<Record<string, number>>({
@@ -99,9 +82,6 @@ export default function Peta({
       'Belum diisi': 0,
     });
 
-  // =========================================================
-  // LOAD TEMA
-  // =========================================================
 
   useEffect(() => {
     const saved =
@@ -459,44 +439,44 @@ export default function Peta({
 
     <MapCanvas />
 
-    {/* =================================================
-        ANALISIS KEPEMILIKAN
-        ================================================= */}
+{/* =================================================
+    ANALISIS KEPEMILIKAN
+    ================================================= */}
 
-    {panelAktif === 'kepemilikan' && (
-      <KepemilikanPanel
-        onClose={() => setPanelAktif(null)}
-      />
-    )}
+{panelAktif === 'kepemilikan' && (
+  <KepemilikanPanel
+    onClose={() => setPanelAktif(null)}
+  />
+)}
 
-    {/* =================================================
-        LEGEND
-        ================================================= */}
+{/* =================================================
+    LEGEND
+    ================================================= */}
 
-  
 
-  {/* =================================================
-      TOAST
-      ================================================= */}
+{/* =================================================
+    TOAST
+    ================================================= */}
 
-  {pesan && (
-    <div className="toast">
-      {pesan}
-    </div>
-  )}
+{pesan && (
+  <div className="toast">
+    {pesan}
+  </div>
+)}
 
-  {/* =================================================
-      KARTU BIDANG
-      ================================================= */}
+{/* =================================================
+    KARTU BIDANG
+    ================================================= */}
 
-  {kartu && (
-    <KartuBidang
-      peran={pengguna.peran}
-    />
-  )}
+{kartu && (
+  <KartuBidang
+    peran={pengguna.peran}
+  />
+)}
 
+</div>
 </main>
 
-    </div>
-  );
+</div>
+);
 }
