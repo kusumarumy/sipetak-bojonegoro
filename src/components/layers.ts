@@ -12,16 +12,7 @@ export type DefLayer = {
   grup: string;
 };
 
-/* =========================================================
-   LAYERS
-========================================================= */
-
 export const LAYERS: DefLayer[] = [
-
-  /* -------------------------------------------------------
-     RENCANA TRASE
-  ------------------------------------------------------- */
-
   {
     id: 'traseg',
     nama: 'Trase rencana',
@@ -34,12 +25,6 @@ export const LAYERS: DefLayer[] = [
     bawaan: true,
     grup: 'Rencana Trase'
   },
-
-
-  /* -------------------------------------------------------
-     BIDANG TANAH
-  ------------------------------------------------------- */
-
   {
     id: 'bidang',
     nama: 'Bidang tanah',
@@ -50,11 +35,6 @@ export const LAYERS: DefLayer[] = [
     bawaan: true,
     grup: 'Bidang Tanah'
   },
-
-
-  /* -------------------------------------------------------
-     JARINGAN IRIGASI
-  ------------------------------------------------------- */
 
   {
     id: 'sungai',
