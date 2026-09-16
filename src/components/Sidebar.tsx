@@ -7,6 +7,7 @@ type PanelAktif =
   | 'bidang'
   | 'statistika'
   | 'filter'
+  | 'kepemilikan'
   | 'search'
   | 'riwayat'
   | null;
