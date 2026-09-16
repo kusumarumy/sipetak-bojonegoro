@@ -852,14 +852,12 @@ main.body {
 }
 
 .layer-panel-title {
-  font-size: 11px;
-  font-weight: 800;
+  font-size: 16px;
+  font-weight: 750;
   line-height: 1.2;
-
   letter-spacing: .08em;
   text-transform: uppercase;
-
-  color: var(--layer-accent);
+  color: #7b1528;
 }
 
 .layer-panel-subtitle {
@@ -3892,11 +3890,9 @@ html[data-theme="light"] {
 }
 
 .search-title {
-  color: #881337;
-
-  font-size: 14px;
-  font-weight: 800;
-
+  color: #7b1528;
+  font-size: 16px;
+  font-weight: 750;
   line-height: 1;
 }
 
@@ -5320,27 +5316,12 @@ html[data-theme="dark"]
 }
 
 
-/* =========================================================
-   TITLE
-   ========================================================= */
 
 .daftar-title {
   display: flex;
   align-items: center;
   gap: 8px;
-
   min-width: 0;
-}
-
-.daftar-title strong {
-  color: #374151;
-
-  font-family: var(--f-body, Arial, sans-serif);
-  font-size: 10px;
-  font-weight: 800;
-
-  letter-spacing: 0.055em;
-  white-space: nowrap;
 }
 
 .daftar-count {
@@ -5599,10 +5580,9 @@ html[data-theme="dark"]
 }
 
 .statistik-title {
-  color: #881337;
-
-  font-size: 14px;
-  font-weight: 800;
+  color: #7b1528;
+  font-size: 16px;
+  font-weight: 750;
 
   line-height: 1;
 }
@@ -6780,9 +6760,9 @@ html[data-theme="dark"] .statistik-loading span {
 }
 
 .panel-kepemilikan .panel-title {
-  color: #881337;
-  font-size: 14px;
-  font-weight: 800;
+  color: #7b1528;
+  font-size: 16px;
+  font-weight: 750;
 
   line-height: 1;
 }
@@ -7532,10 +7512,10 @@ html[data-theme="dark"]
 }
 
 .filter-title {
-  color: #881337;
+  color: #7b1528;
 
-  font-size: 14px;
-  font-weight: 800;
+  font-size: 16px;
+  font-weight: 750;
 
   line-height: 1;
 }
@@ -8337,12 +8317,10 @@ html[data-theme="dark"] .filter-apply:hover {
 
 .daftar-title strong {
   font-family: var(--f-display, Arial, sans-serif);
-  font-size: 20px;
+  font-size: 16px;
   line-height: 1;
-
-  font-weight: 700;
-  color: #111827;
-
+  font-weight: 750;
+  color: #7b1528;
   font-variant-numeric: tabular-nums;
 }
 
@@ -12682,9 +12660,7 @@ html[data-theme="dark"] .gate-foot {
   font-size: 16px;
   font-weight: 750;
   line-height: 1;
-
   letter-spacing: -0.02em;
-
   color: #7b1528;
 }
 
