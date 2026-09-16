@@ -53,9 +53,10 @@ export async function GET() {
       }
     }
 
-    const pemilik = Array.from(pemilikMap.values()).sort(
-      (a, b) =>
-        a.nama.localeCompare(b.nama, 'id')
+    const pemilik = Array.from(
+      pemilikMap.values()
+    ).sort((a, b) =>
+      a.nama.localeCompare(b.nama, 'id')
     );
 
     return NextResponse.json(pemilik);
