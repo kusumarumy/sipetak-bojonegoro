@@ -28,16 +28,6 @@ const MapCanvas = dynamic(
   { ssr: false }
 );
 
-type Ringkasan = {
-  total: number;
-  draft: number;
-  terkirim: number;
-  terverifikasi: number;
-  revisi: number;
-  haTerdampak: number;
-  km: number;
-};
-
 type PanelAktif =
   | 'terrain'
   | 'basemap'
@@ -200,23 +190,6 @@ export default function Peta({
       .catch(() => {});
   }, []);
 
-  // =========================================================
-  // RINGKASAN STATUS
-  // =========================================================
-
-  const angka: [
-    StatusBidang,
-    number
-  ][] = [
-    ['draft', ringkasan.draft],
-    ['terkirim', ringkasan.terkirim],
-    ['terverifikasi', ringkasan.terverifikasi],
-    ['revisi', ringkasan.revisi],
-  ];
-
-  // =========================================================
-  // RENDER
-  // =========================================================
 
   return (
     <div className="shell">
@@ -401,7 +374,11 @@ export default function Peta({
           }
         />
       )}
-
+{panelAktif === 'kepemilikan' && (
+  <KepemilikanPanel
+    onClose={() => setPanelAktif(null)}
+  />
+)}
       {/* =====================================================
           DAFTAR BIDANG
           ===================================================== */}
@@ -432,15 +409,6 @@ export default function Peta({
     }
   />
 )}
-      {panelAktif === 'kepemilikan' && (
-  <KepemilikanPanel
-    onClose={() => setPanelAktif(null)}
-  />
-)}
-      {/* =====================================================
-          TERRAIN / LAYER
-          ===================================================== */}
-
       <ControlPanel
         mode={
           panelAktif === 'terrain' ||
@@ -472,10 +440,6 @@ export default function Peta({
         <div className="mapwrap">
 
           <MapCanvas />
-
-          {/* =================================================
-              LEGEND
-              ================================================= */}
 
           <div className="legend">
 
