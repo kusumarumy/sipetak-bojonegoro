@@ -1,6 +1,7 @@
 export const R2 =
   process.env.NEXT_PUBLIC_R2_BASE_URL ??
   "https://dppt-bojonegoro.ruli-andaru.workers.dev";
+
 export const MAP = {
   center: [111.879, -7.168] as [number, number],
   zoom: 12.4,
@@ -8,6 +9,7 @@ export const MAP = {
   bearing: 18,
   maxPitch: 75,
 };
+
 export type Basemap = {
   id:
     | "osm"
@@ -22,6 +24,7 @@ export type Basemap = {
   minzoom?: number;
   maxzoom?: number;
 };
+
 export const BASEMAPS: Basemap[] = [
   {
     id: "osm",
@@ -41,56 +44,41 @@ export const BASEMAPS: Basemap[] = [
     attribution: "Esri, Maxar",
     maxzoom: 19,
   },
-{
-  id: "ortho",
-  labelKey: "bm_ortho",
-  tiles: [
-    `${R2}/orthophoto/{z}/{x}/{y}.png`,
-  ],
-  attribution: "Orthophoto DPPT Bojonegoro 2026",
-  minzoom: 13,
-  maxzoom: 20,
-},
-
+  {
+    id: "ortho",
+    labelKey: "bm_ortho",
+    tiles: [
+      `${R2}/orthophoto/{z}/{x}/{y}.png`,
+    ],
+    attribution: "Orthophoto DPPT Bojonegoro 2026",
+    minzoom: 13,
+    maxzoom: 20,
+  },
   {
     id: "google-hybrid",
-
     labelKey: "bm_hybrid",
-
     tiles: [
       "https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}",
     ],
-
     attribution: "© Google Maps",
-
     maxzoom: 20,
   },
-
   {
     id: "google-streets",
-
     labelKey: "bm_streets",
-
     tiles: [
       "https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}",
     ],
-
     attribution: "© Google Maps",
-
     maxzoom: 20,
   },
-
   {
     id: "opentopo",
-
     labelKey: "bm_opentopo",
-
     tiles: [
       "https://tile.opentopomap.org/{z}/{x}/{y}.png",
     ],
-
     attribution: "© OpenTopoMap",
-
     maxzoom: 17,
   },
 ];
