@@ -23,6 +23,7 @@ const siap = (url?: string) =>
   !url.includes('contoh.id') &&
   (url.startsWith('http') ||
     url.startsWith('/'));
+
 const ADA_KONTUR = {
   lidar: siap(KONTUR.lidar.url),
   foto: siap(KONTUR.foto.url)
@@ -145,30 +146,65 @@ export default function MapCanvas() {
       );
     };
   }, []);
-useEffect(() => {
-  const handleResetAnalisis = () => {
-    const map = mapRef.current;
 
-    // Tutup kartu / popup bidang
-    popupRef.current?.remove();
-    popupRef.current = null;
+  useEffect(() => {
+    const handleResetAnalisis = () => {
+      const map = mapRef.current;
 
-    // Reset highlight analisis
-    if (map) {
-      for (const id of analisisRef.current) {
-        map.setFeatureState(
-          {
-            source: 'bidang',
-            id,
-          },
-          {
-            analisis: false,
-          }
-        );
+      // Tutup kartu / popup bidang
+      popupRef.current?.remove();
+      popupRef.current = null;
+
+      // Reset highlight analisis
+      if (map) {
+        for (const id of analisisRef.current) {
+          map.setFeatureState(
+            {
+              source: 'bidang',
+              id,
+            },
+            {
+              analisis: false,
+            }
+          );
+        }
+
+        // Reset bidang yang sedang dipilih / difokuskan
+        if (terpilihRef.current !== null) {
+          map.setFeatureState(
+            {
+              source: 'bidang',
+              id: terpilihRef.current,
+            },
+            {
+              sel: false,
+            }
+          );
+        }
       }
 
-      // Reset bidang yang sedang dipilih / difokuskan
-      if (terpilihRef.current !== null) {
+      analisisRef.current = [];
+      terpilihRef.current = null;
+    };
+
+    window.addEventListener(
+      'reset-analisis-bidang',
+      handleResetAnalisis
+    );
+
+    return () => {
+      window.removeEventListener(
+        'reset-analisis-bidang',
+        handleResetAnalisis
+      );
+    };
+  }, []);
+
+  useEffect(() => {
+    const handleResetPilihanBidang = () => {
+      const map = mapRef.current;
+
+      if (map && terpilihRef.current !== null) {
         map.setFeatureState(
           {
             source: 'bidang',
@@ -179,59 +215,27 @@ useEffect(() => {
           }
         );
       }
-    }
 
-    analisisRef.current = [];
-    terpilihRef.current = null;
-  };
+      terpilihRef.current = null;
 
-  window.addEventListener(
-    'reset-analisis-bidang',
-    handleResetAnalisis
-  );
+      // Tutup kartu / popup bidang
+      popupRef.current?.remove();
+      popupRef.current = null;
+    };
 
-  return () => {
-    window.removeEventListener(
-      'reset-analisis-bidang',
-      handleResetAnalisis
-    );
-  };
-}, []);
- useEffect(() => {
-  const handleResetPilihanBidang = () => {
-    const map = mapRef.current;
-
-    if (map && terpilihRef.current !== null) {
-      map.setFeatureState(
-        {
-          source: 'bidang',
-          id: terpilihRef.current,
-        },
-        {
-          sel: false,
-        }
-      );
-    }
-
-    terpilihRef.current = null;
-
-    // Tutup kartu / popup bidang
-    popupRef.current?.remove();
-    popupRef.current = null;
-  };
-
-  window.addEventListener(
-    'reset-pilihan-bidang',
-    handleResetPilihanBidang
-  );
-
-  return () => {
-    window.removeEventListener(
+    window.addEventListener(
       'reset-pilihan-bidang',
       handleResetPilihanBidang
     );
-  };
-}, []);
+
+    return () => {
+      window.removeEventListener(
+        'reset-pilihan-bidang',
+        handleResetPilihanBidang
+      );
+    };
+  }, []);
+
   useEffect(() => {
     const handleFokusBidang = (
       event: Event
@@ -1089,90 +1093,91 @@ useEffect(() => {
           source: 'bidang',
 
           paint: {
-           'fill-color': [
-  'case',
+            'fill-color': [
+              'case',
 
-  // Bidang yang sedang dianalisis → CYAN
-  [
-    'boolean',
-    [
-      'feature-state',
-      'analisis'
-    ],
-    false
-  ],
+              // Bidang yang sedang dianalisis → CYAN
+              [
+                'boolean',
+                [
+                  'feature-state',
+                  'analisis'
+                ],
+                false
+              ],
 
-  '#00E5FF',
+              '#00E5FF',
 
-  // Bidang yang dipilih → MAGENTA
-  [
-    'boolean',
-    [
-      'feature-state',
-      'sel'
-    ],
-    false
-  ],
+              // Bidang yang dipilih → MAGENTA
+              [
+                'boolean',
+                [
+                  'feature-state',
+                  'sel'
+                ],
+                false
+              ],
 
-  '#FFD600',
+              '#FFD600',
 
-  // Bidang normal → MAGENTA
-  '#A51F35'
-],
-'fill-opacity': [
-  'case',
+              // Bidang normal → MAGENTA
+              '#A51F35'
+            ],
 
-  // Analisis
-  [
-    'boolean',
-    [
-      'feature-state',
-      'analisis'
-    ],
-    false
-  ],
+            'fill-opacity': [
+              'case',
 
-  0.88,
+              // Analisis
+              [
+                'boolean',
+                [
+                  'feature-state',
+                  'analisis'
+                ],
+                false
+              ],
 
-  // Filter
-  [
-    'boolean',
-    [
-      'feature-state',
-      'filter'
-    ],
-    false
-  ],
+              0.88,
 
-  0.92,
+              // Filter
+              [
+                'boolean',
+                [
+                  'feature-state',
+                  'filter'
+                ],
+                false
+              ],
 
-  // Selected
-  [
-    'boolean',
-    [
-      'feature-state',
-      'sel'
-    ],
-    false
-  ],
+              0.92,
 
-  0.95,
+              // Selected
+              [
+                'boolean',
+                [
+                  'feature-state',
+                  'sel'
+                ],
+                false
+              ],
 
-  // Hover
-  [
-    'boolean',
-    [
-      'feature-state',
-      'hov'
-    ],
-    false
-  ],
+              0.95,
 
-  0.74,
+              // Hover
+              [
+                'boolean',
+                [
+                  'feature-state',
+                  'hov'
+                ],
+                false
+              ],
 
-  // Normal
-  0.50
-]
+              0.74,
+
+              // Normal
+              0.50
+            ]
           }
         });
 
@@ -1202,10 +1207,6 @@ useEffect(() => {
           );
         }
 
-        // ==================================================
-        // OUTLINE BIDANG
-        // ==================================================
-
         map.addLayer({
           id: 'bidang-ln',
 
@@ -1214,7 +1215,6 @@ useEffect(() => {
           source: 'bidang',
 
           paint: {
-
             'line-color': [
               'case',
 
@@ -1321,8 +1321,47 @@ useEffect(() => {
         });
 
         // ==================================================
-        // FILTER LAYER
+        // LABEL NIB
         // ==================================================
+
+        map.addLayer({
+          id: 'bidang-lb',
+
+          type: 'symbol',
+
+          source: 'bidang',
+
+          minzoom: 13,
+
+          layout: {
+            visibility: 'none',
+
+            'text-field': [
+              'to-string',
+              [
+                'get',
+                'nib'
+              ]
+            ],
+
+            'text-size': 12,
+
+            'text-anchor': 'center',
+
+            'text-allow-overlap': true,
+
+            'text-ignore-placement': true
+          },
+
+          paint: {
+            'text-color': '#1E2733',
+
+            'text-halo-color':
+              'rgba(255,255,255,.9)',
+
+            'text-halo-width': 1.1
+          }
+        });
 
         map.addLayer({
           id:
@@ -1376,6 +1415,7 @@ useEffect(() => {
             'line-opacity': 1
           }
         });
+
         warnaiTema(map);
 
         pasangInteraksi(map);
@@ -2039,57 +2079,58 @@ useEffect(() => {
       );
     };
   }, [dtm]);
-// ====================================================
-// LABEL NOMOR OTOMATIS BERDASARKAN ZOOM
-// ====================================================
 
-useEffect(() => {
-  const map = mapRef.current;
+  // ====================================================
+  // LABEL NOMOR OTOMATIS BERDASARKAN ZOOM
+  // ====================================================
 
-  if (!map) {
-    return;
-  }
+  useEffect(() => {
+    const map = mapRef.current;
 
-  const perbaruiLabelNomor = () => {
-    if (
-      !map.isStyleLoaded() ||
-      !map.getLayer('bidang-lb')
-    ) {
+    if (!map) {
       return;
     }
 
-    const zoom = map.getZoom();
+    const perbaruiLabelNomor = () => {
+      if (
+        !map.isStyleLoaded() ||
+        !map.getLayer('bidang-lb')
+      ) {
+        return;
+      }
 
-    map.setLayoutProperty(
-      'bidang-lb',
-      'visibility',
-      zoom >= 15
-        ? 'visible'
-        : 'none'
-    );
-  };
+      const zoom = map.getZoom();
 
-  if (map.isStyleLoaded()) {
-    perbaruiLabelNomor();
-  } else {
-    map.once(
-      'load',
-      perbaruiLabelNomor
-    );
-  }
+      map.setLayoutProperty(
+        'bidang-lb',
+        'visibility',
+        zoom >= 13
+          ? 'visible'
+          : 'none'
+      );
+    };
 
-  map.on(
-    'zoom',
-    perbaruiLabelNomor
-  );
+    if (map.isStyleLoaded()) {
+      perbaruiLabelNomor();
+    } else {
+      map.once(
+        'load',
+        perbaruiLabelNomor
+      );
+    }
 
-  return () => {
-    map.off(
+    map.on(
       'zoom',
       perbaruiLabelNomor
     );
-  };
-}, []);
+
+    return () => {
+      map.off(
+        'zoom',
+        perbaruiLabelNomor
+      );
+    };
+  }, []);
 
   useEffect(() => {
     const map =
