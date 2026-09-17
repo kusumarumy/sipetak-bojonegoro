@@ -5714,43 +5714,6 @@ main.body {
   font-weight: 800;
   letter-spacing: .03em;
 }
-
-.panel-kepemilikan .form-group select {
-  width: 100%;
-  height: 30px;
-  max-height: 100px;
-  padding: 0 26px 0 10px;
-  color: #475569;
-  background: #f8fafc;
-  border: 1px solid #dfe6ed;
-  border-radius: 8px;
-  font-family: inherit;
-  font-size: 9px;
-  font-weight: 600;
-  outline: none;
-  cursor: pointer;
-  transition:
-    border-color .15s ease,
-    background .15s ease,
-    box-shadow .15s ease;
-}
-
-.panel-kepemilikan .form-group select:hover {
-  border-color: #cbd5e1;
-  background: #f5f7f9;
-}
-
-.panel-kepemilikan .form-group select:focus {
-  border-color: var(--kep-red);
-  box-shadow:
-    0 0 0 3px rgba(159, 18, 57, .08);
-}
-
-.panel-kepemilikan .form-group select:disabled {
-  opacity: .55;
-  cursor: not-allowed;
-}
-
 .panel-kepemilikan .owner-card {
   margin-top: 7px;
 
@@ -6024,13 +5987,16 @@ main.body {
   align-items: center;
   justify-content: space-between;
   gap: 8px;
-
   margin-bottom: 5px;
 }
 
 .panel-kepemilikan .form-group-header label {
   margin: 0;
 }
+
+/* =========================
+   RESET
+========================= */
 
 .panel-kepemilikan .analysis-reset {
   flex: 0 0 auto;
@@ -6041,7 +6007,7 @@ main.body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 4px;
+  gap: 3px;
 
   color: #64748b;
   background: #fff;
@@ -6071,6 +6037,181 @@ main.body {
   opacity: .45;
   cursor: not-allowed;
 }
+
+.panel-kepemilikan .pemilik-dropdown {
+  position: relative;
+  width: 100%;
+}
+
+/* Tombol dropdown */
+.panel-kepemilikan .pemilik-dropdown-trigger {
+  width: 100%;
+  height: 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 8px;
+
+  padding: 0 9px;
+
+  color: #475569;
+  background: #f8fafc;
+
+  border: 1px solid #dfe6ed;
+  border-radius: 8px;
+
+  font-family: inherit;
+  font-size: 9px;
+  font-weight: 600;
+
+  text-align: left;
+
+  cursor: pointer;
+
+  transition:
+    border-color .15s ease,
+    background .15s ease,
+    box-shadow .15s ease;
+}
+
+.panel-kepemilikan .pemilik-dropdown-trigger:hover {
+  background: #f5f7f9;
+  border-color: #cbd5e1;
+}
+
+.panel-kepemilikan .pemilik-dropdown-trigger.is-open {
+  border-color: var(--kep-red);
+  box-shadow:
+    0 0 0 3px rgba(159, 18, 57, .08);
+}
+
+.panel-kepemilikan
+.pemilik-dropdown-trigger > span:first-child {
+  min-width: 0;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.panel-kepemilikan .pemilik-dropdown-arrow {
+  flex: 0 0 auto;
+
+  color: #64748b;
+
+  font-size: 12px;
+  line-height: 1;
+
+  transition: transform .15s ease;
+}
+
+.panel-kepemilikan
+.pemilik-dropdown-trigger.is-open
+.pemilik-dropdown-arrow {
+  transform: rotate(180deg);
+}
+
+/* =========================
+   LIST DROPDOWN
+========================= */
+
+.panel-kepemilikan .pemilik-dropdown-menu {
+  position: absolute;
+
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+
+  max-height: 170px;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  padding: 4px;
+
+  background: #fff;
+
+  border: 1px solid #dfe6ed;
+  border-radius: 8px;
+
+  box-shadow:
+    0 8px 20px rgba(15, 23, 42, .12);
+
+  z-index: 100;
+}
+
+/* scrollbar */
+.panel-kepemilikan
+.pemilik-dropdown-menu::-webkit-scrollbar {
+  width: 4px;
+}
+
+.panel-kepemilikan
+.pemilik-dropdown-menu::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 20px;
+}
+
+/* =========================
+   ITEM PEMILIK
+========================= */
+
+.panel-kepemilikan .pemilik-option {
+  width: 100%;
+  min-height: 27px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 8px;
+
+  padding: 6px 8px;
+
+  color: #475569;
+  background: transparent;
+
+  border: 0;
+  border-radius: 5px;
+
+  font-family: inherit;
+  font-size: 9px;
+  font-weight: 600;
+
+  text-align: left;
+
+  cursor: pointer;
+}
+
+.panel-kepemilikan .pemilik-option:hover {
+  color: var(--kep-red);
+  background: #fff5f7;
+}
+
+.panel-kepemilikan .pemilik-option.active {
+  color: var(--kep-red);
+  background: #fff5f7;
+}
+
+.panel-kepemilikan .pemilik-option span {
+  min-width: 0;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.panel-kepemilikan .pemilik-option small {
+  flex: 0 0 auto;
+
+  color: #94a3b8;
+
+  font-size: 7px;
+  font-weight: 700;
+}
+
 @media (max-width: 900px) {
   .panel-kepemilikan {
     left: 82px;
