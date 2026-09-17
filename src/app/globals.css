@@ -13261,6 +13261,501 @@ html[data-theme="dark"] .basemap-card.active .basemap-card-label {
   }
 }
 
+
+/* =========================================================
+   UNIFIED TERRAIN DESIGN SYSTEM
+   Hanya override tampilan — tidak mengubah struktur/fungsi.
+   Terrain dijadikan acuan utama untuk semua panel WebGIS.
+   ========================================================= */
+
+:root {
+  --terrain-ui-font: 'Archivo', system-ui, -apple-system, sans-serif;
+  --terrain-ui-bg: #ffffff;
+  --terrain-ui-soft: #edf2f6;
+  --terrain-ui-line: #c5d1dc;
+  --terrain-ui-text: #607788;
+  --terrain-ui-title: #7b1528;
+  --terrain-ui-accent: #9b1734;
+  --terrain-ui-accent-soft: rgba(176, 47, 47, 0.08);
+  --terrain-ui-muted: #8797a7;
+  --terrain-ui-radius: 10px;
+  --terrain-ui-shadow: 0 8px 28px rgba(25, 47, 70, .15);
+}
+
+html[data-theme="dark"] {
+  --terrain-ui-bg: #241a1d;
+  --terrain-ui-soft: #1d1518;
+  --terrain-ui-line: #4b353a;
+  --terrain-ui-text: #b9aaae;
+  --terrain-ui-title: #e7b7c1;
+  --terrain-ui-accent: #9b1f3b;
+  --terrain-ui-accent-soft: rgba(155, 31, 59, .12);
+  --terrain-ui-muted: #a99a9f;
+  --terrain-ui-shadow: 0 10px 30px rgba(0, 0, 0, .35);
+}
+
+/* ---------- GLOBAL PANEL TYPOGRAPHY ---------- */
+.search-flyout,
+.basemap-flyout,
+.statistik-flyout,
+.panel-kepemilikan,
+.filter-flyout,
+.daftar-flyout,
+.layer-card {
+  font-family: var(--terrain-ui-font);
+  color: var(--terrain-ui-text);
+}
+
+/* ---------- COMMON PANEL HEADER ---------- */
+.search-head,
+.basemap-flyout-head,
+.statistik-head,
+.panel-kepemilikan .panel-header,
+.filter-head,
+.daftar-head {
+  min-height: 58px;
+  height: 58px;
+  padding: 12px 14px;
+  background: var(--terrain-ui-bg);
+  border-bottom: 1px solid var(--terrain-ui-line);
+}
+
+.search-title,
+.basemap-panel-title,
+.statistik-title,
+.panel-kepemilikan .panel-title,
+.filter-title {
+  font-family: var(--terrain-ui-font);
+  font-size: 16px;
+  line-height: 1;
+  font-weight: 750;
+  letter-spacing: -0.02em;
+  color: var(--terrain-ui-title);
+}
+
+.search-subtitle,
+.basemap-panel-subtitle,
+.statistik-subtitle,
+.panel-kepemilikan .panel-subtitle,
+.filter-subtitle {
+  font-family: var(--terrain-ui-font);
+  font-size: 10px;
+  line-height: 1.1;
+  font-weight: 500;
+  color: var(--terrain-ui-muted);
+}
+
+.search-icon,
+.basemap-panel-icon,
+.statistik-icon,
+.filter-icon {
+  width: 30px;
+  height: 30px;
+  flex: 0 0 30px;
+  border-radius: 8px;
+  border: 1px solid rgba(176, 47, 47, .35);
+  background: var(--terrain-ui-accent-soft);
+  color: var(--terrain-ui-accent);
+}
+
+.search-icon svg,
+.basemap-panel-icon svg,
+.statistik-icon svg,
+.filter-icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.search-close,
+.basemap-panel-close,
+.statistik-close,
+.filter-close {
+  width: 28px;
+  height: 28px;
+  flex: 0 0 28px;
+  border-radius: 6px;
+  border: 1px solid var(--terrain-ui-line);
+  background: var(--terrain-ui-bg);
+  color: var(--terrain-ui-text);
+  font-family: var(--terrain-ui-font);
+}
+
+.search-close:hover,
+.basemap-panel-close:hover,
+.statistik-close:hover,
+.filter-close:hover {
+  border-color: var(--terrain-ui-accent);
+  color: var(--terrain-ui-accent);
+  background: var(--terrain-ui-soft);
+}
+
+/* ---------- COMMON BODY / CARD ---------- */
+.search-body,
+.basemap-flyout-body,
+.statistik-body,
+.panel-kepemilikan .panel-body,
+.filter-body {
+  padding: 10px 12px 12px;
+}
+
+.layer-card {
+  padding: 10px 10px 8px;
+  background: var(--terrain-ui-bg);
+  border-color: var(--terrain-ui-line);
+}
+
+.layer-manager-title {
+  font-family: var(--terrain-ui-font);
+  font-size: 13px;
+  font-weight: 750;
+  letter-spacing: .08em;
+  color: var(--terrain-ui-title);
+}
+
+.layer-manager-subtitle {
+  font-family: var(--terrain-ui-font);
+  font-size: 9px;
+  font-weight: 500;
+  color: var(--terrain-ui-muted);
+}
+
+.layer-count {
+  border-color: var(--terrain-ui-line);
+  background: var(--terrain-ui-soft);
+  color: var(--terrain-ui-text);
+  border-radius: 6px;
+  font-family: var(--terrain-ui-font);
+}
+
+/* ---------- TERRAIN: MASTER DETAIL ---------- */
+.terrain-panel-title {
+  font-family: var(--terrain-ui-font);
+}
+
+.terrain-panel-subtitle {
+  font-family: var(--terrain-ui-font);
+}
+
+.terrain-segment {
+  border-color: var(--terrain-ui-accent);
+  border-radius: 10px;
+  background: var(--terrain-ui-soft);
+}
+
+.terrain-segment button {
+  font-family: var(--terrain-ui-font);
+  color: var(--terrain-ui-text);
+  border-radius: 8px;
+}
+
+.terrain-segment button:hover {
+  color: var(--terrain-ui-title);
+}
+
+.terrain-segment button.active {
+  background: var(--terrain-ui-accent);
+  color: #fff;
+}
+
+html[data-theme="dark"] .terrain-segment {
+  border-color: var(--terrain-ui-line);
+  background: var(--terrain-ui-soft);
+}
+
+html[data-theme="dark"] .terrain-segment button:hover {
+  color: #f0cbd2;
+}
+
+/* ---------- BASEMAP ---------- */
+.basemap-flyout {
+  width: 250px;
+  max-height: calc(100vh - 120px);
+  border: 1px solid var(--terrain-ui-line);
+  border-radius: 10px;
+  background: var(--terrain-ui-bg);
+  box-shadow: var(--terrain-ui-shadow);
+}
+
+.basemap-flyout-head {
+  background: var(--terrain-ui-bg);
+  border-bottom-color: var(--terrain-ui-line);
+}
+
+.basemap-flyout-body {
+  padding: 10px;
+}
+
+.basemap-card {
+  border-color: var(--terrain-ui-line);
+  border-radius: 8px;
+  background: var(--terrain-ui-soft);
+  color: var(--terrain-ui-text);
+  font-family: var(--terrain-ui-font);
+}
+
+.basemap-card:hover {
+  border-color: var(--terrain-ui-accent);
+}
+
+html[data-theme="dark"] .basemap-card {
+  background: var(--terrain-ui-soft);
+  color: var(--terrain-ui-text);
+  border-color: var(--terrain-ui-line);
+}
+
+/* ---------- SEARCH ---------- */
+.search-flyout {
+  width: 330px;
+  height: 460px;
+  border: 1px solid var(--terrain-ui-line);
+  border-radius: 10px;
+  background: var(--terrain-ui-bg);
+  box-shadow: var(--terrain-ui-shadow);
+}
+
+.search-head {
+  background: var(--terrain-ui-bg);
+}
+
+.search-input,
+.search-result,
+.search-item {
+  font-family: var(--terrain-ui-font);
+}
+
+.search-input {
+  border-color: var(--terrain-ui-line);
+  background: var(--terrain-ui-soft);
+}
+
+.search-result,
+.search-item {
+  color: var(--terrain-ui-text);
+}
+
+.search-result:hover,
+.search-item:hover {
+  background: var(--terrain-ui-soft);
+}
+
+/* ---------- STATISTIKA ---------- */
+.statistik-flyout {
+  width: 330px;
+  height: 470px;
+  border-color: var(--terrain-ui-line);
+  border-radius: 10px;
+  background: var(--terrain-ui-bg);
+  box-shadow: var(--terrain-ui-shadow);
+}
+
+.statistik-head {
+  background: var(--terrain-ui-bg);
+}
+
+.statistik-icon {
+  color: var(--terrain-ui-accent);
+  background: var(--terrain-ui-accent-soft);
+  border-color: rgba(176, 47, 47, .35);
+}
+
+.statistik-title {
+  color: var(--terrain-ui-title);
+}
+
+.statistik-subtitle {
+  color: var(--terrain-ui-muted);
+}
+
+/* ---------- ANALISIS KEPEMILIKAN ---------- */
+.panel-kepemilikan {
+  width: 330px;
+  height: 470px;
+  border-color: var(--terrain-ui-line);
+  border-radius: 10px;
+  background: var(--terrain-ui-bg);
+  box-shadow: var(--terrain-ui-shadow);
+}
+
+.panel-kepemilikan .panel-header {
+  background: var(--terrain-ui-bg);
+}
+
+.panel-kepemilikan .panel-title {
+  color: var(--terrain-ui-title);
+}
+
+.panel-kepemilikan .panel-subtitle {
+  color: var(--terrain-ui-muted);
+}
+
+/* ---------- FILTER ---------- */
+.filter-flyout {
+  width: 330px;
+  height: 470px;
+  border: 1px solid var(--terrain-ui-line);
+  border-radius: 10px;
+  background: var(--terrain-ui-bg);
+  box-shadow: var(--terrain-ui-shadow);
+}
+
+.filter-head {
+  background: var(--terrain-ui-bg);
+}
+
+.filter-icon {
+  color: var(--terrain-ui-accent);
+  background: var(--terrain-ui-accent-soft);
+  border-color: rgba(176, 47, 47, .35);
+}
+
+.filter-title {
+  color: var(--terrain-ui-title);
+}
+
+.filter-subtitle {
+  color: var(--terrain-ui-muted);
+}
+
+/* ---------- DAFTAR BIDANG: DIPERKECIL ---------- */
+.daftar-flyout {
+  left: 82px;
+  top: 104px;
+  width: min(900px, calc(100vw - 110px));
+  max-height: 70vh;
+  border: 1px solid var(--terrain-ui-line);
+  border-radius: 10px;
+  background: var(--terrain-ui-bg);
+  box-shadow: var(--terrain-ui-shadow);
+}
+
+.daftar-bidang {
+  max-height: 70vh;
+}
+
+.daftar-head {
+  background: var(--terrain-ui-bg);
+  border-bottom-color: var(--terrain-ui-line);
+}
+
+.daftar-title {
+  min-width: 0;
+  font-family: var(--terrain-ui-font);
+  color: var(--terrain-ui-muted);
+}
+
+.daftar-title span:first-child,
+.daftar-title span:last-child {
+  font-family: var(--terrain-ui-font);
+  color: var(--terrain-ui-muted);
+}
+
+.daftar-title strong {
+  font-family: var(--terrain-ui-font);
+  color: var(--terrain-ui-title);
+  font-size: 16px;
+  font-weight: 750;
+}
+
+.daftar-actions button {
+  font-family: var(--terrain-ui-font);
+  border-color: var(--terrain-ui-line);
+  background: var(--terrain-ui-soft);
+  color: var(--terrain-ui-text);
+  border-radius: 8px;
+}
+
+.daftar-actions button:hover {
+  border-color: var(--terrain-ui-accent);
+  color: var(--terrain-ui-title);
+}
+
+.daftar-table {
+  font-family: var(--terrain-ui-font);
+}
+
+.daftar-table th {
+  font-size: 9px;
+  font-weight: 750;
+  color: var(--terrain-ui-text);
+}
+
+.daftar-table td {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--terrain-ui-text);
+}
+
+/* ---------- RIWAYAT AKSES / LOG: DIPADATKAN ---------- */
+.log {
+  font-family: var(--terrain-ui-font);
+  max-height: 360px;
+  overflow-y: auto;
+  padding-right: 3px;
+}
+
+.log li {
+  grid-template-columns: 12px 1fr;
+  gap: 8px;
+  padding-bottom: 10px;
+}
+
+.log .dot {
+  width: 8px;
+  height: 8px;
+  border-color: var(--terrain-ui-accent);
+  background: var(--terrain-ui-bg);
+}
+
+.log .lt {
+  font-family: var(--terrain-ui-font);
+  font-size: 10px;
+  line-height: 1.4;
+  font-weight: 500;
+  color: var(--terrain-ui-text);
+}
+
+.log .lm {
+  font-family: var(--terrain-ui-font);
+  font-size: 8.5px;
+  line-height: 1.3;
+  font-weight: 500;
+  color: var(--terrain-ui-muted);
+}
+
+/* ---------- RESPONSIVE: TETAP AMAN ---------- */
+@media (max-width: 1050px) {
+  .daftar-flyout {
+    width: calc(100vw - 88px);
+  }
+}
+
+@media (max-width: 600px) {
+  .search-flyout,
+  .statistik-flyout,
+  .panel-kepemilikan,
+  .filter-flyout {
+    left: 10px;
+    right: 10px;
+    width: auto;
+  }
+
+  .daftar-flyout {
+    left: 10px;
+    right: 10px;
+    width: auto;
+    max-height: calc(100vh - 94px);
+  }
+
+  .daftar-bidang {
+    max-height: calc(100vh - 94px);
+  }
+
+  .log {
+    max-height: 300px;
+  }
+}
+
+
 /* =========================================================
    REDUCED MOTION
    ========================================================= */
