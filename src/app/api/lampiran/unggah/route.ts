@@ -8,7 +8,9 @@ export async function POST(req: NextRequest) {
   try {
     if (!penyimpananSiap()) {
       return NextResponse.json(
-        { error: "Penyimpanan belum dikonfigurasi" },
+        {
+          error: "Penyimpanan belum dikonfigurasi",
+        },
         { status: 500 }
       );
     }
@@ -18,48 +20,66 @@ export async function POST(req: NextRequest) {
     const file = form.get("file") as File | null;
     const bidangId = form.get("bidang_id") as string | null;
     const kategori = form.get("kategori") as string | null;
-    const namaAsli = (form.get("nama_asli") as string) || "file";
+    const namaAsli =
+      (form.get("nama_asli") as string) || "file";
 
     if (!file || !bidangId || !kategori) {
       return NextResponse.json(
-        { error: "file / bidang_id / kategori kosong" },
+        {
+          error: "file / bidang_id / kategori kosong",
+        },
         { status: 400 }
       );
     }
 
+    // Ambil ekstensi file
     const ext = namaAsli.includes(".")
-      ? namaAsli.split(".").pop()
+      ? namaAsli.split(".").pop()?.toLowerCase() || "bin"
       : "bin";
 
-    const objectKey = `bidang/\({bidangId}/foto/\){kategori}/\({Date.now()}-\){randomUUID()}.${ext}`;
-    const buffer = Buffer.from(await file.arrayBuffer());
+    // Nama objek di R2
+    const objectKey =
+      `bidang/${bidangId}/foto/${kategori}/` +
+      `${Date.now()}-${randomUUID()}.${ext}`;
 
+    // File → Buffer
+    const buffer = Buffer.from(
+      await file.arrayBuffer()
+    );
+
+    console.log("UPLOAD REQUEST", {
+      objectKey,
+      namaAsli,
+      bidangId,
+      kategori,
+      mime: file.type,
+      size: file.size,
+    });
+
+    // Upload ke Cloudflare R2
     await unggahObjek(
       objectKey,
       buffer,
       file.type || "application/octet-stream"
     );
 
+    console.log("UPLOAD FINISHED", {
+      objectKey,
+    });
+
     return NextResponse.json({
+      success: true,
       object_key: objectKey,
     });
-  } catch (e) {
+  } catch (e: any) {
     console.error("API UNGGAH ERROR:", e);
-
-    const err = e as any;
-
-    console.error("R2 ERROR DETAIL:", {
-      name: err?.name,
-      code: err?.code,
-      message: err?.message,
-      statusCode: err?.$metadata?.httpStatusCode,
-      requestId: err?.$metadata?.requestId,
-      extendedRequestId: err?.$metadata?.extendedRequestId,
-    });
 
     return NextResponse.json(
       {
-        error: e instanceof Error ? e.message : "Gagal unggah",
+        error:
+          e instanceof Error
+            ? e.message
+            : "Gagal unggah",
       },
       { status: 500 }
     );
