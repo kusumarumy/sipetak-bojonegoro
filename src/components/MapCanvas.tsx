@@ -147,42 +147,43 @@ export default function MapCanvas() {
   }, []);
 useEffect(() => {
   const handleResetAnalisis = () => {
-  const map = mapRef.current;
+    const map = mapRef.current;
 
-  if (!map) {
-    return;
-  }
+    // Tutup kartu / popup bidang
+    popupRef.current?.remove();
+    popupRef.current = null;
 
-  // Reset highlight analisis
-  for (const id of analisisRef.current) {
-    map.setFeatureState(
-      {
-        source: 'bidang',
-        id,
-      },
-      {
-        analisis: false,
+    // Reset highlight analisis
+    if (map) {
+      for (const id of analisisRef.current) {
+        map.setFeatureState(
+          {
+            source: 'bidang',
+            id,
+          },
+          {
+            analisis: false,
+          }
+        );
       }
-    );
-  }
 
-  analisisRef.current = [];
-
-  // Reset bidang yang sedang dipilih / difokuskan
-  if (terpilihRef.current !== null) {
-    map.setFeatureState(
-      {
-        source: 'bidang',
-        id: terpilihRef.current,
-      },
-      {
-        sel: false,
+      // Reset bidang yang sedang dipilih / difokuskan
+      if (terpilihRef.current !== null) {
+        map.setFeatureState(
+          {
+            source: 'bidang',
+            id: terpilihRef.current,
+          },
+          {
+            sel: false,
+          }
+        );
       }
-    );
+    }
 
+    analisisRef.current = [];
     terpilihRef.current = null;
-  }
-};
+  };
 
   window.addEventListener(
     'reset-analisis-bidang',
@@ -199,9 +200,8 @@ useEffect(() => {
  useEffect(() => {
   const handleResetPilihanBidang = () => {
     const map = mapRef.current;
-    if (!map) return;
 
-    if (terpilihRef.current !== null) {
+    if (map && terpilihRef.current !== null) {
       map.setFeatureState(
         {
           source: 'bidang',
@@ -214,6 +214,10 @@ useEffect(() => {
     }
 
     terpilihRef.current = null;
+
+    // Tutup kartu / popup bidang
+    popupRef.current?.remove();
+    popupRef.current = null;
   };
 
   window.addEventListener(
