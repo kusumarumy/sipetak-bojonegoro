@@ -6417,392 +6417,197 @@ main.body {
   }
 }
 /* =========================================================
-   POPUP BIDANG — REFERENSI UI TERRAIN
+   POPUP KARTU BIDANG
    ========================================================= */
 
 .maplibregl-popup {
-  max-width: none !important;
+  z-index: 1000;
 }
 
 .maplibregl-popup-content {
-  width: 300px !important;
+  width: 300px;
+
+  background: #ffffff !important;
+  opacity: 1 !important;
+
   padding: 0 !important;
 
-  background: var(--terrain-ui-bg, #ffffff) !important;
-  border: 1px solid var(--terrain-ui-line, #e2e8f0) !important;
-  border-radius: 11px !important;
+  border: 1px solid #e5e7eb !important;
+  border-radius: 12px !important;
 
   box-shadow:
-    0 14px 32px rgba(15, 23, 42, 0.14),
-    0 3px 8px rgba(15, 23, 42, 0.06) !important;
+    0 18px 45px rgba(15, 23, 42, 0.16),
+    0 3px 10px rgba(15, 23, 42, 0.06) !important;
 
-  overflow: hidden !important;
-  opacity: 1 !important;
+  overflow: hidden;
 }
 
 
-/* ---------- CLOSE ---------- */
+/* =========================================================
+   TOMBOL CLOSE MAPLIBRE
+   ========================================================= */
 
 .maplibregl-popup-close-button {
-  top: 8px !important;
-  right: 8px !important;
+  position: absolute;
 
-  width: 25px !important;
-  height: 25px !important;
+  top: 8px;
+  right: 8px;
 
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-
-  padding: 0 !important;
-
-  color: #64748b !important;
-  background: #ffffff !important;
-
-  border: 1px solid #e2e8f0 !important;
-  border-radius: 7px !important;
-
-  font-size: 16px !important;
-  font-weight: 400 !important;
-  line-height: 1 !important;
-
-  z-index: 5 !important;
-}
-
-.maplibregl-popup-close-button:hover {
-  color: #a51f35 !important;
-  background: #fff7f8 !important;
-  border-color: #efc6d0 !important;
-}
-
-
-/* ---------- HEADER ---------- */
-
-.popup-bidang-header {
-  display: flex;
-  align-items: center;
-
-  gap: 9px;
-
-  padding: 11px 42px 10px 12px;
-
-  background: var(--terrain-ui-bg, #ffffff);
-
-  border-bottom: 1px solid var(--terrain-ui-line, #e2e8f0);
-}
-
-.popup-bidang-icon {
-  width: 30px;
-  height: 30px;
-
-  flex: 0 0 30px;
+  width: 24px;
+  height: 24px;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
+  padding: 0;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+
+  background: #ffffff;
+  color: #6b7280;
+
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1;
+
+  cursor: pointer;
+
+  z-index: 5;
+
+  transition:
+    background 0.14s ease,
+    border-color 0.14s ease,
+    color 0.14s ease;
+}
+
+.maplibregl-popup-close-button:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+  color: #1e2733;
+}
+
+
+/* =========================================================
+   HEADER POPUP
+   ========================================================= */
+
+.pop {
+  width: 100%;
+  background: #ffffff;
+}
+
+.pop .ph {
+  padding: 14px 42px 12px 15px;
+
+  background: #ffffff;
+
+  border-bottom: 1px solid #eef1f4;
+}
+
+.pop .id {
   color: #a51f35;
 
-  background: #fff7f8;
-
-  border: 1px solid #efc6d0;
-
-  border-radius: 8px;
-}
-
-.popup-bidang-icon svg {
-  width: 15px;
-  height: 15px;
-}
-
-.popup-bidang-heading {
-  min-width: 0;
-
-  display: flex;
-  flex-direction: column;
-
-  gap: 2px;
-}
-
-.popup-bidang-title {
-  color: var(--terrain-ui-title, #334155);
-
-  font-family: var(--terrain-ui-font, Arial, sans-serif);
-
-  font-size: 11px;
+  font-family: var(--f-display, Arial, sans-serif);
+  font-size: 13px;
   font-weight: 800;
 
-  line-height: 1.1;
-
-  letter-spacing: 0.02em;
+  letter-spacing: 0.035em;
 }
 
-.popup-bidang-code {
-  color: var(--terrain-ui-muted, #94a3b8);
+.pop .nm {
+  margin-top: 3px;
 
-  font-size: 8px;
-  font-weight: 600;
+  color: #7b818b;
 
-  line-height: 1.1;
-}
+  font-family: var(--f-body, Arial, sans-serif);
+  font-size: 10px;
+  font-weight: 500;
 
-
-/* ---------- BODY ---------- */
-
-.popup-bidang-body {
-  padding: 9px 11px 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 
-/* DATA ROW */
+/* =========================================================
+   DETAIL
+   ========================================================= */
 
-.popup-bidang-row {
+.pop .pb {
+  padding: 11px 15px 10px;
+}
+
+.pop .pb > div {
   display: flex;
   align-items: center;
   justify-content: space-between;
 
-  gap: 12px;
+  min-height: 30px;
 
-  min-height: 29px;
-
-  border-bottom: 1px solid #f1f5f9;
+  gap: 20px;
 }
 
-.popup-bidang-row:last-child {
-  border-bottom: 0;
+.pop .pb span {
+  color: #7b818b;
+
+  font-family: var(--f-body, Arial, sans-serif);
+  font-size: 9px;
+  font-weight: 600;
 }
 
-.popup-bidang-label {
-  color: #718096;
+.pop .pb b {
+  color: #1e2733;
 
-  font-size: 8px;
-  font-weight: 700;
-
-  letter-spacing: 0.02em;
-}
-
-.popup-bidang-value {
-  min-width: 0;
-
-  max-width: 175px;
-
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-
-  color: #334155;
-
+  font-family: var(--f-display, Arial, sans-serif);
   font-size: 10px;
-  font-weight: 700;
+  font-weight: 750;
 
   text-align: right;
 }
 
 
-/* angka */
+/* =========================================================
+   BUTTON BUKA KARTU
+   ========================================================= */
 
-.popup-bidang-value.number {
-  font-variant-numeric: tabular-nums;
-}
+.pop > button {
+  width: calc(100% - 30px);
 
+  margin: 2px 15px 14px;
 
-/* ---------- FOOTER ---------- */
-
-.popup-bidang-footer {
-  padding: 8px 11px 10px;
-
-  background: #fafbfc;
-
-  border-top: 1px solid #edf1f5;
-}
-
-.popup-bidang-action {
-  width: 100%;
-  height: 30px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  gap: 6px;
-
-  padding: 0 10px;
-
-  color: #ffffff;
-
-  background: #a51f35;
+  min-height: 32px;
 
   border: 1px solid #a51f35;
   border-radius: 7px;
 
-  font-family: var(--terrain-ui-font, Arial, sans-serif);
+  background: #a51f35;
+  color: #ffffff;
 
-  font-size: 8px;
+  font-family: var(--f-body, Arial, sans-serif);
+  font-size: 9px;
   font-weight: 800;
 
-  letter-spacing: 0.045em;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 
   cursor: pointer;
 
   transition:
-    background .14s ease,
-    border-color .14s ease,
-    transform .14s ease;
+    background 0.14s ease,
+    border-color 0.14s ease,
+    transform 0.14s ease;
 }
 
-.popup-bidang-action:hover {
-  background: #8f1830;
-  border-color: #8f1830;
+.pop > button:hover {
+  background: #8f192e;
+  border-color: #8f192e;
 }
 
-.popup-bidang-action:active {
+.pop > button:active {
   transform: translateY(1px);
-}
-
-.popup-bidang-action svg {
-  width: 13px;
-  height: 13px;
-}
-
-
-/* =========================================================
-   DARK MODE
-   ========================================================= */
-
-html[data-theme="dark"] .maplibregl-popup-content {
-  background: #241a1d !important;
-  border-color: #4b353a !important;
-
-  box-shadow:
-    0 18px 40px rgba(0, 0, 0, .32) !important;
-}
-
-html[data-theme="dark"] .maplibregl-popup-close-button {
-  color: #c9b5ba !important;
-  background: #2b2023 !important;
-  border-color: #5a4147 !important;
-}
-
-html[data-theme="dark"] .maplibregl-popup-close-button:hover {
-  color: #ffffff !important;
-  background: #351f25 !important;
-  border-color: #9b1f3b !important;
-}
-
-html[data-theme="dark"] .popup-bidang-header {
-  background: #241a1d;
-  border-bottom-color: #4b353a;
-}
-
-html[data-theme="dark"] .popup-bidang-icon {
-  color: #d58a9a;
-  background: #351f25;
-  border-color: #5a4147;
-}
-
-html[data-theme="dark"] .popup-bidang-title {
-  color: #e7d6da;
-}
-
-html[data-theme="dark"] .popup-bidang-code {
-  color: #95838a;
-}
-
-html[data-theme="dark"] .popup-bidang-row {
-  border-bottom-color: #3b2b2f;
-}
-
-html[data-theme="dark"] .popup-bidang-label {
-  color: #95838a;
-}
-
-html[data-theme="dark"] .popup-bidang-value {
-  color: #d8c9cd;
-}
-
-html[data-theme="dark"] .popup-bidang-footer {
-  background: #2b2023;
-  border-top-color: #4b353a;
-}
-
-.pop {
-  width: 218px;
-}
-
-.pop .ph {
-  padding: 9px 12px;
-
-  border-bottom: 1px solid var(--line-soft);
-}
-
-.pop .ph .id {
-  font-family: var(--f-mono);
-
-  font-size: 12px;
-
-  color: var(--accent);
-}
-
-.pop .ph .nm {
-  font-family: var(--f-doc);
-
-  font-size: 14px;
-
-  margin-top: 2px;
-}
-
-.pop .pb {
-  padding: 8px 12px;
-
-  display: grid;
-
-  gap: 3px;
-
-  font-size: 11.5px;
-
-  color: var(--dim);
-}
-
-.pop .pb div {
-  display: flex;
-
-  justify-content: space-between;
-
-  gap: 10px;
-}
-
-.pop .pb b {
-  color: var(--text);
-
-  font-weight: 500;
-
-  font-family: var(--f-mono);
-
-  font-size: 11.5px;
-}
-
-.pop button {
-  width: 100%;
-
-  background: var(--chassis3);
-
-  border: none;
-
-  border-top: 1px solid var(--line);
-
-  padding: 9px;
-
-  font-family: var(--f-disp);
-
-  text-transform: uppercase;
-
-  letter-spacing: .1em;
-
-  font-size: 10.5px;
-
-  font-weight: 600;
-
-  color: var(--accent);
 }
 
 /* =========================================================
