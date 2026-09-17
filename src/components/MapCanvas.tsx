@@ -147,26 +147,42 @@ export default function MapCanvas() {
   }, []);
 useEffect(() => {
   const handleResetAnalisis = () => {
-    const map = mapRef.current;
+  const map = mapRef.current;
 
-    if (!map) {
-      return;
-    }
+  if (!map) {
+    return;
+  }
 
-    for (const id of analisisRef.current) {
-      map.setFeatureState(
-        {
-          source: 'bidang',
-          id
-        },
-        {
-          analisis: false
-        }
-      );
-    }
+  // Reset highlight analisis
+  for (const id of analisisRef.current) {
+    map.setFeatureState(
+      {
+        source: 'bidang',
+        id,
+      },
+      {
+        analisis: false,
+      }
+    );
+  }
 
-    analisisRef.current = [];
-  };
+  analisisRef.current = [];
+
+  // Reset bidang yang sedang dipilih / difokuskan
+  if (terpilihRef.current !== null) {
+    map.setFeatureState(
+      {
+        source: 'bidang',
+        id: terpilihRef.current,
+      },
+      {
+        sel: false,
+      }
+    );
+
+    terpilihRef.current = null;
+  }
+};
 
   window.addEventListener(
     'reset-analisis-bidang',
