@@ -196,10 +196,38 @@ useEffect(() => {
     );
   };
 }, []);
-  // ====================================================
-  // FOKUS KE BIDANG
-  // ====================================================
+ useEffect(() => {
+  const handleResetPilihanBidang = () => {
+    const map = mapRef.current;
+    if (!map) return;
 
+    if (terpilihRef.current !== null) {
+      map.setFeatureState(
+        {
+          source: 'bidang',
+          id: terpilihRef.current,
+        },
+        {
+          sel: false,
+        }
+      );
+    }
+
+    terpilihRef.current = null;
+  };
+
+  window.addEventListener(
+    'reset-pilihan-bidang',
+    handleResetPilihanBidang
+  );
+
+  return () => {
+    window.removeEventListener(
+      'reset-pilihan-bidang',
+      handleResetPilihanBidang
+    );
+  };
+}, []);
   useEffect(() => {
     const handleFokusBidang = (
       event: Event
