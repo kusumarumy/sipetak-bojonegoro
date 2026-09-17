@@ -1373,19 +1373,14 @@ useEffect(() => {
           }
         });
 
-       // ==================================================
-// LABEL NIB BIDANG
-// ==================================================
-
-map.addLayer({
+      map.addLayer({
   id: 'bidang-lb',
 
   type: 'symbol',
 
   source: 'bidang',
 
-  // NIB baru muncul ketika zoom cukup dekat
-  minzoom: 16,
+  minzoom: 15,
 
   layout: {
     visibility:
@@ -1393,64 +1388,40 @@ map.addLayer({
         ? 'visible'
         : 'none',
 
-    // Ambil nilai NIB dari property bidang
     'text-field': [
-      'coalesce',
-      ['get', 'nib'],
-      ''
+      'to-string',
+      ['get', 'nib']
     ],
 
-    // Ukuran label
     'text-size': [
       'interpolate',
       ['linear'],
       ['zoom'],
 
-      16,
-      10,
-
-      17,
-      11,
-
-      18,
-      12,
-
-      20,
-      13
+      15, 8,
+      16, 9,
+      17, 10,
+      18, 11,
+      20, 13
     ],
 
-    // Posisi label di tengah simbol/anchor
     'text-anchor': 'center',
 
-    // Jangan paksa label saling menumpuk
-    'text-allow-overlap': false,
+    // PENTING
+    'text-allow-overlap': true,
 
-    // MapLibre boleh mengatur label mana yang ditampilkan
-    'text-ignore-placement': false,
+    'text-ignore-placement': true,
 
-    // Prioritaskan label berdasarkan luas bidang
-    'symbol-sort-key': [
-      'case',
-      ['has', 'luas_tnh'],
-      [
-        '-',
-        1000000,
-        ['to-number', ['get', 'luas_tnh']]
-      ],
-      999999
-    ],
-
-    // Tetap memungkinkan label ditempatkan di tengah
-    'text-padding': 2
+    'text-padding': 1
   },
 
   paint: {
     'text-color': '#000000',
 
     'text-halo-color':
-      'rgba(255,255,255,.9)',
+      'rgba(255,255,255,.95)',
 
-    'text-halo-width': 1.1
+    'text-halo-width': 1.2
   }
 });
         warnaiTema(map);
