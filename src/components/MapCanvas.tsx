@@ -14,7 +14,9 @@ import {
   DTM
 } from './layers';
 
-
+import {
+  VECTOR
+} from '@/lib/config';
 const pmtiles = new Protocol();
 let protokolTerpasang = false;
 
@@ -859,17 +861,21 @@ export default function MapCanvas() {
             continue;
           }
 
-          map.addSource(
-            L.id,
-            {
-              type: 'geojson',
+map.addSource(
+  L.id,
+  {
+    type: 'geojson',
 
-              data:
-                L.id === 'traseg'
-                  ? TRASEG_URL
-                  : `/api/layers/${L.sumber}`
-            }
-          );
+    data:
+      L.id === 'traseg'
+        ? TRASEG_URL
+        : L.id === 'kontur_kawasan'
+          ? VECTOR.konturKawasan
+          : L.id === 'kontur_trase'
+            ? VECTOR.konturTrase
+            : `/api/layers/${L.sumber}`
+  }
+);
 
           const vis =
             layerAktif[L.id]
