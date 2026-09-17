@@ -16,8 +16,15 @@ const LAYER_FILES: Record<string, string> = {
   pipa_gresem: 'pipa_gresem.geojson',
 };
 
+const KONTUR_FILES: Record<string, string> = {
+  kontur_trase: 'kontur/kontur_trase.geojson',
+  kontur_kawasan: 'kontur/kontur_kawasan.geojson',
+};
+
 const GITHUB_RAW_BASE =
   'https://raw.githubusercontent.com/kusumarumy/sipetak-bojonegoro/main/data/wgs84';
+
+const R2_PUBLIC_BASE = process.env.BOJO_R2_PUBLIC_BASE_URL;
 
 export async function GET(
   _req: Request,
@@ -30,15 +37,45 @@ export async function GET(
   }
 
   const { nama } = await params;
-  const file = LAYER_FILES[nama];
-
-  if (!file) {
-    return new NextResponse('Layer tidak dikenal', { status: 404 });
-  }
-
-  const url = `${GITHUB_RAW_BASE}/${file}`;
 
   try {
+    let url: string;
+    let file: string;
+
+    // =========================
+    // LAYER DARI GITHUB
+    // =========================
+    if (LAYER_FILES[nama]) {
+      file = LAYER_FILES[nama];
+      url = `${GITHUB_RAW_BASE}/${file}`;
+    }
+
+    // =========================
+    // KONTUR DARI CLOUDFLARE R2
+    // =========================
+    else if (KONTUR_FILES[nama]) {
+      file = KONTUR_FILES[nama];
+
+      if (!R2_PUBLIC_BASE) {
+        console.error('BOJO_R2_PUBLIC_BASE_URL belum diatur');
+        return new NextResponse(
+          'URL publik Cloudflare R2 belum dikonfigurasi',
+          { status: 500 }
+        );
+      }
+
+      url = `${R2_PUBLIC_BASE.replace(/\/$/, '')}/${file}`;
+    }
+
+    // =========================
+    // LAYER TIDAK DIKENAL
+    // =========================
+    else {
+      return new NextResponse('Layer tidak dikenal', {
+        status: 404,
+      });
+    }
+
     const response = await fetch(url, {
       next: {
         revalidate: 3600,
@@ -46,8 +83,14 @@ export async function GET(
     });
 
     if (!response.ok) {
+      console.error(
+        `GeoJSON "${nama}" gagal diambil:`,
+        response.status,
+        url
+      );
+
       return new NextResponse(
-        `GeoJSON layer "${file}" tidak ditemukan di GitHub`,
+        `GeoJSON layer "${file}" tidak ditemukan`,
         { status: 404 }
       );
     }
