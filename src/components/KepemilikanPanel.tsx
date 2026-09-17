@@ -167,32 +167,22 @@ export default function KepemilikanPanel({
     };
   }, [namaAktif]);
 
-  useEffect(() => {
-    const ids = bidang
-      .map((b) => b.id)
-      .filter(
-        (id): id is number =>
-          typeof id === 'number'
-      );
-
-    window.dispatchEvent(
-      new CustomEvent('analisis-bidang', {
-        detail: {
-          ids,
-        },
-      })
+useEffect(() => {
+  const ids = bidang
+    .map((b) => b.id)
+    .filter(
+      (id): id is number =>
+        typeof id === 'number'
     );
 
-    return () => {
-      window.dispatchEvent(
-        new CustomEvent('analisis-bidang', {
-          detail: {
-            ids: [],
-          },
-        })
-      );
-    };
-  }, [bidang]);
+  window.dispatchEvent(
+    new CustomEvent('analisis-bidang', {
+      detail: {
+        ids,
+      },
+    })
+  );
+}, [bidang]);
 
   const pemilikAktif = useMemo(
     () =>
@@ -297,14 +287,23 @@ function IconKepemilikan() {
     </div>
   </div>
 
-  <button
-    type="button"
-    className="panel-close"
-    onClick={onClose}
-    aria-label="Tutup"
-  >
-    ×
-  </button>
+ <button
+  type="button"
+  className="panel-close"
+  onClick={() => {
+    window.dispatchEvent(
+      new CustomEvent('reset-analisis-bidang')
+    );
+
+    setNamaAktif('');
+    setBidang([]);
+
+    onClose();
+  }}
+  aria-label="Tutup"
+>
+  ×
+</button>
 </div>
       <div className="panel-body">
         <div className="form-group">
