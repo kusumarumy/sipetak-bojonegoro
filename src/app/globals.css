@@ -5600,7 +5600,7 @@ main.body {
   position: absolute;
   top: 111px;
   left: 82px;
-  width: 330px;
+  width: 360px;
   height: 470px;
   max-height: calc(100vh - 140px);
   display: flex;
@@ -10980,19 +10980,6 @@ main.body {
   color: #7b1528;
 }
 
-
-.basemap-panel-subtitle {
-  margin-top: 5px;
-
-  font-size: 10px;
-  line-height: 1.1;
-
-  color: #8190a0;
-}
-
-
-/* CLOSE */
-
 .basemap-panel-close {
   width: 28px;
   height: 28px;
@@ -11493,7 +11480,12 @@ main.body {
 .daftar-bidang {
   max-height: 70vh;
 }
-
+.daftar-bidang-tabs {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 1px;
+}
 .daftar-head {
   background: var(--terrain-ui-bg);
   border-bottom-color: var(--terrain-ui-line);
