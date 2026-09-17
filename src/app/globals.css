@@ -6416,16 +6416,15 @@ main.body {
     font-size: 10px;
   }
 }
+/* FIX KARTU BIDANG MAPLIBRE */
 .maplibregl-popup-content {
-  background: var(--chassis2) !important;
-
-  border: 1px solid var(--line);
-
+  background: #fff !important;
+  opacity: 1 !important;
   padding: 0 !important;
-
-  box-shadow: var(--shadow) !important;
-
-  border-radius: 0 !important;
+  border: 1px solid #e5e7eb !important;
+  border-radius: 10px !important;
+  box-shadow:
+    0 14px 32px rgba(15, 23, 42, 0.16) !important;
 }
 
 .pop {
