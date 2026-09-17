@@ -113,7 +113,13 @@ const bukaBidang = (
     })
   );
 };
+const resetPencarian = () => {
+  window.dispatchEvent(
+    new CustomEvent('reset-pilihan-bidang')
+  );
 
+  setQuery('');
+};
   return (
     <aside className="search-flyout">
 
@@ -135,26 +141,40 @@ const bukaBidang = (
             </svg>
           </div>
 
-          <div>
-            <div className="search-title">
-              PENCARIAN
-            </div>
+          <div className="search-head-actions">
+  <button
+    type="button"
+    className="search-reset"
+    onClick={resetPencarian}
+    disabled={!query}
+  >
+    ↻ Reset
+  </button>
 
-            <div className="search-subtitle">
-              Cari bidang berdasarkan atribut
-            </div>
-          </div>
+  <button
+    type="button"
+    className="search-close"
+    onClick={() => {
+      resetPencarian();
+      onClose();
+    }}
+    aria-label="Tutup"
+  >
+    ×
+  </button>
+</div>
 
-        </div>
-
-        <button
-          type="button"
-          className="search-close"
-          onClick={onClose}
-          aria-label="Tutup"
-        >
-          ×
-        </button>
+<button
+  type="button"
+  className="search-close"
+  onClick={() => {
+    resetPencarian();
+    onClose();
+  }}
+  aria-label="Tutup"
+>
+  ×
+</button>
 
       </header>
 
