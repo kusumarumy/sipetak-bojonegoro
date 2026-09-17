@@ -324,117 +324,121 @@ return (
   <section className="daftar-bidang">
 
     {/* =================================================
-        HEADER
-        ================================================= */}
+    HEADER
+    ================================================= */}
 
-    <div className="daftar-head">
+<div className="daftar-head">
 
-      <div className="daftar-title">
+  <div className="daftar-head-main">
 
-        <span>
-          RIWAYAT AKSI
-        </span>
+    <div className="daftar-head-icon">
+      <svg
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+      >
+        <path
+          d="M12 7v5l3 2"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.7"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
 
-        <strong>
-          {memuat
-            ? 'Memuat...'
-            : dataTampil.length.toLocaleString(
-                'id-ID'
-              )}
-        </strong>
+        <path
+          d="M20 12a8 8 0 1 1-2.34-5.66"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.7"
+          strokeLinecap="round"
+        />
 
-        <span>
-          dari{' '}
-          {data.length.toLocaleString(
-            'id-ID'
-          )}{' '}
-          aktivitas
-        </span>
-
-      </div>
-
-      <div className="daftar-actions">
-
-        {/* SEMUA */}
-
-        <button
-          type="button"
-          className={
-            filter === 'semua'
-              ? 'active'
-              : ''
-          }
-          onClick={() =>
-            setFilter('semua')
-          }
-        >
-          SEMUA ({jumlah.semua})
-        </button>
-
-        {/* INPUT */}
-
-        <button
-          type="button"
-          className={
-            filter === 'INPUT'
-              ? 'active'
-              : ''
-          }
-          onClick={() =>
-            setFilter('INPUT')
-          }
-        >
-          INPUT ({jumlah.input})
-        </button>
-
-        {/* UPDATE */}
-
-        <button
-          type="button"
-          className={
-            filter === 'UPDATE'
-              ? 'active'
-              : ''
-          }
-          onClick={() =>
-            setFilter('UPDATE')
-          }
-        >
-          UPDATE ({jumlah.update})
-        </button>
-
-        {/* DELETE */}
-
-        <button
-          type="button"
-          className={
-            filter === 'DELETE'
-              ? 'active'
-              : ''
-          }
-          onClick={() =>
-            setFilter('DELETE')
-          }
-        >
-          DELETE ({jumlah.delete})
-        </button>
-
-        {/* TUTUP */}
-
-        <button
-          type="button"
-          className="daftar-close"
-          onClick={onClose}
-        >
-          TUTUP
-        </button>
-
-      </div>
+        <path
+          d="M17 4v4h4"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.7"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
     </div>
 
-    {/* ===================================================
-        TABLE
-        =================================================== */}
+    <div className="daftar-title">
+
+      <strong>
+        RIWAYAT AKSI
+      </strong>
+
+      <span className="daftar-count">
+        {memuat
+          ? 'Memuat…'
+          : `${dataTampil.length.toLocaleString('id-ID')} aktivitas`}
+      </span>
+
+    </div>
+
+  </div>
+
+
+  <div className="daftar-actions">
+
+    <button
+      type="button"
+      className={filter === 'semua' ? 'active' : ''}
+      onClick={() => setFilter('semua')}
+    >
+      SEMUA ({jumlah.semua})
+    </button>
+
+    <button
+      type="button"
+      className={filter === 'INPUT' ? 'active' : ''}
+      onClick={() => setFilter('INPUT')}
+    >
+      INPUT ({jumlah.input})
+    </button>
+
+    <button
+      type="button"
+      className={filter === 'UPDATE' ? 'active' : ''}
+      onClick={() => setFilter('UPDATE')}
+    >
+      UPDATE ({jumlah.update})
+    </button>
+
+    <button
+      type="button"
+      className={filter === 'DELETE' ? 'active' : ''}
+      onClick={() => setFilter('DELETE')}
+    >
+      DELETE ({jumlah.delete})
+    </button>
+
+    <button
+      type="button"
+      className="daftar-close"
+      onClick={onClose}
+      aria-label="Tutup riwayat aksi"
+      title="Tutup"
+    >
+      <svg
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+      >
+        <path
+          d="M6 6l12 12M18 6L6 18"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+        />
+      </svg>
+    </button>
+
+  </div>
+
+</div>
 
     <div className="daftar-table-wrap">
 
