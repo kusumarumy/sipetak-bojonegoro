@@ -4286,63 +4286,6 @@ main.body {
   line-height: 1.15;
   white-space: nowrap;
 }
-.daftar-actions {
-  display: flex;
-  align-items: center;
-  gap: 3px;
-  flex-wrap: nowrap;
-}
-
-.daftar-actions button {
-  min-height: 25px;
-  padding: 0 7px;
-
-  border: 1px solid #e5e7eb;
-  border-radius: 5px;
-  background: #f8fafc;
-  color: #6b7280;
-
-  font-family: var(--f-body, Arial, sans-serif);
-  font-size: 8px;
-  font-weight: 700;
-  letter-spacing: 0.025em;
-
-  white-space: nowrap;
-  cursor: pointer;
-}
-
-.daftar-actions button.active {
-  background: #A51F35;
-  border-color: #A51F35;
-  color: #fff;
-}
-
-/* CLOSE */
-.daftar-actions .daftar-close {
-  width: 25px;
-  height: 25px;
-  min-height: 25px;
-  padding: 0;
-  margin-left: 3px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  background: transparent;
-  border-color: #e5e7eb;
-}
-
-.daftar-actions .daftar-close svg {
-  width: 12px;
-  height: 12px;
-}
-
-.daftar-actions .daftar-close:hover {
-  background: #f3f4f6;
-
-  color: #374151;
-}
 
 .daftar-table-wrap {
   flex: 1;
@@ -6871,25 +6814,18 @@ main.body {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-
   gap: 5px;
-  flex-wrap: wrap;
-
   transform: translateY(4px);
 }
 
 .daftar-actions button {
   appearance: none;
-
   border: 1px solid #e5e7eb;
   background: #f8fafc;
   color: #6b7280;
-
-  min-height: 28px;
-  padding: 0 9px;
-
+  min-height: 20px;
+  padding: 0 5px;
   border-radius: 6px;
-
   font-family: var(--f-body, Arial, sans-serif);
   font-size: 9px;
   font-weight: 700;
