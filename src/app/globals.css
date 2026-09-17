@@ -6758,9 +6758,6 @@ main.body {
 
   padding: 16px 18px 20px;
 }
-/* =========================================================
-   DAFTAR BIDANG TERDAMPAK
-   ========================================================= */
 
 .daftar-overlay {
   position: absolute;
@@ -6787,10 +6784,8 @@ main.body {
 
   display: flex;
   flex-direction: column;
-
+  max-height: calc(100vh - 125px);
   min-width: 0;
-  min-height: 0;
-
   background: var(--chassis2);
 
   border: 1px solid var(--line);
@@ -6800,10 +6795,6 @@ main.body {
 
   overflow: hidden;
 }
-```css
-/* =========================================================
-   DAFTAR BIDANG — TERRAIN STYLE
-   ========================================================= */
 
 .daftar-flyout {
   position: fixed;
@@ -6826,17 +6817,6 @@ main.body {
 
   animation: flyoutIn 0.16s ease-out;
 }
-
-.daftar-bidang {
-  display: flex;
-  flex-direction: column;
-  max-height: calc(100vh - 125px);
-}
-
-
-/* =========================================================
-   HEADER
-   ========================================================= */
 
 .daftar-head {
   padding: 12px 14px;
