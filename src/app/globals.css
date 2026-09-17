@@ -5228,16 +5228,14 @@ html[data-theme="dark"]
   color: var(--accent);
 
   font-size: 11px;
-}.daftar-flyout {
+}
+.daftar-flyout {
   position: fixed;
   left: 82px;
   top: 104px;
 
-  /* sebelumnya 980px */
-  width: min(880px, calc(100vw - 110px));
-
-  /* lebih pendek */
-  max-height: min(620px, calc(100vh - 155px));
+  width: min(820px, calc(100vw - 110px));
+  max-height: min(560px, calc(100vh - 155px));
 
   background: #fff;
   border: 1px solid #e5e7eb;
@@ -5253,10 +5251,8 @@ html[data-theme="dark"]
   display: flex;
   flex-direction: column;
   height: 100%;
-  max-height: min(620px, calc(100vh - 155px));
+  min-height: 0;
 }
-
-/* HEADER */
 .daftar-head {
   min-height: 52px;
   padding: 8px 10px;
@@ -5331,14 +5327,13 @@ html[data-theme="dark"]
 }
 
 .daftar-subtitle {
-  color: #9ca3af;
+  color: #71869a;
   font-family: var(--f-body, Arial, sans-serif);
-  font-size: 8px;
-  font-weight: 400;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1.15;
   white-space: nowrap;
 }
-
-/* FILTER */
 .daftar-actions {
   display: flex;
   align-items: center;
@@ -5656,12 +5651,9 @@ html[data-theme="dark"]
   background: #9ca3af;
 }
 
-
-/* =========================================================
-   DARK MODE
-   ========================================================= */
-
-[data-theme='dark'] .daftar-flyout {
+[data-theme='dark'] .daftar-flyout,
+.dark .daftar-flyout,
+body.dark .daftar-flyout {
   background: #15171b;
   border-color: #2b2f36;
 }
@@ -5679,7 +5671,11 @@ html[data-theme="dark"]
 [data-theme='dark'] .daftar-title strong {
   color: #e5e7eb;
 }
-
+[data-theme='dark'] .daftar-subtitle,
+.dark .daftar-subtitle,
+body.dark .daftar-subtitle {
+  color: #a99a9f;
+}
 [data-theme='dark'] .daftar-count {
   color: #71717a;
 }
