@@ -1320,10 +1320,6 @@ export default function MapCanvas() {
           }
         });
 
-        // ==================================================
-        // LABEL NIB
-        // ==================================================
-
         map.addLayer({
           id: 'bidang-lb',
 
@@ -1462,10 +1458,6 @@ export default function MapCanvas() {
     };
   }, []);
 
-  // ====================================================
-  // INTERAKSI BIDANG
-  // ====================================================
-
   function pasangInteraksi(
     map: MLMap
   ) {
@@ -1473,10 +1465,6 @@ export default function MapCanvas() {
       | string
       | number
       | null = null;
-
-    // --------------------------------------------------
-    // HOVER
-    // --------------------------------------------------
 
     map.on(
       'mousemove',
@@ -1523,10 +1511,6 @@ export default function MapCanvas() {
       }
     );
 
-    // --------------------------------------------------
-    // LEAVE
-    // --------------------------------------------------
-
     map.on(
       'mouseleave',
       'bidang',
@@ -1551,10 +1535,6 @@ export default function MapCanvas() {
         hov = null;
       }
     );
-
-    // --------------------------------------------------
-    // CLICK
-    // --------------------------------------------------
 
     map.on(
       'click',
@@ -1666,10 +1646,6 @@ export default function MapCanvas() {
     );
   }
 
-  // ====================================================
-  // SOROT BIDANG
-  // ====================================================
-
   function sorot(
     map: MLMap,
     fid: string | number
@@ -1705,10 +1681,6 @@ export default function MapCanvas() {
       }
     );
   }
-
-  // ====================================================
-  // ZOOM KE TRASE
-  // ====================================================
 
   const zoomKeTrase = (
     map: MLMap
@@ -1805,10 +1777,6 @@ export default function MapCanvas() {
       });
   };
 
-  // ====================================================
-  // BASEMAP
-  // ====================================================
-
   useEffect(() => {
     const map =
       mapRef.current;
@@ -1894,10 +1862,6 @@ export default function MapCanvas() {
     beriPesan
   ]);
 
-  // ====================================================
-  // DTM / TERRAIN
-  // ====================================================
-
   useEffect(() => {
     const map =
       mapRef.current;
@@ -1913,10 +1877,6 @@ export default function MapCanvas() {
         ) {
           return;
         }
-
-        // ----------------------------------------------
-        // DTM OFF
-        // ----------------------------------------------
 
         if (
           dtm === 'off'
@@ -1953,10 +1913,6 @@ export default function MapCanvas() {
           return;
         }
 
-        // ----------------------------------------------
-        // SOURCE DTM
-        // ----------------------------------------------
-
         const src =
           dtm === 'trace'
             ? 'dtm_trace'
@@ -1983,10 +1939,6 @@ export default function MapCanvas() {
           return;
         }
 
-        // ----------------------------------------------
-        // PASTIKAN SOURCE ADA
-        // ----------------------------------------------
-
         if (
           !map.getSource(src)
         ) {
@@ -2010,26 +1962,14 @@ export default function MapCanvas() {
           return;
         }
 
-        // ----------------------------------------------
-        // RESET TERRAIN
-        // ----------------------------------------------
-
         map.setTerrain(
           null
         );
-
-        // ----------------------------------------------
-        // AKTIFKAN TERRAIN
-        // ----------------------------------------------
 
         map.setTerrain({
           source: src,
           exaggeration: 1
         });
-
-        // ----------------------------------------------
-        // KONTUR OFF
-        // ----------------------------------------------
 
         for (
           const def
@@ -2050,10 +1990,6 @@ export default function MapCanvas() {
             );
           }
         }
-
-        // ----------------------------------------------
-        // PITCH
-        // ----------------------------------------------
 
         map.easeTo({
           pitch: 52,
@@ -2080,10 +2016,6 @@ export default function MapCanvas() {
     };
   }, [dtm]);
 
-  // ====================================================
-  // LABEL NOMOR OTOMATIS BERDASARKAN ZOOM
-  // ====================================================
-
   useEffect(() => {
     const map = mapRef.current;
 
@@ -2104,7 +2036,7 @@ export default function MapCanvas() {
       map.setLayoutProperty(
         'bidang-lb',
         'visibility',
-        zoom >= 13
+        zoom >= 15
           ? 'visible'
           : 'none'
       );
@@ -2175,11 +2107,6 @@ export default function MapCanvas() {
         );
       }
     }
-
-    // ----------------------------------------------
-    // TRASE
-    // ----------------------------------------------
-
     if (
       map.getLayer(
         'traseg'
@@ -2209,11 +2136,6 @@ export default function MapCanvas() {
           : 'none'
       );
     }
-
-    // ----------------------------------------------
-    // URUTAN LAYER
-    // ----------------------------------------------
-
     if (
       map.getLayer(
         'traseg_halo'
@@ -2229,7 +2151,6 @@ export default function MapCanvas() {
         'traseg_halo',
         'bidang'
       );
-
       map.moveLayer(
         'traseg',
         'bidang'
@@ -2238,19 +2159,12 @@ export default function MapCanvas() {
   }, [
     layerAktif
   ]);
-
-  // ====================================================
-  // FILTER BIDANG
-  // ====================================================
-
   useEffect(() => {
     const map =
       mapRef.current;
-
     if (!map) {
       return;
     }
-
     const terapkanFilter =
       () => {
         if (
@@ -2263,23 +2177,19 @@ export default function MapCanvas() {
         ) {
           return;
         }
-
         const expression =
           ekspresiFilterBidang(
             filterBidang
           );
-
         map.setFilter(
           'bidang-filter',
           expression
         );
-
         map.setFilter(
           'bidang-filter-ln',
           expression
         );
       };
-
     if (
       map.isStyleLoaded()
     ) {
@@ -2290,7 +2200,6 @@ export default function MapCanvas() {
         terapkanFilter
       );
     }
-
     return () => {
       map.off(
         'load',
@@ -2300,29 +2209,20 @@ export default function MapCanvas() {
   }, [
     filterBidang
   ]);
-
-  // ====================================================
-  // EVENT ZOOM TRASE
-  // ====================================================
-
   useEffect(() => {
     const zoomTrase =
       () => {
         const map =
           mapRef.current;
-
         if (!map) {
           return;
         }
-
         zoomKeTrase(map);
       };
-
     window.addEventListener(
       'zoom-trase',
       zoomTrase
     );
-
     return () => {
       window.removeEventListener(
         'zoom-trase',
@@ -2330,11 +2230,6 @@ export default function MapCanvas() {
       );
     };
   }, []);
-
-  // ====================================================
-  // TEMA
-  // ====================================================
-
   useEffect(() => {
     const map =
       mapRef.current;
@@ -2348,10 +2243,6 @@ export default function MapCanvas() {
     tema
   ]);
 
-  // ====================================================
-  // RENDER
-  // ====================================================
-
   return (
     <div
       ref={ref}
@@ -2364,14 +2255,12 @@ export default function MapCanvas() {
             5
           )}
         </span>
-
         <span>
           Lat{' '}
           {infoPeta.lat.toFixed(
             5
           )}
         </span>
-
         <span>
           Zoom{' '}
           {infoPeta.zoom.toFixed(
@@ -2386,7 +2275,6 @@ export default function MapCanvas() {
           )}
           °
         </span>
-
         <span>
           Arah{' '}
           {infoPeta.bearing.toFixed(
@@ -2398,11 +2286,6 @@ export default function MapCanvas() {
     </div>
   );
 }
-
-// ======================================================
-// FILTER BIDANG
-// ======================================================
-
 const ekspresiFilterBidang = (
   filter: {
     status: string[];
@@ -2414,7 +2297,6 @@ const ekspresiFilterBidang = (
 ): any => {
   const kondisi: any[] =
     ['all'];
-
   const tambahFilter = (
     property: string,
     values: string[]
@@ -2424,48 +2306,38 @@ const ekspresiFilterBidang = (
     ) {
       return;
     }
-
     kondisi.push([
       'match',
-
       ['get', property],
-
       ...values.flatMap(
         (value) => [
           value,
           true
         ]
       ),
-
       false
     ]);
   };
-
   tambahFilter(
     'status',
     filter.status
   );
-
   tambahFilter(
     'kecamatan',
     filter.kecamatan
   );
-
   tambahFilter(
     'kelurahan',
     filter.kelurahan
   );
-
   tambahFilter(
     'tipehak',
     filter.tipehak
   );
-
   tambahFilter(
     'penggunaan',
     filter.penggunaan
   );
-
   if (
     kondisi.length === 1
   ) {
@@ -2478,25 +2350,14 @@ const ekspresiFilterBidang = (
       '__never__'
     ];
   }
-
   return kondisi;
 };
-
-// ======================================================
-// FORMAT ANGKA
-// ======================================================
-
 const fmt = (
   n: number | null
 ) =>
   (n ?? 0).toLocaleString(
     'id-ID'
   );
-
-// ======================================================
-// TEMA MAP
-// ======================================================
-
 function warnaiTema(
   map: MLMap
 ) {
@@ -2504,37 +2365,20 @@ function warnaiTema(
     document.documentElement
       .dataset.theme ===
     'dark';
-
-  // ----------------------------------------------
-  // BACKGROUND
-  // ----------------------------------------------
-
   map.setPaintProperty(
     'bg',
     'background-color',
-
     gelap
       ? '#0E1720'
       : '#E7EBF3'
   );
-
-  // ----------------------------------------------
-  // ESRI STREETS
-  // ----------------------------------------------
-
   map.setPaintProperty(
     'bm-esri-streets',
     'raster-brightness-max',
-
     gelap
       ? 0.84
       : 1
   );
-
-  // ----------------------------------------------
-  // OUTLINE BIDANG
-  // ----------------------------------------------
-
   if (
     map.getLayer(
       'bidang-ln'
@@ -2543,11 +2387,8 @@ function warnaiTema(
     map.setPaintProperty(
       'bidang-ln',
       'line-color',
-
       [
         'case',
-
-        // Analisis
         [
           'boolean',
           [
@@ -2556,10 +2397,7 @@ function warnaiTema(
           ],
           false
         ],
-
         '#00E5FF',
-
-        // Selected
         [
           'boolean',
           [
@@ -2568,21 +2406,13 @@ function warnaiTema(
           ],
           false
         ],
-
         '#A51F35',
-
-        // Normal
         gelap
           ? 'rgba(14,23,32,.85)'
           : 'rgba(30,39,51,.5)'
       ]
     );
   }
-
-  // ----------------------------------------------
-  // LABEL
-  // ----------------------------------------------
-
   if (
     map.getLayer(
       'bidang-lb'
