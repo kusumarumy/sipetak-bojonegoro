@@ -5,13 +5,16 @@ const { auth } = NextAuth(authConfig);
 
 export default auth((req) => {
   const { pathname } = req.nextUrl;
+
   const terbuka =
     pathname.startsWith('/login') ||
     pathname.startsWith('/api/auth');
 
   if (!req.auth && !terbuka) {
     const url = new URL('/login', req.nextUrl.origin);
+
     url.searchParams.set('kembali', pathname);
+
     return Response.redirect(url);
   }
 });
