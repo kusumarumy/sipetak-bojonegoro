@@ -123,60 +123,62 @@ const resetPencarian = () => {
   return (
     <aside className="search-flyout">
 
-      <header className="search-head">
+     <header className="search-head">
 
-        <div className="search-heading">
+  <div className="search-heading">
 
-          <div className="search-icon">
-            <svg
-              viewBox="0 0 24 24"
-              aria-hidden="true"
-            >
-              <circle
-                cx="10.5"
-                cy="10.5"
-                r="6.5"
-              />
-              <path d="M16 16l5 5" />
-            </svg>
-          </div>
+    <div className="search-icon">
+      <svg
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+      >
+        <circle
+          cx="10.5"
+          cy="10.5"
+          r="6.5"
+        />
+        <path d="M16 16l5 5" />
+      </svg>
+    </div>
 
-          <div className="search-head-actions">
-  <button
-    type="button"
-    className="search-reset"
-    onClick={resetPencarian}
-    disabled={!query}
-  >
-    ↻ Reset
-  </button>
+    <div>
+      <div className="search-title">
+        PENCARIAN
+      </div>
 
-  <button
-    type="button"
-    className="search-close"
-    onClick={() => {
-      resetPencarian();
-      onClose();
-    }}
-    aria-label="Tutup"
-  >
-    ×
-  </button>
-</div>
+      <div className="search-subtitle">
+        Cari bidang berdasarkan atribut
+      </div>
+    </div>
 
-<button
-  type="button"
-  className="search-close"
-  onClick={() => {
-    resetPencarian();
-    onClose();
-  }}
-  aria-label="Tutup"
->
-  ×
-</button>
+  </div>
 
-      </header>
+  <div className="search-head-actions">
+
+    <button
+      type="button"
+      className="search-reset"
+      onClick={resetPencarian}
+      disabled={!query}
+    >
+      ↻ Reset
+    </button>
+
+    <button
+      type="button"
+      className="search-close"
+      onClick={() => {
+        resetPencarian();
+        onClose();
+      }}
+      aria-label="Tutup"
+    >
+      ×
+    </button>
+
+  </div>
+
+</header>
 
       <div className="search-body">
 
@@ -206,15 +208,15 @@ const resetPencarian = () => {
           />
 
           {query && (
-            <button
-              type="button"
-              className="search-clear"
-              onClick={() => setQuery('')}
-              aria-label="Hapus pencarian"
-            >
-              ×
-            </button>
-          )}
+  <button
+    type="button"
+    className="search-clear"
+    onClick={resetPencarian}
+    aria-label="Hapus pencarian"
+  >
+    ×
+  </button>
+)}
 
         </div>
 
