@@ -154,7 +154,30 @@ export const LAYERS: DefLayer[] = [
   tipe: 'circle',
   warna: '#9ED45E',
   grup: 'Utilitas'
-}
+},
+  {
+  id: 'kontur_kawasan',
+  nama: 'Kontur Kawasan',
+  sumber: 'kontur_kawasan',
+  tipe: 'line',
+  warna: '#A67C52',
+  garis: true,
+  lebar: 1.2,
+  opasitas: 0.75,
+  grup: 'Hipsografi'
+},
+
+{
+  id: 'kontur_trase',
+  nama: 'Kontur Trase',
+  sumber: 'kontur_trase',
+  tipe: 'line',
+  warna: '#8B5E3C',
+  garis: true,
+  lebar: 1.5,
+  opasitas: 0.85,
+  grup: 'Hipsografi'
+},
 ];
 
 export const KONTUR = {
