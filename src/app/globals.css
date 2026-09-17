@@ -6867,10 +6867,6 @@ main.body {
 }
 
 
-/* =========================================================
-   FILTER / ACTION
-   ========================================================= */
-
 .daftar-actions {
   display: flex;
   align-items: center;
@@ -6878,6 +6874,8 @@ main.body {
 
   gap: 5px;
   flex-wrap: wrap;
+
+  transform: translateY(4px);
 }
 
 .daftar-actions button {
