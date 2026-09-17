@@ -5535,11 +5535,6 @@ html[data-theme="dark"]
   font-variant-numeric: tabular-nums;
 }
 
-
-/* =========================================================
-   ANGKA
-   ========================================================= */
-
 .daftar-table .angka {
   text-align: right;
 
@@ -5547,11 +5542,6 @@ html[data-theme="dark"]
 
   font-variant-numeric: tabular-nums;
 }
-
-
-/* =========================================================
-   AKSI BADGE
-   ========================================================= */
 
 .status-daftar {
   display: inline-flex;
@@ -5721,11 +5711,6 @@ body.dark .daftar-subtitle {
   border-color: #30343b;
   color: #a1a1aa;
 }
-
-
-/* =========================================================
-   RESPONSIVE
-   ========================================================= */
 
 @media (max-width: 1050px) {
   .daftar-flyout {
