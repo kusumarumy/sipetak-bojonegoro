@@ -128,19 +128,27 @@ export default function DaftarBidang({ onClose }: Props) {
       </svg>
     </div>
 
-    <div className="daftar-title">
+<div className="daftar-title-wrap">
 
-      <strong>
-        DAFTAR BIDANG TERDAMPAK
-      </strong>
+  <div className="daftar-title">
 
-      <span className="daftar-count">
-        {memuat
-          ? 'Memuat…'
-          : `${dataTampil.length.toLocaleString('id-ID')} bidang`}
-      </span>
+    <strong>
+      DAFTAR BIDANG TERDAMPAK
+    </strong>
 
-    </div>
+    <span className="daftar-count">
+      {memuat
+        ? 'Memuat…'
+        : `${dataTampil.length.toLocaleString('id-ID')} bidang`}
+    </span>
+
+  </div>
+
+  <span className="daftar-subtitle">
+    Daftar bidang tanah yang terdampak pada area analisis
+  </span>
+
+</div>
 
   </div>
 
