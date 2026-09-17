@@ -337,6 +337,23 @@ function IconKepemilikan() {
               </option>
             ))}
           </select>
+          <div className="analysis-actions">
+  <button
+    type="button"
+    className="analysis-reset"
+    onClick={() => {
+      window.dispatchEvent(
+        new CustomEvent('reset-analisis-bidang')
+      );
+
+      setNamaAktif('');
+      setBidang([]);
+      setError(null);
+    }}
+  >
+    Reset Analisis
+  </button>
+</div>
         </div>
 
         {error && (
