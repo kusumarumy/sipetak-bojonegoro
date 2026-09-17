@@ -5710,7 +5710,7 @@ main.body {
 
 .panel-kepemilikan .form-group label {
   color: #718096;
-  font-size: 7px;
+  font-size: 10px;
   font-weight: 800;
   letter-spacing: .03em;
 }
@@ -5718,6 +5718,7 @@ main.body {
 .panel-kepemilikan .form-group select {
   width: 100%;
   height: 30px;
+  max-height: 100px;
   padding: 0 26px 0 10px;
   color: #475569;
   background: #f8fafc;
@@ -6018,28 +6019,57 @@ main.body {
   font-size: 8px;
   line-height: 1.4;
 }
-
-.analysis-actions {
+.panel-kepemilikan .form-group-header {
   display: flex;
-  justify-content: flex-end;
-  margin-top: 8px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+
+  margin-bottom: 5px;
 }
 
-.analysis-reset {
-  border: 1px solid #d7dee8;
+.panel-kepemilikan .form-group-header label {
+  margin: 0;
+}
+
+.panel-kepemilikan .analysis-reset {
+  flex: 0 0 auto;
+
+  height: 24px;
+  padding: 0 9px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+
+  color: #64748b;
   background: #fff;
-  color: #526174;
-  border-radius: 8px;
-  padding: 7px 12px;
-  font-size: 12px;
-  font-weight: 600;
+
+  border: 1px solid #d7dee8;
+  border-radius: 7px;
+
+  font-family: inherit;
+  font-size: 8px;
+  font-weight: 700;
+
   cursor: pointer;
-  transition: 0.2s ease;
+
+  transition:
+    color .15s ease,
+    background .15s ease,
+    border-color .15s ease;
 }
 
-.analysis-reset:hover {
-  background: #f5f7fa;
-  border-color: #b9c4d2;
+.panel-kepemilikan .analysis-reset:hover {
+  color: var(--kep-red);
+  background: #fff5f7;
+  border-color: #efc6d0;
+}
+
+.panel-kepemilikan .analysis-reset:disabled {
+  opacity: .45;
+  cursor: not-allowed;
 }
 @media (max-width: 900px) {
   .panel-kepemilikan {
