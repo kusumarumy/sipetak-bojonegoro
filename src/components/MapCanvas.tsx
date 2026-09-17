@@ -1376,58 +1376,10 @@ useEffect(() => {
             'line-opacity': 1
           }
         });
-
-      map.addLayer({
-  id: 'bidang-lb',
-
-  type: 'symbol',
-
-  source: 'bidang',
-
-  minzoom: 15,
-
-  layout: {
-    visibility:
-      labelNomor
-        ? 'visible'
-        : 'none',
-
-    'text-field': [
-      'to-string',
-      ['get', 'nib']
-    ],
-
-    'text-size': [
-      'interpolate',
-      ['linear'],
-      ['zoom'],
-
-      15, 8,
-      16, 9,
-      17, 10,
-      18, 11,
-      20, 13
-    ],
-
-    'text-anchor': 'center',
-
-    // PENTING
-    'text-allow-overlap': true,
-
-    'text-ignore-placement': true,
-
-    'text-padding': 1
-  },
-
-  paint: {
-    'text-color': '#000000',
-
-    'text-halo-color':
-      'rgba(255,255,255,.95)',
-
-    'text-halo-width': 1.2
-  }
-});
+visibility:
+  labelNomor
+    ? 'visible'
+    : 'none',
         warnaiTema(map);
 
         pasangInteraksi(map);
@@ -1435,10 +1387,6 @@ useEffect(() => {
         zoomKeTrase(map);
       }
     );
-
-    // ==================================================
-    // ERROR
-    // ==================================================
 
     map.on(
       'error',
@@ -1449,10 +1397,6 @@ useEffect(() => {
         );
       }
     );
-
-    // ==================================================
-    // CLEANUP
-    // ==================================================
 
     return () => {
       resizeObserver.disconnect();
@@ -2099,36 +2043,57 @@ useEffect(() => {
       );
     };
   }, [dtm]);
+// ====================================================
+// LABEL NOMOR OTOMATIS BERDASARKAN ZOOM
+// ====================================================
 
-  // ====================================================
-  // LABEL NOMOR
-  // ====================================================
+useEffect(() => {
+  const map = mapRef.current;
 
-  useEffect(() => {
-    const map =
-      mapRef.current;
+  if (!map) {
+    return;
+  }
 
+  const perbaruiLabelNomor = () => {
     if (
-      !map?.isStyleLoaded()
+      !map.isStyleLoaded() ||
+      !map.getLayer('bidang-lb')
     ) {
       return;
     }
 
+    const zoom = map.getZoom();
+
     map.setLayoutProperty(
       'bidang-lb',
       'visibility',
-
-      labelNomor
+      zoom >= 15
         ? 'visible'
         : 'none'
     );
-  }, [
-    labelNomor
-  ]);
+  };
 
-  // ====================================================
-  // VISIBILITAS LAYER
-  // ====================================================
+  if (map.isStyleLoaded()) {
+    perbaruiLabelNomor();
+  } else {
+    map.once(
+      'load',
+      perbaruiLabelNomor
+    );
+  }
+
+  map.on(
+    'zoom',
+    perbaruiLabelNomor
+  );
+
+  return () => {
+    map.off(
+      'zoom',
+      perbaruiLabelNomor
+    );
+  };
+}, []);
 
   useEffect(() => {
     const map =
