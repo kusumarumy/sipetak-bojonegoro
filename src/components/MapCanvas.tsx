@@ -1519,15 +1519,15 @@ export default function MapCanvas() {
         el.className = 'pop';
 
         el.innerHTML = `
-          <div class="ph">
-            <div class="id">
-              ${p.kode_bid}
-            </div>
+<div class="ph">
+  <div class="id">
+    ${p.nib ?? 'NIB tidak tersedia'}
+  </div>
 
-            <div class="nm">
-              ${p.nama_milik ?? '—'}
-            </div>
-          </div>
+  <div class="nm">
+    ${p.nama_milik ?? 'Nama pemilik tidak tersedia'}
+  </div>
+</div>
 
           <div class="pb">
 
