@@ -39,7 +39,8 @@ export default function KepemilikanPanel({
 }: Props) {
   const [pemilik, setPemilik] = useState<Pemilik[]>([]);
   const [namaAktif, setNamaAktif] = useState('');
-  const [dropdownPemilik, setDropdownPemilik] = useState(false);
+  const [dropdownPemilik, setDropdownPemilik] =
+    useState(false);
   const [bidang, setBidang] = useState<
     BidangKepemilikan[]
   >([]);
@@ -168,22 +169,30 @@ export default function KepemilikanPanel({
     };
   }, [namaAktif]);
 
-useEffect(() => {
-  const ids = bidang
-    .map((b) => b.id)
-    .filter(
-      (id): id is number =>
-        typeof id === 'number'
-    );
+  useEffect(() => {
+    const ids = bidang
+      .map((b) => b.id)
+      .filter(
+        (id): id is number =>
+          typeof id === 'number'
+      );
 
-  window.dispatchEvent(
-    new CustomEvent('analisis-bidang', {
-      detail: {
-        ids,
-      },
-    })
-  );
-}, [bidang]);
+    window.dispatchEvent(
+      new CustomEvent('analisis-bidang', {
+        detail: {
+          ids,
+        },
+      })
+    );
+  }, [bidang]);
+
+  useEffect(() => {
+    return () => {
+      window.dispatchEvent(
+        new CustomEvent('reset-analisis-bidang')
+      );
+    };
+  }, []);
 
   const pemilikAktif = useMemo(
     () =>
@@ -249,167 +258,171 @@ useEffect(() => {
       })
     );
   }
-function IconKepemilikan() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      width="17"
-      height="17"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.8"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
-      <circle cx="9" cy="8" r="3" />
-      <path d="M3.5 19c.6-3 2.4-5 5.5-5s4.9 2 5.5 5" />
-      <path d="M16 11a3 3 0 1 0-1.2-5.75" />
-      <path d="M16 14c2.6.1 4.2 1.8 4.7 4.5" />
-    </svg>
-  );
-}
-  return (
-    <section className="panel panel-kepemilikan">
-      <div className="panel-header">
-  <div className="panel-header-main">
-    <span className="panel-title-icon">
-      <IconKepemilikan />
-    </span>
 
-    <div className="panel-header-text">
-      <div className="panel-title">
-        ANALISIS KEPEMILIKAN BIDANG
-      </div>
-
-      <div className="panel-subtitle">
-        Analisis bidang tanah berdasarkan nama pemilik
-      </div>
-    </div>
-  </div>
-
- <button
-  type="button"
-  className="panel-close"
-  onClick={() => {
+  function resetAnalisis() {
     window.dispatchEvent(
       new CustomEvent('reset-analisis-bidang')
     );
 
     setNamaAktif('');
     setBidang([]);
+    setError(null);
+    setDropdownPemilik(false);
+  }
 
-    onClose();
-  }}
-  aria-label="Tutup"
->
-  ×
-</button>
-</div>
-      <div className="panel-body">
-        <div className="form-group">
-  <div className="form-group-header">
-    <label htmlFor="pilih-pemilik">
-      Nama Pemilik
-    </label>
+  function IconKepemilikan() {
+    return (
+      <svg
+        viewBox="0 0 24 24"
+        width="17"
+        height="17"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        aria-hidden="true"
+      >
+        <circle cx="9" cy="8" r="3" />
+        <path d="M3.5 19c.6-3 2.4-5 5.5-5s4.9 2 5.5 5" />
+        <path d="M16 11a3 3 0 1 0-1.2-5.75" />
+        <path d="M16 14c2.6.1 4.2 1.8 4.7 4.5" />
+      </svg>
+    );
+  }
 
-    <button
-      type="button"
-      className="analysis-reset"
-      onClick={() => {
-        window.dispatchEvent(
-          new CustomEvent('reset-analisis-bidang')
-        );
+  return (
+    <section className="panel panel-kepemilikan">
+      <div className="panel-header">
+        <div className="panel-header-main">
+          <span className="panel-title-icon">
+            <IconKepemilikan />
+          </span>
 
-        setNamaAktif('');
-        setBidang([]);
-        setError(null);
-        setDropdownPemilik(false);
-      }}
-      disabled={!namaAktif}
-    >
-      ↻ Reset
-    </button>
-  </div>
+          <div className="panel-header-text">
+            <div className="panel-title">
+              ANALISIS KEPEMILIKAN BIDANG
+            </div>
 
-  <div className="pemilik-dropdown">
-    <button
-      type="button"
-      id="pilih-pemilik"
-      className={`pemilik-dropdown-trigger ${
-        dropdownPemilik ? 'is-open' : ''
-      }`}
-      onClick={() =>
-        setDropdownPemilik((v) => !v)
-      }
-      disabled={pemilik.length === 0}
-      aria-expanded={dropdownPemilik}
-    >
-      <span>
-        {namaAktif
-          ? `${
-              pemilikAktif?.nama || namaAktif
-            } · ${
-              pemilikAktif?.jumlah_bidang ?? 0
-            } bidang`
-          : memuatPemilik
-            ? 'Memuat pemilik...'
-            : pemilik.length === 0
-              ? 'Tidak ada pemilik'
-              : 'Pilih pemilik'}
-      </span>
+            <div className="panel-subtitle">
+              Analisis bidang tanah berdasarkan nama pemilik
+            </div>
+          </div>
+        </div>
 
-      <span className="pemilik-dropdown-arrow">
-        ▾
-      </span>
-    </button>
-
-    {dropdownPemilik && pemilik.length > 0 && (
-      <div className="pemilik-dropdown-menu">
         <button
           type="button"
-          className={`pemilik-option ${
-            !namaAktif ? 'active' : ''
-          }`}
+          className="panel-close"
           onClick={() => {
-            setNamaAktif('');
-            setBidang([]);
-            setError(null);
-            setDropdownPemilik(false);
+            resetAnalisis();
+            onClose();
           }}
+          aria-label="Tutup"
         >
-          Pilih pemilik
+          ×
         </button>
-
-        {pemilik.map((p) => (
-          <button
-            type="button"
-            key={p.nama}
-            className={`pemilik-option ${
-              namaAktif === p.nama
-                ? 'active'
-                : ''
-            }`}
-            onClick={() => {
-              setNamaAktif(p.nama);
-              setDropdownPemilik(false);
-              setError(null);
-            }}
-          >
-            <span>
-              {p.nama ||
-                '(Nama tidak tersedia)'}
-            </span>
-
-            <small>
-              {p.jumlah_bidang} bidang
-            </small>
-          </button>
-        ))}
       </div>
-    )}
-  </div>
-</div>
+
+      <div className="panel-body">
+        <div className="form-group">
+          <div className="form-group-header">
+            <label htmlFor="pilih-pemilik">
+              Nama Pemilik
+            </label>
+
+            <button
+              type="button"
+              className="analysis-reset"
+              onClick={resetAnalisis}
+              disabled={!namaAktif}
+            >
+              ↻ Reset
+            </button>
+          </div>
+
+          <div className="pemilik-dropdown">
+            <button
+              type="button"
+              id="pilih-pemilik"
+              className={`pemilik-dropdown-trigger ${
+                dropdownPemilik ? 'is-open' : ''
+              }`}
+              onClick={() =>
+                setDropdownPemilik((v) => !v)
+              }
+              disabled={pemilik.length === 0}
+              aria-expanded={dropdownPemilik}
+            >
+              <span>
+                {namaAktif
+                  ? `${
+                      pemilikAktif?.nama ||
+                      namaAktif
+                    } · ${
+                      pemilikAktif?.jumlah_bidang ??
+                      0
+                    } bidang`
+                  : memuatPemilik
+                    ? 'Memuat pemilik...'
+                    : pemilik.length === 0
+                      ? 'Tidak ada pemilik'
+                      : 'Pilih pemilik'}
+              </span>
+
+              <span className="pemilik-dropdown-arrow">
+                ▾
+              </span>
+            </button>
+
+            {dropdownPemilik &&
+              pemilik.length > 0 && (
+                <div className="pemilik-dropdown-menu">
+                  <button
+                    type="button"
+                    className={`pemilik-option ${
+                      !namaAktif ? 'active' : ''
+                    }`}
+                    onClick={resetAnalisis}
+                  >
+                    Pilih pemilik
+                  </button>
+
+                  {pemilik.map((p) => (
+                    <button
+                      type="button"
+                      key={p.nama}
+                      className={`pemilik-option ${
+                        namaAktif === p.nama
+                          ? 'active'
+                          : ''
+                      }`}
+                      onClick={() => {
+                        window.dispatchEvent(
+                          new CustomEvent(
+                            'reset-analisis-bidang'
+                          )
+                        );
+
+                        setNamaAktif(p.nama);
+                        setBidang([]);
+                        setDropdownPemilik(false);
+                        setError(null);
+                      }}
+                    >
+                      <span>
+                        {p.nama ||
+                          '(Nama tidak tersedia)'}
+                      </span>
+
+                      <small>
+                        {p.jumlah_bidang} bidang
+                      </small>
+                    </button>
+                  ))}
+                </div>
+              )}
+          </div>
+        </div>
 
         {error && (
           <div className="panel-error">
@@ -444,7 +457,10 @@ function IconKepemilikan() {
               <div className="analysis-stat">
                 <span>Terdampak</span>
                 <strong>
-                  {formatLuas(totalTerdampak)} m²
+                  {formatLuas(
+                    totalTerdampak
+                  )}{' '}
+                  m²
                 </strong>
               </div>
 
