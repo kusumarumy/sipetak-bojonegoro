@@ -6019,7 +6019,28 @@ main.body {
   line-height: 1.4;
 }
 
+.analysis-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 8px;
+}
 
+.analysis-reset {
+  border: 1px solid #d7dee8;
+  background: #fff;
+  color: #526174;
+  border-radius: 8px;
+  padding: 7px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.analysis-reset:hover {
+  background: #f5f7fa;
+  border-color: #b9c4d2;
+}
 @media (max-width: 900px) {
   .panel-kepemilikan {
     left: 82px;
