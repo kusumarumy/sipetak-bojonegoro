@@ -1345,58 +1345,86 @@ useEffect(() => {
           }
         });
 
-        // ==================================================
-        // LABEL NOMOR BIDANG
-        // ==================================================
+       // ==================================================
+// LABEL NIB BIDANG
+// ==================================================
 
-        map.addLayer({
-          id: 'bidang-lb',
+map.addLayer({
+  id: 'bidang-lb',
 
-          type: 'symbol',
+  type: 'symbol',
 
-          source: 'bidang',
+  source: 'bidang',
 
-          minzoom: 15.5,
+  // NIB baru muncul ketika zoom cukup dekat
+  minzoom: 16,
 
-          layout: {
-            visibility:
-              labelNomor
-                ? 'visible'
-                : 'none',
+  layout: {
+    visibility:
+      labelNomor
+        ? 'visible'
+        : 'none',
 
-            'text-field': [
-              'get',
-              'nib'
-            ],
+    // Ambil nilai NIB dari property bidang
+    'text-field': [
+      'coalesce',
+      ['get', 'nib'],
+      ''
+    ],
 
-            'text-size': 12,
+    // Ukuran label
+    'text-size': [
+      'interpolate',
+      ['linear'],
+      ['zoom'],
 
-            'text-anchor':
-              'center',
+      16,
+      10,
 
-            'text-allow-overlap':
-              true,
+      17,
+      11,
 
-            'text-ignore-placement':
-              true
-          },
+      18,
+      12,
 
-          paint: {
-            'text-color':
-              '#000000',
+      20,
+      13
+    ],
 
-            'text-halo-color':
-              'rgba(255,255,255,.85)',
+    // Posisi label di tengah simbol/anchor
+    'text-anchor': 'center',
 
-            'text-halo-width':
-              1.1
-          }
-        });
+    // Jangan paksa label saling menumpuk
+    'text-allow-overlap': false,
 
-        // ==================================================
-        // SELESAI LOAD
-        // ==================================================
+    // MapLibre boleh mengatur label mana yang ditampilkan
+    'text-ignore-placement': false,
 
+    // Prioritaskan label berdasarkan luas bidang
+    'symbol-sort-key': [
+      'case',
+      ['has', 'luas_tnh'],
+      [
+        '-',
+        1000000,
+        ['to-number', ['get', 'luas_tnh']]
+      ],
+      999999
+    ],
+
+    // Tetap memungkinkan label ditempatkan di tengah
+    'text-padding': 2
+  },
+
+  paint: {
+    'text-color': '#000000',
+
+    'text-halo-color':
+      'rgba(255,255,255,.9)',
+
+    'text-halo-width': 1.1
+  }
+});
         warnaiTema(map);
 
         pasangInteraksi(map);
