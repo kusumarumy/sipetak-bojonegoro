@@ -5228,84 +5228,59 @@ html[data-theme="dark"]
   color: var(--accent);
 
   font-size: 11px;
-}
-/* =========================================================
-   RIWAYAT AKSI — TERRAIN / CONTROL PANEL STYLE
-   ========================================================= */
-
-.daftar-flyout {
+}.daftar-flyout {
   position: fixed;
   left: 82px;
   top: 104px;
 
-  width: min(1060px, calc(100vw - 110px));
-  max-height: calc(100vh - 155px);
+  /* sebelumnya 980px */
+  width: min(880px, calc(100vw - 110px));
+
+  /* lebih pendek */
+  max-height: min(620px, calc(100vh - 155px));
 
   background: #fff;
-
   border: 1px solid #e5e7eb;
   border-radius: 10px;
-
   box-shadow:
     0 14px 36px rgba(15, 23, 42, 0.13),
     0 2px 8px rgba(15, 23, 42, 0.05);
-
   overflow: hidden;
-
   z-index: 960;
-
-  animation: flyoutIn 0.16s ease-out;
 }
-
 
 .daftar-bidang {
   display: flex;
   flex-direction: column;
-
-  max-height: calc(100vh - 155px);
+  height: 100%;
+  max-height: min(620px, calc(100vh - 155px));
 }
 
-
-/* =========================================================
-   HEADER
-   ========================================================= */
-
+/* HEADER */
 .daftar-head {
-  min-height: 54px;
-
-  padding: 9px 11px;
+  min-height: 52px;
+  padding: 8px 10px;
 
   display: flex;
   align-items: center;
   justify-content: space-between;
-
-  gap: 12px;
+  gap: 10px;
 
   background: #fff;
-
   border-bottom: 1px solid #e5e7eb;
 }
-
 
 .daftar-head-main {
   display: flex;
   align-items: center;
-
-  gap: 9px;
-
+  gap: 8px;
   min-width: 0;
 }
 
-
-/* =========================================================
-   HEADER ICON
-   ========================================================= */
-
 .daftar-head-icon {
-  width: 30px;
-  height: 30px;
-
-  flex: 0 0 30px;
+  width: 29px;
+  height: 29px;
+  flex: 0 0 29px;
 
   display: flex;
   align-items: center;
@@ -5313,135 +5288,94 @@ html[data-theme="dark"]
 
   border: 1px solid #e5e7eb;
   border-radius: 7px;
-
   background: #f8fafc;
-
   color: #A51F35;
 }
 
-
 .daftar-head-icon svg {
-  width: 16px;
-  height: 16px;
+  width: 15px;
+  height: 15px;
 }
 
-
-/* =========================================================
-   TITLE
-   ========================================================= */
+/* JUDUL + SUBTITLE */
+.daftar-title-wrap {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+  min-width: 0;
+}
 
 .daftar-title {
   display: flex;
   align-items: center;
-
-  gap: 8px;
-
+  gap: 7px;
   min-width: 0;
 }
 
-
 .daftar-title strong {
   color: #374151;
-
   font-family: var(--f-body, Arial, sans-serif);
-
   font-size: 10px;
   font-weight: 800;
-
   letter-spacing: 0.06em;
-
   white-space: nowrap;
 }
-
 
 .daftar-count {
   color: #9ca3af;
-
   font-family: var(--f-body, Arial, sans-serif);
-
-  font-size: 9px;
+  font-size: 8px;
   font-weight: 500;
-
   white-space: nowrap;
 }
 
+.daftar-subtitle {
+  color: #9ca3af;
+  font-family: var(--f-body, Arial, sans-serif);
+  font-size: 8px;
+  font-weight: 400;
+  white-space: nowrap;
+}
 
-/* =========================================================
-   FILTER BUTTONS
-   ========================================================= */
-
+/* FILTER */
 .daftar-actions {
   display: flex;
   align-items: center;
-
-  gap: 4px;
-
+  gap: 3px;
   flex-wrap: nowrap;
 }
 
-
 .daftar-actions button {
-  appearance: none;
-
-  min-height: 26px;
-
-  padding: 0 8px;
+  min-height: 25px;
+  padding: 0 7px;
 
   border: 1px solid #e5e7eb;
   border-radius: 5px;
-
   background: #f8fafc;
-
   color: #6b7280;
 
   font-family: var(--f-body, Arial, sans-serif);
-
   font-size: 8px;
   font-weight: 700;
-
   letter-spacing: 0.025em;
 
   white-space: nowrap;
-
   cursor: pointer;
-
-  transition:
-    background 0.14s ease,
-    color 0.14s ease,
-    border-color 0.14s ease;
 }
-
-
-.daftar-actions button:hover {
-  background: #f1f5f9;
-
-  border-color: #d1d5db;
-
-  color: #374151;
-}
-
 
 .daftar-actions button.active {
   background: #A51F35;
-
   border-color: #A51F35;
-
   color: #fff;
 }
 
-
-/* =========================================================
-   CLOSE
-   ========================================================= */
-
+/* CLOSE */
 .daftar-actions .daftar-close {
-  width: 27px;
-  height: 27px;
-
-  min-height: 27px;
-
+  width: 25px;
+  height: 25px;
+  min-height: 25px;
   padding: 0;
-
   margin-left: 3px;
 
   display: flex;
@@ -5449,27 +5383,19 @@ html[data-theme="dark"]
   justify-content: center;
 
   background: transparent;
-
   border-color: #e5e7eb;
 }
 
-
 .daftar-actions .daftar-close svg {
-  width: 13px;
-  height: 13px;
+  width: 12px;
+  height: 12px;
 }
-
 
 .daftar-actions .daftar-close:hover {
   background: #f3f4f6;
 
   color: #374151;
 }
-
-
-/* =========================================================
-   TABLE
-   ========================================================= */
 
 .daftar-table-wrap {
   flex: 1;
@@ -5489,13 +5415,9 @@ html[data-theme="dark"]
 
   font-family: var(--f-body, Arial, sans-serif);
 
-  font-size: 10px;
+  font-size: 9px;
 }
 
-
-/* =========================================================
-   TABLE HEADER
-   ========================================================= */
 
 .daftar-table th {
   position: sticky;
@@ -5503,13 +5425,13 @@ html[data-theme="dark"]
 
   z-index: 3;
 
-  padding: 8px 10px;
+  padding: 7px 9px;
 
   background: #f8fafc;
 
   color: #7b818b;
 
-  font-size: 8px;
+  font-size: 7.5px;
 
   font-weight: 800;
 
@@ -5522,10 +5444,6 @@ html[data-theme="dark"]
   border-bottom: 1px solid #e5e7eb;
 }
 
-
-/* =========================================================
-   SORT BUTTON
-   ========================================================= */
 
 .daftar-table th .sort-header {
   all: unset;
@@ -5585,17 +5503,12 @@ html[data-theme="dark"]
   color: #A51F35;
 }
 
-
-/* =========================================================
-   TABLE BODY
-   ========================================================= */
-
 .daftar-table td {
-  padding: 8px 10px;
+  padding: 7px 9px;
 
   color: #374151;
 
-  font-size: 10px;
+  font-size: 9px;
 
   white-space: nowrap;
 
