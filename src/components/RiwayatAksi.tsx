@@ -4,36 +4,22 @@ import { useEffect, useMemo, useState } from 'react';
 
 type AuditLog = {
 id?: number | string;
-
-// Identitas bidang
 nib?: string;
 record_id?: number | string;
 bidang_id?: string;
-
-// Aksi
 aksi?: string;
 kolom?: string;
-
-// Nilai perubahan
 nilai_lama?: any;
 nilai_baru?: any;
-
-// Pengguna
 nama_akun?: string;
 pengguna_id?: string;
 ip_address?: string;
-
-// Waktu
 pada?: string;
 };
 
 type Props = {
 onClose: () => void;
 };
-
-/* =========================================================
-FORMAT WAKTU
-========================================================= */
 
 const fmtTanggal = (value?: string) => {
 if (!value) return '—';
@@ -53,10 +39,6 @@ minute: '2-digit',
 });
 };
 
-/* =========================================================
-FORMAT NILAI
-========================================================= */
-
 const fmtNilai = (value: any) => {
 if (value == null || value === '') {
 return '—';
@@ -69,19 +51,11 @@ return JSON.stringify(value);
 return String(value);
 };
 
-/* =========================================================
-LABEL AKSI
-========================================================= */
-
 const labelAksi: Record<string, string> = {
 INPUT: 'INPUT',
 UPDATE: 'UPDATE',
 DELETE: 'DELETE',
 };
-
-/* =========================================================
-COMPONENT
-========================================================= */
 
 export default function RiwayatAksi({
 onClose,
@@ -89,15 +63,8 @@ onClose,
 const [data, setData] = useState<AuditLog[]>([]);
 const [memuat, setMemuat] = useState(true);
 const [filter, setFilter] = useState('semua');
-
-// SORT
 const [sortKolom, setSortKolom] = useState('pada');
 const [sortArah, setSortArah] = useState<'asc' | 'desc'>('desc');
-
-/* =======================================================
-FUNGSI SORT
-======================================================= */
-
 const ubahSort = (kolom: string) => {
 if (sortKolom === kolom) {
 setSortArah(
@@ -110,10 +77,6 @@ setSortKolom(kolom);
 setSortArah('asc');
 }
 };
-
-/* =======================================================
-AMBIL DATA RIWAYAT
-======================================================= */
 
 useEffect(() => {
 const ambilData = async () => {
@@ -155,10 +118,6 @@ ambilData();
 
 }, []);
 
-/* =======================================================
-JUMLAH AKSI
-======================================================= */
-
 const jumlah = useMemo(() => {
 return {
 semua: data.length,
@@ -180,10 +139,6 @@ semua: data.length,
 };
 
 }, [data]);
-
-/* =======================================================
-FILTER + SORT DATA
-======================================================= */
 
 const dataTampil = useMemo(() => {
 const hasil =
@@ -299,10 +254,6 @@ sortKolom,
 sortArah,
 ]);
 
-/* =======================================================
-ICON SORT
-======================================================= */
-
 const iconSort = (kolom: string) => {
 if (sortKolom !== kolom) {
 return '↕';
@@ -314,28 +265,14 @@ return sortArah === 'asc'
 
 };
 
-/* =======================================================
-RENDER
-======================================================= */
-
 return (
 <div className="daftar-flyout">
 
   <section className="daftar-bidang">
-
-    {/* =================================================
-    HEADER
-    ================================================= */}
-
 <div className="daftar-head">
-
   <div className="daftar-head-main">
-
     <div className="daftar-head-icon">
-      <svg
-        viewBox="0 0 24 24"
-        aria-hidden="true"
-      >
+      <svg viewBox="0 0 24 24" aria-hidden="true">
         <path
           d="M12 7v5l3 2"
           fill="none"
@@ -344,7 +281,6 @@ return (
           strokeLinecap="round"
           strokeLinejoin="round"
         />
-
         <path
           d="M20 12a8 8 0 1 1-2.34-5.66"
           fill="none"
@@ -352,7 +288,6 @@ return (
           strokeWidth="1.7"
           strokeLinecap="round"
         />
-
         <path
           d="M17 4v4h4"
           fill="none"
@@ -364,57 +299,25 @@ return (
       </svg>
     </div>
 
-    <div className="daftar-title">
+    <div className="daftar-title-wrap">
+      <div className="daftar-title">
+        <strong>RIWAYAT AKSI</strong>
+        <span className="daftar-count">
+          {memuat
+            ? 'Memuat…'
+            : `${dataTampil.length.toLocaleString('id-ID')} aktivitas`}
+        </span>
+      </div>
 
-      <strong>
-        RIWAYAT AKSI
-      </strong>
-
-      <span className="daftar-count">
-        {memuat
-          ? 'Memuat…'
-          : `${dataTampil.length.toLocaleString('id-ID')} aktivitas`}
+      <span className="daftar-subtitle">
+        Audit trail aktivitas perubahan data
       </span>
-
     </div>
-
   </div>
 
-
   <div className="daftar-actions">
-
-    <button
-      type="button"
-      className={filter === 'semua' ? 'active' : ''}
-      onClick={() => setFilter('semua')}
-    >
-      SEMUA ({jumlah.semua})
-    </button>
-
-    <button
-      type="button"
-      className={filter === 'INPUT' ? 'active' : ''}
-      onClick={() => setFilter('INPUT')}
-    >
-      INPUT ({jumlah.input})
-    </button>
-
-    <button
-      type="button"
-      className={filter === 'UPDATE' ? 'active' : ''}
-      onClick={() => setFilter('UPDATE')}
-    >
-      UPDATE ({jumlah.update})
-    </button>
-
-    <button
-      type="button"
-      className={filter === 'DELETE' ? 'active' : ''}
-      onClick={() => setFilter('DELETE')}
-    >
-      DELETE ({jumlah.delete})
-    </button>
-
+    {/* filter tetap di sini */}
+    
     <button
       type="button"
       className="daftar-close"
@@ -422,10 +325,7 @@ return (
       aria-label="Tutup riwayat aksi"
       title="Tutup"
     >
-      <svg
-        viewBox="0 0 24 24"
-        aria-hidden="true"
-      >
+      <svg viewBox="0 0 24 24" aria-hidden="true">
         <path
           d="M6 6l12 12M18 6L6 18"
           fill="none"
@@ -435,9 +335,7 @@ return (
         />
       </svg>
     </button>
-
   </div>
-
 </div>
 
     <div className="daftar-table-wrap">
@@ -446,9 +344,6 @@ return (
 
         <thead>
           <tr>
-
-            {/* WAKTU */}
-
             <th>
               <button
                 type="button"
