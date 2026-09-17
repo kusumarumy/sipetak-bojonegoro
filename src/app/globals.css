@@ -6814,29 +6814,22 @@ main.body {
   justify-content: flex-end;
   gap: 5px;
   flex-wrap: nowrap;
-
   transform: translateY(4px);
 }
 
 .daftar-actions button {
   appearance: none;
-
   border: 1px solid #e5e7eb;
   background: #f8fafc;
   color: #6b7280;
-
-  min-height: 24px;
+  min-height: 20px;
   padding: 0 5px;
-
   border-radius: 6px;
-
   font-family: var(--f-body, Arial, sans-serif);
   font-size: 9px;
   font-weight: 700;
   letter-spacing: 0.025em;
-
   cursor: pointer;
-
   transition:
     background 0.14s ease,
     color 0.14s ease,
