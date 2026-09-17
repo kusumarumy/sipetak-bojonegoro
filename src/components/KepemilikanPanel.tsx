@@ -259,18 +259,20 @@ export default function KepemilikanPanel({
     );
   }
 
-  function resetAnalisis() {
-    window.dispatchEvent(
-      new CustomEvent('reset-analisis-bidang')
-    );
+function resetAnalisis() {
+  window.dispatchEvent(
+    new CustomEvent('reset-analisis-bidang')
+  );
+
   window.dispatchEvent(
     new CustomEvent('reset-pilihan-bidang')
   );
-    setNamaAktif('');
-    setBidang([]);
-    setError(null);
-    setDropdownPemilik(false);
-  }
+
+  setNamaAktif('');
+  setBidang([]);
+  setError(null);
+  setDropdownPemilik(false);
+}
 
   function IconKepemilikan() {
     return (
