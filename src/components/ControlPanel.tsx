@@ -7,15 +7,16 @@ import { LAYERS } from './layers';
 const GROUP_ORDER = [
   'Rencana Trase',
   'Bidang Tanah',
+  'Hipsografi',
   'Jaringan Irigasi',
   'Jaringan Transportasi',
   'Tutupan Lahan',
   'Utilitas',
 ];
-
 const GROUP_ICONS: Record<string, string> = {
   'Rencana Trase': '⌁',
   'Bidang Tanah': '▦',
+  'Hipsografi': '⌁',
   'Jaringan Irigasi': '≈',
   'Jaringan Transportasi': '⇆',
   'Tutupan Lahan': '◈',
