@@ -24,15 +24,6 @@ declare module 'next-auth' {
   }
 }
 
-declare module 'next-auth/jwt' {
-  interface JWT {
-    uid?: string;
-    peran?: Peran;
-    username?: string;
-    lastActivity?: number;
-  }
-}
-
 export const { handlers, auth, signIn, signOut } = NextAuth({
   session: {
     strategy: 'jwt',
