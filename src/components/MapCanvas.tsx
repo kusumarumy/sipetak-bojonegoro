@@ -145,7 +145,41 @@ export default function MapCanvas() {
       );
     };
   }, []);
+useEffect(() => {
+  const handleResetAnalisis = () => {
+    const map = mapRef.current;
 
+    if (!map) {
+      return;
+    }
+
+    for (const id of analisisRef.current) {
+      map.setFeatureState(
+        {
+          source: 'bidang',
+          id
+        },
+        {
+          analisis: false
+        }
+      );
+    }
+
+    analisisRef.current = [];
+  };
+
+  window.addEventListener(
+    'reset-analisis-bidang',
+    handleResetAnalisis
+  );
+
+  return () => {
+    window.removeEventListener(
+      'reset-analisis-bidang',
+      handleResetAnalisis
+    );
+  };
+}, []);
   // ====================================================
   // FOKUS KE BIDANG
   // ====================================================
