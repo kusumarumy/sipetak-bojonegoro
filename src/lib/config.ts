@@ -1,6 +1,10 @@
 export const R2 =
   process.env.NEXT_PUBLIC_R2_BASE_URL ??
   "https://dppt-bojonegoro.ruli-andaru.workers.dev";
+export const VECTOR = {
+  konturKawasan: `${R2}/vector/kontur_kawasan.geojson`,
+  konturTrase: `${R2}/vector/kontur_trase.geojson`,
+} as const;
 
 export const MAP = {
   center: [111.879, -7.168] as [number, number],
