@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs';
 import { query } from '@/lib/db';
 import type { Peran } from '@/types';
 
-const INACTIVITY_TIMEOUT = 8 * 60 * 60 * 1000; // 8 jam
+const INACTIVITY_TIMEOUT = 8 * 60 * 60; // 8 jam dalam detik
 
 declare module 'next-auth' {
   interface Session {
@@ -36,7 +36,7 @@ declare module 'next-auth/jwt' {
 export const { handlers, auth, signIn, signOut } = NextAuth({
   session: {
     strategy: 'jwt',
-    maxAge: 30 * 24 * 60 * 60,
+    maxAge: INACTIVITY_TIMEOUT,
   },
 
   pages: {
@@ -57,7 +57,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           .trim()
           .toLowerCase();
 
-        const password = String(kredensial?.password ?? '');
+        const password = String(
+          kredensial?.password ?? ''
+        );
 
         if (!username || !password) return null;
 
@@ -101,38 +103,47 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
   callbacks: {
     jwt({ token, user }) {
-      const sekarang = Date.now();
-
-      // Login baru
+      // Saat login pertama kali
       if (user) {
         token.uid = user.id;
         token.peran = user.peran;
         token.username = user.username;
-        token.lastActivity = sekarang;
+        token.lastActivity = Math.floor(Date.now() / 1000);
 
         return token;
       }
 
-      // Kalau tidak ada catatan aktivitas,
-      // token dianggap tidak valid.
-      if (!token.lastActivity) {
-        return {};
+      // Kalau tidak ada waktu aktivitas,
+      // jangan mengubah token.
+      if (typeof token.lastActivity !== 'number') {
+        return token;
       }
 
-      // Tidak aktif selama 8 jam.
+      const sekarang = Math.floor(Date.now() / 1000);
+
+      // Jika sudah tidak aktif 8 jam,
+      // hapus identitas dari token.
       if (
-        sekarang - token.lastActivity >= INACTIVITY_TIMEOUT
+        sekarang - token.lastActivity >=
+        INACTIVITY_TIMEOUT
       ) {
-        return {};
+        delete token.uid;
+        delete token.peran;
+        delete token.username;
+        delete token.lastActivity;
+
+        return token;
       }
 
-      // Masih aktif.
+      // Aktivitas masih dalam batas waktu.
+      // Perbarui waktu aktivitas.
       token.lastActivity = sekarang;
 
       return token;
     },
 
     session({ session, token }) {
+      // Token sudah tidak memiliki user
       if (!token.uid) {
         return session;
       }
