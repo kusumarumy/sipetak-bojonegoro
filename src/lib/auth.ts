@@ -4,83 +4,155 @@ import bcrypt from 'bcryptjs';
 import { query } from '@/lib/db';
 import type { Peran } from '@/types';
 
+const INACTIVITY_TIMEOUT = 8 * 60 * 60 * 1000; // 8 jam
+
 declare module 'next-auth' {
-  interface Session { user: { id: string; name: string; username: string; peran: Peran } }
-  interface User { id: string; name: string; username: string; peran: Peran }
+  interface Session {
+    user: {
+      id: string;
+      name: string;
+      username: string;
+      peran: Peran;
+    };
+  }
+
+  interface User {
+    id: string;
+    name: string;
+    username: string;
+    peran: Peran;
+  }
+}
+
+declare module 'next-auth/jwt' {
+  interface JWT {
+    uid?: string;
+    peran?: Peran;
+    username?: string;
+    lastActivity?: number;
+  }
 }
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
-  session: { strategy: 'jwt', maxAge: 8 * 60 * 60 },   // 8 jam, sepanjang jam kerja
-  pages: { signIn: '/login' },
+  session: {
+    strategy: 'jwt',
+    maxAge: 30 * 24 * 60 * 60,
+  },
+
+  pages: {
+    signIn: '/login',
+  },
+
   providers: [
     Credentials({
       credentials: {
-  username: {},
-  password: {},
-},
+        username: {},
+        password: {},
+      },
+
       async authorize(kredensial) {
-  const username = String(kredensial?.username ?? '').trim().toLowerCase();
-  const password = String(kredensial?.password ?? '');
+        const username = String(
+          kredensial?.username ?? ''
+        )
+          .trim()
+          .toLowerCase();
 
-  if (!username || !password) return null;
+        const password = String(kredensial?.password ?? '');
 
-  const [u] = await query<{
-    id: string;
-    nama: string;
-    username: string;
-    password_hash: string;
-    peran: Peran;
-    aktif: boolean;
-  }>(
-    `SELECT id, nama, username, password_hash, peran, aktif
-     FROM pengguna
-     WHERE username = $1`,
-    [username]
-  );
+        if (!username || !password) return null;
 
-  // Tetap lakukan bcrypt.compare walaupun pengguna tidak ditemukan.
-  const hash =
-    u?.password_hash ??
-    '$2a$10$invalidinvalidinvalidinvalidinvalidinvalidinvalidinvalidinv';
+        const [u] = await query<{
+          id: string;
+          nama: string;
+          username: string;
+          password_hash: string;
+          peran: Peran;
+          aktif: boolean;
+        }>(
+          `SELECT id, nama, username, password_hash, peran, aktif
+           FROM pengguna
+           WHERE username = $1`,
+          [username]
+        );
 
-  const cocok = await bcrypt.compare(password, hash);
+        // Tetap lakukan bcrypt.compare walaupun pengguna tidak ditemukan.
+        const hash =
+          u?.password_hash ??
+          '$2a$10$invalidinvalidinvalidinvalidinvalidinvalidinvalidinvalidinv';
 
-  // Peran tidak lagi dipilih saat masuk — peran melekat pada akun, jadi
-  // sistem sudah tahu sendiri siapa yang masuk. Meminta pengguna memilihnya
-  // hanya menambah satu cara gagal tanpa menambah keamanan.
-  if (!u || !u.aktif || !cocok) return null;
+        const cocok = await bcrypt.compare(password, hash);
 
-  await query(
-    'UPDATE pengguna SET login_terakhir = now() WHERE id = $1',
-    [u.id]
-  );
+        if (!u || !u.aktif || !cocok) return null;
 
-  return {
-    id: u.id,
-    name: u.nama,
-    username: u.username,
-    peran: u.peran,
-  };
-}
-    })
+        await query(
+          'UPDATE pengguna SET login_terakhir = now() WHERE id = $1',
+          [u.id]
+        );
+
+        return {
+          id: u.id,
+          name: u.nama,
+          username: u.username,
+          peran: u.peran,
+        };
+      },
+    }),
   ],
+
   callbacks: {
     jwt({ token, user }) {
-      if (user) { token.uid = user.id; token.peran = user.peran; token.username = user.username; }
+      const sekarang = Date.now();
+
+      // Login baru
+      if (user) {
+        token.uid = user.id;
+        token.peran = user.peran;
+        token.username = user.username;
+        token.lastActivity = sekarang;
+
+        return token;
+      }
+
+      // Kalau tidak ada catatan aktivitas,
+      // token dianggap tidak valid.
+      if (!token.lastActivity) {
+        return {};
+      }
+
+      // Tidak aktif selama 8 jam.
+      if (
+        sekarang - token.lastActivity >= INACTIVITY_TIMEOUT
+      ) {
+        return {};
+      }
+
+      // Masih aktif.
+      token.lastActivity = sekarang;
+
       return token;
     },
+
     session({ session, token }) {
+      if (!token.uid) {
+        return session;
+      }
+
       session.user.id = token.uid as string;
       session.user.peran = token.peran as Peran;
       session.user.username = token.username as string;
+
       return session;
-    }
-  }
+    },
+  },
 });
 
 /** Dipakai di setiap API route. Melempar 401 bila belum masuk. */
 export async function wajibMasuk() {
   const sesi = await auth();
-  if (!sesi?.user) throw new Response('Belum masuk', { status: 401 });
+
+  if (!sesi?.user) {
+    throw new Response('Belum masuk', { status: 401 });
+  }
+
   return sesi.user;
 }
