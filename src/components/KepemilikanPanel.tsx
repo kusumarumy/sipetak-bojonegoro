@@ -39,6 +39,7 @@ export default function KepemilikanPanel({
 }: Props) {
   const [pemilik, setPemilik] = useState<Pemilik[]>([]);
   const [namaAktif, setNamaAktif] = useState('');
+  const [dropdownPemilik, setDropdownPemilik] = useState(false);
   const [bidang, setBidang] = useState<
     BidangKepemilikan[]
   >([]);
@@ -307,54 +308,108 @@ function IconKepemilikan() {
 </div>
       <div className="panel-body">
         <div className="form-group">
-          <label htmlFor="pilih-pemilik">
-            Nama Pemilik
-          </label>
+  <div className="form-group-header">
+    <label htmlFor="pilih-pemilik">
+      Nama Pemilik
+    </label>
 
-          <select
-            id="pilih-pemilik"
-            value={namaAktif}
-            onChange={(e) =>
-              setNamaAktif(e.target.value)
-            }
-            disabled={pemilik.length === 0}
+    <button
+      type="button"
+      className="analysis-reset"
+      onClick={() => {
+        window.dispatchEvent(
+          new CustomEvent('reset-analisis-bidang')
+        );
+
+        setNamaAktif('');
+        setBidang([]);
+        setError(null);
+        setDropdownPemilik(false);
+      }}
+      disabled={!namaAktif}
+    >
+      ↻ Reset
+    </button>
+  </div>
+
+  <div className="pemilik-dropdown">
+    <button
+      type="button"
+      id="pilih-pemilik"
+      className={`pemilik-dropdown-trigger ${
+        dropdownPemilik ? 'is-open' : ''
+      }`}
+      onClick={() =>
+        setDropdownPemilik((v) => !v)
+      }
+      disabled={pemilik.length === 0}
+      aria-expanded={dropdownPemilik}
+    >
+      <span>
+        {namaAktif
+          ? `${
+              pemilikAktif?.nama || namaAktif
+            } · ${
+              pemilikAktif?.jumlah_bidang ?? 0
+            } bidang`
+          : memuatPemilik
+            ? 'Memuat pemilik...'
+            : pemilik.length === 0
+              ? 'Tidak ada pemilik'
+              : 'Pilih pemilik'}
+      </span>
+
+      <span className="pemilik-dropdown-arrow">
+        ▾
+      </span>
+    </button>
+
+    {dropdownPemilik && pemilik.length > 0 && (
+      <div className="pemilik-dropdown-menu">
+        <button
+          type="button"
+          className={`pemilik-option ${
+            !namaAktif ? 'active' : ''
+          }`}
+          onClick={() => {
+            setNamaAktif('');
+            setBidang([]);
+            setError(null);
+            setDropdownPemilik(false);
+          }}
+        >
+          Pilih pemilik
+        </button>
+
+        {pemilik.map((p) => (
+          <button
+            type="button"
+            key={p.nama}
+            className={`pemilik-option ${
+              namaAktif === p.nama
+                ? 'active'
+                : ''
+            }`}
+            onClick={() => {
+              setNamaAktif(p.nama);
+              setDropdownPemilik(false);
+              setError(null);
+            }}
           >
-            <option value="">
-              {memuatPemilik
-                ? 'Memuat pemilik...'
-                : pemilik.length === 0
-                  ? 'Tidak ada pemilik'
-                  : 'Pilih pemilik'}
-            </option>
+            <span>
+              {p.nama ||
+                '(Nama tidak tersedia)'}
+            </span>
 
-            {pemilik.map((p) => (
-              <option
-                key={p.nama}
-                value={p.nama}
-              >
-                {p.nama || '(Nama tidak tersedia)'} ·{' '}
-                {p.jumlah_bidang} bidang
-              </option>
-            ))}
-          </select>
-          <div className="analysis-actions">
-  <button
-    type="button"
-    className="analysis-reset"
-    onClick={() => {
-      window.dispatchEvent(
-        new CustomEvent('reset-analisis-bidang')
-      );
-
-      setNamaAktif('');
-      setBidang([]);
-      setError(null);
-    }}
-  >
-    Reset Analisis
-  </button>
+            <small>
+              {p.jumlah_bidang} bidang
+            </small>
+          </button>
+        ))}
+      </div>
+    )}
+  </div>
 </div>
-        </div>
 
         {error && (
           <div className="panel-error">
