@@ -5229,16 +5229,21 @@ html[data-theme="dark"]
 
   font-size: 11px;
 }
+/* =========================================================
+   RIWAYAT AKSI — TERRAIN / CONTROL PANEL STYLE
+   ========================================================= */
+
 .daftar-flyout {
   position: fixed;
   left: 82px;
   top: 104px;
 
-  width: min(980px, calc(100vw - 110px));
+  width: min(1060px, calc(100vw - 110px));
   max-height: calc(100vh - 155px);
 
-  background: var(--panel-bg, #ffffff);
-  border: 1px solid var(--panel-border, #e5e7eb);
+  background: #fff;
+
+  border: 1px solid #e5e7eb;
   border-radius: 10px;
 
   box-shadow:
@@ -5246,21 +5251,46 @@ html[data-theme="dark"]
     0 2px 8px rgba(15, 23, 42, 0.05);
 
   overflow: hidden;
+
   z-index: 960;
 
   animation: flyoutIn 0.16s ease-out;
 }
 
+
 .daftar-bidang {
   display: flex;
   flex-direction: column;
+
   max-height: calc(100vh - 155px);
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.daftar-head {
+  min-height: 54px;
+
+  padding: 9px 11px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 12px;
+
+  background: #fff;
+
+  border-bottom: 1px solid #e5e7eb;
 }
 
 
 .daftar-head-main {
   display: flex;
   align-items: center;
+
   gap: 9px;
 
   min-width: 0;
@@ -5268,7 +5298,7 @@ html[data-theme="dark"]
 
 
 /* =========================================================
-   ICON
+   HEADER ICON
    ========================================================= */
 
 .daftar-head-icon {
@@ -5285,8 +5315,10 @@ html[data-theme="dark"]
   border-radius: 7px;
 
   background: #f8fafc;
+
   color: #A51F35;
 }
+
 
 .daftar-head-icon svg {
   width: 16px;
@@ -5294,18 +5326,39 @@ html[data-theme="dark"]
 }
 
 
+/* =========================================================
+   TITLE
+   ========================================================= */
 
 .daftar-title {
   display: flex;
   align-items: center;
+
   gap: 8px;
+
   min-width: 0;
 }
+
+
+.daftar-title strong {
+  color: #374151;
+
+  font-family: var(--f-body, Arial, sans-serif);
+
+  font-size: 10px;
+  font-weight: 800;
+
+  letter-spacing: 0.06em;
+
+  white-space: nowrap;
+}
+
 
 .daftar-count {
   color: #9ca3af;
 
   font-family: var(--f-body, Arial, sans-serif);
+
   font-size: 9px;
   font-weight: 500;
 
@@ -5314,38 +5367,43 @@ html[data-theme="dark"]
 
 
 /* =========================================================
-   ACTIONS
+   FILTER BUTTONS
    ========================================================= */
 
 .daftar-actions {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
 
   gap: 4px;
+
   flex-wrap: nowrap;
 }
+
 
 .daftar-actions button {
   appearance: none;
 
-  border: 1px solid #e5e7eb;
-  background: #f8fafc;
-  color: #6b7280;
-
   min-height: 26px;
+
   padding: 0 8px;
 
+  border: 1px solid #e5e7eb;
   border-radius: 5px;
 
+  background: #f8fafc;
+
+  color: #6b7280;
+
   font-family: var(--f-body, Arial, sans-serif);
+
   font-size: 8px;
   font-weight: 700;
+
   letter-spacing: 0.025em;
 
-  cursor: pointer;
-
   white-space: nowrap;
+
+  cursor: pointer;
 
   transition:
     background 0.14s ease,
@@ -5353,15 +5411,21 @@ html[data-theme="dark"]
     border-color 0.14s ease;
 }
 
+
 .daftar-actions button:hover {
   background: #f1f5f9;
+
   border-color: #d1d5db;
+
   color: #374151;
 }
 
+
 .daftar-actions button.active {
   background: #A51F35;
+
   border-color: #A51F35;
+
   color: #fff;
 }
 
@@ -5374,7 +5438,10 @@ html[data-theme="dark"]
   width: 27px;
   height: 27px;
 
+  min-height: 27px;
+
   padding: 0;
+
   margin-left: 3px;
 
   display: flex;
@@ -5382,87 +5449,399 @@ html[data-theme="dark"]
   justify-content: center;
 
   background: transparent;
+
   border-color: #e5e7eb;
 }
+
 
 .daftar-actions .daftar-close svg {
   width: 13px;
   height: 13px;
 }
 
+
 .daftar-actions .daftar-close:hover {
   background: #f3f4f6;
+
   color: #374151;
 }
+
+
+/* =========================================================
+   TABLE
+   ========================================================= */
+
 .daftar-table-wrap {
+  flex: 1;
+
   overflow: auto;
+
+  background: #fff;
 }
+
 
 .daftar-table {
   width: 100%;
+
+  min-width: 940px;
+
   border-collapse: collapse;
-  font-size: 11px;
+
+  font-family: var(--f-body, Arial, sans-serif);
+
+  font-size: 10px;
 }
+
+
+/* =========================================================
+   TABLE HEADER
+   ========================================================= */
 
 .daftar-table th {
   position: sticky;
   top: 0;
 
+  z-index: 3;
+
   padding: 8px 10px;
+
   background: #f8fafc;
 
-  color: #6b7280;
-  font-size: 9px;
-  font-weight: 700;
+  color: #7b818b;
+
+  font-size: 8px;
+
+  font-weight: 800;
+
+  letter-spacing: 0.065em;
 
   text-align: left;
+
   white-space: nowrap;
 
   border-bottom: 1px solid #e5e7eb;
 }
 
+
+/* =========================================================
+   SORT BUTTON
+   ========================================================= */
+
+.daftar-table th .sort-header {
+  all: unset;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 5px;
+
+  padding: 2px 0;
+
+  cursor: pointer;
+
+  color: #6b7280;
+
+  font-family: var(--f-body, Arial, sans-serif);
+
+  font-size: 8px;
+
+  font-weight: 800;
+
+  letter-spacing: 0.065em;
+
+  line-height: 1;
+}
+
+
+.daftar-table th .sort-header:hover {
+  color: #A51F35;
+}
+
+
+.daftar-table th .sort-header:focus,
+.daftar-table th .sort-header:focus-visible {
+  outline: none;
+}
+
+
+.sort-icon {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  width: 10px;
+
+  color: #a1a1aa;
+
+  font-size: 10px;
+
+  line-height: 1;
+}
+
+
+.daftar-table th .sort-header:hover .sort-icon {
+  color: #A51F35;
+}
+
+
+/* =========================================================
+   TABLE BODY
+   ========================================================= */
+
 .daftar-table td {
   padding: 8px 10px;
-  border-bottom: 1px solid #f1f5f9;
+
   color: #374151;
-  white-space: nowrap;
+
   font-size: 10px;
+
+  white-space: nowrap;
+
+  vertical-align: middle;
+
+  border-bottom: 1px solid #f1f5f9;
 }
+
+
+.daftar-table tbody tr {
+  transition: background 0.12s ease;
+}
+
 
 .daftar-table tbody tr:hover {
-  background: #f8fafc;
+  background: #fafafa;
 }
+
+
+/* =========================================================
+   KODE
+   ========================================================= */
 
 .daftar-table .kode {
-  font-weight: 700;
-  color: #111827;
-}
+  color: #A51F35;
 
-.daftar-table .angka {
-  text-align: right;
+  font-weight: 700;
+
   font-variant-numeric: tabular-nums;
 }
 
-.status-daftar {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
 
-  font-size: 9px;
-  font-weight: 700;
+/* =========================================================
+   ANGKA
+   ========================================================= */
+
+.daftar-table .angka {
+  text-align: right;
+
+  color: #475569;
+
+  font-variant-numeric: tabular-nums;
 }
 
+
+/* =========================================================
+   AKSI BADGE
+   ========================================================= */
+
+.status-daftar {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+  min-height: 20px;
+
+  padding: 2px 6px;
+
+  border: 1px solid #e5e7eb;
+
+  border-radius: 5px;
+
+  background: #f8fafc;
+
+  color: #6b7280;
+
+  font-size: 8px;
+
+  font-weight: 800;
+
+  letter-spacing: 0.035em;
+}
+
+
 .status-dot {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
+
+  flex: 0 0 5px;
+
   border-radius: 50%;
+
   background: #9ca3af;
 }
 
+
+/* INPUT */
+
+.audit-input .status-dot {
+  background: #00E5FF;
+}
+
+
+/* UPDATE */
+
+.audit-update .status-dot {
+  background: #FFD600;
+}
+
+
+/* DELETE */
+
+.audit-delete .status-dot {
+  background: #A51F35;
+}
+
+
+/* =========================================================
+   EMPTY
+   ========================================================= */
+
 .daftar-empty {
+  padding: 38px 20px !important;
+
   text-align: center;
-  padding: 35px !important;
+
   color: #9ca3af !important;
+
+  font-size: 10px !important;
+}
+
+
+/* =========================================================
+   SCROLLBAR
+   ========================================================= */
+
+.daftar-table-wrap::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+.daftar-table-wrap::-webkit-scrollbar-track {
+  background: #f8fafc;
+}
+
+.daftar-table-wrap::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+
+  border-radius: 8px;
+}
+
+.daftar-table-wrap::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+
+
+/* =========================================================
+   DARK MODE
+   ========================================================= */
+
+[data-theme='dark'] .daftar-flyout {
+  background: #15171b;
+  border-color: #2b2f36;
+}
+
+[data-theme='dark'] .daftar-head {
+  background: #15171b;
+  border-color: #2b2f36;
+}
+
+[data-theme='dark'] .daftar-head-icon {
+  background: #1d2025;
+  border-color: #30343b;
+}
+
+[data-theme='dark'] .daftar-title strong {
+  color: #e5e7eb;
+}
+
+[data-theme='dark'] .daftar-count {
+  color: #71717a;
+}
+
+[data-theme='dark'] .daftar-actions button {
+  background: #1d2025;
+  border-color: #30343b;
+  color: #a1a1aa;
+}
+
+[data-theme='dark'] .daftar-actions button:hover {
+  background: #252930;
+  color: #e5e7eb;
+}
+
+[data-theme='dark'] .daftar-actions button.active {
+  background: #A51F35;
+  border-color: #A51F35;
+  color: #fff;
+}
+
+[data-theme='dark'] .daftar-table-wrap {
+  background: #15171b;
+}
+
+[data-theme='dark'] .daftar-table th {
+  background: #1b1e23;
+  border-color: #2b2f36;
+  color: #8b919c;
+}
+
+[data-theme='dark'] .daftar-table td {
+  color: #c9cdd3;
+  border-color: #24282e;
+}
+
+[data-theme='dark'] .daftar-table tbody tr:hover {
+  background: #1b1e23;
+}
+
+[data-theme='dark'] .status-daftar {
+  background: #1d2025;
+  border-color: #30343b;
+  color: #a1a1aa;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1050px) {
+  .daftar-flyout {
+    left: 72px;
+
+    width: calc(100vw - 88px);
+  }
+}
+
+@media (max-width: 850px) {
+  .daftar-head {
+    align-items: flex-start;
+
+    flex-direction: column;
+  }
+
+  .daftar-actions {
+    width: 100%;
+
+    justify-content: flex-start;
+
+    overflow-x: auto;
+
+    padding-bottom: 2px;
+  }
 }
 
 .statistik-flyout {
