@@ -1376,10 +1376,6 @@ useEffect(() => {
             'line-opacity': 1
           }
         });
-visibility:
-  labelNomor
-    ? 'visible'
-    : 'none',
         warnaiTema(map);
 
         pasangInteraksi(map);
