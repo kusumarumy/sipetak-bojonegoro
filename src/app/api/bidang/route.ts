@@ -12,10 +12,7 @@ export async function GET() {
   }
 
   try {
-    // =========================================================
-    // CEK DATABASE
-    // =========================================================
-
+ 
     const info = await query(`
       SELECT
         current_database() AS database,
@@ -23,10 +20,6 @@ export async function GET() {
     `);
 
     console.log('DB:', info);
-
-    // =========================================================
-    // CEK KOLOM bidang_tanah
-    // =========================================================
 
     const cek = await query(`
       SELECT
@@ -39,10 +32,6 @@ export async function GET() {
     `);
 
     console.log('KOLOM:', cek);
-
-    // =========================================================
-    // AMBIL DATA BIDANG
-    // =========================================================
 
     const [row] = await query<{ fc: any }>(`
       SELECT json_build_object(
@@ -68,10 +57,6 @@ export async function GET() {
 
               'properties',
 
-              -- =================================================
-              -- IDENTITAS
-              -- =================================================
-
               jsonb_build_object(
                 'id', f.id,
                 'objectid', f.objectid,
@@ -84,10 +69,6 @@ export async function GET() {
 
               ||
 
-              -- =================================================
-              -- WILAYAH
-              -- =================================================
-
               jsonb_build_object(
                 'kecamatan', f.kecamatan,
                 'kelurahan', f.kelurahan,
@@ -95,10 +76,6 @@ export async function GET() {
               )
 
               ||
-
-              -- =================================================
-              -- HAK / PRODUK
-              -- =================================================
 
               jsonb_build_object(
                 'tipehak', f.tipehak,
@@ -111,10 +88,6 @@ export async function GET() {
               )
 
               ||
-
-              -- =================================================
-              -- LUAS
-              -- =================================================
 
               jsonb_build_object(
                 'luastertul', f.luastertul,
@@ -135,20 +108,12 @@ export async function GET() {
 
               ||
 
-              -- =================================================
-              -- PENGUKURAN
-              -- =================================================
-
               jsonb_build_object(
                 'alatukur', f.alatukur,
                 'metodukur', f.metodukur
               )
 
               ||
-
-              -- =================================================
-              -- TANAH
-              -- =================================================
 
               jsonb_build_object(
                 'penggunaan', f.penggunaan,
@@ -162,10 +127,6 @@ export async function GET() {
 
               ||
 
-              -- =================================================
-              -- PEMILIK
-              -- =================================================
-
               jsonb_build_object(
                 'nama_milik', f.nama_milik,
                 'ttl_milik', f.ttl_milik,
@@ -177,10 +138,6 @@ export async function GET() {
 
               ||
 
-              -- =================================================
-              -- PENYEWA
-              -- =================================================
-
               jsonb_build_object(
                 'nama_sewa', f.nama_sewa,
                 'ttl_sewa', f.ttl_sewa,
@@ -191,19 +148,11 @@ export async function GET() {
 
               ||
 
-              -- =================================================
-              -- BANGUNAN
-              -- =================================================
-
               jsonb_build_object(
                 'jml_bgn', f.jml_bgn
               )
 
               ||
-
-              -- =================================================
-              -- DATA LAIN
-              -- =================================================
 
               jsonb_build_object(
                 'date_updt', f.date_updt,
@@ -215,10 +164,6 @@ export async function GET() {
               )
 
               ||
-
-              -- =================================================
-              -- WORKFLOW PENDATAAN
-              -- =================================================
 
               jsonb_build_object(
                 'status', f.status,
