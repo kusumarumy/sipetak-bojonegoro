@@ -31,13 +31,12 @@ const authConfig = {
         return token;
       }
 
-      // Kalau tidak ada catatan aktivitas,
-      // session dianggap tidak valid.
+      // Tidak ada catatan aktivitas
       if (!token.lastActivity) {
         return {};
       }
 
-      // Lebih dari 8 jam sejak aktivitas terakhir
+      // Tidak aktif selama 8 jam
       if (sekarang - token.lastActivity >= INACTIVITY_TIMEOUT) {
         return {};
       }
