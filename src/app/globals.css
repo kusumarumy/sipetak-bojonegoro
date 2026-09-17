@@ -6808,24 +6808,28 @@ main.body {
   font-size: 10px;
   color: #9ca3af;
 }
-
-
 .daftar-actions {
   display: flex;
   align-items: center;
   justify-content: flex-end;
   gap: 5px;
+  flex-wrap: nowrap;
+
   transform: translateY(4px);
 }
 
 .daftar-actions button {
   appearance: none;
+
   border: 1px solid #e5e7eb;
   background: #f8fafc;
   color: #6b7280;
-  min-height: 20px;
-  padding: 0 5px;
+
+  min-height: 28px;
+  padding: 0 9px;
+
   border-radius: 6px;
+
   font-family: var(--f-body, Arial, sans-serif);
   font-size: 9px;
   font-weight: 700;
@@ -6850,9 +6854,6 @@ main.body {
   transform: translateY(1px);
 }
 
-
-/* ACTIVE */
-
 .daftar-actions button.active {
   background: #A51F35;
   border-color: #A51F35;
@@ -6860,14 +6861,45 @@ main.body {
 }
 
 
-/* CLOSE */
+/* =========================
+   CLOSE BUTTON
+   ========================= */
 
 .daftar-actions .daftar-close {
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  min-height: 28px;
+
+  flex: 0 0 28px;
+
   margin-left: 5px;
+  padding: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  appearance: none;
 
   background: transparent;
-  border-color: #d1d5db;
+  border: 1px solid #d1d5db;
+  border-radius: 7px;
+
   color: #6b7280;
+}
+
+.daftar-actions .daftar-close svg {
+  display: block;
+
+  width: 13px !important;
+  height: 13px !important;
+
+  fill: none;
+  stroke: currentColor;
+  color: currentColor;
+
+  flex: 0 0 13px;
 }
 
 .daftar-actions .daftar-close:hover {
@@ -6875,11 +6907,6 @@ main.body {
   border-color: #9ca3af;
   color: #374151;
 }
-
-
-/* =========================================================
-   TABLE CONTAINER
-   ========================================================= */
 
 .daftar-table-wrap {
   flex: 1;
