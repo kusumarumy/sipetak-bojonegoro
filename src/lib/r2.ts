@@ -16,7 +16,6 @@ function s3(): S3Client {
   const secretAccessKey = process.env.BOJO_R2_SECRET_ACCESS_KEY;
   const bucketName = process.env.BOJO_R2_BUCKET;
 
-  // Cek environment variable
   const kurang: string[] = [];
 
   if (!accountId) kurang.push("BOJO_R2_ACCOUNT_ID");
@@ -41,8 +40,8 @@ function s3(): S3Client {
     region: "auto",
     endpoint: `https://${accountId}.r2.cloudflarestorage.com`,
     credentials: {
-      accessKeyId,
-      secretAccessKey,
+      accessKeyId: accessKeyId!,
+      secretAccessKey: secretAccessKey!,
     },
   });
 
