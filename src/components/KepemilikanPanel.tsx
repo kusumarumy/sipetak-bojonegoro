@@ -263,7 +263,9 @@ export default function KepemilikanPanel({
     window.dispatchEvent(
       new CustomEvent('reset-analisis-bidang')
     );
-
+  window.dispatchEvent(
+    new CustomEvent('reset-pilihan-bidang')
+  );
     setNamaAktif('');
     setBidang([]);
     setError(null);
