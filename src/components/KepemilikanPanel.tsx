@@ -281,17 +281,19 @@ function IconKepemilikan() {
   return (
     <section className="panel panel-kepemilikan">
       <div className="panel-header">
-  <div>
-    <div className="panel-title panel-title-with-icon">
-      <span className="panel-title-icon">
-        <IconKepemilikan />
-      </span>
+  <div className="panel-header-main">
+    <span className="panel-title-icon">
+      <IconKepemilikan />
+    </span>
 
-      <span>ANALISIS KEPEMILIKAN BIDANG</span>
-    </div>
+    <div className="panel-header-text">
+      <div className="panel-title">
+        ANALISIS KEPEMILIKAN BIDANG
+      </div>
 
-    <div className="panel-subtitle">
-      Analisis bidang tanah berdasarkan nama pemilik
+      <div className="panel-subtitle">
+        Analisis bidang tanah berdasarkan nama pemilik
+      </div>
     </div>
   </div>
 
