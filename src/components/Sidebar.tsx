@@ -117,89 +117,39 @@ function IconRiwayat() {
 }
 
 const MENU = [
-  {
-    id: 'terrain' as const,
-    label: 'Terrain 3D',
-    icon: <IconTerrain />,
-  },
-    {
-    id: 'basemap' as const,
-    label: 'BASEMAP',
-    icon: <IconBasemap />,
-  },
-  {
-    id: 'layer' as const,
-    label: 'Layer',
-    icon: <IconLayer />,
-  },
-  {
-    id: 'bidang' as const,
-    label: 'Daftar bidang',
-    icon: <IconBidang />,
-  },
-  {
-  id: 'kepemilikan' as const,
-  label: 'Analisis Kepemilikan',
-  icon: <IconKepemilikan />,
-},
-  {
-    id: 'statistika' as const,
-    label: 'Statistika',
-    icon: <IconStatistika />,
-  },
-  {
-    id: 'filter' as const,
-    label: 'Filter',
-    icon: <IconFilter />,
-  },
-  {
-    id: 'search' as const,
-    label: 'Pencarian',
-    icon: <IconSearch />,
-  },
-  {
-    id: 'riwayat' as const,
-    label: 'Riwayat Aksi',
-    icon: <IconRiwayat />,
-  }
+  { id: 'terrain' as const,     guide: 'terrain',              label: 'Terrain 3D',           icon: <IconTerrain /> },
+  { id: 'basemap' as const,     guide: 'basemap',              label: 'BASEMAP',              icon: <IconBasemap /> },
+  { id: 'layer' as const,       guide: 'layer',                label: 'Layer',                icon: <IconLayer /> },
+  { id: 'bidang' as const,      guide: 'daftar-bidang',        label: 'Daftar bidang',        icon: <IconBidang /> },
+  { id: 'kepemilikan' as const, guide: 'analisis-kepemilikan', label: 'Analisis Kepemilikan', icon: <IconKepemilikan /> },
+  { id: 'statistika' as const,  guide: 'statistika',           label: 'Statistika',           icon: <IconStatistika /> },
+  { id: 'filter' as const,      guide: 'filter',               label: 'Filter',               icon: <IconFilter /> },
+  { id: 'search' as const,      guide: 'pencarian',            label: 'Pencarian',            icon: <IconSearch /> },
+  { id: 'riwayat' as const,     guide: 'riwayat-aksi',         label: 'Riwayat Aksi',         icon: <IconRiwayat /> },
 ];
 
-export default function Sidebar({
-  aktif,
-  onChange,
-}: Props) {
+export default function Sidebar({ aktif, onChange }: Props) {
   return (
     <aside className="sidebar" aria-label="Kontrol peta">
-
       <div className="sidebar-menu">
-
         {MENU.map((item) => {
           const isActive = aktif === item.id;
-
           return (
-<button
-  key={item.id}
-  type="button"
-  className={`sidebar-item${isActive ? ' active' : ''}`}
-  onClick={() => {
-    onChange(isActive ? null : item.id);
-  }}
-  aria-label={item.label}
-  aria-pressed={isActive}
->
-  <span className="sidebar-icon">
-    {item.icon}
-  </span>
-
-  <span className="sidebar-tooltip">
-    {item.label}
-  </span>
-</button>
+            <button
+              key={item.id}
+              type="button"
+              data-guide={item.guide}          /* ← SATU-SATUNYA baris baru di tombol */
+              className={`sidebar-item${isActive ? ' active' : ''}`}
+              onClick={() => onChange(isActive ? null : item.id)}
+              aria-label={item.label}
+              aria-pressed={isActive}
+            >
+              <span className="sidebar-icon">{item.icon}</span>
+              <span className="sidebar-tooltip">{item.label}</span>
+            </button>
           );
         })}
-
       </div>
-
     </aside>
   );
 }
