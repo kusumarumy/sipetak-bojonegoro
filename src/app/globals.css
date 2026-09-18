@@ -4241,7 +4241,38 @@ main.body {
 
   z-index: 950;
 }
+.daftar-flyout {
+  position: absolute !important;
 
+  left: 82px !important;
+  top: 111px !important;
+
+  width: 850px !important;
+  height: min(560px, calc(100vh - 155px));
+
+  min-height: 0;
+
+  margin: 0 !important;
+  transform: none !important;
+
+  box-sizing: border-box;
+
+  background: #fff;
+
+  border: 1px solid var(--terrain-ui-line, #e5e7eb);
+  border-radius: 10px;
+
+  box-shadow:
+    0 14px 36px rgba(15, 23, 42, .13),
+    0 2px 8px rgba(15, 23, 42, .05);
+
+  display: flex;
+  flex-direction: column;
+
+  overflow: hidden;
+
+  z-index: 960;
+}
 .daftar-bidang {
   width: 100%;
   height: 100%;
@@ -4546,42 +4577,53 @@ main.body {
 .daftar-close:focus,
 .daftar-close:focus-visible {
   outline: none;
-}
-.daftar-table-wrap {
+}.daftar-table-wrap {
   position: relative;
-  flex: 1 1 auto !important;
+
+  flex: 1 1 0 !important;
+
   width: 100%;
+  height: 0;
   min-width: 0 !important;
   min-height: 0 !important;
-  overflow-x: scroll !important;
-  overflow-y: scroll !important;
-  background: #fff;
+
   box-sizing: border-box;
+
+  overflow-x: auto !important;
+  overflow-y: auto !important;
+
+  background: #fff;
+
   overscroll-behavior: contain;
+
   scrollbar-width: auto;
-  scrollbar-color: #9ca3af #f1f5f9;
-}
-.daftar-table-wrap {
+  scrollbar-color: #9ca3af #eef2f6;
+
   pointer-events: auto !important;
+
+  /* penting agar wheel mouse masuk ke area tabel */
+  touch-action: pan-x pan-y;
 }
 
-.daftar-table-wrap,
+
+/* Jangan mengunci scroll pada seluruh isi tabel */
 .daftar-table-wrap * {
   overscroll-behavior: contain;
 }
-.daftar-table-wrap::-webkit-scrollbar {
-  width: 12px !important;
-  height: 12px !important;
 
-  display: block !important;
+
+/* Chrome / Edge */
+.daftar-table-wrap::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
 }
 
 .daftar-table-wrap::-webkit-scrollbar-track {
-  background: #eef2f6 !important;
+  background: #eef2f6;
 }
 
 .daftar-table-wrap::-webkit-scrollbar-thumb {
-  background: #9ca3af !important;
+  background: #9ca3af;
 
   border-radius: 8px;
 
@@ -4589,7 +4631,7 @@ main.body {
 }
 
 .daftar-table-wrap::-webkit-scrollbar-thumb:hover {
-  background: #6b7280 !important;
+  background: #6b7280;
 }
 
 .daftar-table-wrap::-webkit-scrollbar-corner {
@@ -4598,15 +4640,17 @@ main.body {
 .daftar-table {
   width: max-content !important;
   min-width: 1600px !important;
+
   border-collapse: collapse;
   table-layout: auto;
+
   font-family: var(
     --terrain-ui-font,
     var(--f-body, Arial, sans-serif)
   );
+
   font-size: 9px;
 }
-
 .daftar-table th {
   position: sticky;
 
@@ -12775,30 +12819,5 @@ html[data-theme="dark"] .layer-loading-spinner {
   border-color: #3A4655;
   border-top-color: #E9967A;
 }
-.daftar-flyout {
-  position: absolute !important;
 
-  left: 82px !important;
-  top: 111px !important;
 
-  width: 850px !important;
-  height: min(560px, calc(100vh - 155px));
-
-  margin: 0 !important;
-  transform: none !important;
-
-  box-sizing: border-box;
-
-  background: #fff;
-
-  border: 1px solid var(--terrain-ui-line, #e5e7eb);
-  border-radius: 10px;
-
-  box-shadow:
-    0 14px 36px rgba(15, 23, 42, .13),
-    0 2px 8px rgba(15, 23, 42, .05);
-
-  overflow: hidden;
-
-  z-index: 960;
-}
