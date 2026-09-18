@@ -8137,32 +8137,19 @@ main.body {
 
   white-space: nowrap;
 }
-
-/* =========================================================
-   PREVIEW DOKUMEN — FLOATING DI SEBELAH KIRI KARTU BIDANG
-   ========================================================= */
-
 .kb-preview-backdrop {
   position: fixed;
   inset: 0;
 
   background: transparent;
 
-  z-index: 50;
-
   pointer-events: none;
+
+  z-index: 50;
 }
 
 .kb-preview-dialog {
   position: fixed;
-
-  /*
-   * Kartu Bidang:
-   * right: 45px
-   * width: 400px
-   *
-   * Preview diletakkan di sebelah kirinya.
-   */
   top: 104px;
   right: 457px;
 
@@ -8175,7 +8162,6 @@ main.body {
   overflow: hidden;
 
   background: #fff;
-
   border: 1px solid #e4e5e9;
   border-radius: 16px;
 
@@ -8184,6 +8170,7 @@ main.body {
     0 3px 10px rgba(0, 0, 0, 0.08);
 
   pointer-events: auto;
+  z-index: 50;
 }
 
 .kb-preview-header {
@@ -8195,12 +8182,9 @@ main.body {
   align-items: center;
   justify-content: space-between;
 
-  gap: 10px;
-
   padding: 9px 12px;
 
   border-bottom: 1px solid #e4e5e9;
-
   background: #fff;
 }
 
@@ -8211,8 +8195,6 @@ main.body {
   font-size: 12px;
   font-weight: 700;
 
-  color: #202124;
-
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -8222,22 +8204,13 @@ main.body {
   width: 30px;
   height: 30px;
 
-  flex: 0 0 auto;
-
   border: 1px solid #e4e5e9;
   border-radius: 9px;
 
   background: #f8f8fa;
-  color: #202124;
+  cursor: pointer;
 
   font-size: 17px;
-  line-height: 1;
-
-  cursor: pointer;
-}
-
-.kb-preview-close:hover {
-  background: #f0f1f3;
 }
 
 .kb-preview-content {
@@ -8249,37 +8222,22 @@ main.body {
   justify-content: center;
 
   overflow: hidden;
-
   background: #f5f6f8;
 }
 
 .kb-preview-content img {
-  display: block;
-
   width: 100%;
   height: 100%;
+  padding: 10px;
 
   object-fit: contain;
-
-  padding: 10px;
 }
 
 .kb-preview-content iframe {
-  display: block;
-
   width: 100%;
   height: 100%;
-
   border: 0;
-
-  background: #fff;
 }
-
-
-/* =========================================================
-   RESPONSIVE
-   ========================================================= */
-
 @media (max-width: 900px) {
   .kb-preview-dialog {
     top: 104px;
