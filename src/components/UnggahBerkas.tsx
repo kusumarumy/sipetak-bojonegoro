@@ -776,7 +776,6 @@ useEffect(() => {
     </>
   );
 }
-
 function KartuDokumen({
   kategori,
   lampiran,
@@ -797,6 +796,15 @@ function KartuDokumen({
   const input =
     useRef<HTMLInputElement>(null);
 
+  const [src, setSrc] =
+    useState<string | null>(null);
+
+  const [previewOpen, setPreviewOpen] =
+    useState(false);
+
+  const [previewLoading, setPreviewLoading] =
+    useState(false);
+
   const terkunci =
     !!lampiran?.sensitif &&
     !bolehPribadi;
@@ -809,120 +817,399 @@ function KartuDokumen({
     !sedang &&
     !terkunci;
 
+  /*
+   * Tentukan apakah file merupakan PDF.
+   */
+  const adalahPdf =
+    lampiran?.mime === "application/pdf" ||
+    lampiran?.nama_asli
+      ?.toLowerCase()
+      .endsWith(".pdf");
+
+  /*
+   * Ambil signed URL hanya untuk dokumen
+   * yang sudah tersimpan.
+   */
+  useEffect(() => {
+    let batal = false;
+
+    async function muatPreview() {
+      if (!lampiran?.id || terkunci) {
+        setSrc(null);
+        setPreviewLoading(false);
+        return;
+      }
+
+      setPreviewLoading(true);
+
+      try {
+        console.log(
+          "MEMUAT PREVIEW DOKUMEN:",
+          {
+            id: lampiran.id,
+            kategori,
+            nama: lampiran.nama_asli,
+            mime: lampiran.mime,
+          }
+        );
+
+        const response = await fetch(
+          `/api/lampiran/${lampiran.id}`,
+          {
+            method: "GET",
+            cache: "no-store",
+          }
+        );
+
+        const data =
+          await response.json();
+
+        console.log(
+          "RESPONS PREVIEW DOKUMEN:",
+          {
+            status: response.status,
+            data,
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error(
+            data?.error ||
+              data?.message ||
+              data?.pesan ||
+              "Gagal memuat preview dokumen"
+          );
+        }
+
+        if (!data?.url) {
+          throw new Error(
+            "URL preview dokumen tidak dikembalikan API"
+          );
+        }
+
+        if (!batal) {
+          setSrc(data.url);
+        }
+      } catch (error) {
+        console.error(
+          "PREVIEW DOKUMEN ERROR:",
+          error
+        );
+
+        if (!batal) {
+          setSrc(null);
+        }
+      } finally {
+        if (!batal) {
+          setPreviewLoading(false);
+        }
+      }
+    }
+
+    void muatPreview();
+
+    return () => {
+      batal = true;
+    };
+  }, [
+    lampiran?.id,
+    kategori,
+    terkunci,
+  ]);
+
+  function bukaUpload() {
+    if (dapatUnggah) {
+      input.current?.click();
+    }
+  }
+
+  function bukaPreview() {
+    if (src && !terkunci) {
+      setPreviewOpen(true);
+    }
+  }
+
   return (
-    <div
-      className={[
-        "kb-document-card",
-        ada
-          ? "is-uploaded"
-          : "is-empty",
-        terkunci
-          ? "is-locked"
-          : "",
-      ]
-        .filter(Boolean)
-        .join(" ")}
-    >
-      <div className="kb-document-icon">
-        {kategori ===
-        "dok_ktp"
-          ? "ID"
-          : kategori ===
-              "dok_kk"
-            ? "KK"
-            : "DOC"}
-      </div>
-
-      <div className="kb-document-info">
-        <div className="kb-document-title">
-          <strong>
-            {KATEGORI_LABEL[kategori]}
-          </strong>
-
-          {wajib && (
-            <span
-              className={
-                ada
-                  ? "kb-status-mini success"
-                  : "kb-status-mini required"
-              }
-            >
-              {ada
-                ? "Lengkap"
-                : "Wajib"}
-            </span>
-          )}
+    <>
+      <div
+        className={[
+          "kb-document-card",
+          ada
+            ? "is-uploaded"
+            : "is-empty",
+          terkunci
+            ? "is-locked"
+            : "",
+        ]
+          .filter(Boolean)
+          .join(" ")}
+      >
+        {/* ICON DOKUMEN */}
+        <div
+          className="kb-document-icon"
+          onClick={() => {
+            if (src) {
+              bukaPreview();
+            }
+          }}
+          style={{
+            cursor:
+              src && !terkunci
+                ? "pointer"
+                : undefined,
+          }}
+        >
+          {kategori === "dok_ktp"
+            ? "ID"
+            : kategori === "dok_kk"
+              ? "KK"
+              : adalahPdf
+                ? "PDF"
+                : "DOC"}
         </div>
 
-        <span className="kb-document-file">
-          {terkunci
-            ? "Dokumen pribadi tidak tersedia"
+        {/* INFORMASI DOKUMEN */}
+        <div
+          className="kb-document-info"
+          onClick={() => {
+            if (src) {
+              bukaPreview();
+            }
+          }}
+          style={{
+            cursor:
+              src && !terkunci
+                ? "pointer"
+                : undefined,
+          }}
+        >
+          <div className="kb-document-title">
+            <strong>
+              {KATEGORI_LABEL[kategori]}
+            </strong>
+
+            {wajib && (
+              <span
+                className={
+                  ada
+                    ? "kb-status-mini success"
+                    : "kb-status-mini required"
+                }
+              >
+                {ada
+                  ? "Lengkap"
+                  : "Wajib"}
+              </span>
+            )}
+          </div>
+
+          <span className="kb-document-file">
+            {terkunci
+              ? "Dokumen pribadi tidak tersedia"
+              : sedang
+                ? "Mengunggah..."
+                : lampiran?.nama_asli ??
+                  (bolehEdit
+                    ? "Belum diunggah"
+                    : "Belum tersedia")}
+          </span>
+
+          {lampiran &&
+            !terkunci && (
+              <small>
+                {formatFileSize(
+                  lampiran.ukuran_byte
+                )}
+
+                {lampiran.diunggah_pada
+                  ? ` • ${new Date(
+                      lampiran.diunggah_pada
+                    ).toLocaleDateString(
+                      "id-ID"
+                    )}`
+                  : ""}
+              </small>
+            )}
+
+          {/* STATUS PREVIEW */}
+          {ada &&
+            !terkunci &&
+            previewLoading && (
+              <small>
+                Memuat preview...
+              </small>
+            )}
+
+          {ada &&
+            !terkunci &&
+            !previewLoading &&
+            src && (
+              <small>
+                Klik untuk melihat{" "}
+                {adalahPdf
+                  ? "dokumen"
+                  : "file"}
+              </small>
+            )}
+        </div>
+
+        {/* ACTION */}
+        <button
+          type="button"
+          className={
+            ada
+              ? "kb-document-action done"
+              : "kb-document-action"
+          }
+          disabled={
+            sedang ||
+            (!ada && !dapatUnggah)
+          }
+          onClick={() => {
+            if (ada && src) {
+              bukaPreview();
+              return;
+            }
+
+            if (dapatUnggah) {
+              bukaUpload();
+            }
+          }}
+        >
+          {ada
+            ? src
+              ? "Lihat"
+              : previewLoading
+                ? "Memuat..."
+                : "✓ Tersimpan"
             : sedang
               ? "Mengunggah..."
-              : lampiran?.nama_asli ??
-                (bolehEdit
-                  ? "Belum diunggah"
-                  : "Belum tersedia")}
-        </span>
+              : "+ Unggah"}
+        </button>
 
-        {lampiran && !terkunci && (
-          <small>
-            {formatFileSize(
-              lampiran.ukuran_byte
-            )}
-            {lampiran.diunggah_pada
-              ? ` • ${new Date(
-                  lampiran.diunggah_pada
-                ).toLocaleDateString(
-                  "id-ID"
-                )}`
-              : ""}
-          </small>
-        )}
+        {/* INPUT */}
+        <input
+          ref={input}
+          type="file"
+          hidden
+          accept="image/*,application/pdf"
+          onChange={(event) => {
+            const file =
+              event.target.files?.[0];
+
+            if (file) {
+              onPilih(file);
+            }
+
+            event.target.value = "";
+          }}
+        />
       </div>
 
-      <button
-        type="button"
-        className={
-          ada
-            ? "kb-document-action done"
-            : "kb-document-action"
-        }
-        disabled={!dapatUnggah}
-        onClick={() =>
-          input.current?.click()
-        }
-      >
-        {ada
-          ? "✓ Tersimpan"
-          : sedang
-            ? "Mengunggah..."
-            : "+ Unggah"}
-      </button>
+      {/* =================================================
+          MODAL PREVIEW DOKUMEN
+          ================================================= */}
+      {previewOpen &&
+        src &&
+        !terkunci && (
+          <div
+            className="kb-preview-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-label={`Preview ${KATEGORI_LABEL[kategori]}`}
+            onClick={() =>
+              setPreviewOpen(false)
+            }
+          >
+            <div
+              className="kb-preview-dialog"
+              onClick={(event) =>
+                event.stopPropagation()
+              }
+            >
+              {/* HEADER */}
+              <div className="kb-preview-header">
+                <div>
+                  <strong>
+                    {KATEGORI_LABEL[kategori]}
+                  </strong>
 
-      <input
-        ref={input}
-        type="file"
-        hidden
-        accept="image/*,application/pdf"
-        onChange={(event) => {
-          const file =
-            event.target.files?.[0];
+                  {lampiran?.nama_asli && (
+                    <span>
+                      {lampiran.nama_asli}
+                    </span>
+                  )}
+                </div>
 
-          if (file) {
-            onPilih(file);
-          }
+                <button
+                  type="button"
+                  className="kb-preview-close"
+                  onClick={() =>
+                    setPreviewOpen(false)
+                  }
+                  aria-label="Tutup preview"
+                >
+                  ×
+                </button>
+              </div>
 
-          event.target.value = "";
-        }}
-      />
-    </div>
+              {/* BODY */}
+              <div className="kb-preview-body">
+                {adalahPdf ? (
+                  <iframe
+                    src={src}
+                    title={
+                      KATEGORI_LABEL[
+                        kategori
+                      ]
+                    }
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      minHeight: "70vh",
+                      border: 0,
+                    }}
+                  />
+                ) : (
+                  <img
+                    src={src}
+                    alt={
+                      KATEGORI_LABEL[
+                        kategori
+                      ]
+                    }
+                    style={{
+                      maxWidth: "100%",
+                      maxHeight: "70vh",
+                      objectFit: "contain",
+                    }}
+                  />
+                )}
+              </div>
+
+              {/* FOOTER */}
+              <div className="kb-preview-footer">
+                {lampiran?.nama_asli && (
+                  <span>
+                    {lampiran.nama_asli}
+                  </span>
+                )}
+
+                {lampiran?.ukuran_byte !=
+                  null && (
+                  <span>
+                    {formatFileSize(
+                      lampiran.ukuran_byte
+                    )}
+                  </span>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+    </>
   );
 }
-
-/* =========================================================
-   FORMAT UKURAN
-   ========================================================= */
 
 function formatFileSize(
   value: number | null
