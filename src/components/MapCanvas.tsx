@@ -17,6 +17,7 @@ import {
 import {
   VECTOR
 } from '@/lib/config';
+
 const pmtiles = new Protocol();
 let protokolTerpasang = false;
 
@@ -58,8 +59,15 @@ export default function MapCanvas() {
       pitch: 0,
       bearing: 0
     });
-//const [layerLoading, setLayerLoading] =
-//  useState<string[]>([]);
+
+  // ====================================================
+  // INDIKATOR MEMUAT LAYER DINONAKTIFKAN
+  // ====================================================
+
+  /*
+  const [layerLoading, setLayerLoading] =
+    useState<string[]>([]);
+  */
 
   const {
     basemap,
@@ -161,10 +169,10 @@ export default function MapCanvas() {
           map.setFeatureState(
             {
               source: 'bidang',
-              id,
+              id
             },
             {
-              analisis: false,
+              analisis: false
             }
           );
         }
@@ -174,10 +182,10 @@ export default function MapCanvas() {
           map.setFeatureState(
             {
               source: 'bidang',
-              id: terpilihRef.current,
+              id: terpilihRef.current
             },
             {
-              sel: false,
+              sel: false
             }
           );
         }
@@ -204,14 +212,17 @@ export default function MapCanvas() {
     const handleResetPilihanBidang = () => {
       const map = mapRef.current;
 
-      if (map && terpilihRef.current !== null) {
+      if (
+        map &&
+        terpilihRef.current !== null
+      ) {
         map.setFeatureState(
           {
             source: 'bidang',
-            id: terpilihRef.current,
+            id: terpilihRef.current
           },
           {
-            sel: false,
+            sel: false
           }
         );
       }
@@ -676,60 +687,99 @@ export default function MapCanvas() {
         }
       });
 
-mapRef.current = map;
+    mapRef.current = map;
 
-/*
-const sourceLayerIds = new Set(
-  LAYERS.map((layer) => layer.id)
-);
+    // ==================================================
+    // INDIKATOR MEMUAT LAYER DINONAKTIFKAN
+    // ==================================================
 
-const mulaiLoadingLayer = (sourceId: string) => {
-  if (!sourceLayerIds.has(sourceId)) return;
+    /*
+    const sourceLayerIds = new Set(
+      LAYERS.map((layer) => layer.id)
+    );
 
-  const layer = LAYERS.find((l) => l.id === sourceId);
-  if (!layer) return;
+    const mulaiLoadingLayer = (
+      sourceId: string
+    ) => {
+      if (!sourceLayerIds.has(sourceId)) return;
 
-  setLayerLoading((prev) =>
-    prev.includes(sourceId)
-      ? prev
-      : [...prev, sourceId]
-  );
-};
+      const layer =
+        LAYERS.find(
+          (l) => l.id === sourceId
+        );
 
-const selesaiLoadingLayer = (sourceId: string) => {
-  if (!sourceLayerIds.has(sourceId)) return;
+      if (!layer) return;
 
-  setLayerLoading((prev) =>
-    prev.filter((id) => id !== sourceId)
-  );
-};
+      setLayerLoading((prev) =>
+        prev.includes(sourceId)
+          ? prev
+          : [...prev, sourceId]
+      );
+    };
 
-const handleSourceLoading = (e: any) => {
-  if (!e.sourceId) return;
-  mulaiLoadingLayer(e.sourceId);
-};
+    const selesaiLoadingLayer = (
+      sourceId: string
+    ) => {
+      if (!sourceLayerIds.has(sourceId)) return;
 
-const handleSourceData = (e: any) => {
-  if (!e.sourceId) return;
+      setLayerLoading((prev) =>
+        prev.filter(
+          (id) => id !== sourceId
+        )
+      );
+    };
 
-  if (e.isSourceLoaded) {
-    selesaiLoadingLayer(e.sourceId);
-  }
-};
+    const handleSourceLoading = (
+      e: any
+    ) => {
+      if (!e.sourceId) return;
 
-const handleMapError = (e: any) => {
-  const sourceId =
-    e?.error?.sourceId ?? e?.sourceId;
+      mulaiLoadingLayer(
+        e.sourceId
+      );
+    };
 
-  if (sourceId) {
-    selesaiLoadingLayer(sourceId);
-  }
-};
+    const handleSourceData = (
+      e: any
+    ) => {
+      if (!e.sourceId) return;
 
-map.on('sourcedataloading', handleSourceLoading);
-map.on('sourcedata', handleSourceData);
-map.on('error', handleMapError);
-*/
+      if (e.isSourceLoaded) {
+        selesaiLoadingLayer(
+          e.sourceId
+        );
+      }
+    };
+
+    const handleMapError = (
+      e: any
+    ) => {
+      const sourceId =
+        e?.error?.sourceId ??
+        e?.sourceId;
+
+      if (sourceId) {
+        selesaiLoadingLayer(
+          sourceId
+        );
+      }
+    };
+
+    map.on(
+      'sourcedataloading',
+      handleSourceLoading
+    );
+
+    map.on(
+      'sourcedata',
+      handleSourceData
+    );
+
+    map.on(
+      'error',
+      handleMapError
+    );
+    */
 
     const perbaruiInfoPeta =
       () => {
@@ -885,21 +935,21 @@ map.on('error', handleMapError);
             continue;
           }
 
-map.addSource(
-  L.id,
-  {
-    type: 'geojson',
+          map.addSource(
+            L.id,
+            {
+              type: 'geojson',
 
-    data:
-      L.id === 'traseg'
-        ? TRASEG_URL
-        : L.id === 'kontur_kawasan'
-          ? VECTOR.konturKawasan
-          : L.id === 'kontur_trase'
-            ? VECTOR.konturTrase
-            : `/api/layers/${L.sumber}`
-  }
-);
+              data:
+                L.id === 'traseg'
+                  ? TRASEG_URL
+                  : L.id === 'kontur_kawasan'
+                    ? VECTOR.konturKawasan
+                    : L.id === 'kontur_trase'
+                      ? VECTOR.konturTrase
+                      : `/api/layers/${L.sumber}`
+            }
+          );
 
           const vis =
             layerAktif[L.id]
@@ -1101,6 +1151,7 @@ map.addSource(
           paint: {
             'fill-color': [
               'case',
+
               [
                 'boolean',
                 [
@@ -1111,6 +1162,7 @@ map.addSource(
               ],
 
               '#00E5FF',
+
               [
                 'boolean',
                 [
@@ -1121,11 +1173,13 @@ map.addSource(
               ],
 
               '#FFD600',
+
               '#A51F35'
             ],
 
             'fill-opacity': [
               'case',
+
               [
                 'boolean',
                 [
@@ -1136,6 +1190,7 @@ map.addSource(
               ],
 
               0.88,
+
               [
                 'boolean',
                 [
@@ -1146,6 +1201,7 @@ map.addSource(
               ],
 
               0.92,
+
               [
                 'boolean',
                 [
@@ -1340,7 +1396,8 @@ map.addSource(
           },
 
           paint: {
-            'text-color': '#1E2733',
+            'text-color':
+              '#1E2733',
 
             'text-halo-color':
               'rgba(255,255,255,.9)',
@@ -1420,47 +1477,53 @@ map.addSource(
       }
     );
 
-return () => {
-  resizeObserver.disconnect();
+    return () => {
+      resizeObserver.disconnect();
 
-  map.off(
-    'sourcedataloading',
-    handleSourceLoading
-  );
+      // ==================================================
+      // INDIKATOR MEMUAT LAYER DINONAKTIFKAN
+      // ==================================================
 
-  map.off(
-    'sourcedata',
-    handleSourceData
-  );
+      /*
+      map.off(
+        'sourcedataloading',
+        handleSourceLoading
+      );
 
-  map.off(
-    'error',
-    handleMapError
-  );
+      map.off(
+        'sourcedata',
+        handleSourceData
+      );
 
-  popupRef.current?.remove();
+      map.off(
+        'error',
+        handleMapError
+      );
+      */
 
-  for (
-    const id
-    of analisisRef.current
-  ) {
-    map.setFeatureState(
-      {
-        source: 'bidang',
-        id
-      },
-      {
-        analisis: false
+      popupRef.current?.remove();
+
+      for (
+        const id
+        of analisisRef.current
+      ) {
+        map.setFeatureState(
+          {
+            source: 'bidang',
+            id
+          },
+          {
+            analisis: false
+          }
+        );
       }
-    );
-  }
 
-  analisisRef.current = [];
+      analisisRef.current = [];
 
-  map.remove();
+      map.remove();
 
-  mapRef.current = null;
-};
+      mapRef.current = null;
+    };
   }, []);
 
   function pasangInteraksi(
@@ -1575,41 +1638,40 @@ return () => {
   </div>
 </div>
 
-          <div class="pb">
+<div class="pb">
 
-            <div>
-              <span>
-                Luas bidang
-              </span>
+  <div>
+    <span>
+      Luas bidang
+    </span>
 
-              <b>
-                ${fmt(
-                  p.luas_tnh
-                )} m²
-              </b>
-            </div>
+    <b>
+      ${fmt(
+        p.luas_tnh
+      )} m²
+    </b>
+  </div>
 
-            <div>
-              <span>
-                Penggunaan
-              </span>
+  <div>
+    <span>
+      Penggunaan
+    </span>
 
-              <b
-                style="font-family:var(--f-body)"
-              >
-                ${
-                  p.penggunaan ??
-                  '—'
-                }
-              </b>
-            </div>
+    <b
+      style="font-family:var(--f-body)"
+    >
+      ${
+        p.penggunaan ??
+        '—'
+      }
+    </b>
+  </div>
 
+</div>
 
-          </div>
-
-          <button>
-            Buka kartu bidang
-          </button>
+<button>
+  Buka kartu bidang
+</button>
         `;
 
         el
@@ -1702,9 +1764,7 @@ return () => {
       })
 
       .then((fc) => {
-        if (
-          !fc.features?.length
-        ) {
+        if (!fc.features?.length) {
           return;
         }
 
@@ -1804,8 +1864,10 @@ return () => {
       },
 
       {
-        id: 'bm-esri',
-        basemap: 'esri'
+        id:
+          'bm-esri',
+        basemap:
+          'esri'
       },
 
       {
@@ -1830,8 +1892,10 @@ return () => {
       },
 
       {
-        id: 'bm-ortho',
-        basemap: 'ortho'
+        id:
+          'bm-ortho',
+        basemap:
+          'ortho'
       }
     ];
 
@@ -2112,6 +2176,7 @@ return () => {
         );
       }
     }
+
     if (
       map.getLayer(
         'traseg'
@@ -2141,6 +2206,7 @@ return () => {
           : 'none'
       );
     }
+
     if (
       map.getLayer(
         'traseg_halo'
@@ -2156,6 +2222,7 @@ return () => {
         'traseg_halo',
         'bidang'
       );
+
       map.moveLayer(
         'traseg',
         'bidang'
@@ -2164,12 +2231,15 @@ return () => {
   }, [
     layerAktif
   ]);
+
   useEffect(() => {
     const map =
       mapRef.current;
+
     if (!map) {
       return;
     }
+
     const terapkanFilter =
       () => {
         if (
@@ -2182,19 +2252,23 @@ return () => {
         ) {
           return;
         }
+
         const expression =
           ekspresiFilterBidang(
             filterBidang
           );
+
         map.setFilter(
           'bidang-filter',
           expression
         );
+
         map.setFilter(
           'bidang-filter-ln',
           expression
         );
       };
+
     if (
       map.isStyleLoaded()
     ) {
@@ -2205,6 +2279,7 @@ return () => {
         terapkanFilter
       );
     }
+
     return () => {
       map.off(
         'load',
@@ -2214,20 +2289,25 @@ return () => {
   }, [
     filterBidang
   ]);
+
   useEffect(() => {
     const zoomTrase =
       () => {
         const map =
           mapRef.current;
+
         if (!map) {
           return;
         }
+
         zoomKeTrase(map);
       };
+
     window.addEventListener(
       'zoom-trase',
       zoomTrase
     );
+
     return () => {
       window.removeEventListener(
         'zoom-trase',
@@ -2235,6 +2315,7 @@ return () => {
       );
     };
   }, []);
+
   useEffect(() => {
     const map =
       mapRef.current;
@@ -2248,62 +2329,80 @@ return () => {
     tema
   ]);
 
-return (
-  <div
-    ref={ref}
-    className="canvas"
-  >
-{/*
-{layerLoading.length > 0 && (
-  <div className="layer-loading">
-    <strong className="layer-loading-title">
-      MEMUAT LAYER
-    </strong>
+  return (
+    <div
+      ref={ref}
+      className="canvas"
+    >
+      {/*
+      ====================================================
+      INDIKATOR MEMUAT LAYER DINONAKTIFKAN
+      ====================================================
 
-    <div className="layer-loading-text">
-      {(() => {
-        const namaLayer = layerLoading
-          .map(
-            (id) =>
-              LAYERS.find(
-                (layer) => layer.id === id
-              )?.nama
-          )
-          .filter(Boolean) as string[];
+      {layerLoading.length > 0 && (
+        <div className="layer-loading">
+          <strong className="layer-loading-title">
+            MEMUAT LAYER
+          </strong>
 
-        let daftarLayer = '';
+          <div className="layer-loading-text">
+            {(() => {
+              const namaLayer =
+                layerLoading
+                  .map(
+                    (id) =>
+                      LAYERS.find(
+                        (layer) =>
+                          layer.id === id
+                      )?.nama
+                  )
+                  .filter(Boolean) as string[];
 
-        if (namaLayer.length === 1) {
-          daftarLayer = namaLayer[0];
-        } else if (namaLayer.length === 2) {
-          daftarLayer =
-            `${namaLayer[0]} dan ${namaLayer[1]}`;
-        } else {
-          daftarLayer =
-            namaLayer.slice(0, -1).join(', ') +
-            ', dan ' +
-            namaLayer[namaLayer.length - 1];
-        }
+              let daftarLayer = '';
 
-        return `${daftarLayer} sedang dimuat...`;
-      })()}
-    </div>
-  </div>
-)}
-*/}
-    <div className="map-info">
+              if (
+                namaLayer.length === 1
+              ) {
+                daftarLayer =
+                  namaLayer[0];
+              } else if (
+                namaLayer.length === 2
+              ) {
+                daftarLayer =
+                  `${namaLayer[0]} dan ${namaLayer[1]}`;
+              } else {
+                daftarLayer =
+                  namaLayer
+                    .slice(0, -1)
+                    .join(', ') +
+                  ', dan ' +
+                  namaLayer[
+                    namaLayer.length - 1
+                  ];
+              }
+
+              return `${daftarLayer} sedang dimuat...`;
+            })()}
+          </div>
+        </div>
+      )}
+      */}
+
+      <div className="map-info">
         <span>
           Lon{' '}
           {infoPeta.lon.toFixed(
             5
           )}
         </span>
+
         <span>
           Lat{' '}
           {infoPeta.lat.toFixed(
             5
           )}
         </span>
+
         <span>
           Zoom{' '}
           {infoPeta.zoom.toFixed(
@@ -2318,6 +2417,7 @@ return (
           )}
           °
         </span>
+
         <span>
           Arah{' '}
           {infoPeta.bearing.toFixed(
@@ -2329,6 +2429,7 @@ return (
     </div>
   );
 }
+
 const ekspresiFilterBidang = (
   filter: {
     status: string[];
@@ -2340,6 +2441,7 @@ const ekspresiFilterBidang = (
 ): any => {
   const kondisi: any[] =
     ['all'];
+
   const tambahFilter = (
     property: string,
     values: string[]
@@ -2349,6 +2451,7 @@ const ekspresiFilterBidang = (
     ) {
       return;
     }
+
     kondisi.push([
       'match',
       ['get', property],
@@ -2361,26 +2464,32 @@ const ekspresiFilterBidang = (
       false
     ]);
   };
+
   tambahFilter(
     'status',
     filter.status
   );
+
   tambahFilter(
     'kecamatan',
     filter.kecamatan
   );
+
   tambahFilter(
     'kelurahan',
     filter.kelurahan
   );
+
   tambahFilter(
     'tipehak',
     filter.tipehak
   );
+
   tambahFilter(
     'penggunaan',
     filter.penggunaan
   );
+
   if (
     kondisi.length === 1
   ) {
@@ -2393,14 +2502,17 @@ const ekspresiFilterBidang = (
       '__never__'
     ];
   }
+
   return kondisi;
 };
+
 const fmt = (
   n: number | null
 ) =>
   (n ?? 0).toLocaleString(
     'id-ID'
   );
+
 function warnaiTema(
   map: MLMap
 ) {
@@ -2408,6 +2520,7 @@ function warnaiTema(
     document.documentElement
       .dataset.theme ===
     'dark';
+
   map.setPaintProperty(
     'bg',
     'background-color',
@@ -2415,6 +2528,7 @@ function warnaiTema(
       ? '#0E1720'
       : '#E7EBF3'
   );
+
   map.setPaintProperty(
     'bm-esri-streets',
     'raster-brightness-max',
@@ -2422,6 +2536,7 @@ function warnaiTema(
       ? 0.84
       : 1
   );
+
   if (
     map.getLayer(
       'bidang-ln'
@@ -2432,6 +2547,7 @@ function warnaiTema(
       'line-color',
       [
         'case',
+
         [
           'boolean',
           [
@@ -2440,7 +2556,9 @@ function warnaiTema(
           ],
           false
         ],
+
         '#00E5FF',
+
         [
           'boolean',
           [
@@ -2449,13 +2567,16 @@ function warnaiTema(
           ],
           false
         ],
+
         '#A51F35',
+
         gelap
           ? 'rgba(14,23,32,.85)'
           : 'rgba(30,39,51,.5)'
       ]
     );
   }
+
   if (
     map.getLayer(
       'bidang-lb'
