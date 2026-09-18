@@ -135,7 +135,9 @@ type SortDirection = 'asc' | 'desc' | null;
 const [sortKey, setSortKey] = useState<keyof Bidang | null>(null);
 const [sortDirection, setSortDirection] =
   useState<SortDirection>(null);
-  const handleSort = (key: keyof Bidang) => {
+const handleSort = (key: keyof Bidang) => {
+  console.log('SORT DIKLIK:', key);
+
   if (sortKey !== key) {
     setSortKey(key);
     setSortDirection('asc');
@@ -196,7 +198,7 @@ const [sortDirection, setSortDirection] =
   }, [bidang]);
 
 const dataTampil = useMemo(() => {
-  let data =
+  const data =
     filter === 'semua'
       ? [...bidang]
       : bidang.filter((b) => b.status === filter);
@@ -205,50 +207,75 @@ const dataTampil = useMemo(() => {
     return data;
   }
 
-  data.sort((a, b) => {
+  const sorted = [...data].sort((a, b) => {
     const av = a[sortKey];
     const bv = b[sortKey];
 
-    if (av == null && bv == null) return 0;
-    if (av == null) return 1;
-    if (bv == null) return -1;
+    // Nilai kosong selalu di bawah
+    if (
+      av === null ||
+      av === undefined ||
+      av === ''
+    ) {
+      return 1;
+    }
+
+    if (
+      bv === null ||
+      bv === undefined ||
+      bv === ''
+    ) {
+      return -1;
+    }
 
     let hasil = 0;
 
-const fieldTanggal = [
-  'created_at',
-  'tanggal_ukur',
-  'dikirim_pada',
-  'diverifikasi_pada',
-].includes(String(sortKey));
-
-if (fieldTanggal) {
-  hasil =
-    new Date(String(av)).getTime() -
-    new Date(String(bv)).getTime();
-} else if (
-  typeof av === 'number' &&
-  typeof bv === 'number'
-) {
-  hasil = av - bv;
-} else {
-  hasil = String(av).localeCompare(
-    String(bv),
-    'id-ID',
-    {
-      numeric: true,
-      sensitivity: 'base',
+    // ANGKA
+    if (
+      typeof av === 'number' &&
+      typeof bv === 'number'
+    ) {
+      hasil = av - bv;
     }
-  );
-}
+
+    // TANGGAL
+    else if (
+      [
+        'created_at',
+        'tanggal_ukur',
+        'dikirim_pada',
+        'diverifikasi_pada',
+      ].includes(String(sortKey))
+    ) {
+      hasil =
+        new Date(String(av)).getTime() -
+        new Date(String(bv)).getTime();
+    }
+
+    // TEKS
+    else {
+      hasil = String(av).localeCompare(
+        String(bv),
+        'id-ID',
+        {
+          numeric: true,
+          sensitivity: 'base',
+        }
+      );
+    }
 
     return sortDirection === 'asc'
       ? hasil
       : -hasil;
   });
 
-  return data;
-}, [bidang, filter, sortKey, sortDirection]);
+  return sorted;
+}, [
+  bidang,
+  filter,
+  sortKey,
+  sortDirection,
+]);
 const SortHeader = ({
   label,
   field,
