@@ -1464,27 +1464,9 @@ export default function KartuBidang({
               </div>
             </Section>
 
-            <div className="kb-info-box">
-              <strong>
-                Catatan bangunan
-              </strong>
-
-              <span>
-                Database saat ini menyimpan
-                jumlah bangunan melalui
-                <b> jml_bgn</b>. Detail per
-                bangunan seperti jenis konstruksi,
-                luas lantai, kondisi, dan jumlah
-                lantai belum tersedia di tabel
-                bidang_tanah.
-              </span>
-            </div>
           </>
         );
 
-      /* =====================================================
-         DOKUMEN
-      ===================================================== */
       case "dokumen":
         return (
           <Section
@@ -1499,9 +1481,6 @@ export default function KartuBidang({
           </Section>
         );
 
-      /* =====================================================
-         RIWAYAT
-      ===================================================== */
       case "riwayat":
         return (
           <Section
