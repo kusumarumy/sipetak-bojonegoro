@@ -12768,7 +12768,7 @@ html[data-theme="dark"] .layer-loading-spinner {
   left: 82px !important;
   top: 111px !important;
 
-  width: 600px !important;
+  width: 850px !important;
   height: min(560px, calc(100vh - 155px));
 
   margin: 0 !important;
