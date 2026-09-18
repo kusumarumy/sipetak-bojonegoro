@@ -8138,7 +8138,170 @@ main.body {
   white-space: nowrap;
 }
 
+/* =========================================================
+   PREVIEW DOKUMEN — FLOATING DI SEBELAH KIRI KARTU BIDANG
+   ========================================================= */
 
+.kb-preview-backdrop {
+  position: fixed;
+  inset: 0;
+
+  background: transparent;
+
+  z-index: 50;
+
+  pointer-events: none;
+}
+
+.kb-preview-dialog {
+  position: fixed;
+
+  /*
+   * Kartu Bidang:
+   * right: 45px
+   * width: 400px
+   *
+   * Preview diletakkan di sebelah kirinya.
+   */
+  top: 104px;
+  right: 457px;
+
+  width: 330px;
+  height: 440px;
+
+  display: flex;
+  flex-direction: column;
+
+  overflow: hidden;
+
+  background: #fff;
+
+  border: 1px solid #e4e5e9;
+  border-radius: 16px;
+
+  box-shadow:
+    0 18px 45px rgba(0, 0, 0, 0.18),
+    0 3px 10px rgba(0, 0, 0, 0.08);
+
+  pointer-events: auto;
+}
+
+.kb-preview-header {
+  flex: 0 0 auto;
+
+  min-height: 48px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 10px;
+
+  padding: 9px 12px;
+
+  border-bottom: 1px solid #e4e5e9;
+
+  background: #fff;
+}
+
+.kb-preview-title {
+  min-width: 0;
+  flex: 1;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  color: #202124;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.kb-preview-close {
+  width: 30px;
+  height: 30px;
+
+  flex: 0 0 auto;
+
+  border: 1px solid #e4e5e9;
+  border-radius: 9px;
+
+  background: #f8f8fa;
+  color: #202124;
+
+  font-size: 17px;
+  line-height: 1;
+
+  cursor: pointer;
+}
+
+.kb-preview-close:hover {
+  background: #f0f1f3;
+}
+
+.kb-preview-content {
+  flex: 1;
+  min-height: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+
+  background: #f5f6f8;
+}
+
+.kb-preview-content img {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+
+  padding: 10px;
+}
+
+.kb-preview-content iframe {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  border: 0;
+
+  background: #fff;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 900px) {
+  .kb-preview-dialog {
+    top: 104px;
+    right: 425px;
+
+    width: 300px;
+    height: 400px;
+  }
+}
+
+@media (max-width: 760px) {
+  .kb-preview-dialog {
+    top: auto;
+    right: 12px;
+    bottom: 12px;
+
+    width: min(360px, calc(100vw - 24px));
+    height: 420px;
+
+    z-index: 100;
+  }
+}
 /* =========================================================
    STATUS
    ========================================================= */
