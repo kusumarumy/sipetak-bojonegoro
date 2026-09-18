@@ -683,11 +683,10 @@ const SortHeader = ({
                     </td>
                   </tr>
                 ))
-              )}
+                            )}
             </tbody>
           </table>
         </div>
-      </section>
-    </div>
+      </div>
   );
 }
