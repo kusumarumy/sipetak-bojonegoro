@@ -695,84 +695,54 @@ useEffect(() => {
         )}
       </div>
 
-      {/* ===================================================
-          MODAL PREVIEW
-      =================================================== */}
+{previewOpen && previewUrl && (
+  <div className="kb-preview-backdrop">
+    <div
+      className="kb-preview-dialog"
+      role="dialog"
+      aria-modal="false"
+      onClick={(event) =>
+        event.stopPropagation()
+      }
+    >
+      <div className="kb-preview-header">
+        <strong className="kb-preview-title">
+          {lampiran?.nama_asli ??
+            "Preview dokumen"}
+        </strong>
 
-      {previewOpen && src && (
-        <div
-          className="kb-preview-modal"
-          role="dialog"
-          aria-modal="true"
-          aria-label={`Preview ${KATEGORI_LABEL[kategori]}`}
-          onClick={() =>
-            setPreviewOpen(false)
-          }
+        <button
+          type="button"
+          className="kb-preview-close"
+          onClick={tutupPreview}
+          aria-label="Tutup preview"
         >
-          <div
-            className="kb-preview-dialog"
-            onClick={(event) =>
-              event.stopPropagation()
+          ×
+        </button>
+      </div>
+
+      <div className="kb-preview-content">
+        {adalahPdf ? (
+          <iframe
+            src={previewUrl}
+            title={
+              lampiran?.nama_asli ??
+              "Preview PDF"
             }
-          >
-            <div className="kb-preview-header">
-              <div>
-                <strong>
-                  {KATEGORI_LABEL[kategori]}
-                </strong>
-
-                {lampiran?.nama_asli && (
-                  <span>
-                    {lampiran.nama_asli}
-                  </span>
-                )}
-              </div>
-
-              <button
-                type="button"
-                className="kb-preview-close"
-                onClick={() =>
-                  setPreviewOpen(false)
-                }
-                aria-label="Tutup preview"
-              >
-                ×
-              </button>
-            </div>
-
-            <div className="kb-preview-body">
-              <img
-                src={src}
-                alt={KATEGORI_LABEL[kategori]}
-              />
-            </div>
-
-            <div className="kb-preview-footer">
-              {metadata && (
-                <span>
-                  ◉ {metadata}
-                </span>
-              )}
-
-              {lampiran?.diambil_pada && (
-                <span>
-                  ◷{" "}
-                  {new Date(
-                    lampiran.diambil_pada
-                  ).toLocaleDateString(
-                    "id-ID",
-                    {
-                      day: "2-digit",
-                      month: "long",
-                      year: "numeric",
-                    }
-                  )}
-                </span>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
+          />
+        ) : (
+          <img
+            src={previewUrl}
+            alt={
+              lampiran?.nama_asli ??
+              "Preview dokumen"
+            }
+          />
+        )}
+      </div>
+    </div>
+  </div>
+)}
     </>
   );
 }
