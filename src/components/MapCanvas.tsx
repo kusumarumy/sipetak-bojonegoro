@@ -58,10 +58,8 @@ export default function MapCanvas() {
       pitch: 0,
       bearing: 0
     });
-
-  // ====================================================
-  // STATE APP
-  // ====================================================
+const [layerLoading, setLayerLoading] =
+  useState<string[]>([]);
 
   const {
     basemap,
@@ -678,12 +676,96 @@ export default function MapCanvas() {
         }
       });
 
-    mapRef.current = map;
+mapRef.current = map;
 
-    // ==================================================
-    // INFO PETA
-    // ==================================================
+// ==================================================
+// LOADING LAYER
+// ==================================================
 
+const sourceLayerIds = new Set(
+  LAYERS.map((layer) => layer.id)
+);
+
+const mulaiLoadingLayer = (
+  sourceId: string
+) => {
+  if (!sourceLayerIds.has(sourceId)) {
+    return;
+  }
+
+  const layer = LAYERS.find(
+    (l) => l.id === sourceId
+  );
+
+  if (!layer) {
+    return;
+  }
+
+  setLayerLoading((prev) =>
+    prev.includes(sourceId)
+      ? prev
+      : [...prev, sourceId]
+  );
+};
+
+const selesaiLoadingLayer = (
+  sourceId: string
+) => {
+  if (!sourceLayerIds.has(sourceId)) {
+    return;
+  }
+
+  setLayerLoading((prev) =>
+    prev.filter((id) => id !== sourceId)
+  );
+};
+
+const handleSourceLoading = (e: any) => {
+  if (!e.sourceId) {
+    return;
+  }
+
+  mulaiLoadingLayer(e.sourceId);
+};
+
+const handleSourceData = (e: any) => {
+  if (!e.sourceId) {
+    return;
+  }
+
+  if (e.isSourceLoaded) {
+    selesaiLoadingLayer(e.sourceId);
+  }
+};
+
+const handleMapError = (e: any) => {
+  const sourceId =
+    e?.error?.sourceId ??
+    e?.sourceId;
+
+  if (sourceId) {
+    selesaiLoadingLayer(sourceId);
+  }
+};
+
+map.on(
+  'sourcedataloading',
+  handleSourceLoading
+);
+
+map.on(
+  'sourcedata',
+  handleSourceData
+);
+
+map.on(
+  'error',
+  handleMapError
+);
+
+// ==================================================
+// INFO PETA
+// ==================================================
     const perbaruiInfoPeta =
       () => {
         const center =
@@ -1436,32 +1518,47 @@ map.addSource(
       }
     );
 
-    return () => {
-      resizeObserver.disconnect();
+return () => {
+  resizeObserver.disconnect();
 
-      popupRef.current?.remove();
+  map.off(
+    'sourcedataloading',
+    handleSourceLoading
+  );
 
-      for (
-        const id
-        of analisisRef.current
-      ) {
-        map.setFeatureState(
-          {
-            source: 'bidang',
-            id
-          },
-          {
-            analisis: false
-          }
-        );
+  map.off(
+    'sourcedata',
+    handleSourceData
+  );
+
+  map.off(
+    'error',
+    handleMapError
+  );
+
+  popupRef.current?.remove();
+
+  for (
+    const id
+    of analisisRef.current
+  ) {
+    map.setFeatureState(
+      {
+        source: 'bidang',
+        id
+      },
+      {
+        analisis: false
       }
+    );
+  }
 
-      analisisRef.current = [];
+  analisisRef.current = [];
 
-      map.remove();
+  map.remove();
 
-      mapRef.current = null;
-    };
+  mapRef.current = null;
+};
   }, []);
 
   function pasangInteraksi(
@@ -2249,12 +2346,55 @@ map.addSource(
     tema
   ]);
 
-  return (
-    <div
-      ref={ref}
-      className="canvas"
-    >
-      <div className="map-info">
+return (
+  <div
+    ref={ref}
+    className="canvas"
+  >
+
+    {layerLoading.length > 0 && (
+      <div className="layer-loading">
+
+        <div className="layer-loading-head">
+          <span className="layer-loading-spinner" />
+          <span>Memuat layer</span>
+        </div>
+
+        <div className="layer-loading-list">
+          {layerLoading.map((id) => {
+            const layer = LAYERS.find(
+              (l) => l.id === id
+            );
+
+            if (!layer) {
+              return null;
+            }
+
+            return (
+              <div
+                key={id}
+                className="layer-loading-item"
+              >
+                <span
+                  className="layer-loading-dot"
+                  style={{
+                    background:
+                      layer.warna
+                  }}
+                />
+
+                <span>
+                  {layer.nama}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+
+      </div>
+    )}
+
+    <div className="map-info">
         <span>
           Lon{' '}
           {infoPeta.lon.toFixed(
