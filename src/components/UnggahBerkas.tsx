@@ -44,8 +44,7 @@ export default function UnggahBerkas({
   peran: Peran;
   bolehEdit: boolean;
 }) {
-  const { muatUlangKartu, beriPesan } =
-    useApp();
+  const { muatUlangKartu, beriPesan } = useApp();
 
   const [sedang, setSedang] =
     useState<string | null>(null);
@@ -66,10 +65,9 @@ export default function UnggahBerkas({
     return map;
   }, [bidang.lampiran]);
 
-  const wajibAda =
-    WAJIB.filter((k) =>
-      perKategori.has(k)
-    ).length;
+  const wajibAda = WAJIB.filter((k) =>
+    perKategori.has(k)
+  ).length;
 
   const totalWajib = WAJIB.length;
 
@@ -80,59 +78,100 @@ export default function UnggahBerkas({
         )
       : 0;
 
-  async function unggah(kategori: KategoriLampiran, file: File) {
-  setSedang(kategori);
-  try {
-    const exif = await bacaExif(file);
+  async function unggah(
+    kategori: KategoriLampiran,
+    file: File
+  ) {
+    setSedang(kategori);
 
-    // Upload lewat API route sendiri (bebas CORS) → dapat object_key
-    const fd = new FormData();
-    fd.append("file", file);
-    fd.append("bidang_id", String(bidang.id));
-    fd.append("kategori", kategori);
-    fd.append("nama_asli", file.name);
+    try {
+      const exif = await bacaExif(file);
 
-    const naik = await fetch("/api/lampiran/unggah", {
-      method: "POST",
-      body: fd,
-    });
+      // =================================================
+      // UPLOAD FILE KE R2 MELALUI API
+      // =================================================
 
-    if (!naik.ok) {
-      throw new Error(await naik.text());
+      const fd = new FormData();
+
+      fd.append("file", file);
+      fd.append(
+        "bidang_id",
+        String(bidang.id)
+      );
+      fd.append("kategori", kategori);
+      fd.append("nama_asli", file.name);
+
+      const naik = await fetch(
+        "/api/lampiran/unggah",
+        {
+          method: "POST",
+          body: fd,
+        }
+      );
+
+      if (!naik.ok) {
+        throw new Error(
+          await naik.text()
+        );
+      }
+
+      const { object_key } =
+        await naik.json();
+
+      // =================================================
+      // SIMPAN METADATA KE DATABASE
+      // =================================================
+
+      const simpan = await fetch(
+        "/api/lampiran",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type":
+              "application/json",
+          },
+          body: JSON.stringify({
+            bidang_id: bidang.id,
+            kategori,
+            object_key,
+            nama_asli: file.name,
+            mime: file.type,
+            ukuran_byte: file.size,
+            ...exif,
+          }),
+        }
+      );
+
+      if (!simpan.ok) {
+        throw new Error(
+          await simpan.text()
+        );
+      }
+
+      // =================================================
+      // MUAT ULANG DATA KARTU
+      // =================================================
+
+      await muatUlangKartu();
+
+      beriPesan(
+        `${KATEGORI_LABEL[kategori]} berhasil diunggah.`
+      );
+    } catch (error) {
+      console.error(
+        "UPLOAD BERKAS:",
+        error
+      );
+
+      beriPesan(
+        error instanceof Error
+          ? error.message
+          : "Berkas gagal diunggah."
+      );
+    } finally {
+      setSedang(null);
     }
-
-    const { object_key } = await naik.json();
-
-    // Simpan metadata seperti biasa (tidak berubah)
-    const simpan = await fetch("/api/lampiran", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        bidang_id: bidang.id,
-        kategori,
-        object_key,
-        nama_asli: file.name,
-        mime: file.type,
-        ukuran_byte: file.size,
-        ...exif,
-      }),
-    });
-
-    if (!simpan.ok) {
-      throw new Error(await simpan.text());
-    }
-
-    await muatUlangKartu();
-    beriPesan(`${KATEGORI_LABEL[kategori]} berhasil diunggah.`);
-  } catch (error) {
-    console.error("UPLOAD BERKAS:", error);
-    beriPesan(
-      error instanceof Error ? error.message : "Berkas gagal diunggah."
-    );
-  } finally {
-    setSedang(null);
   }
-}
 
   const kurang = WAJIB.filter(
     (k) => !perKategori.has(k)
@@ -140,6 +179,7 @@ export default function UnggahBerkas({
 
   return (
     <div className="kb-upload">
+
       {/* ===================================================
           HEADER KELENGKAPAN
           =================================================== */}
@@ -176,7 +216,7 @@ export default function UnggahBerkas({
       </div>
 
       {/* ===================================================
-          FOTO
+          FOTO LAPANGAN
           =================================================== */}
 
       <div className="kb-upload-section">
@@ -197,9 +237,11 @@ export default function UnggahBerkas({
           </div>
 
           <span className="kb-upload-count">
-            {FOTO.filter((k) =>
-              perKategori.has(k)
-            ).length}
+            {
+              FOTO.filter((k) =>
+                perKategori.has(k)
+              ).length
+            }
             /{FOTO.length}
           </span>
         </div>
@@ -216,7 +258,9 @@ export default function UnggahBerkas({
                 kategori
               )}
               bolehEdit={bolehEdit}
-              bolehPribadi={bolehPribadi}
+              bolehPribadi={
+                bolehPribadi
+              }
               sedang={
                 sedang === kategori
               }
@@ -232,7 +276,7 @@ export default function UnggahBerkas({
       </div>
 
       {/* ===================================================
-          DOKUMEN
+          DOKUMEN PENDUKUNG
           =================================================== */}
 
       <div className="kb-upload-section">
@@ -253,9 +297,11 @@ export default function UnggahBerkas({
           </div>
 
           <span className="kb-upload-count">
-            {DOKUMEN.filter((k) =>
-              perKategori.has(k)
-            ).length}
+            {
+              DOKUMEN.filter((k) =>
+                perKategori.has(k)
+              ).length
+            }
             /{DOKUMEN.length}
           </span>
         </div>
@@ -272,7 +318,9 @@ export default function UnggahBerkas({
                 kategori
               )}
               bolehEdit={bolehEdit}
-              bolehPribadi={bolehPribadi}
+              bolehPribadi={
+                bolehPribadi
+              }
               sedang={
                 sedang === kategori
               }
@@ -348,6 +396,11 @@ export default function UnggahBerkas({
   );
 }
 
+
+/* =========================================================
+   KARTU FOTO
+   ========================================================= */
+
 function KartuFoto({
   kategori,
   lampiran,
@@ -365,111 +418,114 @@ function KartuFoto({
   sedang: boolean;
   onPilih: (file: File) => void;
 }) {
-  const input = useRef<HTMLInputElement>(null);
+  const input =
+    useRef<HTMLInputElement>(null);
 
-  const [src, setSrc] = useState<string | null>(null);
-  const [previewOpen, setPreviewOpen] = useState(false);
-  const [previewLoading, setPreviewLoading] = useState(false);
+  const [src, setSrc] =
+    useState<string | null>(null);
+
+  const [previewOpen, setPreviewOpen] =
+    useState(false);
+
+  const [previewLoading, setPreviewLoading] =
+    useState(false);
 
   const terkunci =
     !!lampiran?.sensitif &&
     !bolehPribadi;
 
-const ada = !!lampiran;
+  const ada = !!lampiran;
 
-console.log("DATA KARTU FOTO:", {
-  kategori,
-  ada,
-  lampiran,
-  lampiranId: lampiran?.id,
-});
+  const dapatUnggah =
+    bolehEdit &&
+    !ada &&
+    !sedang &&
+    !terkunci;
 
-const dapatUnggah =
-  bolehEdit &&
-  !ada &&
-  !sedang &&
-  !terkunci;
+  // =======================================================
+  // AMBIL SIGNED URL FOTO
+  // =======================================================
 
-useEffect(() => {
-  let batal = false;
+  useEffect(() => {
+    let batal = false;
 
-  async function muatPreview() {
-    if (!lampiran?.id || terkunci) {
-      setSrc(null);
-      setPreviewLoading(false);
-      return;
-    }
-
-    console.log("MEMUAT PREVIEW:", {
-      id: lampiran.id,
-      kategori,
-    });
-
-    setPreviewLoading(true);
-
-    try {
-      const response = await fetch(
-        `/api/lampiran/${lampiran.id}`,
-        {
-          method: "GET",
-          cache: "no-store",
-        }
-      );
-
-      const data = await response.json();
-
-      console.log("RESPONS PREVIEW:", {
-        status: response.status,
-        data,
-      });
-
-      if (!response.ok) {
-        throw new Error(
-          data?.error ||
-            data?.message ||
-            "Gagal memuat preview"
-        );
-      }
-
-      if (!data?.url) {
-        throw new Error(
-          "URL preview tidak dikembalikan API"
-        );
-      }
-
-      if (!batal) {
-        setSrc(data.url);
-      }
-    } catch (error) {
-      console.error(
-        "PREVIEW LAMPIRAN ERROR:",
-        error
-      );
-
-      if (!batal) {
+    async function muatPreview() {
+      if (
+        !lampiran?.id ||
+        terkunci
+      ) {
         setSrc(null);
-      }
-    } finally {
-      if (!batal) {
         setPreviewLoading(false);
+        return;
+      }
+
+      setPreviewLoading(true);
+
+      try {
+        const response =
+          await fetch(
+            `/api/lampiran/${lampiran.id}`,
+            {
+              method: "GET",
+              cache: "no-store",
+            }
+          );
+
+        const data =
+          await response.json();
+
+        if (!response.ok) {
+          throw new Error(
+            data?.error ||
+              data?.message ||
+              "Gagal memuat preview"
+          );
+        }
+
+        if (!data?.url) {
+          throw new Error(
+            "URL preview tidak dikembalikan API"
+          );
+        }
+
+        if (!batal) {
+          setSrc(data.url);
+        }
+      } catch (error) {
+        console.error(
+          "PREVIEW LAMPIRAN ERROR:",
+          error
+        );
+
+        if (!batal) {
+          setSrc(null);
+        }
+      } finally {
+        if (!batal) {
+          setPreviewLoading(false);
+        }
       }
     }
-  }
 
-  muatPreview();
+    muatPreview();
 
-  return () => {
-    batal = true;
-  };
-}, [
-  lampiran?.id,
-  kategori,
-  terkunci,
-]);
+    return () => {
+      batal = true;
+    };
+  }, [
+    lampiran?.id,
+    kategori,
+    terkunci,
+  ]);
+
   const metadata =
     lampiran?.lat != null &&
     lampiran?.lon != null
-      ? `${lampiran.lat.toFixed(5)}, ${lampiran.lon.toFixed(5)}`
+      ? `${lampiran.lat.toFixed(
+          5
+        )}, ${lampiran.lon.toFixed(
+          5
+        )}`
       : null;
 
   function bukaUpload() {
@@ -479,7 +535,10 @@ useEffect(() => {
   }
 
   function bukaPreview() {
-    if (src && !terkunci) {
+    if (
+      src &&
+      !terkunci
+    ) {
       setPreviewOpen(true);
     }
   }
@@ -489,29 +548,51 @@ useEffect(() => {
       <div
         className={[
           "kb-photo-card",
-          ada ? "is-uploaded" : "is-empty",
-          sedang ? "is-loading" : "",
-          terkunci ? "is-locked" : "",
+          ada
+            ? "is-uploaded"
+            : "is-empty",
+          sedang
+            ? "is-loading"
+            : "",
+          terkunci
+            ? "is-locked"
+            : "",
         ]
           .filter(Boolean)
           .join(" ")}
       >
+
         {/* =================================================
             AREA FOTO
-        ================================================== */}
+            ================================================= */}
 
         <div
           className={[
             "kb-photo-main",
-            ada ? "is-previewable" : "",
-            dapatUnggah ? "is-upload-target" : "",
+            ada
+              ? "is-previewable"
+              : "",
+            dapatUnggah
+              ? "is-upload-target"
+              : "",
           ]
             .filter(Boolean)
             .join(" ")}
-          role={ada && src ? "button" : undefined}
-          tabIndex={ada && src ? 0 : undefined}
+          role={
+            ada && src
+              ? "button"
+              : undefined
+          }
+          tabIndex={
+            ada && src
+              ? 0
+              : undefined
+          }
           onClick={() => {
-            if (ada && src) {
+            if (
+              ada &&
+              src
+            ) {
               bukaPreview();
             } else if (!ada) {
               bukaUpload();
@@ -519,8 +600,12 @@ useEffect(() => {
           }}
           onKeyDown={(event) => {
             if (
-              (event.key === "Enter" ||
-                event.key === " ") &&
+              (
+                event.key ===
+                  "Enter" ||
+                event.key ===
+                  " "
+              ) &&
               ada &&
               src
             ) {
@@ -529,31 +614,40 @@ useEffect(() => {
             }
           }}
         >
+
           <div className="kb-photo-preview">
+
             {src ? (
               <>
-<img
-  src={src}
-  alt={KATEGORI_LABEL[kategori]}
-  className="kb-photo-image"
-  onLoad={() => {
-    console.log(
-      "GAMBAR PREVIEW BERHASIL DIMUAT:",
-      kategori
-    );
-  }}
-  onError={(event) => {
-    console.error(
-      "GAMBAR PREVIEW GAGAL DIMUAT:",
-      kategori,
-      src,
-      event
-    );
-  }}
-/>
+                <img
+                  src={src}
+                  alt={
+                    KATEGORI_LABEL[
+                      kategori
+                    ]
+                  }
+                  className="kb-photo-image"
+                  onLoad={() => {
+                    console.log(
+                      "GAMBAR PREVIEW BERHASIL DIMUAT:",
+                      kategori
+                    );
+                  }}
+                  onError={(event) => {
+                    console.error(
+                      "GAMBAR PREVIEW GAGAL DIMUAT:",
+                      kategori,
+                      src,
+                      event
+                    );
+                  }}
+                />
+
                 <div className="kb-photo-preview-overlay">
                   <span>⌕</span>
-                  <small>Lihat foto</small>
+                  <small>
+                    Lihat foto
+                  </small>
                 </div>
               </>
             ) : (
@@ -592,16 +686,19 @@ useEffect(() => {
               </span>
             )}
 
-            {!wajib && ada && (
-              <span className="kb-badge-success">
-                ✓ Tersimpan
-              </span>
-            )}
+            {!wajib &&
+              ada && (
+                <span className="kb-badge-success">
+                  ✓ Tersimpan
+                </span>
+              )}
           </div>
 
           <div className="kb-photo-info">
             <strong>
-              {KATEGORI_LABEL[kategori]}
+              {KATEGORI_LABEL[
+                kategori
+              ]}
             </strong>
 
             <span>
@@ -620,45 +717,53 @@ useEffect(() => {
 
         {/* =================================================
             META DATA
-        ================================================== */}
+            ================================================= */}
 
-        {ada && !terkunci && (
-          <div className="kb-file-meta">
-            {metadata && (
-              <span>
-                ◉ {metadata}
-              </span>
-            )}
+        {ada &&
+          !terkunci && (
+            <div className="kb-file-meta">
 
-            {lampiran?.diambil_pada && (
-              <span>
-                ◷{" "}
-                {new Date(
-                  lampiran.diambil_pada
-                ).toLocaleDateString(
-                  "id-ID",
-                  {
-                    day: "2-digit",
-                    month: "short",
-                    year: "numeric",
-                  }
-                )}
-              </span>
-            )}
-          </div>
-        )}
+              {metadata && (
+                <span>
+                  ◉ {metadata}
+                </span>
+              )}
+
+              {lampiran?.diambil_pada && (
+                <span>
+                  ◷{" "}
+                  {new Date(
+                    lampiran.diambil_pada
+                  ).toLocaleDateString(
+                    "id-ID",
+                    {
+                      day: "2-digit",
+                      month: "short",
+                      year: "numeric",
+                    }
+                  )}
+                </span>
+              )}
+
+            </div>
+          )}
+
+        {/* =================================================
+            DOKUMEN TERKUNCI
+            ================================================= */}
 
         {terkunci && (
           <div className="kb-locked-note">
             Dokumen pribadi
             <br />
-            tidak tersedia untuk peran ini.
+            tidak tersedia
+            untuk peran ini.
           </div>
         )}
 
         {/* =================================================
             INPUT UPLOAD
-        ================================================== */}
+            ================================================= */}
 
         <input
           ref={input}
@@ -673,30 +778,108 @@ useEffect(() => {
               onPilih(file);
             }
 
-            event.target.value = "";
+            event.target.value =
+              "";
           }}
         />
 
         {/* =================================================
             TOMBOL GANTI FOTO
-        ================================================== */}
+            ================================================= */}
 
-        {ada && bolehEdit && !terkunci && (
-          <button
-            type="button"
-            className="kb-photo-change"
-            onClick={() => input.current?.click()}
-            disabled={sedang}
-          >
-            {sedang
-              ? "Mengunggah..."
-              : "Ganti foto"}
-          </button>
-        )}
+        {ada &&
+          bolehEdit &&
+          !terkunci && (
+            <button
+              type="button"
+              className="kb-photo-change"
+              onClick={() =>
+                input.current?.click()
+              }
+              disabled={sedang}
+            >
+              {sedang
+                ? "Mengunggah..."
+                : "Ganti foto"}
+            </button>
+          )}
       </div>
+
+      {/* =================================================
+          POPUP PREVIEW FOTO
+          ================================================= */}
+
+      {previewOpen &&
+        src && (
+          <div className="kb-preview-modal">
+            <div
+              className="kb-preview-dialog"
+              role="dialog"
+              aria-modal="true"
+              onClick={(event) =>
+                event.stopPropagation()
+              }
+            >
+
+              <div className="kb-preview-header">
+                <div>
+                  <strong>
+                    {
+                      KATEGORI_LABEL[
+                        kategori
+                      ]
+                    }
+                  </strong>
+
+                  <span>
+                    Dokumentasi lapangan
+                  </span>
+                </div>
+
+                <button
+                  type="button"
+                  className="kb-preview-close"
+                  onClick={() =>
+                    setPreviewOpen(false)
+                  }
+                  aria-label="Tutup preview"
+                >
+                  ×
+                </button>
+              </div>
+
+              <div className="kb-preview-body">
+                <img
+                  src={src}
+                  alt={
+                    KATEGORI_LABEL[
+                      kategori
+                    ]
+                  }
+                />
+              </div>
+
+              <div className="kb-preview-footer">
+                <span>
+                  {
+                    lampiran?.nama_asli ??
+                    "Foto lapangan"
+                  }
+                </span>
+              </div>
+
+            </div>
+          </div>
+        )}
     </>
   );
 }
+
+
+/* =========================================================
+   KARTU DOKUMEN
+   ========================================================= */
+
 function KartuDokumen({
   kategori,
   lampiran,
@@ -714,7 +897,8 @@ function KartuDokumen({
   sedang: boolean;
   onPilih: (file: File) => void;
 }) {
-  const input = useRef<HTMLInputElement>(null);
+  const input =
+    useRef<HTMLInputElement>(null);
 
   const [previewUrl, setPreviewUrl] =
     useState<string | null>(null);
@@ -732,7 +916,8 @@ function KartuDokumen({
   const ada = !!lampiran;
 
   /*
-   * Dokumen yang sudah ada tetap bisa diganti
+   * Dokumen yang sudah ada
+   * tetap bisa diganti
    */
   const dapatUnggah =
     bolehEdit &&
@@ -743,29 +928,35 @@ function KartuDokumen({
    * Deteksi PDF
    */
   const adalahPdf =
-    lampiran?.mime === "application/pdf" ||
+    lampiran?.mime ===
+      "application/pdf" ||
     lampiran?.nama_asli
       ?.toLowerCase()
       .endsWith(".pdf");
 
   /*
-   * Ambil signed URL dari API
+   * Ambil signed URL
    */
   async function ambilPreview() {
-    if (!lampiran?.id || terkunci) {
+    if (
+      !lampiran?.id ||
+      terkunci
+    ) {
       return null;
     }
 
     try {
-      const response = await fetch(
-        `/api/lampiran/${lampiran.id}`,
-        {
-          method: "GET",
-          cache: "no-store",
-        }
-      );
+      const response =
+        await fetch(
+          `/api/lampiran/${lampiran.id}`,
+          {
+            method: "GET",
+            cache: "no-store",
+          }
+        );
 
-      const data = await response.json();
+      const data =
+        await response.json();
 
       if (!response.ok) {
         throw new Error(
@@ -797,10 +988,13 @@ function KartuDokumen({
   }
 
   /*
-   * Buka preview
+   * Buka preview dokumen
    */
   async function bukaPreview() {
-    if (!lampiran?.id || terkunci) {
+    if (
+      !lampiran?.id ||
+      terkunci
+    ) {
       return;
     }
 
@@ -811,7 +1005,9 @@ function KartuDokumen({
         previewUrl ??
         (await ambilPreview());
 
-      if (!url) return;
+      if (!url) {
+        return;
+      }
 
       setPreviewUrl(url);
       setPreviewOpen(true);
@@ -825,8 +1021,7 @@ function KartuDokumen({
   }
 
   /*
-   * Karena KartuDokumen tidak memiliki beriPesan
-   * sendiri, gunakan alert hanya untuk error preview.
+   * Pesan error preview
    */
   function beriPesanPreview(
     pesan: string
@@ -849,26 +1044,35 @@ function KartuDokumen({
           .filter(Boolean)
           .join(" ")}
       >
+
         {/* =================================================
             ICON
-        ================================================== */}
+            ================================================= */}
 
         <div className="kb-document-icon">
-          {kategori === "dok_ktp"
+          {kategori ===
+          "dok_ktp"
             ? "ID"
-            : kategori === "dok_kk"
+            : kategori ===
+                "dok_kk"
               ? "KK"
               : "DOC"}
         </div>
 
         {/* =================================================
             INFORMASI
-        ================================================== */}
+            ================================================= */}
 
         <div className="kb-document-info">
+
           <div className="kb-document-title">
+
             <strong>
-              {KATEGORI_LABEL[kategori]}
+              {
+                KATEGORI_LABEL[
+                  kategori
+                ]
+              }
             </strong>
 
             {wajib && (
@@ -884,6 +1088,7 @@ function KartuDokumen({
                   : "Wajib"}
               </span>
             )}
+
           </div>
 
           <span className="kb-document-file">
@@ -897,53 +1102,64 @@ function KartuDokumen({
                     : "Belum tersedia")}
           </span>
 
-          {lampiran && !terkunci && (
-            <small>
-              {formatFileSize(
-                lampiran.ukuran_byte
-              )}
+          {lampiran &&
+            !terkunci && (
+              <small>
 
-              {lampiran.diunggah_pada
-                ? ` • ${new Date(
-                    lampiran.diunggah_pada
-                  ).toLocaleDateString(
-                    "id-ID"
-                  )}`
-                : ""}
-            </small>
-          )}
+                {formatFileSize(
+                  lampiran.ukuran_byte
+                )}
+
+                {lampiran.diunggah_pada
+                  ? ` • ${new Date(
+                      lampiran.diunggah_pada
+                    ).toLocaleDateString(
+                      "id-ID"
+                    )}`
+                  : ""}
+
+              </small>
+            )}
+
         </div>
 
         {/* =================================================
             ACTION
-        ================================================== */}
+            ================================================= */}
 
         <div
           className="kb-document-actions"
           style={{
             display: "flex",
             gap: "6px",
-            alignItems: "center",
+            alignItems:
+              "center",
           }}
         >
+
           {/* LIHAT */}
-          {ada && !terkunci && (
-            <button
-              type="button"
-              className="kb-document-action"
-              disabled={
-                sedang ||
-                previewLoading
-              }
-              onClick={bukaPreview}
-            >
-              {previewLoading
-                ? "..."
-                : "Lihat"}
-            </button>
-          )}
+
+          {ada &&
+            !terkunci && (
+              <button
+                type="button"
+                className="kb-document-action"
+                disabled={
+                  sedang ||
+                  previewLoading
+                }
+                onClick={
+                  bukaPreview
+                }
+              >
+                {previewLoading
+                  ? "..."
+                  : "Lihat"}
+              </button>
+            )}
 
           {/* UNGGAH / GANTI */}
+
           {dapatUnggah && (
             <button
               type="button"
@@ -962,6 +1178,7 @@ function KartuDokumen({
           )}
 
           {/* TERSIMPAN */}
+
           {!dapatUnggah &&
             ada &&
             !bolehEdit && (
@@ -969,11 +1186,12 @@ function KartuDokumen({
                 ✓ Tersimpan
               </span>
             )}
+
         </div>
 
         {/* =================================================
             INPUT
-        ================================================== */}
+            ================================================= */}
 
         <input
           ref={input}
@@ -988,71 +1206,100 @@ function KartuDokumen({
               onPilih(file);
             }
 
-            event.target.value = "";
+            event.target.value =
+              "";
           }}
         />
+
       </div>
 
-{previewOpen && previewUrl && (
-  <div className="kb-preview-modal">
-    <div
-      className="kb-preview-dialog"
-      role="dialog"
-      aria-modal="true"
-      onClick={(event) => event.stopPropagation()}
-    >
-      <div className="kb-preview-header">
-        <div>
-          <strong>
-            {lampiran?.nama_asli ?? "Preview dokumen"}
-          </strong>
+      {/* =================================================
+          POPUP PREVIEW DOKUMEN
+          ================================================= */}
 
-          <span>
-            Dokumen pendukung
-          </span>
-        </div>
+      {previewOpen &&
+        previewUrl && (
+          <div className="kb-preview-modal">
+            <div
+              className="kb-preview-dialog"
+              role="dialog"
+              aria-modal="true"
+              onClick={(event) =>
+                event.stopPropagation()
+              }
+            >
 
-        <button
-          type="button"
-          className="kb-preview-close"
-          onClick={tutupPreview}
-          aria-label="Tutup preview"
-        >
-          ×
-        </button>
-      </div>
+              <div className="kb-preview-header">
 
-      <div className="kb-preview-body">
-        {adalahPdf ? (
-          <iframe
-            src={previewUrl}
-            title={
-              lampiran?.nama_asli ??
-              "Preview PDF"
-            }
-          />
-        ) : (
-          <img
-            src={previewUrl}
-            alt={
-              lampiran?.nama_asli ??
-              "Preview dokumen"
-            }
-          />
+                <div>
+                  <strong>
+                    {
+                      lampiran?.nama_asli ??
+                      "Preview dokumen"
+                    }
+                  </strong>
+
+                  <span>
+                    Dokumen pendukung
+                  </span>
+                </div>
+
+                <button
+                  type="button"
+                  className="kb-preview-close"
+                  onClick={
+                    tutupPreview
+                  }
+                  aria-label="Tutup preview"
+                >
+                  ×
+                </button>
+
+              </div>
+
+              <div className="kb-preview-body">
+
+                {adalahPdf ? (
+                  <iframe
+                    src={previewUrl}
+                    title={
+                      lampiran?.nama_asli ??
+                      "Preview PDF"
+                    }
+                  />
+                ) : (
+                  <img
+                    src={previewUrl}
+                    alt={
+                      lampiran?.nama_asli ??
+                      "Preview dokumen"
+                    }
+                  />
+                )}
+
+              </div>
+
+              <div className="kb-preview-footer">
+                <span>
+                  {
+                    lampiran?.nama_asli ??
+                    "Dokumen"
+                  }
+                </span>
+              </div>
+
+            </div>
+          </div>
         )}
-      </div>
-
-      <div className="kb-preview-footer">
-        <span>
-          {lampiran?.nama_asli ?? "Dokumen"}
-        </span>
-      </div>
-    </div>
-  </div>
-)}
     </>
   );
 }
+
+
+/* =========================================================
+   FORMAT UKURAN FILE
+   ========================================================= */
+
 function formatFileSize(
   value: number | null
 ) {
@@ -1067,7 +1314,10 @@ function formatFileSize(
     return `${value} B`;
   }
 
-  if (value < 1024 * 1024) {
+  if (
+    value <
+    1024 * 1024
+  ) {
     return `${(
       value / 1024
     ).toFixed(1)} KB`;
@@ -1078,6 +1328,7 @@ function formatFileSize(
     (1024 * 1024)
   ).toFixed(1)} MB`;
 }
+
 
 /* =========================================================
    BACA EXIF
@@ -1090,7 +1341,11 @@ async function bacaExif(
   lon?: number;
   diambil_pada?: string;
 }> {
-  if (!file.type.startsWith("image/")) {
+  if (
+    !file.type.startsWith(
+      "image/"
+    )
+  ) {
     return {};
   }
 
@@ -1103,10 +1358,12 @@ async function bacaExif(
         )
         .arrayBuffer();
 
-    const v = new DataView(buf);
+    const v =
+      new DataView(buf);
 
     if (
-      v.getUint16(0) !== 0xffd8
+      v.getUint16(0) !==
+      0xffd8
     ) {
       return {};
     }
@@ -1125,8 +1382,9 @@ async function bacaExif(
           off + 10;
 
         const le =
-          v.getUint16(tiff) ===
-          0x4949;
+          v.getUint16(
+            tiff
+          ) === 0x4949;
 
         const u16 = (
           p: number
@@ -1216,7 +1474,9 @@ async function bacaExif(
               ) {
                 const p =
                   tiff +
-                  u32(f + 8);
+                  u32(
+                    f + 8
+                  );
 
                 waktu =
                   new TextDecoder()
@@ -1240,9 +1500,14 @@ async function bacaExif(
 
         if (waktu) {
           const [d, t] =
-            waktu.split(" ");
+            waktu.split(
+              " "
+            );
 
-          if (d && t) {
+          if (
+            d &&
+            t
+          ) {
             hasil.diambil_pada =
               new Date(
                 `${d.replace(
@@ -1273,7 +1538,9 @@ async function bacaExif(
             const tag =
               u16(e);
 
-            if (tag === 1) {
+            if (
+              tag === 1
+            ) {
               nS =
                 String.fromCharCode(
                   v.getUint8(
@@ -1282,7 +1549,9 @@ async function bacaExif(
                 );
             }
 
-            if (tag === 2) {
+            if (
+              tag === 2
+            ) {
               lat =
                 dms(
                   tiff +
@@ -1292,7 +1561,9 @@ async function bacaExif(
                 );
             }
 
-            if (tag === 3) {
+            if (
+              tag === 3
+            ) {
               eW =
                 String.fromCharCode(
                   v.getUint8(
@@ -1301,7 +1572,9 @@ async function bacaExif(
                 );
             }
 
-            if (tag === 4) {
+            if (
+              tag === 4
+            ) {
               lon =
                 dms(
                   tiff +
