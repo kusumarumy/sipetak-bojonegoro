@@ -15,6 +15,7 @@ import { useApp } from '@/store/useApp';
 import KepemilikanPanel from './KepemilikanPanel';
 import logoBojonegoro from '../../data/icon/bojonegoro.png';
 import type { Peran } from '@/types';
+import GuideRoot from './Guide';
 const MapCanvas = dynamic(
   () => import('./MapCanvas'),
   { ssr: false }
@@ -125,19 +126,14 @@ export default function Peta({
             />
           </div>
 
-          <div className="head-brand-text">
-
-            <div className="head-title-row">
-              <span className="head-eyebrow">
-                DPPT KABUPATEN BOJONEGORO
-              </span>
-            </div>
-
-            <span className="head-app-name">
-              SISTEM INFORMASI BIDANG TANAH TERDAMPAK JALUR LINGKAR SELATAN
-            </span>
-
-          </div>
+          <div className="head-brand-text" data-guide="app-title">
+  <div className="head-title-row">
+    <span className="head-eyebrow">DPPT KABUPATEN BOJONEGORO</span>
+  </div>
+  <span className="head-app-name">
+    SISTEM INFORMASI BIDANG TANAH TERDAMPAK JALUR LINGKAR SELATAN
+  </span>
+</div>
 
         </div>
 
@@ -385,7 +381,7 @@ export default function Peta({
   </div>
 
 </main>
-
+<GuideRoot />
 </div>
 );
 }
