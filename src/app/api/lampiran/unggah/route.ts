@@ -8,10 +8,7 @@ export const runtime = "nodejs";
 
 export async function POST(req: NextRequest) {
   try {
-    // =========================================================
-    // CEK PENYIMPANAN
-    // =========================================================
-
+    
     if (!penyimpananSiap()) {
       return NextResponse.json(
         {
@@ -20,10 +17,6 @@ export async function POST(req: NextRequest) {
         { status: 500 }
       );
     }
-
-    // =========================================================
-    // AMBIL DATA FORM
-    // =========================================================
 
     const form = await req.formData();
 
@@ -42,25 +35,13 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // =========================================================
-    // BUAT EKSTENSI FILE
-    // =========================================================
-
     const ext = namaAsli.includes(".")
       ? namaAsli.split(".").pop()?.toLowerCase() || "bin"
       : "bin";
 
-    // =========================================================
-    // BUAT OBJECT KEY R2
-    // =========================================================
-
     const objectKey =
       `bidang/${bidangId}/foto/${kategori}/` +
       `${Date.now()}-${randomUUID()}.${ext}`;
-
-    // =========================================================
-    // FILE → BUFFER
-    // =========================================================
 
     const buffer = Buffer.from(
       await file.arrayBuffer()
@@ -75,10 +56,6 @@ export async function POST(req: NextRequest) {
       size: file.size,
     });
 
-    // =========================================================
-    // UPLOAD KE CLOUDFLARE R2
-    // =========================================================
-
     await unggahObjek(
       objectKey,
       buffer,
@@ -89,10 +66,6 @@ export async function POST(req: NextRequest) {
       objectKey,
     });
 
-    // =========================================================
-    // AMBIL SESSION USER
-    // =========================================================
-
     const sesi = await auth();
 
     console.log("UPLOAD USER", {
@@ -101,9 +74,6 @@ export async function POST(req: NextRequest) {
       username: sesi?.user?.username,
     });
 
-    // =========================================================
-    // CARI BIDANG_ID ASLI DARI TABEL BIDANG_TANAH
-    // =========================================================
 
     const hasilBidang = await query(
       `
@@ -123,9 +93,6 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // =========================================================
-    // AMBIL IP ADDRESS
-    // =========================================================
 
     const ipAddress =
       req.headers
@@ -134,10 +101,6 @@ export async function POST(req: NextRequest) {
         ?.trim() ||
       req.headers.get("x-real-ip") ||
       null;
-
-    // =========================================================
-    // CATAT AUDIT LOG
-    // =========================================================
 
     await query(
       `
@@ -198,10 +161,6 @@ export async function POST(req: NextRequest) {
         null,
       ip_address: ipAddress,
     });
-
-    // =========================================================
-    // RESPONSE
-    // =========================================================
 
     return NextResponse.json({
       success: true,
