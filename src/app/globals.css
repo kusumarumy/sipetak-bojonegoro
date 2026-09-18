@@ -4385,63 +4385,50 @@ main.body {
   border-bottom: 1px solid #e5e7eb;
 }
 
-
 .daftar-table th .sort-header {
   all: unset;
 
+  position: relative;
+  z-index: 10;
+
   display: inline-flex;
-
   align-items: center;
-
   gap: 5px;
 
   padding: 2px 0;
 
   cursor: pointer;
+  pointer-events: auto;
 
   color: #6b7280;
 
   font-family: var(--f-body, Arial, sans-serif);
-
   font-size: 8px;
-
   font-weight: 800;
-
   letter-spacing: 0.065em;
-
   line-height: 1;
 }
-
 
 .daftar-table th .sort-header:hover {
   color: #A51F35;
 }
-
 
 .daftar-table th .sort-header:focus,
 .daftar-table th .sort-header:focus-visible {
   outline: none;
 }
 
-
-.sort-icon {
+.daftar-table th .sort-header .sort-icon {
+  pointer-events: none;
   display: inline-flex;
-
   align-items: center;
   justify-content: center;
 
   width: 10px;
+  min-width: 10px;
 
-  color: #a1a1aa;
-
-  font-size: 10px;
-
+  font-size: 9px;
   line-height: 1;
-}
-
-
-.daftar-table th .sort-header:hover .sort-icon {
-  color: #A51F35;
 }
 
 .daftar-table td {
