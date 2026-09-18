@@ -161,10 +161,6 @@ export async function GET(
       );
     }
 
-    /* =====================================================
-       AMBIL RIWAYAT DARI AUDIT LOG
-       ===================================================== */
-
     const hasilRiwayat = await query<any>(
       `
       SELECT
@@ -184,7 +180,27 @@ export async function GET(
       `,
       [id]
     );
-
+const hasilLampiran = await query<any>(
+  `
+  SELECT
+    id,
+    bidang_id,
+    kategori,
+    object_key,
+    nama_asli,
+    mime,
+    ukuran_byte,
+    lat,
+    lon,
+    diambil_pada,
+    diunggah_pada,
+    sensitif
+  FROM public.lampiran
+  WHERE bidang_id = $1
+  ORDER BY diunggah_pada DESC, id DESC
+  `,
+  [id]
+);
 
     const bidang = {
       id: String(b.id),
@@ -298,7 +314,20 @@ export async function GET(
         b.dikirim_pada,
       diverifikasi_pada:
         b.diverifikasi_pada,
-      lampiran: [],
+      lampiran: hasilLampiran.map((l) => ({
+      id: String(l.id),
+      bidang_id: String(l.bidang_id),
+      kategori: l.kategori,
+      object_key: l.object_key,
+      nama_asli: l.nama_asli,
+      mime: l.mime,
+      ukuran_byte: l.ukuran_byte,
+      lat: l.lat,
+      lon: l.lon,
+      diambil_pada: l.diambil_pada,
+      diunggah_pada: l.diunggah_pada,
+      sensitif: l.sensitif,
+    })),
       riwayat: hasilRiwayat.map((r) => ({
         id: r.id,
         aksi: r.aksi,
@@ -534,10 +563,6 @@ export async function PATCH(
           );
         }
 
-        /* ===============================================
-           UPDATE
-           =============================================== */
-
         const set = isi
           .map(
             ([kolom], index) =>
@@ -560,10 +585,7 @@ export async function PATCH(
           ]
         );
 
-        /* ===============================================
-         AUDIT LOG
-         HANYA YANG BENAR-BENAR BERUBAH
-         =============================================== */
+        
       for (
         const [kolom, nilaiBaru]
         of isi
@@ -581,12 +603,10 @@ export async function PATCH(
             ? null
             : String(nilaiBaru);
       
-        // Tidak ada perubahan → tidak dicatat
         if (lamaText === baruText) {
           continue;
         }
       
-        // Tentukan jenis aksi
         let aksi: "INPUT" | "UPDATE" | "DELETE";
       
         const lamaKosong =
@@ -650,10 +670,6 @@ export async function PATCH(
       }
       }
        );
-
-    /* =====================================================
-       BERHASIL
-       ===================================================== */
 
     return NextResponse.json({
       ok: true,
