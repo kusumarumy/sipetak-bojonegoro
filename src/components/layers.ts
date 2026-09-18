@@ -155,6 +155,7 @@ export const LAYERS: DefLayer[] = [
   warna: '#9ED45E',
   grup: 'Utilitas'
 },
+  /*
   {
   id: 'kontur_kawasan',
   nama: 'Kontur Kawasan',
@@ -178,6 +179,7 @@ export const LAYERS: DefLayer[] = [
   opasitas: 0.85,
   grup: 'Hipsografi'
 },
+*/
 ];
 
 export const KONTUR = {
