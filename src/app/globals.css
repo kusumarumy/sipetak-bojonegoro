@@ -4225,8 +4225,26 @@ main.body {
 
   font-size: 11px;
 }
+
+.daftar-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 60;
+
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+
+  padding: 18px;
+
+  background: rgba(14, 23, 32, .38);
+
+  pointer-events: auto;
+}
+
 .daftar-flyout {
   position: fixed;
+
   left: 82px;
   top: 104px;
 
@@ -4238,114 +4256,332 @@ main.body {
 
   box-sizing: border-box;
 
-  background: #fff;
-  border: 1px solid #e5e7eb;
+  background: var(--terrain-ui-bg, #fff);
+
+  border: 1px solid var(--terrain-ui-line, #e5e7eb);
   border-radius: 10px;
+
   box-shadow:
     0 14px 36px rgba(15, 23, 42, 0.13),
     0 2px 8px rgba(15, 23, 42, 0.05);
+
   overflow: hidden;
+
   z-index: 960;
+
+  min-width: 0;
+
+  animation: flyoutIn 0.16s ease-out;
+}
+
+.daftar-bidang {
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+
+  min-width: 0;
+  min-height: 0;
+
+  background: var(--terrain-ui-bg, #fff);
+
+  overflow: hidden;
+}
+
+.daftar-head {
+  padding: 8px 10px 7px;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 7px;
+
+  background: var(--terrain-ui-bg, #fff);
+
+  border-bottom: 1px solid var(--terrain-ui-line, #e5e7eb);
 
   min-width: 0;
 }
 
-.daftar-bidang {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  min-height: 0;
-}
-.daftar-head {
-  min-height: 52px;
-  padding: 8px 10px;
+.daftar-head-top {
+  width: 100%;
+  min-width: 0;
 
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
 
-  background: #fff;
-  border-bottom: 1px solid #e5e7eb;
+  gap: 10px;
 }
 
 .daftar-head-main {
+  min-width: 0;
+
   display: flex;
   align-items: center;
+
   gap: 8px;
-  min-width: 0;
+
+  flex: 1 1 auto;
 }
 
 .daftar-head-icon {
   width: 29px;
   height: 29px;
+
   flex: 0 0 29px;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--terrain-ui-line, #e5e7eb);
   border-radius: 7px;
-  background: #f8fafc;
-  color: #A51F35;
+
+  background: var(--terrain-ui-soft, #f8fafc);
+
+  color: var(--terrain-ui-accent, #A51F35);
 }
 
 .daftar-head-icon svg {
   width: 15px;
   height: 15px;
+
+  display: block;
 }
 
-/* JUDUL + SUBTITLE */
 .daftar-title-wrap {
+  min-width: 0;
+
   display: flex;
   flex-direction: column;
   justify-content: center;
+
   gap: 2px;
-  min-width: 0;
 }
 
 .daftar-title {
+  min-width: 0;
+
   display: flex;
   align-items: center;
+
   gap: 7px;
-  min-width: 0;
 }
 
 .daftar-title strong {
-  color: #374151;
-  font-family: var(--f-body, Arial, sans-serif);
+  min-width: 0;
+
+  color: var(--terrain-ui-title, #374151);
+
+  font-family: var(--terrain-ui-font, var(--f-body, Arial, sans-serif));
+
   font-size: 10px;
   font-weight: 800;
+
   letter-spacing: 0.06em;
+
+  line-height: 1;
+
   white-space: nowrap;
 }
 
 .daftar-count {
-  color: #9ca3af;
-  font-family: var(--f-body, Arial, sans-serif);
+  color: var(--terrain-ui-muted, #9ca3af);
+
+  font-family: var(--terrain-ui-font, var(--f-body, Arial, sans-serif));
+
   font-size: 8px;
   font-weight: 500;
+
   white-space: nowrap;
+
+  font-variant-numeric: tabular-nums;
 }
 
 .daftar-subtitle {
-  color: #71869a;
-  font-family: var(--f-body, Arial, sans-serif);
+  color: var(--terrain-ui-muted, #71869a);
+
+  font-family: var(--terrain-ui-font, var(--f-body, Arial, sans-serif));
+
   font-size: 10px;
   font-weight: 600;
+
   line-height: 1.15;
+
   white-space: nowrap;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.daftar-actions {
+  width: 100%;
+  min-width: 0;
+
+  display: flex;
+  align-items: center;
+
+  gap: 4px;
+
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  padding: 0 0 1px;
+
+  scrollbar-width: none;
+}
+
+.daftar-actions::-webkit-scrollbar {
+  display: none;
+}
+
+.daftar-actions button {
+  appearance: none;
+
+  flex: 0 0 auto;
+
+  min-height: 22px;
+
+  padding: 4px 7px;
+
+  border: 1px solid var(--terrain-ui-line, #e5e7eb);
+  border-radius: 5px;
+
+  background: var(--terrain-ui-soft, #f8fafc);
+
+  color: var(--terrain-ui-text, #7b818b);
+
+  font-family: var(--terrain-ui-font, var(--f-body, Arial, sans-serif));
+
+  font-size: 7px;
+  font-weight: 800;
+
+  letter-spacing: 0.045em;
+
+  line-height: 1;
+
+  white-space: nowrap;
+
+  cursor: pointer;
+
+  transition:
+    background 0.14s ease,
+    color 0.14s ease,
+    border-color 0.14s ease,
+    transform 0.14s ease;
+}
+
+
+.daftar-actions button:hover {
+  border-color: var(--terrain-ui-accent, #A51F35);
+
+  color: var(--terrain-ui-title, #374151);
+
+  background: var(--terrain-ui-soft, #f1f5f9);
+}
+
+
+.daftar-actions button:active {
+  transform: translateY(1px);
+}
+
+.daftar-actions button.active {
+  border-color: #A51F35;
+
+  background: #A51F35;
+
+  color: #fff;
+}
+
+.daftar-close {
+  width: 30px;
+  height: 30px;
+
+  flex: 0 0 30px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  margin: 0;
+  padding: 0;
+
+  appearance: none;
+
+  border: 0;
+  border-radius: 7px;
+
+  background: transparent;
+
+  color: #6b7280;
+
+  cursor: pointer;
+
+  transition:
+    background 0.14s ease,
+    color 0.14s ease;
+}
+
+
+.daftar-close svg {
+  display: block;
+
+  width: 17px;
+  height: 17px;
+
+  fill: none;
+
+  stroke: currentColor;
+
+  color: currentColor;
+
+  flex: 0 0 17px;
+}
+
+
+.daftar-close:hover {
+  background: #f3f4f6;
+
+  color: #A51F35;
+}
+
+
+.daftar-close:focus,
+.daftar-close:focus-visible {
+  outline: none;
 }
 
 .daftar-table-wrap {
-  flex: 1;
+  flex: 1 1 auto;
+
+  min-height: 0;
+  min-width: 0;
 
   overflow: auto;
 
-  background: #fff;
+  background: var(--terrain-ui-bg, #fff);
 }
 
+.daftar-table-wrap::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+.daftar-table-wrap::-webkit-scrollbar-track {
+  background: #f8fafc;
+}
+
+.daftar-table-wrap::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+
+  border-radius: 8px;
+}
+
+.daftar-table-wrap::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
 
 .daftar-table {
   width: 100%;
@@ -4354,14 +4590,14 @@ main.body {
 
   border-collapse: collapse;
 
-  font-family: var(--f-body, Arial, sans-serif);
+  font-family: var(--terrain-ui-font, var(--f-body, Arial, sans-serif));
 
   font-size: 9px;
 }
 
-
 .daftar-table th {
   position: sticky;
+
   top: 0;
 
   z-index: 3;
@@ -4370,7 +4606,7 @@ main.body {
 
   background: #f8fafc;
 
-  color: #7b818b;
+  color: var(--terrain-ui-text, #7b818b);
 
   font-size: 7.5px;
 
@@ -4389,29 +4625,38 @@ main.body {
   all: unset;
 
   position: relative;
+
   z-index: 10;
 
   display: inline-flex;
   align-items: center;
+
   gap: 5px;
 
   padding: 2px 0;
 
   cursor: pointer;
+
   pointer-events: auto;
 
   color: #6b7280;
 
-  font-family: var(--f-body, Arial, sans-serif);
+  font-family: var(--terrain-ui-font, var(--f-body, Arial, sans-serif));
+
   font-size: 8px;
+
   font-weight: 800;
+
   letter-spacing: 0.065em;
+
   line-height: 1;
 }
+
 
 .daftar-table th .sort-header:hover {
   color: #A51F35;
 }
+
 
 .daftar-table th .sort-header:focus,
 .daftar-table th .sort-header:focus-visible {
@@ -4420,6 +4665,7 @@ main.body {
 
 .daftar-table th .sort-header .sort-icon {
   pointer-events: none;
+
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -4428,15 +4674,18 @@ main.body {
   min-width: 10px;
 
   font-size: 9px;
+
   line-height: 1;
 }
 
 .daftar-table td {
   padding: 7px 9px;
 
-  color: #374151;
+  color: var(--terrain-ui-text, #374151);
 
   font-size: 9px;
+
+  font-weight: 500;
 
   white-space: nowrap;
 
@@ -4455,15 +4704,16 @@ main.body {
   background: #fafafa;
 }
 
-
-/* =========================================================
-   KODE
-   ========================================================= */
-
 .daftar-table .kode {
   color: #A51F35;
 
+  font-family: var(--terrain-ui-font, var(--f-display, Arial, sans-serif));
+
+  font-size: 9px;
+
   font-weight: 700;
+
+  letter-spacing: 0.02em;
 
   font-variant-numeric: tabular-nums;
 }
@@ -4471,14 +4721,13 @@ main.body {
 .daftar-table .angka {
   text-align: right;
 
-  color: #475569;
+  color: var(--terrain-ui-text, #475569);
 
   font-variant-numeric: tabular-nums;
 }
 
 .status-daftar {
   display: inline-flex;
-
   align-items: center;
 
   gap: 6px;
@@ -4500,6 +4749,8 @@ main.body {
   font-weight: 800;
 
   letter-spacing: 0.035em;
+
+  white-space: nowrap;
 }
 
 
@@ -4514,31 +4765,17 @@ main.body {
   background: #9ca3af;
 }
 
-
-/* INPUT */
-
 .audit-input .status-dot {
   background: #00E5FF;
 }
-
-
-/* UPDATE */
 
 .audit-update .status-dot {
   background: #FFD600;
 }
 
-
-/* DELETE */
-
 .audit-delete .status-dot {
   background: #A51F35;
 }
-
-
-/* =========================================================
-   EMPTY
-   ========================================================= */
 
 .daftar-empty {
   padding: 38px 20px !important;
@@ -4550,42 +4787,25 @@ main.body {
   font-size: 10px !important;
 }
 
-
-/* =========================================================
-   SCROLLBAR
-   ========================================================= */
-
-.daftar-table-wrap::-webkit-scrollbar {
-  width: 7px;
-  height: 7px;
-}
-
-.daftar-table-wrap::-webkit-scrollbar-track {
-  background: #f8fafc;
-}
-
-.daftar-table-wrap::-webkit-scrollbar-thumb {
-  background: #d1d5db;
-
-  border-radius: 8px;
-}
-
-.daftar-table-wrap::-webkit-scrollbar-thumb:hover {
-  background: #9ca3af;
-}
-
 @media (max-width: 1050px) {
   .daftar-flyout {
     left: 72px;
-    width: min(700px, calc(100vw - 88px));
+
+    width: min(
+      700px,
+      calc(100vw - 88px)
+    );
   }
 }
 
+
 @media (max-width: 850px) {
   .daftar-head {
-    align-items: flex-start;
+    padding: 8px 9px 7px;
+  }
 
-    flex-direction: column;
+  .daftar-head-top {
+    width: 100%;
   }
 
   .daftar-actions {
@@ -4596,6 +4816,16 @@ main.body {
     overflow-x: auto;
 
     padding-bottom: 2px;
+  }
+
+  .daftar-title strong {
+    font-size: 9px;
+  }
+
+  .daftar-subtitle {
+    max-width: calc(100vw - 150px);
+
+    font-size: 9px;
   }
 }
 
@@ -7033,388 +7263,6 @@ main.body {
   padding: 16px 18px 20px;
 }
 
-.daftar-overlay {
-  position: absolute;
-
-  inset: 0;
-
-  z-index: 60;
-
-  display: flex;
-
-  align-items: stretch;
-  justify-content: center;
-
-  padding: 18px;
-
-  background: rgba(14, 23, 32, .38);
-
-  pointer-events: auto;
-}
-
-.daftar-bidang {
-  width: 100%;
-  height: 100%;
-
-  display: flex;
-  flex-direction: column;
-  max-height: calc(100vh - 125px);
-  min-width: 0;
-  background: var(--chassis2);
-
-  border: 1px solid var(--line);
-
-  box-shadow:
-    0 14px 40px rgba(0, 0, 0, .22);
-
-  overflow: hidden;
-}
-
-.daftar-flyout {
-  position: fixed;
-  left: 82px;
-  top: 104px;
-  width: 700px;
-  max-width: calc(100vw - 110px);
-  max-height: calc(100vh - 125px);
-  background: var(--panel-bg, #ffffff);
-  border: 1px solid var(--panel-border, #e5e7eb);
-  border-radius: 12px;
-  box-shadow:
-    0 18px 45px rgba(15, 23, 42, 0.14),
-    0 3px 10px rgba(15, 23, 42, 0.06);
-  overflow: hidden;
-  z-index: 960;
-  animation: flyoutIn 0.16s ease-out;
-}
-
-.daftar-head {
-  padding: 12px 14px;
-
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 18px;
-
-  background: var(--panel-bg, #fff);
-  border-bottom: 1px solid var(--panel-border, #e5e7eb);
-}
-
-
-/* TITLE */
-
-.daftar-title {
-  display: flex;
-  align-items: baseline;
-  gap: 8px;
-
-  min-width: 250px;
-
-  font-family: var(--f-body, Arial, sans-serif);
-  font-size: 10px;
-  color: #8a8f98;
-}
-
-.daftar-title span:first-child {
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  color: #6b7280;
-}
-
-.daftar-title strong {
-  font-family: var(--f-display, Arial, sans-serif);
-  font-size: 16px;
-  line-height: 1;
-  font-weight: 750;
-  color: #7b1528;
-  font-variant-numeric: tabular-nums;
-}
-
-.daftar-title span:last-child {
-  font-size: 10px;
-  color: #9ca3af;
-}
-.daftar-actions {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 5px;
-  flex-wrap: nowrap;
-  transform: translateY(4px);
-}
-
-.daftar-actions button {
-  appearance: none;
-  border: 1px solid #e5e7eb;
-  background: #f8fafc;
-  color: #6b7280;
-  min-height: 20px;
-  padding: 0 5px;
-  border-radius: 6px;
-  font-family: var(--f-body, Arial, sans-serif);
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 0.025em;
-  cursor: pointer;
-  transition:
-    background 0.14s ease,
-    color 0.14s ease,
-    border-color 0.14s ease,
-    transform 0.14s ease;
-}
-
-.daftar-actions button:hover {
-  background: #f1f5f9;
-  border-color: #d1d5db;
-  color: #374151;
-}
-
-.daftar-actions button:active {
-  transform: translateY(1px);
-}
-
-.daftar-actions button.active {
-  background: #A51F35;
-  border-color: #A51F35;
-  color: #fff;
-}
-
-
-/* =========================
-   CLOSE BUTTON
-   ========================= */
-
-.daftar-actions .daftar-close {
-  width: 28px;
-  height: 28px;
-  min-width: 28px;
-  min-height: 28px;
-
-  flex: 0 0 28px;
-
-  margin-left: 5px;
-  padding: 0;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  appearance: none;
-
-  background: transparent;
-  border: 1px solid #d1d5db;
-  border-radius: 7px;
-
-  color: #6b7280;
-}
-
-.daftar-actions .daftar-close svg {
-  display: block;
-
-  width: 13px !important;
-  height: 13px !important;
-
-  fill: none;
-  stroke: currentColor;
-  color: currentColor;
-
-  flex: 0 0 13px;
-}
-
-.daftar-actions .daftar-close:hover {
-  background: #f3f4f6;
-  border-color: #9ca3af;
-  color: #374151;
-}
-
-.daftar-table-wrap {
-  flex: 1;
-  overflow: auto;
-
-  background: var(--panel-bg, #fff);
-}
-
-
-/* scrollbar */
-
-.daftar-table-wrap::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-.daftar-table-wrap::-webkit-scrollbar-track {
-  background: #f8fafc;
-}
-
-.daftar-table-wrap::-webkit-scrollbar-thumb {
-  background: #d1d5db;
-  border-radius: 8px;
-}
-
-.daftar-table-wrap::-webkit-scrollbar-thumb:hover {
-  background: #9ca3af;
-}
-
-
-/* =========================================================
-   TABLE
-   ========================================================= */
-
-.daftar-table {
-  width: 100%;
-  min-width: 980px;
-
-  border-collapse: separate;
-  border-spacing: 0;
-
-  font-family: var(--f-body, Arial, sans-serif);
-  font-size: 10px;
-}
-
-
-/* =========================================================
-   TABLE HEADER
-   ========================================================= */
-
-.daftar-table th {
-  position: sticky;
-  top: 0;
-  z-index: 2;
-
-  padding: 9px 12px;
-
-  background: #f8fafc;
-
-  color: #7b818b;
-
-  font-size: 8px;
-  font-weight: 800;
-
-  letter-spacing: 0.075em;
-  text-transform: uppercase;
-
-  text-align: left;
-  white-space: nowrap;
-
-  border-bottom: 1px solid #e5e7eb;
-}
-
-
-/* =========================================================
-   TABLE BODY
-   ========================================================= */
-
-.daftar-table td {
-  padding: 9px 12px;
-
-  color: #374151;
-
-  white-space: nowrap;
-
-  border-bottom: 1px solid #f1f5f9;
-
-  vertical-align: middle;
-}
-
-.daftar-table tbody tr {
-  transition: background 0.12s ease;
-}
-
-.daftar-table tbody tr:hover {
-  background: #fafafa;
-}
-
-
-/* =========================================================
-   KODE BIDANG
-   ========================================================= */
-
-.daftar-table .kode {
-  color: #A51F35;
-
-  font-family: var(--f-display, Arial, sans-serif);
-  font-size: 10px;
-  font-weight: 800;
-
-  letter-spacing: 0.02em;
-}
-
-
-/* =========================================================
-   ANGKA
-   ========================================================= */
-
-.daftar-table .angka {
-  text-align: right;
-
-  font-variant-numeric: tabular-nums;
-
-  color: #374151;
-}
-
-
-/* =========================================================
-   STATUS
-   ========================================================= */
-
-.status-daftar {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-
-  padding: 4px 7px;
-
-  border: 1px solid #e5e7eb;
-  border-radius: 5px;
-
-  background: #f8fafc;
-
-  color: #6b7280;
-
-  font-size: 8px;
-  font-weight: 800;
-
-  letter-spacing: 0.035em;
-}
-
-.status-dot {
-  width: 5px;
-  height: 5px;
-
-  flex: 0 0 auto;
-
-  border-radius: 50%;
-
-  background: #9ca3af;
-}
-
-
-.daftar-empty {
-  padding: 42px 20px !important;
-
-  text-align: center;
-
-  color: #9ca3af !important;
-
-  font-size: 10px;
-}
-
-@media (max-width: 1000px) {
-  .daftar-flyout {
-    left: 72px;
-    width: calc(100vw - 88px);
-  }
-
-  .daftar-head {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-
-  .daftar-actions {
-    justify-content: flex-start;
-  }
-}
 
 .dl {
   display: grid;
@@ -11724,80 +11572,6 @@ main.body {
 
 .filter-subtitle {
   color: var(--terrain-ui-muted);
-}
-
-/* ---------- DAFTAR BIDANG: DIPERKECIL ---------- */
-.daftar-flyout {
-  left: 82px;
-  top: 104px;
-  width: min(900px, calc(100vw - 110px));
-  max-height: 70vh;
-  border: 1px solid var(--terrain-ui-line);
-  border-radius: 10px;
-  background: var(--terrain-ui-bg);
-  box-shadow: var(--terrain-ui-shadow);
-}
-
-.daftar-bidang {
-  max-height: 70vh;
-}
-.daftar-bidang-tabs {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-top: 1px;
-}
-.daftar-head {
-  background: var(--terrain-ui-bg);
-  border-bottom-color: var(--terrain-ui-line);
-}
-
-.daftar-title {
-  min-width: 0;
-  font-family: var(--terrain-ui-font);
-  color: var(--terrain-ui-muted);
-}
-
-.daftar-title span:first-child,
-.daftar-title span:last-child {
-  font-family: var(--terrain-ui-font);
-  color: var(--terrain-ui-muted);
-}
-
-.daftar-title strong {
-  font-family: var(--terrain-ui-font);
-  color: var(--terrain-ui-title);
-  font-size: 16px;
-  font-weight: 750;
-}
-
-.daftar-actions button {
-  font-family: var(--terrain-ui-font);
-  border-color: var(--terrain-ui-line);
-  background: var(--terrain-ui-soft);
-  color: var(--terrain-ui-text);
-  border-radius: 8px;
-}
-
-.daftar-actions button:hover {
-  border-color: var(--terrain-ui-accent);
-  color: var(--terrain-ui-title);
-}
-
-.daftar-table {
-  font-family: var(--terrain-ui-font);
-}
-
-.daftar-table th {
-  font-size: 9px;
-  font-weight: 750;
-  color: var(--terrain-ui-text);
-}
-
-.daftar-table td {
-  font-size: 10px;
-  font-weight: 500;
-  color: var(--terrain-ui-text);
 }
 
 /* ---------- RIWAYAT AKSES / LOG: DIPADATKAN ---------- */
