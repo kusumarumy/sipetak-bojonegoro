@@ -2351,48 +2351,36 @@ return (
     ref={ref}
     className="canvas"
   >
+{loadingLayerIds.length > 0 && (
+  <div className="layer-loading">
+    <strong className="layer-loading-title">
+      MEMUAT LAYER
+    </strong>
 
-    {layerLoading.length > 0 && (
-      <div className="layer-loading">
+    <div className="layer-loading-text">
+      {(() => {
+        const namaLayer = loadingLayerIds
+          .map((id) => LAYERS.find((layer) => layer.id === id)?.nama)
+          .filter(Boolean) as string[];
 
-        <div className="layer-loading-head">
-          <span className="layer-loading-spinner" />
-          <span>Memuat layer</span>
-        </div>
+        let daftarLayer = '';
 
-        <div className="layer-loading-list">
-          {layerLoading.map((id) => {
-            const layer = LAYERS.find(
-              (l) => l.id === id
-            );
+        if (namaLayer.length === 1) {
+          daftarLayer = namaLayer[0];
+        } else if (namaLayer.length === 2) {
+          daftarLayer = `${namaLayer[0]} dan ${namaLayer[1]}`;
+        } else {
+          daftarLayer =
+            namaLayer.slice(0, -1).join(', ') +
+            ', dan ' +
+            namaLayer[namaLayer.length - 1];
+        }
 
-            if (!layer) {
-              return null;
-            }
-
-            return (
-              <div
-                key={id}
-                className="layer-loading-item"
-              >
-                <span
-                  className="layer-loading-dot"
-                  style={{
-                    background:
-                      layer.warna
-                  }}
-                />
-
-                <span>
-                  {layer.nama}
-                </span>
-              </div>
-            );
-          })}
-        </div>
-
-      </div>
-    )}
+        return `${daftarLayer} sedang dimuat...`;
+      })()}
+    </div>
+  </div>
+)}
 
     <div className="map-info">
         <span>
