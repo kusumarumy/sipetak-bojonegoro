@@ -67,9 +67,6 @@ export const penyimpananSiap = (): boolean => {
   );
 };
 
-/**
- * Upload objek ke Cloudflare R2
- */
 export async function unggahObjek(
   objectKey: string,
   body: Buffer | Uint8Array,
@@ -111,9 +108,6 @@ export async function unggahObjek(
   }
 }
 
-/**
- * Membuat presigned URL untuk upload
- */
 export async function urlUnggah(
   objectKey: string,
   mime: string,
@@ -132,9 +126,6 @@ export async function urlUnggah(
   );
 }
 
-/**
- * Membuat presigned URL untuk membaca file
- */
 export async function urlBaca(
   objectKey: string,
   detik = 300
@@ -150,10 +141,6 @@ export async function urlBaca(
     }
   );
 }
-
-/**
- * Menghapus objek dari Cloudflare R2
- */
 export async function hapusObjek(objectKey: string) {
   console.log("R2 DELETE START", {
     objectKey,
