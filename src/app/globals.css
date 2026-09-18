@@ -4230,8 +4230,13 @@ main.body {
   left: 82px;
   top: 104px;
 
-  width: min(700px, calc(100vw - 110px));
+  width: 700px;
+  max-width: calc(100vw - 110px);
+
+  height: min(560px, calc(100vh - 155px));
   max-height: min(560px, calc(100vh - 155px));
+
+  box-sizing: border-box;
 
   background: #fff;
   border: 1px solid #e5e7eb;
@@ -4241,6 +4246,8 @@ main.body {
     0 2px 8px rgba(15, 23, 42, 0.05);
   overflow: hidden;
   z-index: 960;
+
+  min-width: 0;
 }
 
 .daftar-bidang {
