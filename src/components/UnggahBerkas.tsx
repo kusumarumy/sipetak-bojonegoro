@@ -993,58 +993,63 @@ function KartuDokumen({
         />
       </div>
 
-      {/* =================================================
-          PREVIEW — PANEL KECIL DI KIRI KARTU BIDANG
-      ================================================== */}
+{previewOpen && previewUrl && (
+  <div className="kb-preview-modal">
+    <div
+      className="kb-preview-dialog"
+      role="dialog"
+      aria-modal="true"
+      onClick={(event) => event.stopPropagation()}
+    >
+      <div className="kb-preview-header">
+        <div>
+          <strong>
+            {lampiran?.nama_asli ?? "Preview dokumen"}
+          </strong>
 
-      {previewOpen && previewUrl && (
-        <div className="kb-preview-backdrop">
-          <div
-            className="kb-preview-dialog"
-            role="dialog"
-            aria-modal="false"
-            onClick={(event) =>
-              event.stopPropagation()
-            }
-          >
-            <div className="kb-preview-header">
-              <strong className="kb-preview-title">
-                {lampiran?.nama_asli ??
-                  "Preview dokumen"}
-              </strong>
-
-              <button
-                type="button"
-                className="kb-preview-close"
-                onClick={tutupPreview}
-                aria-label="Tutup preview"
-              >
-                ×
-              </button>
-            </div>
-
-            <div className="kb-preview-content">
-              {adalahPdf ? (
-                <iframe
-                  src={previewUrl}
-                  title={
-                    lampiran?.nama_asli ??
-                    "Preview PDF"
-                  }
-                />
-              ) : (
-                <img
-                  src={previewUrl}
-                  alt={
-                    lampiran?.nama_asli ??
-                    "Preview dokumen"
-                  }
-                />
-              )}
-            </div>
-          </div>
+          <span>
+            Dokumen pendukung
+          </span>
         </div>
-      )}
+
+        <button
+          type="button"
+          className="kb-preview-close"
+          onClick={tutupPreview}
+          aria-label="Tutup preview"
+        >
+          ×
+        </button>
+      </div>
+
+      <div className="kb-preview-body">
+        {adalahPdf ? (
+          <iframe
+            src={previewUrl}
+            title={
+              lampiran?.nama_asli ??
+              "Preview PDF"
+            }
+          />
+        ) : (
+          <img
+            src={previewUrl}
+            alt={
+              lampiran?.nama_asli ??
+              "Preview dokumen"
+            }
+          />
+        )}
+      </div>
+
+      <div className="kb-preview-footer">
+        <span>
+          {lampiran?.nama_asli ?? "Dokumen"}
+        </span>
+      </div>
+    </div>
+  </div>
+)}
     </>
   );
 }
