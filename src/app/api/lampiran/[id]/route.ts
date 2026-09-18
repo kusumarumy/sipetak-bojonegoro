@@ -7,11 +7,6 @@ import type { StatusBidang } from '@/types';
 
 type Ctx = { params: Promise<{ id: string }> };
 
-/**
- * GET /api/lampiran/:id — mengembalikan URL baca berumur 5 menit.
- * Berkas sensitif (KTP, KK, sertipikat) ditolak untuk peran pelihat di sini,
- * bukan sekadar disembunyikan di antarmuka.
- */
 export async function GET(_req: Request, { params }: Ctx) {
   const sesi = await auth();
   if (!sesi?.user) return new NextResponse('Belum masuk', { status: 401 });
