@@ -426,8 +426,8 @@ useEffect(() => {
       if (!response.ok) {
         throw new Error(
           data?.error ||
-          data?.message ||
-          "Gagal memuat preview"
+            data?.message ||
+            "Gagal memuat preview"
         );
       }
 
