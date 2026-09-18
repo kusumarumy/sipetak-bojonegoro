@@ -377,6 +377,14 @@ function KartuFoto({
 
   const ada = !!lampiran;
 
+console.log("DATA KARTU FOTO:", {
+  kategori,
+  ada,
+  lampiran,
+  lampiranId: lampiran?.id,
+  objectKey: lampiran?.object_key,
+});
+
   const dapatUnggah =
     bolehEdit &&
     !ada &&
@@ -384,49 +392,83 @@ function KartuFoto({
     !terkunci;
 
   useEffect(() => {
-    let batal = false;
+  let batal = false;
 
-    if (lampiran && !terkunci) {
-      setPreviewLoading(true);
-
-      fetch(`/api/lampiran/${lampiran.id}`)
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("Gagal memuat preview");
-          }
-
-          return response.json();
-        })
-        .then((data) => {
-          if (!batal) {
-            setSrc(data.url ?? null);
-          }
-        })
-        .catch((error) => {
-          console.error("PREVIEW LAMPIRAN:", error);
-
-          if (!batal) {
-            setSrc(null);
-          }
-        })
-        .finally(() => {
-          if (!batal) {
-            setPreviewLoading(false);
-          }
-        });
-    } else {
+  async function muatPreview() {
+    if (!lampiran?.id || terkunci) {
       setSrc(null);
       setPreviewLoading(false);
+      return;
     }
 
-    return () => {
-      batal = true;
-    };
-  }, [
-    lampiran?.id,
-    terkunci,
-  ]);
+    console.log("MEMUAT PREVIEW:", {
+      id: lampiran.id,
+      kategori,
+      object_key: lampiran.object_key,
+    });
 
+    setPreviewLoading(true);
+
+    try {
+      const response = await fetch(
+        `/api/lampiran/${lampiran.id}`,
+        {
+          method: "GET",
+          cache: "no-store",
+        }
+      );
+
+      const data = await response.json();
+
+      console.log("RESPONS PREVIEW:", {
+        status: response.status,
+        data,
+      });
+
+      if (!response.ok) {
+        throw new Error(
+          data?.error ||
+            data?.message ||
+            "Gagal memuat preview"
+        );
+      }
+
+      if (!data?.url) {
+        throw new Error(
+          "URL preview tidak dikembalikan API"
+        );
+      }
+
+      if (!batal) {
+        setSrc(data.url);
+      }
+    } catch (error) {
+      console.error(
+        "PREVIEW LAMPIRAN ERROR:",
+        error
+      );
+
+      if (!batal) {
+        setSrc(null);
+      }
+    } finally {
+      if (!batal) {
+        setPreviewLoading(false);
+      }
+    }
+  }
+
+  muatPreview();
+
+  return () => {
+    batal = true;
+  };
+}, [
+  lampiran?.id,
+  lampiran?.object_key,
+  kategori,
+  terkunci,
+]);
   const metadata =
     lampiran?.lat != null &&
     lampiran?.lon != null
@@ -494,11 +536,25 @@ function KartuFoto({
             {src ? (
               <>
                 <img
-                  src={src}
-                  alt={KATEGORI_LABEL[kategori]}
-                  className="kb-photo-image"
-                />
-
+  src={src}
+  alt={KATEGORI_LABEL[kategori]}
+  className="kb-photo-image"
+  onLoad={() => {
+    console.log(
+      "GAMBAR PREVIEW BERHASIL DIMUAT:",
+      kategori
+    );
+  }}
+  onError={(event) => {
+    console.error(
+      "GAMBAR PREVIEW GAGAL DIMUAT:",
+      kategori,
+      src,
+      event
+    );
+    setSrc(null);
+  }}
+/>
                 <div className="kb-photo-preview-overlay">
                   <span>⌕</span>
                   <small>Lihat foto</small>
