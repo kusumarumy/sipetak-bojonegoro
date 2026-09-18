@@ -130,7 +130,26 @@ export default function DaftarBidang({ onClose }: Props) {
   const [bidang, setBidang] = useState<Bidang[]>([]);
   const [memuat, setMemuat] = useState(true);
   const [filter, setFilter] = useState('semua');
+type SortDirection = 'asc' | 'desc' | null;
 
+const [sortKey, setSortKey] = useState<keyof Bidang | null>(null);
+const [sortDirection, setSortDirection] =
+  useState<SortDirection>(null);
+  const handleSort = (key: keyof Bidang) => {
+  if (sortKey !== key) {
+    setSortKey(key);
+    setSortDirection('asc');
+    return;
+  }
+
+  if (sortDirection === 'asc') {
+    setSortDirection('desc');
+    return;
+  }
+
+  setSortKey(null);
+  setSortDirection(null);
+};
   useEffect(() => {
     const ambilData = async () => {
       try {
@@ -176,14 +195,83 @@ export default function DaftarBidang({ onClose }: Props) {
     };
   }, [bidang]);
 
-  const dataTampil = useMemo(() => {
-    if (filter === 'semua') {
-      return bidang;
+const dataTampil = useMemo(() => {
+  let data =
+    filter === 'semua'
+      ? [...bidang]
+      : bidang.filter((b) => b.status === filter);
+
+  if (!sortKey || !sortDirection) {
+    return data;
+  }
+
+  data.sort((a, b) => {
+    const av = a[sortKey];
+    const bv = b[sortKey];
+
+    if (av == null && bv == null) return 0;
+    if (av == null) return 1;
+    if (bv == null) return -1;
+
+    let hasil = 0;
+
+const fieldTanggal = [
+  'created_at',
+  'tanggal_ukur',
+  'dikirim_pada',
+  'diverifikasi_pada',
+].includes(String(sortKey));
+
+if (fieldTanggal) {
+  hasil =
+    new Date(String(av)).getTime() -
+    new Date(String(bv)).getTime();
+} else if (
+  typeof av === 'number' &&
+  typeof bv === 'number'
+) {
+  hasil = av - bv;
+} else {
+  hasil = String(av).localeCompare(
+    String(bv),
+    'id-ID',
+    {
+      numeric: true,
+      sensitivity: 'base',
     }
+  );
+}
 
-    return bidang.filter((b) => b.status === filter);
-  }, [bidang, filter]);
+    return sortDirection === 'asc'
+      ? hasil
+      : -hasil;
+  });
 
+  return data;
+}, [bidang, filter, sortKey, sortDirection]);
+const SortHeader = ({
+  label,
+  field,
+}: {
+  label: string;
+  field: keyof Bidang;
+}) => (
+  <button
+    type="button"
+    className="sort-header"
+    onClick={() => handleSort(field)}
+  >
+    <span>{label}</span>
+
+    <span className="sort-icon">
+      {sortKey === field
+        ? sortDirection === 'asc'
+          ? '↑'
+          : '↓'
+        : '↕'}
+    </span>
+  </button>
+);
   return (
     <div className="daftar-flyout">
       <section className="daftar-bidang">
@@ -305,73 +393,73 @@ export default function DaftarBidang({ onClose }: Props) {
         <div className="daftar-table-wrap">
           <table className="daftar-table">
 
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>OBJECTID</th>
-                <th>BIDANG ID</th>
-                <th>KODE WILAYAH</th>
-                <th>KECAMATAN</th>
-                <th>KELURAHAN</th>
-                <th>TIPE HAK</th>
-                <th>TIPE PRODUK</th>
-                <th>TAHUN</th>
-                <th>NIB</th>
-                <th>LUAS TERTUL (M²)</th>
-                <th>LUAS PETA (M²)</th>
-                <th>SUMBER GEOM</th>
-                <th>ALAT UKUR</th>
-                <th>PENGGUNAAN</th>
-                <th>METODE UKUR</th>
-                <th>SHAPE LENGTH</th>
-                <th>SHAPE AREA</th>
-                <th>HUB. TANAH</th>
-                <th>KODE WWC</th>
-                <th>JENIS TANAH</th>
-                <th>KODE BIDANG</th>
-                <th>RT/RW</th>
-                <th>NAMA PEMILIK</th>
-                <th>TTL PEMILIK</th>
-                <th>PEKERJAAN PEMILIK</th>
-                <th>ALAMAT PEMILIK</th>
-                <th>NIK PEMILIK</th>
-                <th>NAMA PENYEWA</th>
-                <th>TTL PENYEWA</th>
-                <th>PEKERJAAN PENYEWA</th>
-                <th>ALAMAT PENYEWA</th>
-                <th>NIK PENYEWA</th>
-                <th>NOMOR HP</th>
-                <th>STATUS TANAH</th>
-                <th>SURAT HAK</th>
-                <th>NOMOR HAK</th>
-                <th>LUAS TANAH (M²)</th>
-                <th>RUANG ATBT</th>
-                <th>LUAS ATBT (M²)</th>
-                <th>JENIS TANAMAN</th>
-                <th>JUMLAH TANAMAN</th>
-                <th>JENIS BENDA</th>
-                <th>JUMLAH BENDA</th>
-                <th>BEBAN HAK</th>
-                <th>DAMPAK TANAH</th>
-                <th>JUMLAH BANGUNAN</th>
-                <th>TANGGAL UPDATE</th>
-                <th>FOTO TANAH</th>
-                <th>FID</th>
-                <th>NAMA</th>
-                <th>LAYER</th>
-                <th>PATH</th>
-                <th>DIBUAT</th>
-                <th>STATUS</th>
-                <th>LUAS TERDAMPAK (M²)</th>
-                <th>LUAS SISA (M²)</th>
-                <th>CATATAN SUPERVISOR</th>
-                <th>PETUGAS</th>
-                <th>TANGGAL UKUR</th>
-                <th>DIKIRIM PADA</th>
-                <th>DIVERIFIKASI PADA</th>
-                <th>ALAS HAK</th>
-              </tr>
-            </thead>
+<thead>
+  <tr>
+    <th><SortHeader label="ID" field="id" /></th>
+    <th><SortHeader label="OBJECTID" field="objectid" /></th>
+    <th><SortHeader label="BIDANG ID" field="bidang_id" /></th>
+    <th><SortHeader label="KODE WILAYAH" field="kodewilaya" /></th>
+    <th><SortHeader label="KECAMATAN" field="kecamatan" /></th>
+    <th><SortHeader label="KELURAHAN" field="kelurahan" /></th>
+    <th><SortHeader label="TIPE HAK" field="tipehak" /></th>
+    <th><SortHeader label="TIPE PRODUK" field="tipeproduk" /></th>
+    <th><SortHeader label="TAHUN" field="tahun" /></th>
+    <th><SortHeader label="NIB" field="nib" /></th>
+    <th><SortHeader label="LUAS TERTUL (M²)" field="luastertul" /></th>
+    <th><SortHeader label="LUAS PETA (M²)" field="luaspeta" /></th>
+    <th><SortHeader label="SUMBER GEOM" field="sumbergeom" /></th>
+    <th><SortHeader label="ALAT UKUR" field="alatukur" /></th>
+    <th><SortHeader label="PENGGUNAAN" field="penggunaan" /></th>
+    <th><SortHeader label="METODE UKUR" field="metodukur" /></th>
+    <th><SortHeader label="SHAPE LENGTH" field="shape_leng" /></th>
+    <th><SortHeader label="SHAPE AREA" field="shape_area" /></th>
+    <th><SortHeader label="HUB. TANAH" field="hub_tnh" /></th>
+    <th><SortHeader label="KODE WWC" field="kode_wwc" /></th>
+    <th><SortHeader label="JENIS TANAH" field="jenis_tnh" /></th>
+    <th><SortHeader label="KODE BIDANG" field="kode_bid" /></th>
+    <th><SortHeader label="RT/RW" field="rt_rw" /></th>
+    <th><SortHeader label="NAMA PEMILIK" field="nama_milik" /></th>
+    <th><SortHeader label="TTL PEMILIK" field="ttl_milik" /></th>
+    <th><SortHeader label="PEKERJAAN PEMILIK" field="krja_milik" /></th>
+    <th><SortHeader label="ALAMAT PEMILIK" field="almt_milik" /></th>
+    <th><SortHeader label="NIK PEMILIK" field="nik_milik" /></th>
+    <th><SortHeader label="NAMA PENYEWA" field="nama_sewa" /></th>
+    <th><SortHeader label="TTL PENYEWA" field="ttl_sewa" /></th>
+    <th><SortHeader label="PEKERJAAN PENYEWA" field="krja_sewa" /></th>
+    <th><SortHeader label="ALAMAT PENYEWA" field="almt_sewa" /></th>
+    <th><SortHeader label="NIK PENYEWA" field="nik_sewa" /></th>
+    <th><SortHeader label="NOMOR HP" field="nomor_hp" /></th>
+    <th><SortHeader label="STATUS TANAH" field="sta_tnh" /></th>
+    <th><SortHeader label="SURAT HAK" field="surat_hak" /></th>
+    <th><SortHeader label="NOMOR HAK" field="nomor_hak" /></th>
+    <th><SortHeader label="LUAS TANAH (M²)" field="luas_tnh" /></th>
+    <th><SortHeader label="RUANG ATBT" field="ruang_atbt" /></th>
+    <th><SortHeader label="LUAS ATBT (M²)" field="luas_atbt" /></th>
+    <th><SortHeader label="JENIS TANAMAN" field="jenis_tnm" /></th>
+    <th><SortHeader label="JUMLAH TANAMAN" field="jumlah_tnm" /></th>
+    <th><SortHeader label="JENIS BENDA" field="jenis_bnd" /></th>
+    <th><SortHeader label="JUMLAH BENDA" field="jumlah_bnd" /></th>
+    <th><SortHeader label="BEBAN HAK" field="beban_hak" /></th>
+    <th><SortHeader label="DAMPAK TANAH" field="dampak_tnh" /></th>
+    <th><SortHeader label="JUMLAH BANGUNAN" field="jml_bgn" /></th>
+    <th><SortHeader label="TANGGAL UPDATE" field="date_updt" /></th>
+    <th><SortHeader label="FOTO TANAH" field="foto_tnh" /></th>
+    <th><SortHeader label="FID" field="fid" /></th>
+    <th><SortHeader label="NAMA" field="nama" /></th>
+    <th><SortHeader label="LAYER" field="layer" /></th>
+    <th><SortHeader label="PATH" field="path" /></th>
+    <th><SortHeader label="DIBUAT" field="created_at" /></th>
+    <th><SortHeader label="STATUS" field="status" /></th>
+    <th><SortHeader label="LUAS TERDAMPAK (M²)" field="luas_terdampak_m2" /></th>
+    <th><SortHeader label="LUAS SISA (M²)" field="luas_sisa_m2" /></th>
+    <th><SortHeader label="CATATAN SUPERVISOR" field="catatan_supervisor" /></th>
+    <th><SortHeader label="PETUGAS" field="petugas_nama" /></th>
+    <th><SortHeader label="TANGGAL UKUR" field="tanggal_ukur" /></th>
+    <th><SortHeader label="DIKIRIM PADA" field="dikirim_pada" /></th>
+    <th><SortHeader label="DIVERIFIKASI PADA" field="diverifikasi_pada" /></th>
+    <th><SortHeader label="ALAS HAK" field="alas_hak" /></th>
+  </tr>
+</thead>
 
             <tbody>
 
