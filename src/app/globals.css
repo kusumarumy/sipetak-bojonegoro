@@ -6930,9 +6930,6 @@ main.body {
     font-size: 10px;
   }
 }
-/* =========================================================
-   POPUP KARTU BIDANG
-   ========================================================= */
 
 .maplibregl-popup {
   z-index: 1000;
@@ -7082,10 +7079,6 @@ main.body {
   text-align: right;
 }
 
-
-/* =========================================================
-   BUTTON BUKA KARTU
-   ========================================================= */
 
 .pop > button {
   width: calc(100% - 30px);
@@ -8137,132 +8130,6 @@ main.body {
 
   white-space: nowrap;
 }
-.kb-preview-backdrop {
-  position: fixed;
-  inset: 0;
-
-  background: transparent;
-
-  pointer-events: none;
-
-  z-index: 50;
-}
-
-.kb-preview-dialog {
-  position: fixed;
-  top: 104px;
-  right: 457px;
-
-  width: 330px;
-  height: 440px;
-
-  display: flex;
-  flex-direction: column;
-
-  overflow: hidden;
-
-  background: #fff;
-  border: 1px solid #e4e5e9;
-  border-radius: 16px;
-
-  box-shadow:
-    0 18px 45px rgba(0, 0, 0, 0.18),
-    0 3px 10px rgba(0, 0, 0, 0.08);
-
-  pointer-events: auto;
-  z-index: 50;
-}
-
-.kb-preview-header {
-  flex: 0 0 auto;
-
-  min-height: 48px;
-
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  padding: 9px 12px;
-
-  border-bottom: 1px solid #e4e5e9;
-  background: #fff;
-}
-
-.kb-preview-title {
-  min-width: 0;
-  flex: 1;
-
-  font-size: 12px;
-  font-weight: 700;
-
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.kb-preview-close {
-  width: 30px;
-  height: 30px;
-
-  border: 1px solid #e4e5e9;
-  border-radius: 9px;
-
-  background: #f8f8fa;
-  cursor: pointer;
-
-  font-size: 17px;
-}
-
-.kb-preview-content {
-  flex: 1;
-  min-height: 0;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  overflow: hidden;
-  background: #f5f6f8;
-}
-
-.kb-preview-content img {
-  width: 100%;
-  height: 100%;
-  padding: 10px;
-
-  object-fit: contain;
-}
-
-.kb-preview-content iframe {
-  width: 100%;
-  height: 100%;
-  border: 0;
-}
-@media (max-width: 900px) {
-  .kb-preview-dialog {
-    top: 104px;
-    right: 425px;
-
-    width: 300px;
-    height: 400px;
-  }
-}
-
-@media (max-width: 760px) {
-  .kb-preview-dialog {
-    top: auto;
-    right: 12px;
-    bottom: 12px;
-
-    width: min(360px, calc(100vw - 24px));
-    height: 420px;
-
-    z-index: 100;
-  }
-}
-/* =========================================================
-   STATUS
-   ========================================================= */
 
 .status-draft {
   background: #eef0f3;
@@ -9984,16 +9851,11 @@ main.body {
   line-height: 1.5;
 }
 
-
 /* =========================================================
-   RESPONSIVE FOTO
+   RESPONSIVE FOTO / DOKUMEN
    ========================================================= */
 
 @media (max-width: 640px) {
-  .kb-preview-modal {
-    padding: 10px;
-  }
-
   .kb-preview-dialog {
     max-height: calc(100vh - 20px);
 
@@ -10014,11 +9876,6 @@ main.body {
     padding: 9px 12px;
   }
 }
-
-
-/* =========================================================
-   RESPONSIVE
-   ========================================================= */
 
 @media (max-width: 480px) {
   .kb-photo-grid {
