@@ -52,9 +52,10 @@ return String(value);
 };
 
 const labelAksi: Record<string, string> = {
-INPUT: 'INPUT',
-UPDATE: 'UPDATE',
-DELETE: 'DELETE',
+  UPLOAD: 'UPLOAD',
+  INPUT: 'INPUT',
+  UPDATE: 'UPDATE',
+  DELETE: 'DELETE',
 };
 
 export default function RiwayatAksi({
