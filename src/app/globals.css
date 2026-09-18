@@ -4230,7 +4230,7 @@ main.body {
   left: 82px;
   top: 104px;
 
-  width: min(820px, calc(100vw - 110px));
+  width: min(700px, calc(100vw - 110px));
   max-height: min(560px, calc(100vh - 155px));
 
   background: #fff;
