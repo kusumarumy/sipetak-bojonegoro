@@ -7124,10 +7124,6 @@ main.body {
   transform: translateY(1px);
 }
 
-/* =========================================================
-   KARTU BIDANG
-   ========================================================= */
-
 .kartu {
   width: 404px;
 
@@ -8023,10 +8019,6 @@ main.body {
 
   line-height: 1.35;
 }
-/* =========================================================
-   KARTU BIDANG — MODERN
-   ========================================================= */
-
 .kartu.open.kb-modern {
   --kb-red: #8f2635;
   --kb-red-dark: #741e2b;
@@ -8036,36 +8028,24 @@ main.body {
   --kb-line: var(--line, #e4e5e9);
   --kb-text: var(--text, #202124);
   --kb-muted: var(--muted, #737780);
-
   position: fixed;
-
-  width: min(480px, calc(100vw - 24px));
-
+  width: min(400px, calc(100vw - 24px));
   top: 104px;
-  right: 12px;
+  right: 45px;
   bottom: 12px;
-
   height: auto;
-  max-height: none;
-
+  max-height: 500px;
   display: flex;
   flex-direction: column;
-
-  /* PENTING */
   overflow: hidden;
-
   background: var(--kb-bg);
   color: var(--kb-text);
-
   border: 1px solid var(--kb-line);
   border-radius: 18px;
-
   box-shadow:
     0 18px 50px rgba(0, 0, 0, 0.18),
     0 2px 8px rgba(0, 0, 0, 0.08);
-
   z-index: 40;
-
   isolation: isolate;
 }
 .kb-header {
