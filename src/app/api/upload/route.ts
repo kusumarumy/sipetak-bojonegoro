@@ -6,7 +6,7 @@ export async function POST(req: NextRequest) {
     const form = await req.formData();
     const file = form.get("file") as File;
     const key = form.get("key") as string;
-
+    
     if (!file || !key) {
       return NextResponse.json({ error: "file/key kosong" }, { status: 400 });
     }
