@@ -58,8 +58,8 @@ export default function MapCanvas() {
       pitch: 0,
       bearing: 0
     });
-const [layerLoading, setLayerLoading] =
-  useState<string[]>([]);
+//const [layerLoading, setLayerLoading] =
+//  useState<string[]>([]);
 
   const {
     basemap,
@@ -678,24 +678,16 @@ const [layerLoading, setLayerLoading] =
 
 mapRef.current = map;
 
+/*
 const sourceLayerIds = new Set(
   LAYERS.map((layer) => layer.id)
 );
 
-const mulaiLoadingLayer = (
-  sourceId: string
-) => {
-  if (!sourceLayerIds.has(sourceId)) {
-    return;
-  }
+const mulaiLoadingLayer = (sourceId: string) => {
+  if (!sourceLayerIds.has(sourceId)) return;
 
-  const layer = LAYERS.find(
-    (l) => l.id === sourceId
-  );
-
-  if (!layer) {
-    return;
-  }
+  const layer = LAYERS.find((l) => l.id === sourceId);
+  if (!layer) return;
 
   setLayerLoading((prev) =>
     prev.includes(sourceId)
@@ -704,12 +696,8 @@ const mulaiLoadingLayer = (
   );
 };
 
-const selesaiLoadingLayer = (
-  sourceId: string
-) => {
-  if (!sourceLayerIds.has(sourceId)) {
-    return;
-  }
+const selesaiLoadingLayer = (sourceId: string) => {
+  if (!sourceLayerIds.has(sourceId)) return;
 
   setLayerLoading((prev) =>
     prev.filter((id) => id !== sourceId)
@@ -717,17 +705,12 @@ const selesaiLoadingLayer = (
 };
 
 const handleSourceLoading = (e: any) => {
-  if (!e.sourceId) {
-    return;
-  }
-
+  if (!e.sourceId) return;
   mulaiLoadingLayer(e.sourceId);
 };
 
 const handleSourceData = (e: any) => {
-  if (!e.sourceId) {
-    return;
-  }
+  if (!e.sourceId) return;
 
   if (e.isSourceLoaded) {
     selesaiLoadingLayer(e.sourceId);
@@ -736,32 +719,18 @@ const handleSourceData = (e: any) => {
 
 const handleMapError = (e: any) => {
   const sourceId =
-    e?.error?.sourceId ??
-    e?.sourceId;
+    e?.error?.sourceId ?? e?.sourceId;
 
   if (sourceId) {
     selesaiLoadingLayer(sourceId);
   }
 };
 
-map.on(
-  'sourcedataloading',
-  handleSourceLoading
-);
+map.on('sourcedataloading', handleSourceLoading);
+map.on('sourcedata', handleSourceData);
+map.on('error', handleMapError);
+*/
 
-map.on(
-  'sourcedata',
-  handleSourceData
-);
-
-map.on(
-  'error',
-  handleMapError
-);
-
-// ==================================================
-// INFO PETA
-// ==================================================
     const perbaruiInfoPeta =
       () => {
         const center =
@@ -799,10 +768,6 @@ map.on(
 
     perbaruiInfoPeta();
 
-    // ==================================================
-    // RESIZE
-    // ==================================================
-
     const resizeObserver =
       new ResizeObserver(
         () => {
@@ -813,10 +778,6 @@ map.on(
     resizeObserver.observe(
       ref.current
     );
-
-    // ==================================================
-    // CONTROLS
-    // ==================================================
 
     map.addControl(
       new maplibregl.NavigationControl(
@@ -846,17 +807,9 @@ map.on(
       'bottom-left'
     );
 
-    // ==================================================
-    // MAP LOAD
-    // ==================================================
-
     map.on(
       'load',
       () => {
-
-        // ----------------------------------------------
-        // KONTUR
-        // ----------------------------------------------
 
         for (
           const [k, def]
@@ -922,17 +875,10 @@ map.on(
           });
         }
 
-        // ----------------------------------------------
-        // LAYER UMUM
-        // ----------------------------------------------
-
         for (
           const L
           of LAYERS
         ) {
-
-          // Bidang dibuat khusus
-          // karena memakai feature-state
           if (
             L.id === 'bidang'
           ) {
@@ -959,10 +905,6 @@ map.addSource(
             layerAktif[L.id]
               ? 'visible'
               : 'none';
-
-          // --------------------------------------------
-          // FILL
-          // --------------------------------------------
 
           if (
             L.tipe === 'fill'
@@ -1012,10 +954,6 @@ map.addSource(
               }
             });
 
-          // --------------------------------------------
-          // LINE
-          // --------------------------------------------
-
           } else if (
             L.tipe === 'line'
           ) {
@@ -1050,10 +988,6 @@ map.addSource(
               }
             });
 
-          // --------------------------------------------
-          // CIRCLE
-          // --------------------------------------------
-
           } else {
 
             map.addLayer({
@@ -1083,10 +1017,6 @@ map.addSource(
             });
           }
         }
-
-        // ==================================================
-        // TRASE HALO
-        // ==================================================
 
         if (
           map.getSource(
@@ -1150,10 +1080,6 @@ map.addSource(
           );
         }
 
-        // ==================================================
-        // SOURCE BIDANG
-        // ==================================================
-
         map.addSource(
           'bidang',
           {
@@ -1165,10 +1091,6 @@ map.addSource(
           }
         );
 
-        // ==================================================
-        // LAYER BIDANG
-        // ==================================================
-
         map.addLayer({
           id: 'bidang',
 
@@ -1179,8 +1101,6 @@ map.addSource(
           paint: {
             'fill-color': [
               'case',
-
-              // Bidang yang sedang dianalisis → CYAN
               [
                 'boolean',
                 [
@@ -1191,8 +1111,6 @@ map.addSource(
               ],
 
               '#00E5FF',
-
-              // Bidang yang dipilih → MAGENTA
               [
                 'boolean',
                 [
@@ -1203,15 +1121,11 @@ map.addSource(
               ],
 
               '#FFD600',
-
-              // Bidang normal → MAGENTA
               '#A51F35'
             ],
 
             'fill-opacity': [
               'case',
-
-              // Analisis
               [
                 'boolean',
                 [
@@ -1222,8 +1136,6 @@ map.addSource(
               ],
 
               0.88,
-
-              // Filter
               [
                 'boolean',
                 [
@@ -1234,8 +1146,6 @@ map.addSource(
               ],
 
               0.92,
-
-              // Selected
               [
                 'boolean',
                 [
@@ -1264,10 +1174,6 @@ map.addSource(
             ]
           }
         });
-
-        // ==================================================
-        // URUTAN TRASE
-        // ==================================================
 
         if (
           map.getLayer(
@@ -2347,6 +2253,7 @@ return (
     ref={ref}
     className="canvas"
   >
+{/*
 {layerLoading.length > 0 && (
   <div className="layer-loading">
     <strong className="layer-loading-title">
@@ -2356,7 +2263,12 @@ return (
     <div className="layer-loading-text">
       {(() => {
         const namaLayer = layerLoading
-          .map((id) => LAYERS.find((layer) => layer.id === id)?.nama)
+          .map(
+            (id) =>
+              LAYERS.find(
+                (layer) => layer.id === id
+              )?.nama
+          )
           .filter(Boolean) as string[];
 
         let daftarLayer = '';
@@ -2364,7 +2276,8 @@ return (
         if (namaLayer.length === 1) {
           daftarLayer = namaLayer[0];
         } else if (namaLayer.length === 2) {
-          daftarLayer = `${namaLayer[0]} dan ${namaLayer[1]}`;
+          daftarLayer =
+            `${namaLayer[0]} dan ${namaLayer[1]}`;
         } else {
           daftarLayer =
             namaLayer.slice(0, -1).join(', ') +
@@ -2377,6 +2290,7 @@ return (
     </div>
   </div>
 )}
+*/}
     <div className="map-info">
         <span>
           Lon{' '}
