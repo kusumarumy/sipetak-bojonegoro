@@ -678,10 +678,6 @@ const [layerLoading, setLayerLoading] =
 
 mapRef.current = map;
 
-// ==================================================
-// LOADING LAYER
-// ==================================================
-
 const sourceLayerIds = new Set(
   LAYERS.map((layer) => layer.id)
 );
@@ -2351,7 +2347,7 @@ return (
     ref={ref}
     className="canvas"
   >
-{loadingLayerIds.length > 0 && (
+{layerLoading.length > 0 && (
   <div className="layer-loading">
     <strong className="layer-loading-title">
       MEMUAT LAYER
@@ -2359,7 +2355,7 @@ return (
 
     <div className="layer-loading-text">
       {(() => {
-        const namaLayer = loadingLayerIds
+        const namaLayer = layerLoading
           .map((id) => LAYERS.find((layer) => layer.id === id)?.nama)
           .filter(Boolean) as string[];
 
@@ -2381,7 +2377,6 @@ return (
     </div>
   </div>
 )}
-
     <div className="map-info">
         <span>
           Lon{' '}
