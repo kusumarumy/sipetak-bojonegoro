@@ -375,23 +375,22 @@ function KartuFoto({
     !!lampiran?.sensitif &&
     !bolehPribadi;
 
-  const ada = !!lampiran;
+const ada = !!lampiran;
 
 console.log("DATA KARTU FOTO:", {
   kategori,
   ada,
   lampiran,
   lampiranId: lampiran?.id,
-  objectKey: lampiran?.object_key,
 });
 
-  const dapatUnggah =
-    bolehEdit &&
-    !ada &&
-    !sedang &&
-    !terkunci;
+const dapatUnggah =
+  bolehEdit &&
+  !ada &&
+  !sedang &&
+  !terkunci;
 
-  useEffect(() => {
+useEffect(() => {
   let batal = false;
 
   async function muatPreview() {
@@ -404,7 +403,6 @@ console.log("DATA KARTU FOTO:", {
     console.log("MEMUAT PREVIEW:", {
       id: lampiran.id,
       kategori,
-      object_key: lampiran.object_key,
     });
 
     setPreviewLoading(true);
@@ -428,8 +426,8 @@ console.log("DATA KARTU FOTO:", {
       if (!response.ok) {
         throw new Error(
           data?.error ||
-            data?.message ||
-            "Gagal memuat preview"
+          data?.message ||
+          "Gagal memuat preview"
         );
       }
 
@@ -465,7 +463,6 @@ console.log("DATA KARTU FOTO:", {
   };
 }, [
   lampiran?.id,
-  lampiran?.object_key,
   kategori,
   terkunci,
 ]);
@@ -535,7 +532,7 @@ console.log("DATA KARTU FOTO:", {
           <div className="kb-photo-preview">
             {src ? (
               <>
-                <img
+<img
   src={src}
   alt={KATEGORI_LABEL[kategori]}
   className="kb-photo-image"
@@ -552,7 +549,6 @@ console.log("DATA KARTU FOTO:", {
       src,
       event
     );
-    setSrc(null);
   }}
 />
                 <div className="kb-photo-preview-overlay">
