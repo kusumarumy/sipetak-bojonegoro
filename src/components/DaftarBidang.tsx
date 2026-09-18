@@ -262,135 +262,128 @@ const SortHeader = ({
 );
   return (
     <div className="daftar-flyout">
+<div className="daftar-head">
 
-      {/* =====================================================
-          HEADER
-         ===================================================== */}
-      <div className="daftar-head">
+  <div className="daftar-head-row">
 
-        {/* BARIS ATAS: ICON + JUDUL + CLOSE */}
-        <div className="daftar-head-top">
+    {/* KIRI — JUDUL */}
+    <div className="daftar-head-top">
 
-          <div className="daftar-head-main">
+      <div className="daftar-head-main">
 
-            <div className="daftar-head-icon">
-              <svg
-                viewBox="0 0 24 24"
-                aria-hidden="true"
-              >
-                <path
-                  d="M4 5.5A1.5 1.5 0 0 1 5.5 4h13A1.5 1.5 0 0 1 20 5.5v13a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 18.5v-13Z"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.7"
-                />
-                <path
-                  d="M8 8h8M8 12h8M8 16h5"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.7"
-                  strokeLinecap="round"
-                />
-              </svg>
-            </div>
-
-            <div className="daftar-title-wrap">
-
-              <div className="daftar-title">
-                <strong>
-                  DAFTAR BIDANG TERDAMPAK
-                </strong>
-
-                <span className="daftar-count">
-                  {memuat
-                    ? 'Memuat…'
-                    : `${dataTampil.length.toLocaleString('id-ID')} bidang`}
-                </span>
-              </div>
-
-              <span className="daftar-subtitle">
-                Daftar bidang tanah yang terdampak pada area analisis
-              </span>
-
-            </div>
-          </div>
-
-          {/* CLOSE */}
-          <button
-            type="button"
-            className="daftar-close"
-            onClick={onClose}
-            aria-label="Tutup daftar bidang"
-            title="Tutup"
+        <div className="daftar-head-icon">
+          <svg
+            viewBox="0 0 24 24"
+            aria-hidden="true"
           >
-            <svg
-              viewBox="0 0 24 24"
-              aria-hidden="true"
-            >
-              <path
-                d="M6 6l12 12M18 6L6 18"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-              />
-            </svg>
-          </button>
-
+            <path
+              d="M4 5.5A1.5 1.5 0 0 1 5.5 4h13A1.5 1.5 0 0 1 20 5.5v13a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 18.5v-13Z"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.7"
+            />
+            <path
+              d="M8 8h8M8 12h8M8 16h5"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.7"
+              strokeLinecap="round"
+            />
+          </svg>
         </div>
 
-        {/* =====================================================
-            FILTER / ACTION
-           ===================================================== */}
-        <div className="daftar-actions">
+        <div className="daftar-title-wrap">
 
-          <button
-            type="button"
-            className={filter === 'semua' ? 'active' : ''}
-            onClick={() => setFilter('semua')}
-          >
-            SEMUA ({jumlah.semua})
-          </button>
+          <div className="daftar-title">
+            <strong>DAFTAR BIDANG TERDAMPAK</strong>
 
-          <button
-            type="button"
-            className={filter === 'draft' ? 'active' : ''}
-            onClick={() => setFilter('draft')}
-          >
-            DRAFT ({jumlah.draft})
-          </button>
+            <span className="daftar-count">
+              {memuat
+                ? 'Memuat…'
+                : `${dataTampil.length.toLocaleString('id-ID')} bidang`}
+            </span>
+          </div>
 
-          <button
-            type="button"
-            className={filter === 'terkirim' ? 'active' : ''}
-            onClick={() => setFilter('terkirim')}
-          >
-            MENUNGGU VERIFIKASI ({jumlah.terkirim})
-          </button>
-
-          <button
-            type="button"
-            className={filter === 'terverifikasi' ? 'active' : ''}
-            onClick={() => setFilter('terverifikasi')}
-          >
-            TERVERIFIKASI ({jumlah.terverifikasi})
-          </button>
-
-          <button
-            type="button"
-            className={filter === 'revisi' ? 'active' : ''}
-            onClick={() => setFilter('revisi')}
-          >
-            PERLU REVISI ({jumlah.revisi})
-          </button>
+          <span className="daftar-subtitle">
+            Daftar bidang tanah yang terdampak pada area analisis
+          </span>
 
         </div>
 
       </div>
 
-      {/* =====================================================
-          TABLE
-         ===================================================== */}
+      {/* CLOSE */}
+      <button
+        type="button"
+        className="daftar-close"
+        onClick={onClose}
+        aria-label="Tutup daftar bidang"
+        title="Tutup"
+      >
+        <svg
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+        >
+          <path
+            d="M6 6l12 12M18 6L6 18"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+          />
+        </svg>
+      </button>
+
+    </div>
+
+    {/* KANAN — FILTER */}
+    <div className="daftar-actions">
+
+      <button
+        type="button"
+        className={filter === 'semua' ? 'active' : ''}
+        onClick={() => setFilter('semua')}
+      >
+        SEMUA ({jumlah.semua})
+      </button>
+
+      <button
+        type="button"
+        className={filter === 'draft' ? 'active' : ''}
+        onClick={() => setFilter('draft')}
+      >
+        DRAFT ({jumlah.draft})
+      </button>
+
+      <button
+        type="button"
+        className={filter === 'terkirim' ? 'active' : ''}
+        onClick={() => setFilter('terkirim')}
+      >
+        MENUNGGU VERIFIKASI ({jumlah.terkirim})
+      </button>
+
+      <button
+        type="button"
+        className={filter === 'terverifikasi' ? 'active' : ''}
+        onClick={() => setFilter('terverifikasi')}
+      >
+        TERVERIFIKASI ({jumlah.terverifikasi})
+      </button>
+
+      <button
+        type="button"
+        className={filter === 'revisi' ? 'active' : ''}
+        onClick={() => setFilter('revisi')}
+      >
+        PERLU REVISI ({jumlah.revisi})
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
       <div className="daftar-table-wrap">
         <table className="daftar-table">
 <thead>
