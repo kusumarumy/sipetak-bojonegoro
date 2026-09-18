@@ -694,55 +694,6 @@ useEffect(() => {
           </button>
         )}
       </div>
-
-{previewOpen && previewUrl && (
-  <div className="kb-preview-backdrop">
-    <div
-      className="kb-preview-dialog"
-      role="dialog"
-      aria-modal="false"
-      onClick={(event) =>
-        event.stopPropagation()
-      }
-    >
-      <div className="kb-preview-header">
-        <strong className="kb-preview-title">
-          {lampiran?.nama_asli ??
-            "Preview dokumen"}
-        </strong>
-
-        <button
-          type="button"
-          className="kb-preview-close"
-          onClick={tutupPreview}
-          aria-label="Tutup preview"
-        >
-          ×
-        </button>
-      </div>
-
-      <div className="kb-preview-content">
-        {adalahPdf ? (
-          <iframe
-            src={previewUrl}
-            title={
-              lampiran?.nama_asli ??
-              "Preview PDF"
-            }
-          />
-        ) : (
-          <img
-            src={previewUrl}
-            alt={
-              lampiran?.nama_asli ??
-              "Preview dokumen"
-            }
-          />
-        )}
-      </div>
-    </div>
-  </div>
-)}
     </>
   );
 }
@@ -765,9 +716,14 @@ function KartuDokumen({
 }) {
   const input = useRef<HTMLInputElement>(null);
 
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-  const [previewOpen, setPreviewOpen] = useState(false);
-  const [previewLoading, setPreviewLoading] = useState(false);
+  const [previewUrl, setPreviewUrl] =
+    useState<string | null>(null);
+
+  const [previewOpen, setPreviewOpen] =
+    useState(false);
+
+  const [previewLoading, setPreviewLoading] =
+    useState(false);
 
   const terkunci =
     !!lampiran?.sensitif &&
@@ -776,13 +732,16 @@ function KartuDokumen({
   const ada = !!lampiran;
 
   /*
-   * Dokumen yang sudah ada tetap boleh diganti
+   * Dokumen yang sudah ada tetap bisa diganti
    */
   const dapatUnggah =
     bolehEdit &&
     !sedang &&
     !terkunci;
 
+  /*
+   * Deteksi PDF
+   */
   const adalahPdf =
     lampiran?.mime === "application/pdf" ||
     lampiran?.nama_asli
@@ -790,25 +749,31 @@ function KartuDokumen({
       .endsWith(".pdf");
 
   /*
-   * Ambil signed URL dari R2
+   * Ambil signed URL dari API
    */
-  const bukaPreview = async () => {
-    if (!lampiran?.id || terkunci) return;
-
-    setPreviewLoading(true);
+  async function ambilPreview() {
+    if (!lampiran?.id || terkunci) {
+      return null;
+    }
 
     try {
       const response = await fetch(
-        `/api/lampiran/${lampiran.id}`
+        `/api/lampiran/${lampiran.id}`,
+        {
+          method: "GET",
+          cache: "no-store",
+        }
       );
+
+      const data = await response.json();
 
       if (!response.ok) {
         throw new Error(
-          "Dokumen tidak dapat dibuka"
+          data?.error ||
+            data?.message ||
+            "Dokumen tidak dapat dibuka"
         );
       }
-
-      const data = await response.json();
 
       if (!data?.url) {
         throw new Error(
@@ -816,25 +781,58 @@ function KartuDokumen({
         );
       }
 
-      setPreviewUrl(data.url);
-      setPreviewOpen(true);
+      return data.url as string;
     } catch (error) {
       console.error(
-        "Gagal membuka preview dokumen:",
+        "PREVIEW DOKUMEN ERROR:",
         error
       );
 
-      alert(
+      beriPesanPreview(
         "Dokumen tidak dapat dibuka."
       );
+
+      return null;
+    }
+  }
+
+  /*
+   * Buka preview
+   */
+  async function bukaPreview() {
+    if (!lampiran?.id || terkunci) {
+      return;
+    }
+
+    setPreviewLoading(true);
+
+    try {
+      const url =
+        previewUrl ??
+        (await ambilPreview());
+
+      if (!url) return;
+
+      setPreviewUrl(url);
+      setPreviewOpen(true);
     } finally {
       setPreviewLoading(false);
     }
-  };
+  }
 
-  const tutupPreview = () => {
+  function tutupPreview() {
     setPreviewOpen(false);
-  };
+  }
+
+  /*
+   * Karena KartuDokumen tidak memiliki beriPesan
+   * sendiri, gunakan alert hanya untuk error preview.
+   */
+  function beriPesanPreview(
+    pesan: string
+  ) {
+    window.alert(pesan);
+  }
 
   return (
     <>
@@ -851,7 +849,10 @@ function KartuDokumen({
           .filter(Boolean)
           .join(" ")}
       >
-        {/* ICON */}
+        {/* =================================================
+            ICON
+        ================================================== */}
+
         <div className="kb-document-icon">
           {kategori === "dok_ktp"
             ? "ID"
@@ -860,7 +861,10 @@ function KartuDokumen({
               : "DOC"}
         </div>
 
-        {/* INFORMASI */}
+        {/* =================================================
+            INFORMASI
+        ================================================== */}
+
         <div className="kb-document-info">
           <div className="kb-document-title">
             <strong>
@@ -910,20 +914,27 @@ function KartuDokumen({
           )}
         </div>
 
-        {/* ACTION */}
+        {/* =================================================
+            ACTION
+        ================================================== */}
+
         <div
+          className="kb-document-actions"
           style={{
             display: "flex",
             gap: "6px",
             alignItems: "center",
           }}
         >
-          {/* PREVIEW */}
+          {/* LIHAT */}
           {ada && !terkunci && (
             <button
               type="button"
               className="kb-document-action"
-              disabled={previewLoading}
+              disabled={
+                sedang ||
+                previewLoading
+              }
               onClick={bukaPreview}
             >
               {previewLoading
@@ -932,15 +943,11 @@ function KartuDokumen({
             </button>
           )}
 
-          {/* UPLOAD / GANTI */}
+          {/* UNGGAH / GANTI */}
           {dapatUnggah && (
             <button
               type="button"
-              className={
-                ada
-                  ? "kb-document-action"
-                  : "kb-document-action"
-              }
+              className="kb-document-action"
               disabled={sedang}
               onClick={() =>
                 input.current?.click()
@@ -954,17 +961,20 @@ function KartuDokumen({
             </button>
           )}
 
-          {/* STATUS JIKA TIDAK BOLEH EDIT */}
-          {!dapatUnggah && ada && !bolehEdit && (
-            <span
-              className="kb-document-action done"
-            >
-              ✓ Tersimpan
-            </span>
-          )}
+          {/* TERSIMPAN */}
+          {!dapatUnggah &&
+            ada &&
+            !bolehEdit && (
+              <span className="kb-document-action done">
+                ✓ Tersimpan
+              </span>
+            )}
         </div>
 
-        {/* FILE INPUT */}
+        {/* =================================================
+            INPUT
+        ================================================== */}
+
         <input
           ref={input}
           type="file"
@@ -983,100 +993,44 @@ function KartuDokumen({
         />
       </div>
 
-      {/* PREVIEW MODAL */}
+      {/* =================================================
+          PREVIEW — PANEL KECIL DI KIRI KARTU BIDANG
+      ================================================== */}
+
       {previewOpen && previewUrl && (
-        <div
-          onClick={tutupPreview}
-          style={{
-            position: "fixed",
-            inset: 0,
-            zIndex: 9999,
-            background:
-              "rgba(0,0,0,.72)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            padding: "24px",
-          }}
-        >
+        <div className="kb-preview-backdrop">
           <div
+            className="kb-preview-dialog"
+            role="dialog"
+            aria-modal="false"
             onClick={(event) =>
               event.stopPropagation()
             }
-            style={{
-              width: "min(900px, 94vw)",
-              height: "min(760px, 90vh)",
-              background: "#fff",
-              borderRadius: "14px",
-              overflow: "hidden",
-              position: "relative",
-              display: "flex",
-              flexDirection: "column",
-            }}
           >
-            {/* HEADER */}
-            <div
-              style={{
-                height: "52px",
-                flexShrink: 0,
-                display: "flex",
-                alignItems: "center",
-                justifyContent:
-                  "space-between",
-                padding: "0 16px",
-                borderBottom:
-                  "1px solid #e5e7eb",
-              }}
-            >
-              <strong
-                style={{
-                  fontSize: "14px",
-                  color: "#1f2937",
-                }}
-              >
-                {lampiran?.nama_asli}
+            <div className="kb-preview-header">
+              <strong className="kb-preview-title">
+                {lampiran?.nama_asli ??
+                  "Preview dokumen"}
               </strong>
 
               <button
                 type="button"
+                className="kb-preview-close"
                 onClick={tutupPreview}
-                style={{
-                  border: 0,
-                  background: "#f3f4f6",
-                  borderRadius: "8px",
-                  width: "32px",
-                  height: "32px",
-                  cursor: "pointer",
-                  fontSize: "18px",
-                }}
+                aria-label="Tutup preview"
               >
                 ×
               </button>
             </div>
 
-            {/* CONTENT */}
-            <div
-              style={{
-                flex: 1,
-                minHeight: 0,
-                background: "#f3f4f6",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
+            <div className="kb-preview-content">
               {adalahPdf ? (
                 <iframe
                   src={previewUrl}
                   title={
                     lampiran?.nama_asli ??
-                    "Preview dokumen"
+                    "Preview PDF"
                   }
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    border: 0,
-                  }}
                 />
               ) : (
                 <img
@@ -1085,11 +1039,6 @@ function KartuDokumen({
                     lampiran?.nama_asli ??
                     "Preview dokumen"
                   }
-                  style={{
-                    maxWidth: "100%",
-                    maxHeight: "100%",
-                    objectFit: "contain",
-                  }}
                 />
               )}
             </div>
