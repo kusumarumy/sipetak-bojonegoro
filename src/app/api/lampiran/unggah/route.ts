@@ -8,6 +8,10 @@ export const runtime = "nodejs";
 
 export async function POST(req: NextRequest) {
   try {
+    // =========================================================
+    // CEK PENYIMPANAN
+    // =========================================================
+
     if (!penyimpananSiap()) {
       return NextResponse.json(
         {
@@ -16,6 +20,10 @@ export async function POST(req: NextRequest) {
         { status: 500 }
       );
     }
+
+    // =========================================================
+    // AMBIL DATA FORM
+    // =========================================================
 
     const form = await req.formData();
 
@@ -34,13 +42,25 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    // =========================================================
+    // BUAT EKSTENSI FILE
+    // =========================================================
+
     const ext = namaAsli.includes(".")
       ? namaAsli.split(".").pop()?.toLowerCase() || "bin"
       : "bin";
 
+    // =========================================================
+    // BUAT OBJECT KEY R2
+    // =========================================================
+
     const objectKey =
       `bidang/${bidangId}/foto/${kategori}/` +
       `${Date.now()}-${randomUUID()}.${ext}`;
+
+    // =========================================================
+    // FILE → BUFFER
+    // =========================================================
 
     const buffer = Buffer.from(
       await file.arrayBuffer()
@@ -55,7 +75,10 @@ export async function POST(req: NextRequest) {
       size: file.size,
     });
 
-    // 1. Upload ke Cloudflare R2
+    // =========================================================
+    // UPLOAD KE CLOUDFLARE R2
+    // =========================================================
+
     await unggahObjek(
       objectKey,
       buffer,
@@ -66,10 +89,56 @@ export async function POST(req: NextRequest) {
       objectKey,
     });
 
-    // 2. Ambil session user
+    // =========================================================
+    // AMBIL SESSION USER
+    // =========================================================
+
     const sesi = await auth();
 
-    // 3. Catat aktivitas UPLOAD
+    console.log("UPLOAD USER", {
+      userId: sesi?.user?.id,
+      nama: sesi?.user?.name,
+      email: sesi?.user?.email,
+    });
+
+    // =========================================================
+    // CARI BIDANG_ID ASLI DARI TABEL BIDANG_TANAH
+    // =========================================================
+
+    const hasilBidang = await query(
+      `
+      SELECT bidang_id
+      FROM public.bidang_tanah
+      WHERE id = $1
+      LIMIT 1
+      `,
+      [Number(bidangId)]
+    );
+
+    const bidangData = hasilBidang[0];
+
+    if (!bidangData) {
+      throw new Error(
+        `Bidang dengan id ${bidangId} tidak ditemukan`
+      );
+    }
+
+    // =========================================================
+    // AMBIL IP ADDRESS
+    // =========================================================
+
+    const ipAddress =
+      req.headers
+        .get("x-forwarded-for")
+        ?.split(",")[0]
+        ?.trim() ||
+      req.headers.get("x-real-ip") ||
+      null;
+
+    // =========================================================
+    // CATAT AUDIT LOG
+    // =========================================================
+
     await query(
       `
       INSERT INTO public.audit_log
@@ -82,6 +151,8 @@ export async function POST(req: NextRequest) {
         nilai_lama,
         nilai_baru,
         pengguna_id,
+        nama_akun,
+        ip_address,
         pada
       )
       VALUES
@@ -94,26 +165,43 @@ export async function POST(req: NextRequest) {
         $6,
         $7,
         $8,
+        $9,
+        $10,
         NOW()
       )
       `,
       [
         "lampiran",
-        null,
-        bidangId,
+        Number(bidangId),
+        bidangData.bidang_id,
         "UPLOAD",
         kategori,
         null,
         namaAsli,
         sesi?.user?.id ?? null,
+        sesi?.user?.name ??
+          sesi?.user?.email ??
+          null,
+        ipAddress,
       ]
     );
 
     console.log("AUDIT UPLOAD FINISHED", {
-      bidangId,
+      record_id: Number(bidangId),
+      bidang_id: bidangData.bidang_id,
       kategori,
       namaAsli,
+      pengguna_id: sesi?.user?.id ?? null,
+      nama_akun:
+        sesi?.user?.name ??
+        sesi?.user?.email ??
+        null,
+      ip_address: ipAddress,
     });
+
+    // =========================================================
+    // RESPONSE
+    // =========================================================
 
     return NextResponse.json({
       success: true,
