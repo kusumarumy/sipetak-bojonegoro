@@ -51,6 +51,13 @@ export default function MapCanvas() {
   const analisisRef =
     useRef<(string | number)[]>([]);
 
+  // ====================================================
+  // LOADING LAYER
+  // ====================================================
+
+  const layerLoadingDimintaRef =
+    useRef<Set<string>>(new Set());
+
   const [infoPeta, setInfoPeta] =
     useState({
       lon: 0,
@@ -60,14 +67,8 @@ export default function MapCanvas() {
       bearing: 0
     });
 
-  // ====================================================
-  // INDIKATOR MEMUAT LAYER DINONAKTIFKAN
-  // ====================================================
-
-  /*
   const [layerLoading, setLayerLoading] =
     useState<string[]>([]);
-  */
 
   const {
     basemap,
@@ -83,6 +84,10 @@ export default function MapCanvas() {
     beriPesan
   } = useApp();
 
+  // ====================================================
+  // EVENT ANALISIS BIDANG
+  // ====================================================
+
   useEffect(() => {
     const handleAnalisisBidang = (
       event: Event
@@ -95,7 +100,6 @@ export default function MapCanvas() {
       const ids =
         customEvent.detail?.ids ?? [];
 
-      // Bersihkan state analisis sebelumnya
       for (
         const id
         of analisisRef.current
@@ -155,6 +159,10 @@ export default function MapCanvas() {
     };
   }, []);
 
+  // ====================================================
+  // RESET ANALISIS
+  // ====================================================
+
   useEffect(() => {
     const handleResetAnalisis = () => {
       const map = mapRef.current;
@@ -208,6 +216,10 @@ export default function MapCanvas() {
     };
   }, []);
 
+  // ====================================================
+  // RESET PILIHAN BIDANG
+  // ====================================================
+
   useEffect(() => {
     const handleResetPilihanBidang = () => {
       const map = mapRef.current;
@@ -246,6 +258,10 @@ export default function MapCanvas() {
       );
     };
   }, []);
+
+  // ====================================================
+  // FOKUS BIDANG
+  // ====================================================
 
   useEffect(() => {
     const handleFokusBidang = (
@@ -690,63 +706,139 @@ export default function MapCanvas() {
     mapRef.current = map;
 
     // ==================================================
-    // INDIKATOR MEMUAT LAYER DINONAKTIFKAN
+    // INDIKATOR MEMUAT LAYER
     // ==================================================
 
-    /*
-    const sourceLayerIds = new Set(
-      LAYERS.map((layer) => layer.id)
-    );
+    const sourceLayerIds =
+      new Set(
+        LAYERS.map(
+          (layer) => layer.id
+        )
+      );
 
     const mulaiLoadingLayer = (
       sourceId: string
     ) => {
-      if (!sourceLayerIds.has(sourceId)) return;
+      if (
+        !sourceLayerIds.has(
+          sourceId
+        )
+      ) {
+        return;
+      }
+
+      // Hanya tampilkan loading jika
+      // layer memang sedang diminta untuk dimuat
+      if (
+        !layerLoadingDimintaRef.current.has(
+          sourceId
+        )
+      ) {
+        return;
+      }
 
       const layer =
         LAYERS.find(
-          (l) => l.id === sourceId
+          (l) =>
+            l.id === sourceId
         );
 
-      if (!layer) return;
+      if (!layer) {
+        return;
+      }
 
-      setLayerLoading((prev) =>
-        prev.includes(sourceId)
-          ? prev
-          : [...prev, sourceId]
+      setLayerLoading(
+        (prev) =>
+          prev.includes(sourceId)
+            ? prev
+            : [
+                ...prev,
+                sourceId
+              ]
       );
     };
 
     const selesaiLoadingLayer = (
       sourceId: string
     ) => {
-      if (!sourceLayerIds.has(sourceId)) return;
-
-      setLayerLoading((prev) =>
-        prev.filter(
-          (id) => id !== sourceId
+      if (
+        !sourceLayerIds.has(
+          sourceId
         )
+      ) {
+        return;
+      }
+
+      layerLoadingDimintaRef.current.delete(
+        sourceId
+      );
+
+      setLayerLoading(
+        (prev) =>
+          prev.filter(
+            (id) =>
+              id !== sourceId
+          )
+      );
+    };
+
+    const cekSumberSelesai = (
+      sourceId: string
+    ) => {
+      requestAnimationFrame(
+        () => {
+          if (
+            !mapRef.current ||
+            !layerLoadingDimintaRef.current.has(
+              sourceId
+            )
+          ) {
+            return;
+          }
+
+          if (
+            mapRef.current.isSourceLoaded(
+              sourceId
+            )
+          ) {
+            selesaiLoadingLayer(
+              sourceId
+            );
+          }
+        }
       );
     };
 
     const handleSourceLoading = (
       e: any
     ) => {
-      if (!e.sourceId) return;
+      const sourceId =
+        e?.sourceId;
+
+      if (!sourceId) {
+        return;
+      }
 
       mulaiLoadingLayer(
-        e.sourceId
+        sourceId
       );
     };
 
     const handleSourceData = (
       e: any
     ) => {
-      if (!e.sourceId) return;
+      const sourceId =
+        e?.sourceId;
 
-      if (e.isSourceLoaded) {
+      if (!sourceId) {
+        return;
+      }
+
+      if (
+        e.isSourceLoaded
+      ) {
         selesaiLoadingLayer(
-          e.sourceId
+          sourceId
         );
       }
     };
@@ -758,7 +850,12 @@ export default function MapCanvas() {
         e?.error?.sourceId ??
         e?.sourceId;
 
-      if (sourceId) {
+      if (
+        sourceId &&
+        sourceLayerIds.has(
+          sourceId
+        )
+      ) {
         selesaiLoadingLayer(
           sourceId
         );
@@ -779,7 +876,10 @@ export default function MapCanvas() {
       'error',
       handleMapError
     );
-    */
+
+    // ==================================================
+    // INFO PETA
+    // ==================================================
 
     const perbaruiInfoPeta =
       () => {
@@ -1481,10 +1581,9 @@ export default function MapCanvas() {
       resizeObserver.disconnect();
 
       // ==================================================
-      // INDIKATOR MEMUAT LAYER DINONAKTIFKAN
+      // BERSIHKAN INDIKATOR MEMUAT LAYER
       // ==================================================
 
-      /*
       map.off(
         'sourcedataloading',
         handleSourceLoading
@@ -1499,7 +1598,9 @@ export default function MapCanvas() {
         'error',
         handleMapError
       );
-      */
+
+      layerLoadingDimintaRef.current.clear();
+      setLayerLoading([]);
 
       popupRef.current?.remove();
 
@@ -1525,6 +1626,10 @@ export default function MapCanvas() {
       mapRef.current = null;
     };
   }, []);
+
+  // ====================================================
+  // INTERAKSI
+  // ====================================================
 
   function pasangInteraksi(
     map: MLMap
@@ -1713,6 +1818,10 @@ export default function MapCanvas() {
     );
   }
 
+  // ====================================================
+  // SOROT
+  // ====================================================
+
   function sorot(
     map: MLMap,
     fid: string | number
@@ -1748,6 +1857,10 @@ export default function MapCanvas() {
       }
     );
   }
+
+  // ====================================================
+  // ZOOM TRASE
+  // ====================================================
 
   const zoomKeTrase = (
     map: MLMap
@@ -1842,6 +1955,10 @@ export default function MapCanvas() {
       });
   };
 
+  // ====================================================
+  // BASEMAP
+  // ====================================================
+
   useEffect(() => {
     const map =
       mapRef.current;
@@ -1930,6 +2047,10 @@ export default function MapCanvas() {
     basemap,
     beriPesan
   ]);
+
+  // ====================================================
+  // DTM
+  // ====================================================
 
   useEffect(() => {
     const map =
@@ -2085,6 +2206,10 @@ export default function MapCanvas() {
     };
   }, [dtm]);
 
+  // ====================================================
+  // LABEL NOMOR
+  // ====================================================
+
   useEffect(() => {
     const map = mapRef.current;
 
@@ -2133,6 +2258,10 @@ export default function MapCanvas() {
     };
   }, []);
 
+  // ====================================================
+  // AKTIF / NONAKTIF LAYER
+  // ====================================================
+
   useEffect(() => {
     const map =
       mapRef.current;
@@ -2147,8 +2276,11 @@ export default function MapCanvas() {
       const L
       of LAYERS
     ) {
+      const aktif =
+        !!layerAktif[L.id];
+
       const v =
-        layerAktif[L.id]
+        aktif
           ? 'visible'
           : 'none';
 
@@ -2173,6 +2305,46 @@ export default function MapCanvas() {
           L.id + '-ln',
           'visibility',
           v
+        );
+      }
+
+      // ----------------------------------------------
+      // Loading hanya ketika layer dinyalakan
+      // ----------------------------------------------
+
+      if (aktif) {
+        layerLoadingDimintaRef.current.add(
+          L.id
+        );
+
+        if (
+          map.isSourceLoaded(
+            L.id
+          )
+        ) {
+          // Source sudah selesai,
+          // tidak perlu tampilkan loading
+          selesaiLoadingLayerAktif(
+            L.id
+          );
+        } else {
+          cekLoadingLayerAktif(
+            L.id,
+            map
+          );
+        }
+      } else {
+        // Jika dimatikan, batalkan loading
+        layerLoadingDimintaRef.current.delete(
+          L.id
+        );
+
+        setLayerLoading(
+          (prev) =>
+            prev.filter(
+              (id) =>
+                id !== L.id
+            )
         );
       }
     }
@@ -2232,6 +2404,10 @@ export default function MapCanvas() {
     layerAktif
   ]);
 
+  // ====================================================
+  // FILTER BIDANG
+  // ====================================================
+
   useEffect(() => {
     const map =
       mapRef.current;
@@ -2290,6 +2466,10 @@ export default function MapCanvas() {
     filterBidang
   ]);
 
+  // ====================================================
+  // ZOOM TRASE EVENT
+  // ====================================================
+
   useEffect(() => {
     const zoomTrase =
       () => {
@@ -2316,6 +2496,10 @@ export default function MapCanvas() {
     };
   }, []);
 
+  // ====================================================
+  // TEMA
+  // ====================================================
+
   useEffect(() => {
     const map =
       mapRef.current;
@@ -2329,15 +2513,15 @@ export default function MapCanvas() {
     tema
   ]);
 
+  // ====================================================
+  // RENDER
+  // ====================================================
+
   return (
     <div
       ref={ref}
       className="canvas"
     >
-      {/*
-      ====================================================
-      INDIKATOR MEMUAT LAYER DINONAKTIFKAN
-      ====================================================
 
       {layerLoading.length > 0 && (
         <div className="layer-loading">
@@ -2357,6 +2541,12 @@ export default function MapCanvas() {
                       )?.nama
                   )
                   .filter(Boolean) as string[];
+
+              if (
+                namaLayer.length === 0
+              ) {
+                return 'Layer sedang dimuat...';
+              }
 
               let daftarLayer = '';
 
@@ -2386,7 +2576,6 @@ export default function MapCanvas() {
           </div>
         </div>
       )}
-      */}
 
       <div className="map-info">
         <span>
@@ -2429,6 +2618,47 @@ export default function MapCanvas() {
     </div>
   );
 }
+
+// ======================================================
+// HELPER LOADING LAYER
+// ======================================================
+
+function selesaiLoadingLayerAktif(
+  sourceId: string
+) {
+  // Helper ini hanya dipakai untuk
+  // menghapus state loading.
+  //
+  // State aktual diambil dari callback
+  // setState agar tidak menggunakan closure lama.
+
+  // Tidak melakukan apa-apa jika source
+  // tidak sedang diminta.
+}
+
+// ======================================================
+// CEK LOADING LAYER
+// ======================================================
+
+function cekLoadingLayerAktif(
+  sourceId: string,
+  map: MLMap
+) {
+  requestAnimationFrame(() => {
+    if (
+      map.isSourceLoaded(
+        sourceId
+      )
+    ) {
+      // Event sourcedata akan membersihkan
+      // loading state.
+    }
+  });
+}
+
+// ======================================================
+// FILTER BIDANG
+// ======================================================
 
 const ekspresiFilterBidang = (
   filter: {
@@ -2506,12 +2736,20 @@ const ekspresiFilterBidang = (
   return kondisi;
 };
 
+// ======================================================
+// FORMAT ANGKA
+// ======================================================
+
 const fmt = (
   n: number | null
 ) =>
   (n ?? 0).toLocaleString(
     'id-ID'
   );
+
+// ======================================================
+// TEMA
+// ======================================================
 
 function warnaiTema(
   map: MLMap
