@@ -176,7 +176,7 @@ const [grupTerbuka, setGrupTerbuka] =
                 }
               >
                 <span className="terrain-option-name">
-                  DTM Rencana Trace
+                  DTM Rencana Trase G
                 </span>
 
                 <span className="terrain-option-resolution">
@@ -184,26 +184,23 @@ const [grupTerbuka, setGrupTerbuka] =
                 </span>
               </button>
 
-
-              {/* DTM KAWASAN */}
-
               <button
                 type="button"
                 className={
-                  s.dtm === 'kawasan'
+                  s.dtm === 'aws'
                     ? 'active'
                     : ''
                 }
                 onClick={() =>
-                  s.setDTM('kawasan')
+                  s.setDTM('aws')
                 }
               >
                 <span className="terrain-option-name">
-                  DTM Kawasan
+                  AWS Terrarium
                 </span>
-
+              
                 <span className="terrain-option-resolution">
-                  1.5 m
+                  30 m
                 </span>
               </button>
 
