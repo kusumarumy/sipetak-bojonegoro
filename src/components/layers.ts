@@ -202,8 +202,8 @@ export const DTM = {
   trace:
     `${process.env.NEXT_PUBLIC_R2_BASE_URL ?? ''}/dtm_trase/{z}/{x}/{y}.png`,
 
-  kawasan:
-    `${process.env.NEXT_PUBLIC_R2_BASE_URL ?? ''}/dtm_kawasan/{z}/{x}/{y}.png`
+  aws:
+    'https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png'
 };
 
 export const ORTHO =
