@@ -272,7 +272,7 @@ function FormMasuk() {
             </form>
 
             <div className="lg-form-footer">
-              <span>Dinas PUBMPR Kabupaten Bojonegoro</span>
+              <span>Dinas PUBIMAPR Kabupaten Bojonegoro</span>
               <span className="lg-footer-separator">•</span>
               <span>Jalur Lingkar Selatan</span>
             </div>
