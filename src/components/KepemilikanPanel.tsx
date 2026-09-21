@@ -305,7 +305,7 @@ function resetAnalisis() {
 
           <div className="panel-header-text">
             <div className="panel-title">
-              ANALISIS KEPEMILIKAN BIDANG
+              ANALISIS KEPEMILIKAN
             </div>
 
             <div className="panel-subtitle">
