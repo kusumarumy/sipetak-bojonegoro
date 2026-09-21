@@ -58,7 +58,7 @@ function FormMasuk() {
           <div className="lg-hero">
             <div className="lg-eyebrow">
               <span className="lg-eyebrow-dot" />
-              SISTEM INFORMASI 
+              Web Geographic Information System (WebGIS)
             </div>
 
             <h1>
