@@ -224,7 +224,7 @@ function FormMasuk() {
               <div className="lg-form-options">
                 <span>
                   <IconShieldMini />
-                  Akses WebGIS DPPT Bojonegoro hanya diperuntukkan bagi pengguna terdaftar.
+                  Akses WebGIS hanya diperuntukkan bagi pengguna terdaftar.
                 </span>
               </div>
 
