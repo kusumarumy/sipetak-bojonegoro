@@ -10328,7 +10328,7 @@ main.body {
       .lg-map-label {
         position: absolute;
         z-index: 3;
-        top: 5px;
+        top: -15px;
         left: 7px;
         display: flex;
         align-items: center;
