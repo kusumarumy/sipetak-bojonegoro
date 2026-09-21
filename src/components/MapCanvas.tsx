@@ -374,10 +374,6 @@ const terpilihRef =
     };
   }, []);
 
-  // ====================================================
-  // INISIALISASI MAP
-  // ====================================================
-
   useEffect(() => {
     if (
       !ref.current ||
@@ -385,11 +381,6 @@ const terpilihRef =
     ) {
       return;
     }
-
-    // --------------------------------------------------
-    // PMTILES
-    // --------------------------------------------------
-
     if (!protokolTerpasang) {
       maplibregl.addProtocol(
         'pmtiles',
@@ -398,10 +389,6 @@ const terpilihRef =
 
       protokolTerpasang = true;
     }
-
-    // --------------------------------------------------
-    // SOURCES
-    // --------------------------------------------------
 
     const sources: any = {
       'esri-streets': {
@@ -456,10 +443,6 @@ const terpilihRef =
       }
     };
 
-    // --------------------------------------------------
-    // ORTHO
-    // --------------------------------------------------
-
     sources.ortho = {
       type: 'raster',
       tiles: [
@@ -472,10 +455,6 @@ const terpilihRef =
         'Orthophoto DPPT Bojonegoro 2026'
     };
 
-    // --------------------------------------------------
-    // DTM
-    // --------------------------------------------------
-
     if (DTM.trace) {
       sources.dtm_trace = {
         type: 'raster-dem',
@@ -487,16 +466,16 @@ const terpilihRef =
       };
     }
 
-    if (DTM.kawasan) {
-      sources.dtm_kawasan = {
-        type: 'raster-dem',
-        tiles: [DTM.kawasan],
-        tileSize: 256,
-        encoding: 'terrarium',
-        minzoom: 10,
-        maxzoom: 18
-      };
-    }
+if (DTM.aws) {
+  sources.dtm_aws = {
+    type: 'raster-dem',
+    tiles: [DTM.aws],
+    tileSize: 256,
+    encoding: 'terrarium',
+    minzoom: 0,
+    maxzoom: 15
+  };
+}
 
     if (ADA_KONTUR.lidar) {
       sources.kontur_lidar = {
@@ -513,10 +492,6 @@ const terpilihRef =
           `pmtiles://${KONTUR.foto.url}`
       };
     }
-
-    // ==================================================
-    // BASEMAP LAYERS
-    // ==================================================
 
     const layersAwal: any[] = [
       {
@@ -620,10 +595,6 @@ const terpilihRef =
       }
     });
 
-    // ==================================================
-    // BUAT MAP
-    // ==================================================
-
     const map =
       new maplibregl.Map({
         container: ref.current,
@@ -657,10 +628,6 @@ const terpilihRef =
 
     mapRef.current = map;
 
-    // ==================================================
-    // INDIKATOR MEMUAT LAYER
-    // ==================================================
-
     const sourceLayerIds =
       new Set(
         LAYERS.map(
@@ -679,8 +646,6 @@ const terpilihRef =
         return;
       }
 
-      // Hanya tampilkan loading jika
-      // layer memang sedang diminta untuk dimuat
       if (
         !layerLoadingDimintaRef.current.has(
           sourceId
@@ -828,10 +793,6 @@ const terpilihRef =
       'error',
       handleMapError
     );
-
-    // ==================================================
-    // INFO PETA
-    // ==================================================
 
     const perbaruiInfoPeta =
       () => {
@@ -1257,8 +1218,6 @@ map.addControl(
               ],
 
               0.95,
-
-              // Hover
               [
                 'boolean',
                 [
@@ -1269,8 +1228,6 @@ map.addControl(
               ],
 
               0.74,
-
-              // Normal
               0.50
             ]
           }
@@ -1308,8 +1265,6 @@ map.addControl(
           paint: {
             'line-color': [
               'case',
-
-              // Analisis
               [
                 'boolean',
                 [
@@ -1332,8 +1287,6 @@ map.addControl(
               ],
 
               '#FFFFFF',
-
-              // Selected
               [
                 'boolean',
                 [
@@ -1344,15 +1297,11 @@ map.addControl(
               ],
 
               '#FFFFFF',
-
-              // Normal
               'rgba(14,23,32,.45)'
             ],
 
             'line-width': [
               'case',
-
-              // Analisis
               [
                 'boolean',
                 [
@@ -1363,8 +1312,6 @@ map.addControl(
               ],
 
               2.5,
-
-              // Filter
               [
                 'boolean',
                 [
@@ -1375,8 +1322,6 @@ map.addControl(
               ],
 
               2.2,
-
-              // Selected
               [
                 'boolean',
                 [
@@ -1387,8 +1332,6 @@ map.addControl(
               ],
 
               3,
-
-              // Normal
               0.6
             ],
 
@@ -1567,10 +1510,6 @@ map.addControl(
       mapRef.current = null;
     };
   }, []);
-
-  // ====================================================
-  // INTERAKSI
-  // ====================================================
 
   function pasangInteraksi(
     map: MLMap
@@ -1759,10 +1698,6 @@ map.addControl(
     );
   }
 
-  // ====================================================
-  // SOROT
-  // ====================================================
-
   function sorot(
     map: MLMap,
     fid: string | number
@@ -1798,104 +1733,6 @@ map.addControl(
       }
     );
   }
-
-  // ====================================================
-  // ZOOM TRASE
-  // ====================================================
-
-  const zoomKeTrase = (
-    map: MLMap
-  ) => {
-    fetch(TRASEG_URL)
-      .then((r) => {
-        if (!r.ok) {
-          throw new Error(
-            `Trase G HTTP ${r.status}`
-          );
-        }
-
-        return r.json();
-      })
-
-      .then((fc) => {
-        if (!fc.features?.length) {
-          return;
-        }
-
-        const b =
-          new maplibregl.LngLatBounds();
-
-        const tambahKoordinat = (
-          coords: any
-        ) => {
-          if (
-            !Array.isArray(coords)
-          ) {
-            return;
-          }
-
-          if (
-            coords.length >= 2 &&
-            typeof coords[0] ===
-              'number' &&
-            typeof coords[1] ===
-              'number'
-          ) {
-            b.extend(
-              coords as [
-                number,
-                number
-              ]
-            );
-
-            return;
-          }
-
-          for (
-            const c of coords
-          ) {
-            tambahKoordinat(c);
-          }
-        };
-
-        for (
-          const f
-          of fc.features
-        ) {
-          const geometry =
-            f.geometry as any;
-
-          if (
-            geometry?.coordinates
-          ) {
-            tambahKoordinat(
-              geometry.coordinates
-            );
-          }
-        }
-
-        if (
-          !b.isEmpty()
-        ) {
-          map.fitBounds(
-            b,
-            {
-              padding: 70,
-              duration: 900,
-              maxZoom: 14.5
-            }
-          );
-        }
-      })
-
-      .catch((err) => {
-        console.warn(
-          'Gagal zoom Trase G:',
-          err
-        );
-      });
-  };
-
 
   useEffect(() => {
     const map =
@@ -2037,64 +1874,55 @@ map.addControl(
           return;
         }
 
-        const src =
-          dtm === 'trace'
-            ? 'dtm_trace'
-            : 'dtm_kawasan';
+const src =
+  dtm === 'trace'
+    ? 'dtm_trace'
+    : 'dtm_aws';
 
-        const urlDTM =
-          dtm === 'trace'
-            ? DTM.trace
-            : DTM.kawasan;
+const urlDTM =
+  dtm === 'trace'
+    ? DTM.trace
+    : DTM.aws;
 
-        if (!urlDTM) {
-          map.setTerrain(
-            null
-          );
+if (!urlDTM) {
+  map.setTerrain(null);
 
-          beriPesan(
-            `DTM ${
-              dtm === 'trace'
-                ? 'Rencana Trace'
-                : 'Kawasan'
-            } belum tersedia.`
-          );
+  beriPesan(
+    `DTM ${
+      dtm === 'trace'
+        ? 'Rencana Trace'
+        : 'AWS'
+    } belum tersedia.`
+  );
 
-          return;
-        }
+  return;
+}
 
-        if (
-          !map.getSource(src)
-        ) {
-          console.warn(
-            'Source DTM tidak ditemukan:',
-            src
-          );
+if (!map.getSource(src)) {
+  console.warn(
+    'Source DTM tidak ditemukan:',
+    src
+  );
 
-          map.setTerrain(
-            null
-          );
+  map.setTerrain(null);
 
-          beriPesan(
-            `Source ${
-              dtm === 'trace'
-                ? 'DTM Rencana Trace'
-                : 'Kawasan'
-            } belum tersedia.`
-          );
+  beriPesan(
+    `Source ${
+      dtm === 'trace'
+        ? 'DTM Rencana Trace'
+        : 'DTM AWS'
+    } belum tersedia.`
+  );
 
-          return;
-        }
+  return;
+}
 
-        map.setTerrain(
-          null
-        );
+map.setTerrain(null);
 
-        map.setTerrain({
-          source: src,
-          exaggeration: 1
-        });
-
+map.setTerrain({
+  source: src,
+  exaggeration: 1
+});
         for (
           const def
           of [
@@ -2234,10 +2062,6 @@ map.addControl(
         );
       }
 
-      // ----------------------------------------------
-      // Loading hanya ketika layer dinyalakan
-      // ----------------------------------------------
-
       if (aktif) {
         layerLoadingDimintaRef.current.add(
           L.id
@@ -2248,8 +2072,6 @@ map.addControl(
             L.id
           )
         ) {
-          // Source sudah selesai,
-          // tidak perlu tampilkan loading
           selesaiLoadingLayerAktif(
             L.id
           );
@@ -2260,7 +2082,6 @@ map.addControl(
           );
         }
       } else {
-        // Jika dimatikan, batalkan loading
         layerLoadingDimintaRef.current.delete(
           L.id
         );
