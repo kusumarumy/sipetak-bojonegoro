@@ -38,26 +38,18 @@ const TRASEG_URL =
 export default function MapCanvas() {
   const ref =
     useRef<HTMLDivElement>(null);
-
   const mapRef =
     useRef<MLMap | null>(null);
-
+  const scaleSlotRef =
+    useRef<HTMLDivElement>(null);
   const popupRef =
     useRef<Popup | null>(null);
-
   const terpilihRef =
     useRef<string | number | null>(null);
-
   const analisisRef =
     useRef<(string | number)[]>([]);
-
-  // ====================================================
-  // LOADING LAYER
-  // ====================================================
-
   const layerLoadingDimintaRef =
     useRef<Set<string>>(new Set());
-
   const [infoPeta, setInfoPeta] =
     useState({
       lon: 0,
@@ -66,10 +58,8 @@ export default function MapCanvas() {
       pitch: 0,
       bearing: 0
     });
-
   const [layerLoading, setLayerLoading] =
     useState<string[]>([]);
-
   const {
     basemap,
     setBasemap,
@@ -83,10 +73,6 @@ export default function MapCanvas() {
     pilihBidang,
     beriPesan
   } = useApp();
-
-  // ====================================================
-  // EVENT ANALISIS BIDANG
-  // ====================================================
 
   useEffect(() => {
     const handleAnalisisBidang = (
@@ -126,8 +112,6 @@ export default function MapCanvas() {
       ) {
         return;
       }
-
-      // Terapkan state analisis baru
       for (
         const id
         of ids
@@ -142,15 +126,12 @@ export default function MapCanvas() {
           }
         );
       }
-
       analisisRef.current = ids;
     };
-
     window.addEventListener(
       'analisis-bidang',
       handleAnalisisBidang
     );
-
     return () => {
       window.removeEventListener(
         'analisis-bidang',
@@ -159,19 +140,11 @@ export default function MapCanvas() {
     };
   }, []);
 
-  // ====================================================
-  // RESET ANALISIS
-  // ====================================================
-
   useEffect(() => {
     const handleResetAnalisis = () => {
       const map = mapRef.current;
-
-      // Tutup kartu / popup bidang
       popupRef.current?.remove();
       popupRef.current = null;
-
-      // Reset highlight analisis
       if (map) {
         for (const id of analisisRef.current) {
           map.setFeatureState(
@@ -184,8 +157,6 @@ export default function MapCanvas() {
             }
           );
         }
-
-        // Reset bidang yang sedang dipilih / difokuskan
         if (terpilihRef.current !== null) {
           map.setFeatureState(
             {
@@ -202,12 +173,10 @@ export default function MapCanvas() {
       analisisRef.current = [];
       terpilihRef.current = null;
     };
-
     window.addEventListener(
       'reset-analisis-bidang',
       handleResetAnalisis
     );
-
     return () => {
       window.removeEventListener(
         'reset-analisis-bidang',
@@ -216,14 +185,9 @@ export default function MapCanvas() {
     };
   }, []);
 
-  // ====================================================
-  // RESET PILIHAN BIDANG
-  // ====================================================
-
   useEffect(() => {
     const handleResetPilihanBidang = () => {
       const map = mapRef.current;
-
       if (
         map &&
         terpilihRef.current !== null
@@ -238,19 +202,14 @@ export default function MapCanvas() {
           }
         );
       }
-
       terpilihRef.current = null;
-
-      // Tutup kartu / popup bidang
       popupRef.current?.remove();
       popupRef.current = null;
     };
-
     window.addEventListener(
       'reset-pilihan-bidang',
       handleResetPilihanBidang
     );
-
     return () => {
       window.removeEventListener(
         'reset-pilihan-bidang',
@@ -258,10 +217,6 @@ export default function MapCanvas() {
       );
     };
   }, []);
-
-  // ====================================================
-  // FOKUS BIDANG
-  // ====================================================
 
   useEffect(() => {
     const handleFokusBidang = (
@@ -271,51 +226,40 @@ export default function MapCanvas() {
         event as CustomEvent<{
           id?: string | number;
         }>;
-
       const id =
         customEvent.detail?.id;
-
       const map =
         mapRef.current;
-
       if (
         id === undefined ||
         !map
       ) {
         return;
       }
-
       const fokus = () => {
         if (!map.isStyleLoaded()) {
           return;
         }
-
         if (!map.getSource('bidang')) {
           return;
         }
-
         const features =
           map.querySourceFeatures(
             'bidang'
           );
-
         const feature =
           features.find(
             (f) =>
               String(f.id) ===
               String(id)
           );
-
         if (!feature) {
           console.warn(
             'Bidang tidak ditemukan di source:',
             id
           );
-
           return;
         }
-
-        // Sorot bidang
         if (
           feature.id !== undefined
         ) {
@@ -324,10 +268,6 @@ export default function MapCanvas() {
             feature.id
           );
         }
-
-        // ----------------------------------------------
-        // Hitung bounds geometry bidang
-        // ----------------------------------------------
 
         const bounds =
           new maplibregl.LngLatBounds();
@@ -937,17 +877,27 @@ export default function MapCanvas() {
       ),
       'top-right'
     );
-
+    const scaleControl =
+      new maplibregl.ScaleControl({
+        maxWidth: 100,
+        unit: 'metric'
+      });
     map.addControl(
-      new maplibregl.ScaleControl(
-        {
-          maxWidth: 110,
-          unit: 'metric'
-        }
-      ),
-      'bottom-left'
+      scaleControl,
+      'bottom-right'
     );
-
+    const scaleElement =
+      (scaleControl as any)._container as
+        | HTMLElement
+        | undefined;
+    if (
+      scaleElement &&
+      scaleSlotRef.current
+    ) {
+      scaleSlotRef.current.appendChild(
+        scaleElement
+      );
+    }
     map.addControl(
       new maplibregl.AttributionControl(
         {
@@ -956,11 +906,9 @@ export default function MapCanvas() {
       ),
       'bottom-left'
     );
-
     map.on(
       'load',
       () => {
-
         for (
           const [k, def]
           of [
@@ -979,33 +927,24 @@ export default function MapCanvas() {
           ) {
             continue;
           }
-
           map.addLayer({
             id: def.id,
-
             type: 'line',
-
             source:
               k === 'lidar'
                 ? 'kontur_lidar'
                 : 'kontur_foto',
-
             'source-layer':
               'kontur',
-
             minzoom: 13,
-
             layout: {
               visibility: 'none'
             },
-
             paint: {
               'line-color':
                 def.warna,
-
               'line-width': [
                 'case',
-
                 [
                   '==',
                   [
@@ -1014,17 +953,14 @@ export default function MapCanvas() {
                   ],
                   1
                 ],
-
                 1.2,
 
                 0.55
               ],
-
               'line-opacity': 0.7
             }
           });
         }
-
         for (
           const L
           of LAYERS
@@ -1034,12 +970,10 @@ export default function MapCanvas() {
           ) {
             continue;
           }
-
           map.addSource(
             L.id,
             {
               type: 'geojson',
-
               data:
                 L.id === 'traseg'
                   ? TRASEG_URL
@@ -1580,10 +1514,6 @@ export default function MapCanvas() {
     return () => {
       resizeObserver.disconnect();
 
-      // ==================================================
-      // BERSIHKAN INDIKATOR MEMUAT LAYER
-      // ==================================================
-
       map.off(
         'sourcedataloading',
         handleSourceLoading
@@ -1955,9 +1885,6 @@ export default function MapCanvas() {
       });
   };
 
-  // ====================================================
-  // BASEMAP
-  // ====================================================
 
   useEffect(() => {
     const map =
@@ -2047,10 +1974,6 @@ export default function MapCanvas() {
     basemap,
     beriPesan
   ]);
-
-  // ====================================================
-  // DTM
-  // ====================================================
 
   useEffect(() => {
     const map =
@@ -2206,10 +2129,6 @@ export default function MapCanvas() {
     };
   }, [dtm]);
 
-  // ====================================================
-  // LABEL NOMOR
-  // ====================================================
-
   useEffect(() => {
     const map = mapRef.current;
 
@@ -2257,10 +2176,6 @@ export default function MapCanvas() {
       );
     };
   }, []);
-
-  // ====================================================
-  // AKTIF / NONAKTIF LAYER
-  // ====================================================
 
   useEffect(() => {
     const map =
@@ -2404,10 +2319,6 @@ export default function MapCanvas() {
     layerAktif
   ]);
 
-  // ====================================================
-  // FILTER BIDANG
-  // ====================================================
-
   useEffect(() => {
     const map =
       mapRef.current;
@@ -2466,39 +2377,6 @@ export default function MapCanvas() {
     filterBidang
   ]);
 
-  // ====================================================
-  // ZOOM TRASE EVENT
-  // ====================================================
-
-  useEffect(() => {
-    const zoomTrase =
-      () => {
-        const map =
-          mapRef.current;
-
-        if (!map) {
-          return;
-        }
-
-        zoomKeTrase(map);
-      };
-
-    window.addEventListener(
-      'zoom-trase',
-      zoomTrase
-    );
-
-    return () => {
-      window.removeEventListener(
-        'zoom-trase',
-        zoomTrase
-      );
-    };
-  }, []);
-
-  // ====================================================
-  // TEMA
-  // ====================================================
 
   useEffect(() => {
     const map =
@@ -2512,10 +2390,6 @@ export default function MapCanvas() {
   }, [
     tema
   ]);
-
-  // ====================================================
-  // RENDER
-  // ====================================================
 
   return (
     <div
@@ -2577,41 +2451,37 @@ export default function MapCanvas() {
         </div>
       )}
 
+    <div className="map-bottom-right">
+      <div
+        ref={scaleSlotRef}
+        className="map-scale-slot"
+      />
+    
       <div className="map-info">
         <span>
           Lon{' '}
-          {infoPeta.lon.toFixed(
-            5
-          )}
+          {infoPeta.lon.toFixed(5)}
         </span>
-
+    
         <span>
           Lat{' '}
-          {infoPeta.lat.toFixed(
-            5
-          )}
+          {infoPeta.lat.toFixed(5)}
         </span>
-
+    
         <span>
           Zoom{' '}
-          {infoPeta.zoom.toFixed(
-            1
-          )}
+          {infoPeta.zoom.toFixed(1)}
         </span>
-
+    
         <span>
           Kemiringan{' '}
-          {infoPeta.pitch.toFixed(
-            0
-          )}
+          {infoPeta.pitch.toFixed(0)}
           °
         </span>
-
+    
         <span>
           Arah{' '}
-          {infoPeta.bearing.toFixed(
-            0
-          )}
+          {infoPeta.bearing.toFixed(0)}
           °
         </span>
       </div>
@@ -2619,26 +2489,11 @@ export default function MapCanvas() {
   );
 }
 
-// ======================================================
-// HELPER LOADING LAYER
-// ======================================================
-
 function selesaiLoadingLayerAktif(
   sourceId: string
 ) {
-  // Helper ini hanya dipakai untuk
-  // menghapus state loading.
-  //
-  // State aktual diambil dari callback
-  // setState agar tidak menggunakan closure lama.
-
-  // Tidak melakukan apa-apa jika source
-  // tidak sedang diminta.
 }
 
-// ======================================================
-// CEK LOADING LAYER
-// ======================================================
 
 function cekLoadingLayerAktif(
   sourceId: string,
@@ -2650,15 +2505,10 @@ function cekLoadingLayerAktif(
         sourceId
       )
     ) {
-      // Event sourcedata akan membersihkan
-      // loading state.
     }
   });
 }
 
-// ======================================================
-// FILTER BIDANG
-// ======================================================
 
 const ekspresiFilterBidang = (
   filter: {
@@ -2736,20 +2586,12 @@ const ekspresiFilterBidang = (
   return kondisi;
 };
 
-// ======================================================
-// FORMAT ANGKA
-// ======================================================
-
 const fmt = (
   n: number | null
 ) =>
   (n ?? 0).toLocaleString(
     'id-ID'
   );
-
-// ======================================================
-// TEMA
-// ======================================================
 
 function warnaiTema(
   map: MLMap
