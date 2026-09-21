@@ -7,30 +7,25 @@ import { signIn } from 'next-auth/react';
 function FormMasuk() {
   const router = useRouter();
   const kembali = useSearchParams().get('kembali') ?? '/';
-
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [lihat, setLihat] = useState(false);
   const [galat, setGalat] = useState<string | null>(null);
-  const [sibuk, setSibuk] = useState(false);
-
+  const [sibuk, setSibuk] = useState(false)
   async function kirim(e: React.FormEvent) {
     e.preventDefault();
     setSibuk(true);
     setGalat(null);
-
     try {
       const r = await signIn('credentials', {
         username,
         password,
         redirect: false,
       });
-
       if (r?.error) {
         setGalat('Nama pengguna atau kata sandi tidak cocok.');
         return;
       }
-
       router.push(kembali);
       router.refresh();
     } finally {
@@ -52,12 +47,11 @@ function FormMasuk() {
                 alt="Logo Kabupaten Bojonegoro"
               />
             </div>
-
             <div className="lg-brand-text">
               <b>
-                Dinas Pekerjaan Umum Bina Marga dan Perumahan Rakyat
+                Dinas Pekerjaan Umum Bina Marga dan Penataan Ruang
               </b>
-              <span>Kabupaten Bojonegoro</span>
+              <span>Pemerintah Kabupaten Bojonegoro</span>
             </div>
           </header>
 
@@ -120,7 +114,7 @@ function FormMasuk() {
           </div>
 
           <div className="lg-kaki">
-            <span>© 2026 Dinas PUBMPR Kabupaten Bojonegoro</span>
+            <span>© 2026 Dinas PUBIMAPR Kabupaten Bojonegoro</span>
           </div>
         </section>
         <section className="lg-kanan">
@@ -142,14 +136,9 @@ function FormMasuk() {
 
                 <div>
                   <span className="lg-kode">PORTAL INTERNAL</span>
-                  <h2>Selamat datang</h2>
+                  <h2>SELAMAT DATANG</h2>
                 </div>
               </div>
-
-              <p className="lg-sub">
-                Masuk menggunakan akun yang telah diberikan
-                <strong> pengelola sistem.</strong>
-              </p>
 
               {galat && (
                 <div className="lg-galat" role="alert">
@@ -235,7 +224,7 @@ function FormMasuk() {
               <div className="lg-form-options">
                 <span>
                   <IconShieldMini />
-                  Akses hanya untuk pengguna terdaftar
+                  Akses WebGIS DPPT Bojonegoro hanya diperuntukkan bagi pengguna terdaftar.
                 </span>
               </div>
 
@@ -248,7 +237,7 @@ function FormMasuk() {
                     </>
                   ) : (
                     <>
-                      Masuk ke Sistem
+                      Masuk ke WebGIS
                       <IconArrow />
                     </>
                   )}
@@ -267,8 +256,8 @@ function FormMasuk() {
                 <div>
                   <b>Belum memiliki akun?</b>
                   <p>
-                    Akun dibuat oleh pengelola sistem sesuai penugasan.
-                    <a href="mailto:dpubimapr@bojonegorokab.go.id">Hubungi Dinas PUBMPR</a>
+                    Akun dibuat oleh pengelola WebGIS sesuai penugasan.
+                    <a href="mailto:dpubimapr@bojonegorokab.go.id">Hubungi Dinas PUBIMAPR</a>
                   </p>
                 </div>
               </div>
@@ -276,7 +265,7 @@ function FormMasuk() {
               <div className="lg-security">
                 <IconShield />
                 <span>
-                  Data dan akses sistem diperuntukkan bagi kepentingan
+                  Data dan akses WebGIS diperuntukkan bagi kepentingan
                   kedinasan.
                 </span>
               </div>
