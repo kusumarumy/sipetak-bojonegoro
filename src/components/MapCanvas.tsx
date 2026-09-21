@@ -49,8 +49,6 @@ export default function MapCanvas() {
     useRef<HTMLDivElement>(null);
   const mapRef =
     useRef<MLMap | null>(null);
-  const ref =
-    useRef<HTMLDivElement>(null);
   const popupRef =
     useRef<Popup | null>(null);
   const terpilihRef =
