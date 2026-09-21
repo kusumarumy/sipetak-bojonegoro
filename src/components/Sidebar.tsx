@@ -43,7 +43,6 @@ function IconLayer() {
     </svg>
   );
 }
-
 function IconBidang() {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -84,7 +83,6 @@ function IconStatistika() {
     </svg>
   );
 }
-
 function IconFilter() {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -92,7 +90,6 @@ function IconFilter() {
     </svg>
   );
 }
-
 function IconSearch() {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -105,7 +102,6 @@ function IconSearch() {
     </svg>
   );
 }
-
 function IconRiwayat() {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -118,12 +114,12 @@ function IconRiwayat() {
 
 const MENU = [
   { id: 'terrain' as const,     guide: 'terrain',              label: 'Terrain 3D',           icon: <IconTerrain /> },
-  { id: 'basemap' as const,     guide: 'basemap',              label: 'BASEMAP',              icon: <IconBasemap /> },
+  { id: 'basemap' as const,     guide: 'basemap',              label: 'Basemap',              icon: <IconBasemap /> },
   { id: 'layer' as const,       guide: 'layer',                label: 'Layer',                icon: <IconLayer /> },
-  { id: 'bidang' as const,      guide: 'daftar-bidang',        label: 'Daftar bidang',        icon: <IconBidang /> },
+  { id: 'bidang' as const,      guide: 'daftar-bidang',        label: 'Daftar Bidang',        icon: <IconBidang /> },
   { id: 'kepemilikan' as const, guide: 'analisis-kepemilikan', label: 'Analisis Kepemilikan', icon: <IconKepemilikan /> },
   { id: 'statistika' as const,  guide: 'statistika',           label: 'Statistika',           icon: <IconStatistika /> },
-  { id: 'filter' as const,      guide: 'filter',               label: 'Filter',               icon: <IconFilter /> },
+  { id: 'filter' as const,      guide: 'filter',               label: 'Filter Bidang',        icon: <IconFilter /> },
   { id: 'search' as const,      guide: 'pencarian',            label: 'Pencarian',            icon: <IconSearch /> },
   { id: 'riwayat' as const,     guide: 'riwayat-aksi',         label: 'Riwayat Aksi',         icon: <IconRiwayat /> },
 ];
@@ -138,7 +134,7 @@ export default function Sidebar({ aktif, onChange }: Props) {
             <button
               key={item.id}
               type="button"
-              data-guide={item.guide}          /* ← SATU-SATUNYA baris baru di tombol */
+              data-guide={item.guide}         
               className={`sidebar-item${isActive ? ' active' : ''}`}
               onClick={() => onChange(isActive ? null : item.id)}
               aria-label={item.label}
