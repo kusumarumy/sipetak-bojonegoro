@@ -4388,7 +4388,7 @@ main.body {
   border: 1px solid var(--terrain-ui-line, #e5e7eb);
   border-radius: 7px;
 
-  background: var(--terrain-ui-soft, #f8fafc);
+  background: var(--layer-accent-soft);
 
   color: var(--terrain-ui-accent, #A51F35);
 }
