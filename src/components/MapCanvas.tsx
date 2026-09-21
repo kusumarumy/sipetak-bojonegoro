@@ -1450,8 +1450,6 @@ map.addControl(
         warnaiTema(map);
 
         pasangInteraksi(map);
-
-        zoomKeTrase(map);
       }
     );
 
