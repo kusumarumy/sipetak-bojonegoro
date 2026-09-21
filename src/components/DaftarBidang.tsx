@@ -266,7 +266,6 @@ const SortHeader = ({
 
   <div className="daftar-head-row">
 
-    {/* KIRI — JUDUL */}
     <div className="daftar-head-top">
 
       <div className="daftar-head-main">
@@ -295,7 +294,7 @@ const SortHeader = ({
         <div className="daftar-title-wrap">
 
           <div className="daftar-title">
-            <strong>DAFTAR BIDANG TERDAMPAK</strong>
+            <strong>DAFTAR BIDANG</strong>
 
             <span className="daftar-count">
               {memuat
@@ -305,7 +304,7 @@ const SortHeader = ({
           </div>
 
           <span className="daftar-subtitle">
-            Daftar bidang tanah yang terdampak pada area analisis
+            Daftar bidang tanah yang terdampak 
           </span>
 
         </div>
