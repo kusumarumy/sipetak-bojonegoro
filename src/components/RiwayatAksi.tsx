@@ -312,187 +312,186 @@ export default function RiwayatAksi({
 
       <section className="daftar-bidang">
 
-        {/* =================================================
-            HEADER
-            ================================================= */}
+<div className="daftar-head">
 
-        <div className="daftar-head">
+  <div className="daftar-head-row">
 
-          {/* IDENTITAS PANEL */}
-          <div className="daftar-head-main">
+    <div className="daftar-head-top">
 
-            <div className="daftar-head-icon">
-              <svg
-                viewBox="0 0 24 24"
-                aria-hidden="true"
-              >
-                <path
-                  d="M12 7v5l3 2"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.7"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
+      <div className="daftar-head-main">
 
-                <path
-                  d="M20 12a8 8 0 1 1-2.34-5.66"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.7"
-                  strokeLinecap="round"
-                />
+        <div className="daftar-head-icon">
+          <svg
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path
+              d="M12 7v5l3 2"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.7"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
 
-                <path
-                  d="M17 4v4h4"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.7"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </div>
+            <path
+              d="M20 12a8 8 0 1 1-2.34-5.66"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.7"
+              strokeLinecap="round"
+            />
 
-            <div className="daftar-title-wrap">
+            <path
+              d="M17 4v4h4"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.7"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </div>
 
-              <div className="daftar-title">
+        <div className="daftar-title-wrap">
 
-                <strong>
-                  RIWAYAT AKSI
-                </strong>
+          <div className="daftar-title">
 
-                <span className="daftar-count">
-                  {memuat
-                    ? 'Memuat…'
-                    : `${dataTampil.length.toLocaleString(
-                        'id-ID'
-                      )} aktivitas`}
-                </span>
+            <strong>
+              RIWAYAT AKSI
+            </strong>
 
-              </div>
-
-              <span className="daftar-subtitle">
-                Audit trail aktivitas perubahan data
-              </span>
-
-            </div>
+            <span className="daftar-count">
+              {memuat
+                ? 'Memuat…'
+                : `${dataTampil.length.toLocaleString(
+                    'id-ID'
+                  )} aktivitas`}
+            </span>
 
           </div>
 
-          {/* =================================================
-              FILTER + CLOSE
-              URUTAN:
-              CLOSE → SEMUA → INPUT → UPDATE → UPLOAD → DELETE
-              ================================================= */}
-
-          <div className="daftar-actions">
-
-            {/* CLOSE */}
-            <button
-              type="button"
-              className="daftar-close"
-              onClick={onClose}
-              aria-label="Tutup riwayat aksi"
-              title="Tutup"
-            >
-              <svg
-                viewBox="0 0 24 24"
-                aria-hidden="true"
-              >
-                <path
-                  d="M6 6l12 12M18 6L6 18"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                />
-              </svg>
-            </button>
-
-            {/* SEMUA */}
-            <button
-              type="button"
-              className={
-                filter === 'semua'
-                  ? 'active'
-                  : ''
-              }
-              onClick={() =>
-                setFilter('semua')
-              }
-            >
-              SEMUA ({jumlah.semua})
-            </button>
-
-            {/* INPUT */}
-            <button
-              type="button"
-              className={
-                filter === 'INPUT'
-                  ? 'active'
-                  : ''
-              }
-              onClick={() =>
-                setFilter('INPUT')
-              }
-            >
-              INPUT ({jumlah.input})
-            </button>
-
-            {/* UPDATE */}
-            <button
-              type="button"
-              className={
-                filter === 'UPDATE'
-                  ? 'active'
-                  : ''
-              }
-              onClick={() =>
-                setFilter('UPDATE')
-              }
-            >
-              UPDATE ({jumlah.update})
-            </button>
-
-            {/* UPLOAD */}
-            <button
-              type="button"
-              className={
-                filter === 'UPLOAD'
-                  ? 'active'
-                  : ''
-              }
-              onClick={() =>
-                setFilter('UPLOAD')
-              }
-            >
-              UPLOAD ({jumlah.upload})
-            </button>
-
-            {/* DELETE */}
-            <button
-              type="button"
-              className={
-                filter === 'DELETE'
-                  ? 'active'
-                  : ''
-              }
-              onClick={() =>
-                setFilter('DELETE')
-              }
-            >
-              DELETE ({jumlah.delete})
-            </button>
-
-          </div>
+          <span className="daftar-subtitle">
+            Audit trail aktivitas perubahan data
+          </span>
 
         </div>
 
-        {/* =================================================
-            TABLE
-            ================================================= */}
+      </div>
 
+    </div>
+
+
+    {/* =================================================
+        ACTIONS
+        URUTAN:
+        CLOSE → SEMUA → INPUT → UPDATE → UPLOAD → DELETE
+        ================================================= */}
+
+    <div className="daftar-actions">
+
+      {/* CLOSE */}
+      <button
+        type="button"
+        className="daftar-close"
+        onClick={onClose}
+        aria-label="Tutup riwayat aksi"
+        title="Tutup"
+      >
+        <svg
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+        >
+          <path
+            d="M6 6l12 12M18 6L6 18"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+          />
+        </svg>
+      </button>
+
+      {/* SEMUA */}
+      <button
+        type="button"
+        className={
+          filter === 'semua'
+            ? 'active'
+            : ''
+        }
+        onClick={() =>
+          setFilter('semua')
+        }
+      >
+        SEMUA ({jumlah.semua})
+      </button>
+
+      {/* INPUT */}
+      <button
+        type="button"
+        className={
+          filter === 'INPUT'
+            ? 'active'
+            : ''
+        }
+        onClick={() =>
+          setFilter('INPUT')
+        }
+      >
+        INPUT ({jumlah.input})
+      </button>
+
+      {/* UPDATE */}
+      <button
+        type="button"
+        className={
+          filter === 'UPDATE'
+            ? 'active'
+            : ''
+        }
+        onClick={() =>
+          setFilter('UPDATE')
+        }
+      >
+        UPDATE ({jumlah.update})
+      </button>
+
+      {/* UPLOAD */}
+      <button
+        type="button"
+        className={
+          filter === 'UPLOAD'
+            ? 'active'
+            : ''
+        }
+        onClick={() =>
+          setFilter('UPLOAD')
+        }
+      >
+        UPLOAD ({jumlah.upload})
+      </button>
+
+      {/* DELETE */}
+      <button
+        type="button"
+        className={
+          filter === 'DELETE'
+            ? 'active'
+            : ''
+        }
+        onClick={() =>
+          setFilter('DELETE')
+        }
+      >
+        DELETE ({jumlah.delete})
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
         <div className="daftar-table-wrap">
 
           <table className="daftar-table">
