@@ -525,7 +525,47 @@ main.body {
 .maplibregl-ctrl-bottom-left .maplibregl-ctrl-attrib {
   order: 2;
 }
+.map-bottom-right {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+  z-index: 30;
 
+  display: flex;
+  align-items: stretch;
+  gap: 8px;
+}
+
+.map-scale-slot {
+  display: flex;
+  align-items: stretch;
+}
+
+.map-scale-slot .maplibregl-ctrl-scale {
+  box-sizing: border-box;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 34px;
+
+  margin: 0 !important;
+  padding: 0 12px !important;
+
+  background: rgba(255, 255, 255, 0.96) !important;
+  border: 1px solid rgba(15, 23, 42, 0.12) !important;
+  border-radius: 10px !important;
+
+  color: #26323a !important;
+
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.12);
+}
 .sidebar {
   position: fixed;
   top: 0;
