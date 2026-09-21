@@ -4374,8 +4374,8 @@ main.body {
 }
 
 .daftar-head-icon {
-  width: 29px;
-  height: 29px;
+  width: 33px;
+  height: 33px;
 
   flex: 0 0 29px;
 
@@ -4388,7 +4388,7 @@ main.body {
   border: 1px solid var(--terrain-ui-line, #e5e7eb);
   border-radius: 7px;
 
-  background: var(--layer-accent-soft);
+  background: #fff7f8;
 
   color: var(--terrain-ui-accent, #A51F35);
 }
