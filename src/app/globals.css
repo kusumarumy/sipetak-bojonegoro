@@ -4283,10 +4283,10 @@ main.body {
 .daftar-flyout {
   position: absolute !important;
 
-  left: 82px !important;
+  left: 88px !important;
   top: 111px !important;
 
-  width: 850px !important;
+  width: 800px !important;
   height: min(560px, calc(100vh - 155px));
 
   min-height: 0;
@@ -4377,7 +4377,7 @@ main.body {
   width: auto;
   min-width: 0;
 
-  height: 30px;
+  height: 50px;
 
   display: flex;
   align-items: center;
@@ -4440,21 +4440,15 @@ main.body {
 
 .daftar-title strong {
   flex: 0 1 auto;
-
   min-width: 0;
-
   color: var(--terrain-ui-title, #374151);
-
   font-family: var(
     --terrain-ui-font,
     var(--f-body, Arial, sans-serif)
   );
-
-  font-size: 10px;
+  font-size: 16px;
   font-weight: 800;
-
   letter-spacing: 0.06em;
-
   white-space: nowrap;
 }
 
@@ -4468,7 +4462,7 @@ main.body {
     var(--f-body, Arial, sans-serif)
   );
 
-  font-size: 8px;
+  font-size: 18px;
   font-weight: 500;
 
   white-space: nowrap;
@@ -4476,25 +4470,17 @@ main.body {
 
 .daftar-subtitle {
   display: block;
-
   max-width: 100%;
-
   overflow: hidden;
-
   text-overflow: ellipsis;
-
   white-space: nowrap;
-
   color: var(--terrain-ui-muted, #71869a);
-
   font-family: var(
     --terrain-ui-font,
     var(--f-body, Arial, sans-serif)
   );
-
-  font-size: 9px;
+  font-size: 10px;
   font-weight: 600;
-
   line-height: 1.15;
 }
 .daftar-actions {
@@ -4592,7 +4578,7 @@ main.body {
   border: 0;
   border-radius: 7px;
 
-  background: transparent;
+  background: #bf00002e;
 
   color: #6b7280;
 
@@ -4738,7 +4724,7 @@ main.body {
 
   font-family: var(--terrain-ui-font, var(--f-body, Arial, sans-serif));
 
-  font-size: 8px;
+  font-size: 9px;
 
   font-weight: 800;
 
