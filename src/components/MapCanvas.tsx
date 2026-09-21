@@ -26,7 +26,16 @@ const siap = (url?: string) =>
   !url.includes('contoh.id') &&
   (url.startsWith('http') ||
     url.startsWith('/'));
-
+class AppScaleControl extends maplibregl.ScaleControl {
+  private element: HTMLElement | null = null;
+  onAdd(map: MLMap) {
+    this.element = super.onAdd(map);
+    return this.element;
+  }
+  getElement() {
+    return this.element;
+  }
+}
 const ADA_KONTUR = {
   lidar: siap(KONTUR.lidar.url),
   foto: siap(KONTUR.foto.url)
@@ -40,7 +49,7 @@ export default function MapCanvas() {
     useRef<HTMLDivElement>(null);
   const mapRef =
     useRef<MLMap | null>(null);
-  const scaleSlotRef =
+  const ref =
     useRef<HTMLDivElement>(null);
   const popupRef =
     useRef<Popup | null>(null);
@@ -869,43 +878,42 @@ export default function MapCanvas() {
       ref.current
     );
 
-    map.addControl(
-      new maplibregl.NavigationControl(
-        {
-          visualizePitch: true
-        }
-      ),
-      'top-right'
-    );
-    const scaleControl =
-      new maplibregl.ScaleControl({
-        maxWidth: 100,
-        unit: 'metric'
-      });
-    map.addControl(
-      scaleControl,
-      'bottom-right'
-    );
-    const scaleElement =
-      (scaleControl as any)._container as
-        | HTMLElement
-        | undefined;
-    if (
-      scaleElement &&
-      scaleSlotRef.current
-    ) {
-      scaleSlotRef.current.appendChild(
-        scaleElement
-      );
-    }
-    map.addControl(
-      new maplibregl.AttributionControl(
-        {
-          compact: true
-        }
-      ),
-      'bottom-left'
-    );
+map.addControl(
+  new maplibregl.NavigationControl({
+    visualizePitch: true
+  }),
+  'top-right'
+);
+
+const scaleControl =
+  new AppScaleControl({
+    maxWidth: 100,
+    unit: 'metric'
+  });
+
+map.addControl(
+  scaleControl,
+  'bottom-right'
+);
+
+const scaleElement =
+  scaleControl.getElement();
+
+if (
+  scaleElement &&
+  scaleSlotRef.current
+) {
+  scaleSlotRef.current.appendChild(
+    scaleElement
+  );
+}
+
+map.addControl(
+  new maplibregl.AttributionControl({
+    compact: true
+  }),
+  'bottom-left'
+);
     map.on(
       'load',
       () => {
@@ -2391,102 +2399,105 @@ export default function MapCanvas() {
     tema
   ]);
 
-  return (
-    <div
-      ref={ref}
-      className="canvas"
-    >
+return (
+  <div
+    ref={ref}
+    className="canvas"
+  >
 
-      {layerLoading.length > 0 && (
-        <div className="layer-loading">
-          <strong className="layer-loading-title">
-            MEMUAT LAYER
-          </strong>
+    {layerLoading.length > 0 && (
+      <div className="layer-loading">
+        <strong className="layer-loading-title">
+          MEMUAT LAYER
+        </strong>
 
-          <div className="layer-loading-text">
-            {(() => {
-              const namaLayer =
-                layerLoading
-                  .map(
-                    (id) =>
-                      LAYERS.find(
-                        (layer) =>
-                          layer.id === id
-                      )?.nama
-                  )
-                  .filter(Boolean) as string[];
+        <div className="layer-loading-text">
+          {(() => {
+            const namaLayer =
+              layerLoading
+                .map(
+                  (id) =>
+                    LAYERS.find(
+                      (layer) =>
+                        layer.id === id
+                    )?.nama
+                )
+                .filter(Boolean) as string[];
 
-              if (
-                namaLayer.length === 0
-              ) {
-                return 'Layer sedang dimuat...';
-              }
+            if (
+              namaLayer.length === 0
+            ) {
+              return 'Layer sedang dimuat...';
+            }
 
-              let daftarLayer = '';
+            let daftarLayer = '';
 
-              if (
-                namaLayer.length === 1
-              ) {
-                daftarLayer =
-                  namaLayer[0];
-              } else if (
-                namaLayer.length === 2
-              ) {
-                daftarLayer =
-                  `${namaLayer[0]} dan ${namaLayer[1]}`;
-              } else {
-                daftarLayer =
-                  namaLayer
-                    .slice(0, -1)
-                    .join(', ') +
-                  ', dan ' +
-                  namaLayer[
-                    namaLayer.length - 1
-                  ];
-              }
+            if (
+              namaLayer.length === 1
+            ) {
+              daftarLayer =
+                namaLayer[0];
+            } else if (
+              namaLayer.length === 2
+            ) {
+              daftarLayer =
+                `${namaLayer[0]} dan ${namaLayer[1]}`;
+            } else {
+              daftarLayer =
+                namaLayer
+                  .slice(0, -1)
+                  .join(', ') +
+                ', dan ' +
+                namaLayer[
+                  namaLayer.length - 1
+                ];
+            }
 
-              return `${daftarLayer} sedang dimuat...`;
-            })()}
-          </div>
+            return `${daftarLayer} sedang dimuat...`;
+          })()}
         </div>
-      )}
+      </div>
+    )}
 
     <div className="map-bottom-right">
+
       <div
         ref={scaleSlotRef}
         className="map-scale-slot"
       />
-    
+
       <div className="map-info">
         <span>
           Lon{' '}
           {infoPeta.lon.toFixed(5)}
         </span>
-    
+
         <span>
           Lat{' '}
           {infoPeta.lat.toFixed(5)}
         </span>
-    
+
         <span>
           Zoom{' '}
           {infoPeta.zoom.toFixed(1)}
         </span>
-    
+
         <span>
           Kemiringan{' '}
           {infoPeta.pitch.toFixed(0)}
           °
         </span>
-    
+
         <span>
           Arah{' '}
           {infoPeta.bearing.toFixed(0)}
           °
         </span>
       </div>
+
     </div>
-  );
+  </div>
+);
 }
 
 function selesaiLoadingLayerAktif(
