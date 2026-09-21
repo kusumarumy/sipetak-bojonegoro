@@ -16,8 +16,7 @@ export type Basemap =
 export type SumberDTM =
   | 'off'
   | 'trace'
-  | 'kawasan';
-
+  | 'aws';
 export type PewarnaanBidang =
   | 'status'
   | 'penggunaan';
@@ -110,10 +109,6 @@ export const useApp = create<AppState>(
       pipa_gresem: false,
     },
 
-    /* =====================================================
-       FILTER DEFAULT
-       ===================================================== */
-
     filterBidang: {
       ...FILTER_KOSONG,
     },
@@ -125,10 +120,6 @@ export const useApp = create<AppState>(
     memuatKartu: false,
 
     pesan: null,
-
-    /* =====================================================
-       SET TEMA
-       ===================================================== */
 
     setTema: (tema) => {
 
