@@ -45,14 +45,20 @@ const TRASEG_URL =
   'https://raw.githubusercontent.com/kusumarumy/sipetak-bojonegoro/main/data/wgs84/traseg.geojson';
 
 export default function MapCanvas() {
-  const ref =
-    useRef<HTMLDivElement>(null);
-  const mapRef =
-    useRef<MLMap | null>(null);
-  const popupRef =
-    useRef<Popup | null>(null);
-  const terpilihRef =
-    useRef<string | number | null>(null);
+const ref =
+  useRef<HTMLDivElement>(null);
+
+const mapRef =
+  useRef<MLMap | null>(null);
+
+const scaleSlotRef =
+  useRef<HTMLDivElement>(null);
+
+const popupRef =
+  useRef<Popup | null>(null);
+
+const terpilihRef =
+  useRef<string | number | null>(null);
   const analisisRef =
     useRef<(string | number)[]>([]);
   const layerLoadingDimintaRef =
