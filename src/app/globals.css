@@ -4282,34 +4282,23 @@ main.body {
 }
 .daftar-flyout {
   position: absolute !important;
-
-  left: 88px !important;
-  top: 111px !important;
-
+  left: 82px !important;
+  top: 88px !important;
   width: 800px !important;
   height: min(560px, calc(100vh - 155px));
-
   min-height: 0;
-
   margin: 0 !important;
   transform: none !important;
-
   box-sizing: border-box;
-
   background: #fff;
-
   border: 1px solid var(--terrain-ui-line, #e5e7eb);
   border-radius: 10px;
-
   box-shadow:
     0 14px 36px rgba(15, 23, 42, .13),
     0 2px 8px rgba(15, 23, 42, .05);
-
   display: flex;
   flex-direction: column;
-
   overflow: hidden;
-
   z-index: 960;
 }
 .daftar-bidang {
@@ -4376,9 +4365,6 @@ main.body {
 
   width: auto;
   min-width: 0;
-
-  height: 50px;
-
   display: flex;
   align-items: center;
 
@@ -4462,7 +4448,7 @@ main.body {
     var(--f-body, Arial, sans-serif)
   );
 
-  font-size: 18px;
+  font-size: 14px;
   font-weight: 500;
 
   white-space: nowrap;
