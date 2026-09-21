@@ -511,60 +511,72 @@ main.body {
 .maplibregl-ctrl-top-right
 .maplibregl-ctrl-group:first-child {
   margin-top: 88px;
-}
-.maplibregl-ctrl-bottom-left {
+}.maplibregl-ctrl-bottom-left {
   left: 80px !important;
   right: auto !important;
+
   display: flex;
   flex-direction: column;
   align-items: flex-start;
 }
-.maplibregl-ctrl-bottom-left .maplibregl-ctrl-scale {
+
+.maplibregl-ctrl-bottom-left .maplibregl-ctrl-attrib {
   order: 1;
 }
-.maplibregl-ctrl-bottom-left .maplibregl-ctrl-attrib {
-  order: 2;
-}
+
 .map-bottom-right {
   position: absolute;
   right: 20px;
   bottom: 20px;
-  z-index: 30;
+  z-index: 100;
 
   display: flex;
-  align-items: stretch;
+  flex-direction: row;
+  align-items: center;
   gap: 8px;
 }
 
 .map-scale-slot {
   display: flex;
-  align-items: stretch;
+  align-items: center;
+  flex: 0 0 auto;
+}
+
+.map-scale-slot .maplibregl-ctrl {
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 .map-scale-slot .maplibregl-ctrl-scale {
   box-sizing: border-box;
 
+  min-height: 28px;
+  margin: 0 !important;
+  padding: 0 10px !important;
+
   display: flex;
   align-items: center;
   justify-content: center;
 
-  min-height: 34px;
-
-  margin: 0 !important;
-  padding: 0 12px !important;
-
-  background: rgba(255, 255, 255, 0.96) !important;
-  border: 1px solid rgba(15, 23, 42, 0.12) !important;
+  background: #fff !important;
+  border: 1px solid #d9d9d9 !important;
   border-radius: 10px !important;
 
-  color: #26323a !important;
-
-  font-size: 12px;
+  color: #263238 !important;
+  font-size: 11px;
   font-weight: 600;
   line-height: 1;
   white-space: nowrap;
 
-  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.12);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.map-info {
+  position: static !important;
+  right: auto !important;
+  bottom: auto !important;
+
+  flex: 0 0 auto;
 }
 .sidebar {
   position: fixed;
