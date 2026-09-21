@@ -56,7 +56,6 @@ const scaleSlotRef =
 
 const popupRef =
   useRef<Popup | null>(null);
-
 const terpilihRef =
   useRef<string | number | null>(null);
   const analisisRef =
