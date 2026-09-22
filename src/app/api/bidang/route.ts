@@ -12,27 +12,6 @@ export async function GET() {
   }
 
   try {
- 
-    const info = await query(`
-      SELECT
-        current_database() AS database,
-        current_schema() AS schema
-    `);
-
-    console.log('DB:', info);
-
-    const cek = await query(`
-      SELECT
-        column_name,
-        udt_name
-      FROM information_schema.columns
-      WHERE table_schema = 'public'
-        AND table_name = 'bidang_tanah'
-      ORDER BY ordinal_position
-    `);
-
-    console.log('KOLOM:', cek);
-
     const [row] = await query<{ fc: any }>(`
       SELECT json_build_object(
         'type',
@@ -83,7 +62,6 @@ export async function GET() {
                 'tahun', f.tahun,
                 'surat_hak', f.surat_hak,
                 'nomor_hak', f.nomor_hak,
-                'alas_hak', f.alas_hak,
                 'beban_hak', f.beban_hak
               )
 
@@ -122,7 +100,8 @@ export async function GET() {
                 'jenis_tnh', f.jenis_tnh,
                 'ruang_atbt', f.ruang_atbt,
                 'sta_tnh', f.sta_tnh,
-                'dampak_tnh', f.dampak_tnh
+                'dampak_tnh', f.dampak_tnh,
+                'keterangan', f.keterangan
               )
 
               ||
@@ -149,7 +128,11 @@ export async function GET() {
               ||
 
               jsonb_build_object(
-                'jml_bgn', f.jml_bgn
+                'jml_bgn', f.jml_bgn,
+                'jenis_tnm', f.jenis_tnm,
+                'jumlah_tnm', f.jumlah_tnm,
+                'jenis_bnd', f.jenis_bnd,
+                'jumlah_bnd', f.jumlah_bnd
               )
 
               ||
@@ -157,9 +140,7 @@ export async function GET() {
               jsonb_build_object(
                 'date_updt', f.date_updt,
                 'foto_tnh', f.foto_tnh,
-                'nama', f.nama,
-                'layer', f.layer,
-                'path', f.path,
+                'foto_wwc', f.foto_wwc,
                 'created_at', f.created_at
               )
 
@@ -168,9 +149,6 @@ export async function GET() {
               jsonb_build_object(
                 'status', f.status,
                 'catatan_supervisor', f.catatan_supervisor,
-                'petugas_nama', f.petugas_nama,
-                'tanggal_ukur', f.tanggal_ukur,
-                'dikirim_pada', f.dikirim_pada,
                 'diverifikasi_pada', f.diverifikasi_pada
               )
             )
