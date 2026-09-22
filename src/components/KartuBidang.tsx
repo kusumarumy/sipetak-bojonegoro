@@ -1249,8 +1249,6 @@ export default function KartuBidang({
         setNilai("penggunaan", v)
       }
     />
-
-```
 <Field
   label="Hubungan tanah"
   value={nilai("hub_tnh")}
@@ -1319,7 +1317,6 @@ export default function KartuBidang({
     setNilai("keterangan", v)
   }
 />
-```
 
   </div>
 </Section>
