@@ -9,6 +9,7 @@ import {
 
 import {
   KATEGORI_LABEL,
+  WAJIB,
   type Bidang,
   type KategoriLampiran,
   type Peran,
@@ -49,18 +50,16 @@ export default function UnggahBerkas({
     return map;
   }, [bidang.lampiran]);
 
-  const fotoAda = FOTO.filter((kategori) =>
-    perKategori.has(kategori)
-  ).length;
+const fotoAda = WAJIB.filter((kategori) =>
+  perKategori.has(kategori)
+).length;
 
-  const totalFoto = FOTO.length;
+const totalFoto = WAJIB.length;
 
-  const persenFoto =
-    totalFoto > 0
-      ? Math.round(
-          (fotoAda / totalFoto) * 100
-        )
-      : 0;
+const persenFoto =
+  totalFoto > 0
+    ? Math.round((fotoAda / totalFoto) * 100)
+    : 0;
 
   async function unggah(
     kategori: KategoriLampiran,
@@ -144,10 +143,10 @@ export default function UnggahBerkas({
       setSedang(null);
     }
   }
-  const kurang = FOTO.filter(
-    (kategori) =>
-      !perKategori.has(kategori)
-  );
+const kurang = WAJIB.filter(
+  (kategori) =>
+    !perKategori.has(kategori)
+);
 
   return (
     <div className="kb-upload">
@@ -195,10 +194,9 @@ export default function UnggahBerkas({
             </h4>
 
             <p>
-              Unggah tiga foto wajib:
-              foto bidang, foto bangunan,
-              dan foto orang di lapangan.
-            </p>
+  Unggah foto bidang dan foto pemilik & petugas.
+  Foto bangunan bersifat opsional.
+</p>
           </div>
 
           <span className="kb-upload-count">
@@ -523,16 +521,20 @@ function KartuFoto({
             )}
 
             <span
-              className={
-                ada
-                  ? "kb-badge-success"
-                  : "kb-badge-required"
-              }
-            >
-              {ada
-                ? "✓ Tersimpan"
-                : "Wajib"}
-            </span>
+  className={
+    ada
+      ? "kb-badge-success"
+      : WAJIB.includes(kategori)
+        ? "kb-badge-required"
+        : "kb-badge-optional"
+  }
+>
+  {ada
+    ? "✓ Tersimpan"
+    : WAJIB.includes(kategori)
+      ? "Wajib"
+      : "Opsional"}
+</span>
           </div>
 
           <div className="kb-photo-info">
