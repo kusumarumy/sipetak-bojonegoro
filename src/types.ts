@@ -152,7 +152,6 @@ export interface Bidang {
   // Identitas
   id: string;
   objectid?: number | null;
-  bidang_id?: string | null;
   kode?: string | null;
   kode_bid?: string | null;
   fid?: string | null;
