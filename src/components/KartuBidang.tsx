@@ -3,7 +3,12 @@
 import { useEffect, useMemo, useState } from "react";
 import { useApp } from "@/store/useApp";
 import UnggahBerkas from "./UnggahBerkas";
-import type { Peran, StatusBidang, Pemilik } from "@/types";
+import {
+  PILIHAN_BIDANG,
+  type Peran,
+  type StatusBidang,
+  type Pemilik,
+} from "@/types";
 import {
   dapatMengubahAtribut,
   dapatMengirim,
@@ -111,6 +116,8 @@ function Field({
   onChange,
   type = "text",
   placeholder,
+  options,
+  textarea = false,
 }: {
   label: string;
   value: any;
@@ -118,6 +125,8 @@ function Field({
   onChange?: (value: string) => void;
   type?: string;
   placeholder?: string;
+  options?: readonly string[];
+  textarea?: boolean;
 }) {
   const displayValue =
     value === null ||
@@ -131,14 +140,45 @@ function Field({
       <label>{label}</label>
 
       {edit ? (
-        <input
-          type={type}
-          value={value ?? ""}
-          placeholder={placeholder}
-          onChange={(e) =>
-            onChange?.(e.target.value)
-          }
-        />
+        options ? (
+          <select
+            value={value ?? ""}
+            onChange={(e) =>
+              onChange?.(e.target.value)
+            }
+          >
+            <option value="">
+              Pilih {label.toLowerCase()}
+            </option>
+
+            {options.map((option) => (
+              <option
+                key={option}
+                value={option}
+              >
+                {option}
+              </option>
+            ))}
+          </select>
+        ) : textarea ? (
+          <textarea
+            value={value ?? ""}
+            placeholder={placeholder}
+            rows={4}
+            onChange={(e) =>
+              onChange?.(e.target.value)
+            }
+          />
+        ) : (
+          <input
+            type={type}
+            value={value ?? ""}
+            placeholder={placeholder}
+            onChange={(e) =>
+              onChange?.(e.target.value)
+            }
+          />
+        )
       ) : (
         <div className="kb-value">
           {displayValue}
@@ -528,20 +568,14 @@ export default function KartuBidang({
                   value={b.bidang_id}
                 />
 
-                <Field
-                  label="Kelurahan"
-                  value={
-                    nilai("kelurahan") ??
-                    b.desa
-                  }
-                  edit={edit}
-                  onChange={(v) =>
-                    setNilai(
-                      "kelurahan",
-                      v
-                    )
-                  }
-                />
+<Field
+  label="Kelurahan"
+  value={nilai("kelurahan")}
+  edit={edit}
+  onChange={(v) =>
+    setNilai("kelurahan", v)
+  }
+/>
 
                 <Field
                   label="Kecamatan"
@@ -650,116 +684,58 @@ export default function KartuBidang({
                   }
                 />
 
-                <Field
-                  label="Status tanah"
-                  value={nilai(
-                    "sta_tnh"
-                  )}
-                  edit={edit}
-                  onChange={(v) =>
-                    setNilai(
-                      "sta_tnh",
-                      v
-                    )
-                  }
-                />
+<Field
+  label="Status tanah"
+  value={nilai("sta_tnh")}
+  edit={edit}
+  options={PILIHAN_BIDANG.sta_tnh}
+  onChange={(v) =>
+    setNilai("sta_tnh", v)
+  }
+/>
 
-                <Field
-                  label="Dampak tanah"
-                  value={nilai(
-                    "dampak_tnh"
-                  )}
-                  edit={edit}
-                  onChange={(v) =>
-                    setNilai(
-                      "dampak_tnh",
-                      v
-                    )
-                  }
-                />
+<Field
+  label="Dampak tanah"
+  value={nilai("dampak_tnh")}
+  edit={edit}
+  options={PILIHAN_BIDANG.dampak_tnh}
+  onChange={(v) =>
+    setNilai("dampak_tnh", v)
+  }
+/>
 
-                <Field
-                  label="Hubungan tanah"
-                  value={nilai(
-                    "hub_tnh"
-                  )}
-                  edit={edit}
-                  onChange={(v) =>
-                    setNilai(
-                      "hub_tnh",
-                      v
-                    )
-                  }
-                />
+<Field
+  label="Hubungan tanah"
+  value={nilai("hub_tnh")}
+  edit={edit}
+  options={PILIHAN_BIDANG.hub_tnh}
+  onChange={(v) =>
+    setNilai("hub_tnh", v)
+  }
+/>
               </div>
             </Section>
 
-            <Section
-              title="Status pendataan"
-              subtitle="Informasi proses survei dan verifikasi"
-            >
-              <div className="kb-grid two">
-                <Field
-                  label="Petugas"
-                  value={nilai(
-                    "petugas_nama"
-                  )}
-                  edit={edit}
-                  onChange={(v) =>
-                    setNilai(
-                      "petugas_nama",
-                      v
-                    )
-                  }
-                />
+<Section
+  title="Status pendataan"
+  subtitle="Informasi proses verifikasi"
+>
+  <div className="kb-grid two">
+    <Field
+      label="Diverifikasi pada"
+      value={formatDate(
+        b.diverifikasi_pada
+      )}
+    />
+  </div>
 
-                <Field
-                  label="Tanggal ukur"
-                  value={
-                    edit
-                      ? formatDateTimeLocal(
-                          nilai(
-                            "tanggal_ukur"
-                          )
-                        )
-                      : formatDate(
-                          b.tanggal_ukur
-                        )
-                  }
-                  edit={edit}
-                  type="datetime-local"
-                  onChange={(v) =>
-                    setNilai(
-                      "tanggal_ukur",
-                      v
-                    )
-                  }
-                />
-
-                <Field
-                  label="Dikirim pada"
-                  value={formatDate(
-                    b.dikirim_pada
-                  )}
-                />
-
-                <Field
-                  label="Diverifikasi pada"
-                  value={formatDate(
-                    b.diverifikasi_pada
-                  )}
-                />
-              </div>
-
-              {b.catatan_supervisor && (
-                <Field
-                  label="Catatan supervisor"
-                  value={
-                    b.catatan_supervisor
-                  }
-                />
-              )}
-            </Section>
+  {b.catatan_supervisor && (
+    <Field
+      label="Catatan supervisor"
+      value={b.catatan_supervisor}
+    />
+  )}
+</Section>
 
             <Completeness
               bidang={b}
@@ -963,17 +939,15 @@ export default function KartuBidang({
                   value={b.bidang_id}
                 />
 
-                <Field
-                  label="Kode bidang"
-                  value={nilai("kode_bid")}
-                  edit={edit}
-                  onChange={(v) =>
-                    setNilai(
-                      "kode_bid",
-                      v
-                    )
-                  }
-                />
+<Field
+  label="Kode bidang"
+  value={nilai("kode_bid")}
+  edit={edit}
+  options={PILIHAN_BIDANG.kode_bid}
+  onChange={(v) =>
+    setNilai("kode_bid", v)
+  }
+/>
 
                 <Field
                   label="Kode wilayah"
@@ -1006,10 +980,6 @@ export default function KartuBidang({
                   }
                 />
 
-                <Field
-                  label="Layer"
-                  value={b.layer}
-                />
               </div>
             </Section>
 
@@ -1214,19 +1184,15 @@ export default function KartuBidang({
                   }
                 />
 
-                <Field
-                  label="Surat hak"
-                  value={nilai(
-                    "surat_hak"
-                  )}
-                  edit={edit}
-                  onChange={(v) =>
-                    setNilai(
-                      "surat_hak",
-                      v
-                    )
-                  }
-                />
+<Field
+  label="Surat hak"
+  value={nilai("surat_hak")}
+  edit={edit}
+  options={PILIHAN_BIDANG.surat_hak}
+  onChange={(v) =>
+    setNilai("surat_hak", v)
+  }
+/>
 
                 <Field
                   label="Nomor hak"
@@ -1242,33 +1208,15 @@ export default function KartuBidang({
                   }
                 />
 
-                <Field
-                  label="Alas hak"
-                  value={nilai(
-                    "alas_hak"
-                  )}
-                  edit={edit}
-                  onChange={(v) =>
-                    setNilai(
-                      "alas_hak",
-                      v
-                    )
-                  }
-                />
-
-                <Field
-                  label="Beban hak"
-                  value={nilai(
-                    "beban_hak"
-                  )}
-                  edit={edit}
-                  onChange={(v) =>
-                    setNilai(
-                      "beban_hak",
-                      v
-                    )
-                  }
-                />
+<Field
+  label="Beban hak"
+  value={nilai("beban_hak")}
+  edit={edit}
+  options={PILIHAN_BIDANG.beban_hak}
+  onChange={(v) =>
+    setNilai("beban_hak", v)
+  }
+/>
               </div>
             </Section>
 
@@ -1288,29 +1236,35 @@ export default function KartuBidang({
                   }
                 />
 
-                <Field
-                  label="Hubungan tanah"
-                  value={nilai(
-                    "hub_tnh"
-                  )}
-                  edit={edit}
-                  onChange={(v) =>
-                    setNilai(
-                      "hub_tnh",
-                      v
-                    )
-                  }
-                />
+<Field
+  label="Hubungan tanah"
+  value={nilai("hub_tnh")}
+  edit={edit}
+  options={PILIHAN_BIDANG.hub_tnh}
+  onChange={(v) =>
+    setNilai("hub_tnh", v)
+  }
+/>
 
-                <Field
-                  label="Kode WWC"
-                  value={b.kode_wwc}
-                />
+<Field
+  label="Kode WWC"
+  value={nilai("kode_wwc")}
+  edit={edit}
+  options={PILIHAN_BIDANG.kode_wwc}
+  onChange={(v) =>
+    setNilai("kode_wwc", v)
+  }
+/>
 
-                <Field
-                  label="Jenis tanah"
-                  value={b.jenis_tnh}
-                />
+<Field
+  label="Jenis tanaman"
+  value={nilai("jenis_tnm")}
+  edit={edit}
+  options={PILIHAN_BIDANG.jenis_tnm}
+  onChange={(v) =>
+    setNilai("jenis_tnm", v)
+  }
+/>
 
                 <Field
                   label="Ruang ATBT"
@@ -1326,19 +1280,25 @@ export default function KartuBidang({
                   }
                 />
 
+<Field
+  label="Dampak tanah"
+  value={nilai("dampak_tnh")}
+  edit={edit}
+  options={PILIHAN_BIDANG.dampak_tnh}
+  onChange={(v) =>
+    setNilai("dampak_tnh", v)
+  }
+/>
                 <Field
-                  label="Dampak tanah"
-                  value={nilai(
-                    "dampak_tnh"
-                  )}
-                  edit={edit}
-                  onChange={(v) =>
-                    setNilai(
-                      "dampak_tnh",
-                      v
-                    )
-                  }
-                />
+  label="Keterangan"
+  value={nilai("keterangan")}
+  edit={edit}
+  textarea
+  placeholder="Tambahkan keterangan jika diperlukan"
+  onChange={(v) =>
+    setNilai("keterangan", v)
+  }
+/>
               </div>
             </Section>
           </>
@@ -1384,19 +1344,15 @@ export default function KartuBidang({
               subtitle="Objek tanaman yang tercatat pada bidang"
             >
               <div className="kb-grid two">
-                <Field
-                  label="Jenis tanaman"
-                  value={nilai(
-                    "jenis_tnm"
-                  )}
-                  edit={edit}
-                  onChange={(v) =>
-                    setNilai(
-                      "jenis_tnm",
-                      v
-                    )
-                  }
-                />
+<Field
+  label="Jenis tanaman"
+  value={nilai("jenis_tnm")}
+  edit={edit}
+  options={PILIHAN_BIDANG.jenis_tnm}
+  onChange={(v) =>
+    setNilai("jenis_tnm", v)
+  }
+/>
 
                 <Field
                   label="Jumlah tanaman"
@@ -1564,10 +1520,6 @@ export default function KartuBidang({
     b,
     peran,
     bolehEdit,
-    luas,
-    luasTerdampak,
-    luasSisa,
-    pemilik,
   ]);
 
   if (!b) {
