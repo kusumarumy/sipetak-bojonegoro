@@ -7,14 +7,13 @@ export type KategoriLampiran =
   | 'foto_pemilik_petugas';
 
 export const KATEGORI_LABEL: Record<KategoriLampiran, string> = {
-  foto_bidang: 'Bidang tanah',
-  foto_bangunan_depan: 'Bangunan tampak depan',
-  foto_pemilik_petugas: 'Pemilik & petugas'
+  foto_bidang: 'Bidang Tanah',
+  foto_bangunan_depan: 'Bangunan',
+  foto_pemilik_petugas: 'Pemilik & Petugas'
 };
 
 export const WAJIB: KategoriLampiran[] = [
   'foto_bidang',
-  'foto_bangunan_depan',
   'foto_pemilik_petugas'
 ];
 
