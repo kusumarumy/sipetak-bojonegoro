@@ -919,16 +919,20 @@ export default function KartuBidang({
               subtitle="Atribut yang berasal langsung dari bidang_tanah"
             >
               <div className="kb-grid two">
-                <Field
-                  label="ID"
-                  value={b.id}
-                />
+<Field
+  label="ID"
+  value={b.id}
+/>
 
-                <Field
-                  label="Object ID"
-                  value={b.objectid}
-                />
-
+<Field
+  label="Object ID"
+  value={nilai("objectid")}
+  edit={edit}
+  type="number"
+  onChange={(v) =>
+    setNilai("objectid", v)
+  }
+/>
 <Field
   label="Kode bidang"
   value={nilai("kode_bid")}
@@ -953,10 +957,14 @@ export default function KartuBidang({
                   }
                 />
 
-                <Field
-                  label="FID"
-                  value={b.fid}
-                />
+<Field
+  label="FID"
+  value={nilai("fid")}
+  edit={edit}
+  onChange={(v) =>
+    setNilai("fid", v)
+  }
+/>
 
                 <Field
                   label="RT / RW"
@@ -1301,16 +1309,17 @@ export default function KartuBidang({
               title="Bangunan"
               subtitle="Data bangunan yang tercatat pada bidang"
             >
-              <div className="kb-stat-grid">
-                <Stat
-                  label="Jumlah bangunan"
-                  value={formatNumber(
-                    b.jml_bgn
-                  )}
-                  suffix="unit"
-                />
-              </div>
-
+<div className="kb-stat-grid">
+  <Stat
+    label="Jumlah bangunan"
+    value={formatNumber(
+      edit
+        ? nilai("jml_bgn")
+        : b.jml_bgn
+    )}
+    suffix="unit"
+  />
+</div>
               {edit && (
                 <div className="kb-grid two kb-edit-area">
                   <Field
