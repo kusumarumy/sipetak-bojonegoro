@@ -15,7 +15,7 @@ type TabId =
   | "pemilik"
   | "bidang"
   | "bangunan"
-  | "dokumen"
+  | "foto"
   | "riwayat";
 
 const TABS: { id: TabId; label: string; icon: string }[] = [
@@ -23,7 +23,7 @@ const TABS: { id: TabId; label: string; icon: string }[] = [
   { id: "pemilik", label: "Pemilik", icon: "♙" },
   { id: "bidang", label: "Bidang", icon: "▣" },
   { id: "bangunan", label: "Bangunan", icon: "▤" },
-  { id: "dokumen", label: "Foto", icon: "▧" },
+  { id: "foto", label: "Foto", icon: "▧" },
   { id: "riwayat", label: "Riwayat", icon: "◷" },
 ];
 
@@ -1454,19 +1454,19 @@ export default function KartuBidang({
           </>
         );
 
-      case "dokumen":
-        return (
-          <Section
-            title="Foto Pendukung Bidang Tanah"
-            subtitle="Dokumentasi lapangan di bidang tanah terdampak"
-          >
-            <UnggahBerkas
-              bidang={b}
-              peran={peran}
-              bolehEdit={bolehEdit}
-            />
-          </Section>
-        );
+    case "foto":
+      return (
+        <Section
+          title="Dokumentasi Foto"
+          subtitle="Dokumentasi lapangan bidang tanah terdampak"
+        >
+          <UnggahBerkas
+            bidang={b}
+            peran={peran}
+            bolehEdit={bolehEdit}
+          />
+        </Section>
+      );
 
       case "riwayat":
         return (
