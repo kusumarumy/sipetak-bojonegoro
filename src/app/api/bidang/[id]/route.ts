@@ -68,7 +68,6 @@ export async function GET(
       SELECT
         id,
         objectid,
-        bidang_id,
         kodewilaya,
         kecamatan,
         kelurahan,
@@ -181,7 +180,7 @@ export async function GET(
       `
       SELECT
         id,
-        bidang_id,
+        nib,
         kategori,
         object_key,
         nama_asli,
@@ -193,10 +192,10 @@ export async function GET(
         diunggah_pada,
         sensitif
       FROM public.lampiran
-      WHERE bidang_id = $1
+      WHERE nib = $1
       ORDER BY diunggah_pada DESC, id DESC
       `,
-      [id]
+      [b.nib]
     );
 
     const bidang = {
@@ -204,11 +203,9 @@ export async function GET(
 
       kode:
         b.kode_bid ??
-        b.bidang_id ??
         b.fid ??
         null,
 
-      bidang_id: b.bidang_id,
       objectid: b.objectid,
       kodewilaya: b.kodewilaya,
       kode_bid: b.kode_bid,
@@ -338,7 +335,7 @@ export async function GET(
 
       lampiran: hasilLampiran.map((l) => ({
         id: String(l.id),
-        bidang_id: String(l.bidang_id),
+        nib: String(l.nib),
         kategori: l.kategori,
         object_key: l.object_key,
         nama_asli: l.nama_asli,
@@ -730,7 +727,7 @@ export async function PATCH(
             [
               "bidang_tanah",
               id,
-              lama.bidang_id ?? null,
+              id,
               aksi,
               kolom,
               lamaText,
