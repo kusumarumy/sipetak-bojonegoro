@@ -17,31 +17,137 @@ export const WAJIB: KategoriLampiran[] = [
   'foto_pemilik_petugas'
 ];
 
+/* =========================
+   PILIHAN DROPDOWN
+   ========================= */
+
+export const PILIHAN_BIDANG = {
+  hub_tnh: [
+    'Ditempati Pemilik Bidang Tanah',
+    'Disewakan',
+    'Sebagai Pemilik (Tidak Menempati)',
+    'Tidak Jelas'
+  ],
+
+  kode_wwc: [
+    'Bisa Ditemui',
+    'Tidak Bisa Ditemui',
+    'Diwakilkan Pendamping',
+    'Tidak Bersedia Didata'
+  ],
+
+  jenis_tnh: [
+    'Tanah & Bangunan',
+    'Kavling Siap Bangun',
+    'Tanah Kosong',
+    'Tanah Pertanian',
+    'Fasilitas Umum',
+    'Milik Pemerintah',
+    'Tidak Diketahui'
+  ],
+
+  kode_bid: [
+    'Sudah Tepat',
+    'Perubahan Batas (Redelineasi)',
+    'Pemecahan Bidang Tanah',
+    'Penggabungan Bidang Tanah',
+    'Sengketa'
+  ],
+
+  sta_tnh: [
+    'Hak Milik',
+    'Hak Guna Usaha',
+    'Hak Guna Bangunan',
+    'Hak Pengelolaan',
+    'Tanah Negara',
+    'Tanah Kas Desa (TKD)',
+    'Hak Wakaf',
+    'Tanah Bukti tertulis hak lama',
+    'Tidak Diketahui'
+  ],
+
+  surat_hak: [
+    'Sertipikat',
+    'Girik',
+    'Letter C',
+    'Akta jual beli',
+    'Lainnya'
+  ],
+
+  jenis_tnm: [
+    'Tahunan',
+    'Musiman',
+    'Tidak Diketahui'
+  ],
+
+  beban_hak: [
+    'Milik Pemerintah Kabupaten',
+    'Milik Privat',
+    'Tidak Diketahui'
+  ],
+
+  dampak_tnh: [
+    'Terkena seluruhnya',
+    'Terkena sebagian',
+    'Lainnya'
+  ]
+} as const;
+
 export interface Pemilik {
-  id: string; urutan: number; nama: string; nik: string | null;
-  alamat: string | null; telepon: string | null; pekerjaan: string | null;
-  hubungan: string | null; npwp: string | null;
-  bank_nama: string | null; bank_rek: string | null;
+  id: string;
+  urutan: number;
+  nama: string;
+  nik: string | null;
+  alamat: string | null;
+  telepon: string | null;
+  pekerjaan: string | null;
+  hubungan: string | null;
+  npwp: string | null;
+  bank_nama: string | null;
+  bank_rek: string | null;
 }
+
 export interface Bangunan {
-  id: string; jenis: string | null; konstruksi: string | null;
-  luas_lantai_m2: number | null; jumlah_lantai: number | null;
-  atap: string | null; dinding: string | null; lantai_bahan: string | null;
-  tahun_dibangun: number | null; kondisi: string | null;
+  id: string;
+  jenis: string | null;
+  konstruksi: string | null;
+  luas_lantai_m2: number | null;
+  jumlah_lantai: number | null;
+  atap: string | null;
+  dinding: string | null;
+  lantai_bahan: string | null;
+  tahun_dibangun: number | null;
+  kondisi: string | null;
   tingkat_terdampak: string | null;
-  listrik: string | null; air: string | null; sanitasi: string | null;
+  listrik: string | null;
+  air: string | null;
+  sanitasi: string | null;
 }
+
 export interface Lampiran {
-  id: string; kategori: KategoriLampiran; nama_asli: string | null;
-  mime: string | null; ukuran_byte: number | null;
-  lat: number | null; lon: number | null; diambil_pada: string | null;
-  sensitif: boolean; diunggah_pada: string; diunggah_oleh_nama: string | null;
+  id: string;
+  kategori: KategoriLampiran;
+  nama_asli: string | null;
+  mime: string | null;
+  ukuran_byte: number | null;
+  lat: number | null;
+  lon: number | null;
+  diambil_pada: string | null;
+  sensitif: boolean;
+  diunggah_pada: string;
+  diunggah_oleh_nama: string | null;
 }
+
 export interface JejakAudit {
-  id: number; aksi: string; kolom: string | null;
-  nilai_lama: string | null; nilai_baru: string | null;
-  pada: string; oleh: string | null;
+  id: number;
+  aksi: string;
+  kolom: string | null;
+  nilai_lama: string | null;
+  nilai_baru: string | null;
+  pada: string;
+  oleh: string | null;
 }
+
 export interface Bidang {
   // Identitas
   id: string;
@@ -65,7 +171,6 @@ export interface Bidang {
   nib: string | null;
   surat_hak?: string | null;
   nomor_hak?: string | null;
-  alas_hak?: string | null;
   beban_hak?: string | null;
 
   // Luas
@@ -107,24 +212,27 @@ export interface Bidang {
   krja_sewa?: string | null;
   almt_sewa?: string | null;
   nik_sewa?: string | null;
+
   // Bangunan
   jml_bgn?: number | null;
+
+  // Tanaman / benda
+  jenis_tnm?: string | null;
+  jumlah_tnm?: number | null;
+  jenis_bnd?: string | null;
+  jumlah_bnd?: number | null;
 
   // Metadata
   date_updt?: string | null;
   foto_tnh?: string | null;
-  nama?: string | null;
-  layer?: string | null;
-  path?: string | null;
+  foto_wwc?: string | null;
+  keterangan?: string | null;
   geometry?: unknown;
   created_at?: string | null;
 
   // Status aplikasi
   status: StatusBidang;
   catatan_supervisor: string | null;
-  petugas_nama: string | null;
-  tanggal_ukur: string | null;
-  dikirim_pada: string | null;
   diverifikasi_pada: string | null;
 
   // Relasi aplikasi
