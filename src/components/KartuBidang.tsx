@@ -1316,28 +1316,27 @@ export default function KartuBidang({
               title="Bangunan"
               subtitle="Data bangunan yang tercatat pada bidang"
             >
-<div className="kb-stat-grid">
-  <Stat
-    label="Jumlah bangunan"
-    value={formatNumber(
-      edit
-        ? nilai("jml_bgn")
-        : b.jml_bgn
-    )}
-    suffix="unit"
-  />
-</div>
-              {edit && (
-                <div className="kb-grid two kb-edit-area">
-                  <Field
-  label="Jumlah bangunan"
-  value={nilai("jml_bgn")}
-  edit={edit}
-  type="number"
-  onChange={(v) => setNilai("jml_bgn", v)}
-/>
-                </div>
-              )}
+{edit ? (
+  <div className="kb-grid two kb-edit-area">
+    <Field
+      label="Jumlah bangunan"
+      value={nilai("jml_bgn")}
+      edit={edit}
+      type="number"
+      onChange={(v) =>
+        setNilai("jml_bgn", v)
+      }
+    />
+  </div>
+) : (
+  <div className="kb-stat-grid">
+    <Stat
+      label="Jumlah bangunan"
+      value={formatNumber(b.jml_bgn)}
+      suffix="unit"
+    />
+  </div>
+)}
             </Section>
 
             <Section
