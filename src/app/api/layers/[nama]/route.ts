@@ -7,6 +7,7 @@ const LAYER_FILES: Record<string, string> = {
   hutan: 'hutan.geojson',
   pemukiman: 'pemukiman.geojson',
   pemakaman: 'pemakaman.geojson',
+  kontur_traseg: 'kontur_traseg.geojson',
   sungai: 'sungai.geojson',
   rel_kereta: 'rel_kereta.geojson',
   jalan: 'jalan.geojson',
@@ -16,15 +17,8 @@ const LAYER_FILES: Record<string, string> = {
   pipa_gresem: 'pipa_gresem.geojson',
 };
 
-const KONTUR_FILES: Record<string, string> = {
-  kontur_trase: 'kontur/kontur_trase.geojson',
-  kontur_kawasan: 'kontur/kontur_kawasan.geojson',
-};
-
 const GITHUB_RAW_BASE =
   'https://raw.githubusercontent.com/kusumarumy/sipetak-bojonegoro/main/data/wgs84';
-
-const R2_PUBLIC_BASE = process.env.BOJO_R2_PUBLIC_BASE_URL;
 
 export async function GET(
   _req: Request,
@@ -39,42 +33,21 @@ export async function GET(
   const { nama } = await params;
 
   try {
-    let url: string;
-    let file: string;
-
-    // =========================
-    // LAYER DARI GITHUB
-    // =========================
-    if (LAYER_FILES[nama]) {
-      file = LAYER_FILES[nama];
-      url = `${GITHUB_RAW_BASE}/${file}`;
-    }
-
-    // =========================
-    // KONTUR DARI CLOUDFLARE R2
-    // =========================
-    else if (KONTUR_FILES[nama]) {
-      file = KONTUR_FILES[nama];
-
-      if (!R2_PUBLIC_BASE) {
-        console.error('BOJO_R2_PUBLIC_BASE_URL belum diatur');
-        return new NextResponse(
-          'URL publik Cloudflare R2 belum dikonfigurasi',
-          { status: 500 }
-        );
-      }
-
-      url = `${R2_PUBLIC_BASE.replace(/\/$/, '')}/${file}`;
-    }
+    const file = LAYER_FILES[nama];
 
     // =========================
     // LAYER TIDAK DIKENAL
     // =========================
-    else {
+    if (!file) {
       return new NextResponse('Layer tidak dikenal', {
         status: 404,
       });
     }
+
+    // =========================
+    // SEMUA LAYER DARI GITHUB
+    // =========================
+    const url = `${GITHUB_RAW_BASE}/${file}`;
 
     const response = await fetch(url, {
       next: {
@@ -103,7 +76,10 @@ export async function GET(
       },
     });
   } catch (error) {
-    console.error(`Gagal mengambil layer ${nama}:`, error);
+    console.error(
+      `Gagal mengambil layer ${nama}:`,
+      error
+    );
 
     return new NextResponse(
       `Gagal mengambil GeoJSON layer "${nama}"`,
