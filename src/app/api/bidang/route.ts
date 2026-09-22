@@ -39,7 +39,6 @@ export async function GET() {
               jsonb_build_object(
                 'id', f.id,
                 'objectid', f.objectid,
-                'bidang_id', f.bidang_id,
                 'kodewilaya', f.kodewilaya,
                 'kode_bid', f.kode_bid,
                 'fid', f.fid,
