@@ -448,11 +448,16 @@ const SkemaUbah = z.object({
 
   luaspeta:
     angkaOpsional,
-sumbergeom: angkaOpsional,
 
-shape_leng: angkaOpsional,
+  sumbergeom:
+    angkaOpsional,
 
-shape_area: angkaOpsional,
+  shape_leng:
+    angkaOpsional,
+
+  shape_area:
+    angkaOpsional,
+
   luas_atbt:
     angkaOpsional,
 
