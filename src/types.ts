@@ -2,34 +2,20 @@ export type Peran = 'pendata' | 'supervisor' | 'pelihat' | 'pengembang';
 export type StatusBidang = 'draft' | 'terkirim' | 'terverifikasi' | 'revisi';
 
 export type KategoriLampiran =
-  | 'foto_bidang' | 'foto_bangunan_depan' | 'foto_bangunan_kiri' | 'foto_bangunan_kanan'
-  | 'foto_bangunan_belakang' | 'foto_patok' 
-  | 'foto_akses' | 'foto_pemilik_petugas'
-  | 'dok_ktp' | 'dok_kk' | 'dok_sertipikat' | 'dok_sppt' | 'dok_ahli_waris'
-  | 'dok_kuasa' | 'dok_rekening' | 'dok_berita_acara' | 'lainnya';
+  | 'foto_bidang'
+  | 'foto_bangunan_depan'
+  | 'foto_pemilik_petugas';
 
 export const KATEGORI_LABEL: Record<KategoriLampiran, string> = {
   foto_bidang: 'Bidang tanah',
   foto_bangunan_depan: 'Bangunan tampak depan',
-  foto_bangunan_kiri: 'Tampak samping kiri',
-  foto_bangunan_kanan: 'Tampak samping kanan',
-  foto_bangunan_belakang: 'Tampak belakang',
-  foto_patok: 'Patok batas',
-  foto_akses: 'Akses jalan',
-  foto_pemilik_petugas: 'Pemilik & petugas',
-  dok_ktp: 'KTP pemilik',
-  dok_kk: 'Kartu keluarga',
-  dok_sertipikat: 'Sertipikat / Letter C',
-  dok_sppt: 'SPPT PBB',
-  dok_ahli_waris: 'Surat ahli waris',
-  dok_kuasa: 'Surat kuasa',
-  dok_rekening: 'Buku rekening',
-  dok_berita_acara: 'Berita acara pendataan',
-  lainnya: 'Lainnya'
+  foto_pemilik_petugas: 'Pemilik & petugas'
 };
 
 export const WAJIB: KategoriLampiran[] = [
-  'foto_bidang', 'foto_patok', 'foto_pemilik_petugas', 'dok_ktp', 'dok_berita_acara'
+  'foto_bidang',
+  'foto_bangunan_depan',
+  'foto_pemilik_petugas'
 ];
 
 export interface Pemilik {
