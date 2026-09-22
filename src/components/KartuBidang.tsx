@@ -710,26 +710,40 @@ export default function KartuBidang({
 />
               </div>
             </Section>
-
 <Section
   title="Status pendataan"
-  subtitle="Informasi proses verifikasi"
+  subtitle="Informasi proses verifikasi dan pembaruan data"
 >
   <div className="kb-grid two">
     <Field
-      label="Diverifikasi pada"
-      value={formatDate(
-        b.diverifikasi_pada
-      )}
+      label="Dibuat pada"
+      value={formatDate(b.created_at)}
     />
+
+<Field
+  label="Tanggal pembaruan data"
+  value={nilai("date_updt")}
+  edit={edit}
+  onChange={(v) =>
+    setNilai("date_updt", v)
+  }
+/>
+
+<Field
+  label="Diverifikasi pada"
+  value={formatDate(
+    b.diverifikasi_pada
+  )}
+/>
+
   </div>
 
-  {b.catatan_supervisor && (
-    <Field
-      label="Catatan supervisor"
-      value={b.catatan_supervisor}
-    />
-  )}
+{b.catatan_supervisor && ( <Field
+   label="Catatan supervisor"
+   value={b.catatan_supervisor}
+ />
+)}
+
 </Section>
 
             <Completeness
@@ -1225,22 +1239,18 @@ export default function KartuBidang({
               </div>
             </Section>
 
-            <Section title="Informasi tanah">
-              <div className="kb-grid two">
-                <Field
-                  label="Penggunaan"
-                  value={nilai(
-                    "penggunaan"
-                  )}
-                  edit={edit}
-                  onChange={(v) =>
-                    setNilai(
-                      "penggunaan",
-                      v
-                    )
-                  }
-                />
+<Section title="Informasi tanah">
+  <div className="kb-grid two">
+    <Field
+      label="Penggunaan"
+      value={nilai("penggunaan")}
+      edit={edit}
+      onChange={(v) =>
+        setNilai("penggunaan", v)
+      }
+    />
 
+```
 <Field
   label="Hubungan tanah"
   value={nilai("hub_tnh")}
@@ -1262,6 +1272,15 @@ export default function KartuBidang({
 />
 
 <Field
+  label="Jenis tanah"
+  value={nilai("jenis_tnh")}
+  edit={edit}
+  onChange={(v) =>
+    setNilai("jenis_tnh", v)
+  }
+/>
+
+<Field
   label="Jenis tanaman"
   value={nilai("jenis_tnm")}
   edit={edit}
@@ -1271,19 +1290,14 @@ export default function KartuBidang({
   }
 />
 
-                <Field
-                  label="Ruang ATBT"
-                  value={nilai(
-                    "ruang_atbt"
-                  )}
-                  edit={edit}
-                  onChange={(v) =>
-                    setNilai(
-                      "ruang_atbt",
-                      v
-                    )
-                  }
-                />
+<Field
+  label="Ruang ATBT"
+  value={nilai("ruang_atbt")}
+  edit={edit}
+  onChange={(v) =>
+    setNilai("ruang_atbt", v)
+  }
+/>
 
 <Field
   label="Dampak tanah"
@@ -1294,7 +1308,8 @@ export default function KartuBidang({
     setNilai("dampak_tnh", v)
   }
 />
-                <Field
+
+<Field
   label="Keterangan"
   value={nilai("keterangan")}
   edit={edit}
@@ -1304,8 +1319,11 @@ export default function KartuBidang({
     setNilai("keterangan", v)
   }
 />
-              </div>
-            </Section>
+```
+
+  </div>
+</Section>
+
           </>
         );
 
