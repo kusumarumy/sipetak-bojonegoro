@@ -23,7 +23,7 @@ const TABS: { id: TabId; label: string; icon: string }[] = [
   { id: "pemilik", label: "Pemilik", icon: "♙" },
   { id: "bidang", label: "Bidang", icon: "▣" },
   { id: "bangunan", label: "Bangunan", icon: "▤" },
-  { id: "dokumen", label: "Foto & Dokumen", icon: "▧" },
+  { id: "dokumen", label: "Foto", icon: "▧" },
   { id: "riwayat", label: "Riwayat", icon: "◷" },
 ];
 
@@ -72,7 +72,6 @@ function formatDate(value: any) {
 
 /**
  * PostgreSQL timestamp with timezone → input datetime-local
- * Contoh:
  * 2026-09-11T07:00:00.000Z
  * menjadi:
  * 2026-09-11T14:00
@@ -507,9 +506,6 @@ export default function KartuBidang({
     if (!b) return null;
 
     switch (tab) {
-      /* =====================================================
-         RINGKASAN
-      ===================================================== */
       case "ringkas":
         return (
           <>
@@ -771,9 +767,6 @@ export default function KartuBidang({
           </>
         );
 
-      /* =====================================================
-         PEMILIK
-      ===================================================== */
       case "pemilik":
         return (
           <>
@@ -947,9 +940,6 @@ export default function KartuBidang({
           </>
         );
 
-      /* =====================================================
-         BIDANG
-      ===================================================== */
       case "bidang":
         return (
           <>
@@ -1354,9 +1344,6 @@ export default function KartuBidang({
           </>
         );
 
-      /* =====================================================
-         BANGUNAN
-      ===================================================== */
       case "bangunan":
         return (
           <>
@@ -1470,8 +1457,8 @@ export default function KartuBidang({
       case "dokumen":
         return (
           <Section
-            title="Foto & dokumen"
-            subtitle="Dokumentasi lapangan dan dokumen pendukung bidang"
+            title="Foto Pendukung Bidang Tanah"
+            subtitle="Dokumentasi lapangan di bidang tanah terdampak"
           >
             <UnggahBerkas
               bidang={b}
