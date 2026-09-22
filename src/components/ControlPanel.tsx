@@ -247,8 +247,6 @@ const [grupTerbuka, setGrupTerbuka] =
                     key={g}
                   >
 
-                    {/* GROUP HEADER */}
-
                     <button
                       type="button"
                       className="layer-group-head"
@@ -295,9 +293,6 @@ const [grupTerbuka, setGrupTerbuka] =
 </span>
 
                     </button>
-
-
-                    {/* LAYER LIST */}
 
                     {terbukaGrup && (
 
@@ -388,9 +383,6 @@ const [grupTerbuka, setGrupTerbuka] =
             </div>
 
           </section>
-
-
-          {/* FOOTER */}
 
           <div className="panel-footer">
 
