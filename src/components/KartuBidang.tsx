@@ -563,11 +563,6 @@ export default function KartuBidang({
                   }
                 />
 
-                <Field
-                  label="Bidang ID"
-                  value={b.bidang_id}
-                />
-
 <Field
   label="Kelurahan"
   value={nilai("kelurahan")}
@@ -932,11 +927,6 @@ export default function KartuBidang({
                 <Field
                   label="Object ID"
                   value={b.objectid}
-                />
-
-                <Field
-                  label="Bidang ID"
-                  value={b.bidang_id}
                 />
 
 <Field
@@ -1549,7 +1539,6 @@ export default function KartuBidang({
 
             <strong>
               {b.kode_bid ??
-                b.bidang_id ??
                 b.nib ??
                 "Bidang"}
             </strong>
