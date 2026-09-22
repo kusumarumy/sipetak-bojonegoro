@@ -1089,23 +1089,30 @@ export default function KartuBidang({
                 />
 
                 <Field
-                  label="Sumber geometri"
-                  value={b.sumbergeom}
-                />
+  label="Sumber geometri"
+  value={nilai("sumbergeom")}
+  edit={edit}
+  type="number"
+  onChange={(v) => setNilai("sumbergeom", v)}
+/>
 
-                <Field
-                  label="Panjang geometri"
-                  value={formatNumber(
-                    b.shape_leng
-                  )}
-                />
+<Field
+  label="Panjang geometri"
+  value={nilai("shape_leng")}
+  edit={edit}
+  type="number"
+  onChange={(v) => setNilai("shape_leng", v)}
+/>
 
-                <Field
-                  label="Luas geometri"
-                  value={formatNumber(
-                    b.shape_area
-                  )}
-                />
+<Field
+  label="Luas geometri"
+  value={nilai("shape_area")}
+  edit={edit}
+  type="number"
+  onChange={(v) => setNilai("shape_area", v)}
+/>
+
+
 
                 <Field
                   label="Alat ukur"
@@ -1323,17 +1330,12 @@ export default function KartuBidang({
               {edit && (
                 <div className="kb-grid two kb-edit-area">
                   <Field
-                    label="Jumlah bangunan"
-                    value={nilai("jml_bgn")}
-                    edit={true}
-                    type="number"
-                    onChange={(v) =>
-                      setNilai(
-                        "jml_bgn",
-                        v
-                      )
-                    }
-                  />
+  label="Jumlah bangunan"
+  value={nilai("jml_bgn")}
+  edit={edit}
+  type="number"
+  onChange={(v) => setNilai("jml_bgn", v)}
+/>
                 </div>
               )}
             </Section>
