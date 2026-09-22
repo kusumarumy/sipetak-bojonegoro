@@ -128,10 +128,10 @@ export default function Peta({
 
           <div className="head-brand-text" data-guide="app-title">
   <div className="head-title-row">
-    <span className="head-eyebrow">DPPT KABUPATEN BOJONEGORO</span>
+    <span className="head-eyebrow">DPPT JLS KABUPATEN BOJONEGORO</span>
   </div>
   <span className="head-app-name">
-    SISTEM INFORMASI BIDANG TANAH TERDAMPAK JALUR LINGKAR SELATAN
+    WEBGIS BIDANG TANAH TERDAMPAK RENCANA JALUR LINGKAR SELATAN
   </span>
 </div>
 
