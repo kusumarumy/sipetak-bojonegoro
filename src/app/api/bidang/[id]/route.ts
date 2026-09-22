@@ -59,10 +59,10 @@ export async function GET(
       status: 401,
     });
   }
+
   const { id } = await params;
 
   try {
-
     const [b] = await query<any>(
       `
       SELECT
@@ -116,7 +116,6 @@ export async function GET(
         sta_tnh,
         surat_hak,
         nomor_hak,
-        alas_hak,
 
         ruang_atbt,
         luas_atbt,
@@ -133,17 +132,14 @@ export async function GET(
 
         date_updt,
         foto_tnh,
+        foto_wwc,
+
+        keterangan,
 
         fid,
-        nama,
-        layer,
-        path,
 
         status,
         catatan_supervisor,
-        petugas_nama,
-        tanggal_ukur,
-        dikirim_pada,
         diverifikasi_pada,
 
         created_at
@@ -180,27 +176,28 @@ export async function GET(
       `,
       [id]
     );
-const hasilLampiran = await query<any>(
-  `
-  SELECT
-    id,
-    bidang_id,
-    kategori,
-    object_key,
-    nama_asli,
-    mime,
-    ukuran_byte,
-    lat,
-    lon,
-    diambil_pada,
-    diunggah_pada,
-    sensitif
-  FROM public.lampiran
-  WHERE bidang_id = $1
-  ORDER BY diunggah_pada DESC, id DESC
-  `,
-  [id]
-);
+
+    const hasilLampiran = await query<any>(
+      `
+      SELECT
+        id,
+        bidang_id,
+        kategori,
+        object_key,
+        nama_asli,
+        mime,
+        ukuran_byte,
+        lat,
+        lon,
+        diambil_pada,
+        diunggah_pada,
+        sensitif
+      FROM public.lampiran
+      WHERE bidang_id = $1
+      ORDER BY diunggah_pada DESC, id DESC
+      `,
+      [id]
+    );
 
     const bidang = {
       id: String(b.id),
@@ -210,38 +207,50 @@ const hasilLampiran = await query<any>(
         b.bidang_id ??
         b.fid ??
         null,
+
       bidang_id: b.bidang_id,
       objectid: b.objectid,
       kodewilaya: b.kodewilaya,
       kode_bid: b.kode_bid,
       fid: b.fid,
+
       desa: b.kelurahan,
       kelurahan: b.kelurahan,
       kecamatan: b.kecamatan,
       rt_rw: b.rt_rw,
+
       luas_m2: b.luas_tnh,
       luas_tnh: b.luas_tnh,
       luastertul: b.luastertul,
       luaspeta: b.luaspeta,
+
       luas_terdampak_m2:
         b.luas_terdampak_m2,
+
       luas_sisa_m2:
         b.luas_sisa_m2,
+
       sumbergeom: b.sumbergeom,
       shape_leng: b.shape_leng,
       shape_area: b.shape_area,
+
       penggunaan: b.penggunaan,
+
       tipehak: b.tipehak,
       tipeproduk: b.tipeproduk,
+
       nib: b.nib,
+
       sta_tnh: b.sta_tnh,
       surat_hak: b.surat_hak,
       nomor_hak: b.nomor_hak,
-      alas_hak: b.alas_hak,
       beban_hak: b.beban_hak,
+
       tahun: b.tahun,
+
       alatukur: b.alatukur,
       metodukur: b.metodukur,
+
       pemilik: b.nama_milik
         ? [
             {
@@ -252,7 +261,7 @@ const hasilLampiran = await query<any>(
               pekerjaan: b.krja_milik,
               alamat: b.almt_milik,
               nik: b.nik_milik,
-              telepon: null,
+              telepon: b.nomor_hp,
               hubungan: null,
               npwp: null,
               bank_nama: null,
@@ -260,17 +269,21 @@ const hasilLampiran = await query<any>(
             },
           ]
         : [],
+
       nama_milik: b.nama_milik,
       ttl_milik: b.ttl_milik,
       krja_milik: b.krja_milik,
       almt_milik: b.almt_milik,
       nik_milik: b.nik_milik,
+
       nama_sewa: b.nama_sewa,
       ttl_sewa: b.ttl_sewa,
       krja_sewa: b.krja_sewa,
       almt_sewa: b.almt_sewa,
       nik_sewa: b.nik_sewa,
+
       nomor_hp: b.nomor_hp,
+
       penyewa: b.nama_sewa
         ? [
             {
@@ -289,45 +302,55 @@ const hasilLampiran = await query<any>(
             },
           ]
         : [],
+
       hub_tnh: b.hub_tnh,
       kode_wwc: b.kode_wwc,
       jenis_tnh: b.jenis_tnh,
+
       ruang_atbt: b.ruang_atbt,
       luas_atbt: b.luas_atbt,
+
       dampak_tnh: b.dampak_tnh,
+
       jml_bgn: b.jml_bgn,
-      bangunan: [],
+
+      jenis_tnm: b.jenis_tnm,
+      jumlah_tnm: b.jumlah_tnm,
+
+      jenis_bnd: b.jenis_bnd,
+      jumlah_bnd: b.jumlah_bnd,
+
       foto_tnh: b.foto_tnh,
-      path: b.path,
-      nama: b.nama,
-      layer: b.layer,
+      foto_wwc: b.foto_wwc,
+
+      keterangan: b.keterangan,
+
       date_updt: b.date_updt,
       created_at: b.created_at,
+
       status: b.status,
+
       catatan_supervisor:
         b.catatan_supervisor,
-      petugas_nama:
-        b.petugas_nama,
-      tanggal_ukur:
-        b.tanggal_ukur,
-      dikirim_pada:
-        b.dikirim_pada,
+
       diverifikasi_pada:
         b.diverifikasi_pada,
+
       lampiran: hasilLampiran.map((l) => ({
-      id: String(l.id),
-      bidang_id: String(l.bidang_id),
-      kategori: l.kategori,
-      object_key: l.object_key,
-      nama_asli: l.nama_asli,
-      mime: l.mime,
-      ukuran_byte: l.ukuran_byte,
-      lat: l.lat,
-      lon: l.lon,
-      diambil_pada: l.diambil_pada,
-      diunggah_pada: l.diunggah_pada,
-      sensitif: l.sensitif,
-    })),
+        id: String(l.id),
+        bidang_id: String(l.bidang_id),
+        kategori: l.kategori,
+        object_key: l.object_key,
+        nama_asli: l.nama_asli,
+        mime: l.mime,
+        ukuran_byte: l.ukuran_byte,
+        lat: l.lat,
+        lon: l.lon,
+        diambil_pada: l.diambil_pada,
+        diunggah_pada: l.diunggah_pada,
+        sensitif: l.sensitif,
+      })),
+
       riwayat: hasilRiwayat.map((r) => ({
         id: r.id,
         aksi: r.aksi,
@@ -335,8 +358,7 @@ const hasilLampiran = await query<any>(
         nilai_lama: r.nilai_lama,
         nilai_baru: r.nilai_baru,
         pada: r.pada,
-        nama_pengguna:
-          r.nama_pengguna,
+        nama_pengguna: r.nama_pengguna,
       })),
     };
 
@@ -363,94 +385,138 @@ const hasilLampiran = await query<any>(
 const SkemaUbah = z.object({
   kecamatan:
     z.string().max(120).nullish(),
+
   kelurahan:
     z.string().max(120).nullish(),
+
   rt_rw:
     z.string().max(120).nullish(),
+
   kodewilaya:
     z.string().max(120).nullish(),
+
   kode_bid:
     z.string().max(120).nullish(),
+
   tipehak:
     z.string().max(120).nullish(),
+
   tipeproduk:
     z.string().max(120).nullish(),
+
   nib:
     z.string().max(100).nullish(),
+
   tahun:
     tahunOpsional,
+
   surat_hak:
     z.string().max(160).nullish(),
+
   nomor_hak:
     z.string().max(160).nullish(),
-  alas_hak:
-    z.string().max(160).nullish(),
+
   beban_hak:
     z.string().max(160).nullish(),
+
   penggunaan:
     z.string().max(120).nullish(),
+
   hub_tnh:
     z.string().max(120).nullish(),
+
+  kode_wwc:
+    z.string().max(120).nullish(),
+
+  jenis_tnh:
+    z.string().max(120).nullish(),
+
   sta_tnh:
     z.string().max(120).nullish(),
+
   dampak_tnh:
     z.string().max(160).nullish(),
+
   alatukur:
     z.string().max(120).nullish(),
+
   metodukur:
     z.string().max(120).nullish(),
+
   luas_tnh:
     angkaOpsional,
+
   luastertul:
     angkaOpsional,
+
   luaspeta:
     angkaOpsional,
+
   luas_atbt:
     angkaOpsional,
+
   ruang_atbt:
     z.string().max(120).nullish(),
+
   luas_terdampak_m2:
     angkaOpsional,
+
   luas_sisa_m2:
     angkaOpsional,
+
   nama_milik:
     z.string().max(160).nullish(),
+
   ttl_milik:
     z.string().max(160).nullish(),
+
   krja_milik:
     z.string().max(120).nullish(),
+
   almt_milik:
     z.string().max(240).nullish(),
+
   nik_milik:
     z.string().max(32).nullish(),
+
   nama_sewa:
     z.string().max(160).nullish(),
+
   ttl_sewa:
     z.string().max(160).nullish(),
+
   krja_sewa:
     z.string().max(120).nullish(),
+
   almt_sewa:
     z.string().max(240).nullish(),
+
   nik_sewa:
     z.string().max(32).nullish(),
+
   nomor_hp:
     z.string().max(40).nullish(),
+
   jenis_tnm:
     z.string().max(160).nullish(),
+
   jumlah_tnm:
     angkaOpsional,
+
   jenis_bnd:
     z.string().max(160).nullish(),
+
   jumlah_bnd:
     angkaOpsional,
+
   jml_bgn:
     angkaOpsional,
-  petugas_nama:
-    z.string().max(160).nullish(),
-  tanggal_ukur:
-    z.string().nullish(),
+
   date_updt:
     z.string().nullish(),
+
+  keterangan:
+    z.string().max(1000).nullish(),
 });
 
 export async function PATCH(
@@ -466,7 +532,7 @@ export async function PATCH(
   }
 
   const namaAkun =
-  sesi.user.name ?? null;
+    sesi.user.name ?? null;
 
   const ipAddress =
     req.headers
@@ -475,11 +541,10 @@ export async function PATCH(
       ?.trim() ??
     req.headers.get("x-real-ip") ??
     null;
-  
+
   const { id } = await params;
 
   try {
-
     const [row] =
       await query<{
         status: StatusBidang;
@@ -510,6 +575,7 @@ export async function PATCH(
         { status: 403 }
       );
     }
+
     const parsed =
       SkemaUbah.safeParse(
         await req.json()
@@ -542,7 +608,6 @@ export async function PATCH(
     await transaksi(
       sesi.user.id,
       async (c) => {
-
         const hasilLama =
           await c.query<any>(
             `
@@ -585,91 +650,99 @@ export async function PATCH(
           ]
         );
 
-        
-      for (
-        const [kolom, nilaiBaru]
-        of isi
-      ) {
-        const nilaiLama =
-          lama[kolom];
-      
-        const lamaText =
-          nilaiLama == null
-            ? null
-            : String(nilaiLama);
-      
-        const baruText =
-          nilaiBaru == null
-            ? null
-            : String(nilaiBaru);
-      
-        if (lamaText === baruText) {
-          continue;
+        for (
+          const [kolom, nilaiBaru]
+          of isi
+        ) {
+          const nilaiLama =
+            lama[kolom];
+
+          const lamaText =
+            nilaiLama == null
+              ? null
+              : String(nilaiLama);
+
+          const baruText =
+            nilaiBaru == null
+              ? null
+              : String(nilaiBaru);
+
+          if (lamaText === baruText) {
+            continue;
+          }
+
+          let aksi:
+            | "INPUT"
+            | "UPDATE"
+            | "DELETE";
+
+          const lamaKosong =
+            lamaText == null ||
+            lamaText.trim() === "";
+
+          const baruKosong =
+            baruText == null ||
+            baruText.trim() === "";
+
+          if (
+            lamaKosong &&
+            !baruKosong
+          ) {
+            aksi = "INPUT";
+          } else if (
+            !lamaKosong &&
+            baruKosong
+          ) {
+            aksi = "DELETE";
+          } else {
+            aksi = "UPDATE";
+          }
+
+          await c.query(
+            `
+            INSERT INTO public.audit_log (
+              tabel,
+              record_id,
+              bidang_id,
+              aksi,
+              kolom,
+              nilai_lama,
+              nilai_baru,
+              pengguna_id,
+              nama_akun,
+              ip_address,
+              pada
+            )
+            VALUES (
+              $1,
+              $2,
+              $3,
+              $4,
+              $5,
+              $6,
+              $7,
+              $8,
+              $9,
+              $10,
+              NOW()
+            )
+            `,
+            [
+              "bidang_tanah",
+              id,
+              lama.bidang_id ?? null,
+              aksi,
+              kolom,
+              lamaText,
+              baruText,
+              sesi.user.id,
+              namaAkun,
+              ipAddress,
+            ]
+          );
         }
-      
-        let aksi: "INPUT" | "UPDATE" | "DELETE";
-      
-        const lamaKosong =
-          lamaText == null ||
-          lamaText.trim() === "";
-      
-        const baruKosong =
-          baruText == null ||
-          baruText.trim() === "";
-      
-        if (lamaKosong && !baruKosong) {
-          aksi = "INPUT";
-        } else if (!lamaKosong && baruKosong) {
-          aksi = "DELETE";
-        } else {
-          aksi = "UPDATE";
-        }
-      
-        await c.query(
-          `
-          INSERT INTO public.audit_log (
-            tabel,
-            record_id,
-            bidang_id,
-            aksi,
-            kolom,
-            nilai_lama,
-            nilai_baru,
-            pengguna_id,
-            nama_akun,
-            ip_address,
-            pada
-          )
-          VALUES (
-            $1,
-            $2,
-            $3,
-            $4,
-            $5,
-            $6,
-            $7,
-            $8,
-            $9,
-            $10,
-            NOW()
-          )
-          `,
-          [
-            "bidang_tanah",
-            id,
-            lama.bidang_id ?? null,
-            aksi,
-            kolom,
-            lamaText,
-            baruText,
-            sesi.user.id,
-            namaAkun,
-            ipAddress,
-          ]
-        );
       }
-      }
-       );
+    );
 
     return NextResponse.json({
       ok: true,
