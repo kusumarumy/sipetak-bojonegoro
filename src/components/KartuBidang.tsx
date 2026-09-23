@@ -504,7 +504,7 @@ export default function KartuBidang({
               "application/json",
           },
           body: JSON.stringify({
-            status: target,
+            ke: target,
           }),
         }
       );
@@ -832,96 +832,6 @@ export default function KartuBidang({
               />
             </Section>
 
-            <Section
-              title="Penyewa / penggarap"
-              subtitle="Data pihak yang menggunakan atau menggarap tanah"
-            >
-              <div className="kb-grid two">
-                <Field
-                  label="Nama"
-                  value={nilai(
-                    "nama_sewa"
-                  )}
-                  edit={edit}
-                  onChange={(v) =>
-                    setNilai(
-                      "nama_sewa",
-                      v
-                    )
-                  }
-                />
-
-                <Field
-                  label="NIK"
-                  value={nilai(
-                    "nik_sewa"
-                  )}
-                  edit={edit}
-                  onChange={(v) =>
-                    setNilai(
-                      "nik_sewa",
-                      v
-                    )
-                  }
-                />
-
-                <Field
-                  label="Tempat, tanggal lahir"
-                  value={nilai(
-                    "ttl_sewa"
-                  )}
-                  edit={edit}
-                  onChange={(v) =>
-                    setNilai(
-                      "ttl_sewa",
-                      v
-                    )
-                  }
-                />
-
-                <Field
-                  label="Pekerjaan"
-                  value={nilai(
-                    "krja_sewa"
-                  )}
-                  edit={edit}
-                  onChange={(v) =>
-                    setNilai(
-                      "krja_sewa",
-                      v
-                    )
-                  }
-                />
-
-                <Field
-                  label="Nomor HP"
-                  value={nilai(
-                    "nomor_hp"
-                  )}
-                  edit={edit}
-                  onChange={(v) =>
-                    setNilai(
-                      "nomor_hp",
-                      v
-                    )
-                  }
-                />
-              </div>
-
-              <Field
-                label="Alamat"
-                value={nilai(
-                  "almt_sewa"
-                )}
-                edit={edit}
-                onChange={(v) =>
-                  setNilai(
-                    "almt_sewa",
-                    v
-                  )
-                }
-              />
-            </Section>
           </>
         );
 
@@ -1563,9 +1473,7 @@ export default function KartuBidang({
             </span>
 
             <strong>
-              {b.kode_bid ??
-                b.nib ??
-                "Bidang"}
+              {b.nib ?? "NIB belum diisi"}
             </strong>
 
             <span className="kb-owner">
