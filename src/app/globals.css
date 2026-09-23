@@ -834,7 +834,7 @@ main.body {
 }
 
 .layer-panel-title {
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 750;
   line-height: 1.2;
   letter-spacing: .08em;
@@ -845,7 +845,7 @@ main.body {
 .layer-panel-subtitle {
   margin-top: 3px;
   font-weight: 600;
-  font-size: 14px;
+  font-size: 10px;
   line-height: 1.35;
   color: var(--layer-text-muted);
 }
@@ -4896,13 +4896,12 @@ main.body {
 }
 
 .statistik-flyout {
-  --stat-red: #174A7E;        /* biru tua - warna utama */
-  --stat-red-2: #245F91;      /* biru medium */
-
-  --stat-orange: #2F80B7;     /* biru muda */
-  --stat-yellow: #4FA3C7;     /* cyan blue */
-  --stat-green: #63B4D5;      /* light blue */
-  --stat-pink: #8AC6DF;       /* biru sangat muda */
+  --stat-red: #174A7E;
+  --stat-red-2: #245F91;
+  --stat-orange: #ea580c;
+  --stat-yellow: #eab308;
+  --stat-green: #16a34a;
+  --stat-pink: #174A7E;
 
   --stat-text: #35556F;
   --stat-text-2: #607788;
@@ -14584,3 +14583,186 @@ html[data-theme="dark"] .statistik-close:hover {
   border-color: #1769A8 !important;
   color: #FFFFFF !important;
 }
+
+
+/* =========================================================
+   STATISTIKA — BLUE OVERRIDE
+   Tambahan ini sengaja diletakkan paling bawah agar menang
+   dari deklarasi warna statistik yang sebelumnya.
+   ========================================================= */
+
+.statistik-flyout {
+  --stat-red: #174A7E;
+  --stat-red-2: #245F91;
+  --stat-orange: #2F80B7;
+  --stat-yellow: #4FA3C7;
+  --stat-green: #63B4D5;
+  --stat-pink: #8AC6DF;
+
+  --stat-text: #35556F;
+  --stat-text-2: #607788;
+  --stat-muted: #8AA0B2;
+  --stat-bg: #FFFFFF;
+  --stat-soft: #F7FAFC;
+  --stat-track: #EDF1F5;
+  --stat-line: #E1EAF1;
+}
+
+/* Header */
+.statistik-icon {
+  color: #174A7E !important;
+  background: #F3F8FC !important;
+  border-color: #C9DCE9 !important;
+}
+
+.statistik-title {
+  color: #174A7E !important;
+}
+
+.statistik-close:hover {
+  color: #174A7E !important;
+  background: #F3F8FC !important;
+  border-color: #C9DCE9 !important;
+}
+
+/* Bar chart */
+.stat-vchart-item:nth-child(1) .stat-vchart-bar { background: #174A7E !important; }
+.stat-vchart-item:nth-child(2) .stat-vchart-bar { background: #245F91 !important; }
+.stat-vchart-item:nth-child(3) .stat-vchart-bar { background: #2F80B7 !important; }
+.stat-vchart-item:nth-child(4) .stat-vchart-bar { background: #4FA3C7 !important; }
+.stat-vchart-item:nth-child(5) .stat-vchart-bar { background: #63B4D5 !important; }
+.stat-vchart-item:nth-child(6) .stat-vchart-bar { background: #8AC6DF !important; }
+.stat-vchart-item:nth-child(7) .stat-vchart-bar { background: #A8D8E7 !important; }
+.stat-vchart-bar { background: #174A7E !important; }
+
+.stat-vchart-item:focus-visible .stat-vchart-bar {
+  outline-color: rgba(23, 74, 126, .35) !important;
+}
+
+/* Legend dots */
+.stat-legend-row:nth-child(1) .stat-legend-dot { background: #174A7E !important; }
+.stat-legend-row:nth-child(2) .stat-legend-dot { background: #245F91 !important; }
+.stat-legend-row:nth-child(3) .stat-legend-dot { background: #2F80B7 !important; }
+.stat-legend-row:nth-child(4) .stat-legend-dot { background: #4FA3C7 !important; }
+.stat-legend-row:nth-child(5) .stat-legend-dot { background: #63B4D5 !important; }
+.stat-legend-row:nth-child(6) .stat-legend-dot { background: #8AC6DF !important; }
+.stat-legend-dot { background: #174A7E !important; }
+
+/* Progress dots */
+.stat-progress-row:nth-child(1) .stat-status-dot { background: #174A7E !important; }
+.stat-progress-row:nth-child(2) .stat-status-dot { background: #245F91 !important; }
+.stat-progress-row:nth-child(3) .stat-status-dot { background: #2F80B7 !important; }
+.stat-progress-row:nth-child(4) .stat-status-dot { background: #4FA3C7 !important; }
+.stat-progress-row:nth-child(5) .stat-status-dot { background: #63B4D5 !important; }
+.stat-progress-row:nth-child(6) .stat-status-dot { background: #8AC6DF !important; }
+.stat-status-dot { background: #174A7E !important; }
+
+/* Donut SVG — force blue palette when the chart uses SVG paths/circles. */
+.stat-donut svg path:nth-child(1),
+.stat-donut svg circle:nth-child(1) { stroke: #174A7E !important; }
+.stat-donut svg path:nth-child(2),
+.stat-donut svg circle:nth-child(2) { stroke: #245F91 !important; }
+.stat-donut svg path:nth-child(3),
+.stat-donut svg circle:nth-child(3) { stroke: #2F80B7 !important; }
+.stat-donut svg path:nth-child(4),
+.stat-donut svg circle:nth-child(4) { stroke: #4FA3C7 !important; }
+.stat-donut svg path:nth-child(5),
+.stat-donut svg circle:nth-child(5) { stroke: #63B4D5 !important; }
+.stat-donut svg path:nth-child(6),
+.stat-donut svg circle:nth-child(6) { stroke: #8AC6DF !important; }
+.stat-donut svg path:nth-child(7),
+.stat-donut svg circle:nth-child(7) { stroke: #A8D8E7 !important; }
+
+/* If a donut has a single SVG element, at least make its stroke blue. */
+.stat-donut svg path,
+.stat-donut svg circle {
+  stroke: #174A7E !important;
+}
+
+/* Restore per-segment colors after the generic rule above. */
+.stat-donut svg path:nth-child(1), .stat-donut svg circle:nth-child(1) { stroke: #174A7E !important; }
+.stat-donut svg path:nth-child(2), .stat-donut svg circle:nth-child(2) { stroke: #245F91 !important; }
+.stat-donut svg path:nth-child(3), .stat-donut svg circle:nth-child(3) { stroke: #2F80B7 !important; }
+.stat-donut svg path:nth-child(4), .stat-donut svg circle:nth-child(4) { stroke: #4FA3C7 !important; }
+.stat-donut svg path:nth-child(5), .stat-donut svg circle:nth-child(5) { stroke: #63B4D5 !important; }
+.stat-donut svg path:nth-child(6), .stat-donut svg circle:nth-child(6) { stroke: #8AC6DF !important; }
+.stat-donut svg path:nth-child(7), .stat-donut svg circle:nth-child(7) { stroke: #A8D8E7 !important; }
+
+/* Dark mode */
+html[data-theme="dark"] .statistik-flyout {
+  --stat-red: #63B4D5;
+  --stat-red-2: #4FA3C7;
+  --stat-orange: #2F80B7;
+  --stat-yellow: #63B4D5;
+  --stat-green: #8AC6DF;
+  --stat-pink: #A8D8E7;
+  --stat-text: #DCECF5;
+  --stat-text-2: #B7CEDB;
+  --stat-muted: #8DA8B8;
+  --stat-bg: #102B40;
+  --stat-soft: #132F44;
+  --stat-track: #24475C;
+  --stat-line: #29485C;
+}
+
+html[data-theme="dark"] .statistik-head {
+  background: #102B40 !important;
+  border-bottom-color: #29485C !important;
+}
+
+html[data-theme="dark"] .statistik-icon {
+  background: rgba(99, 180, 213, .12) !important;
+  border-color: rgba(99, 180, 213, .35) !important;
+  color: #63B4D5 !important;
+}
+
+html[data-theme="dark"] .statistik-title { color: #8FD0EA !important; }
+
+html[data-theme="dark"] .statistik-close {
+  background: #102B40 !important;
+  border-color: #29485C !important;
+  color: #B7CEDB !important;
+}
+
+html[data-theme="dark"] .statistik-close:hover {
+  background: #1769A8 !important;
+  border-color: #1769A8 !important;
+  color: #FFFFFF !important;
+}
+
+html[data-theme="dark"] .stat-vchart-item:nth-child(1) .stat-vchart-bar { background: #174A7E !important; }
+html[data-theme="dark"] .stat-vchart-item:nth-child(2) .stat-vchart-bar { background: #245F91 !important; }
+html[data-theme="dark"] .stat-vchart-item:nth-child(3) .stat-vchart-bar { background: #2F80B7 !important; }
+html[data-theme="dark"] .stat-vchart-item:nth-child(4) .stat-vchart-bar { background: #4FA3C7 !important; }
+html[data-theme="dark"] .stat-vchart-item:nth-child(5) .stat-vchart-bar { background: #63B4D5 !important; }
+html[data-theme="dark"] .stat-vchart-item:nth-child(6) .stat-vchart-bar { background: #8AC6DF !important; }
+
+html[data-theme="dark"] .stat-donut svg path:nth-child(1), html[data-theme="dark"] .stat-donut svg circle:nth-child(1) { stroke: #174A7E !important; }
+html[data-theme="dark"] .stat-donut svg path:nth-child(2), html[data-theme="dark"] .stat-donut svg circle:nth-child(2) { stroke: #245F91 !important; }
+html[data-theme="dark"] .stat-donut svg path:nth-child(3), html[data-theme="dark"] .stat-donut svg circle:nth-child(3) { stroke: #2F80B7 !important; }
+html[data-theme="dark"] .stat-donut svg path:nth-child(4), html[data-theme="dark"] .stat-donut svg circle:nth-child(4) { stroke: #4FA3C7 !important; }
+html[data-theme="dark"] .stat-donut svg path:nth-child(5), html[data-theme="dark"] .stat-donut svg circle:nth-child(5) { stroke: #63B4D5 !important; }
+html[data-theme="dark"] .stat-donut svg path:nth-child(6), html[data-theme="dark"] .stat-donut svg circle:nth-child(6) { stroke: #8AC6DF !important; }
+
+html[data-theme="dark"] .stat-card,
+html[data-theme="dark"] .stat-composition,
+html[data-theme="dark"] .stat-kpi {
+  background: #132F44 !important;
+  border-color: #29485C !important;
+}
+
+html[data-theme="dark"] .stat-card-title,
+html[data-theme="dark"] .stat-small-title { color: #DCECF5 !important; }
+
+html[data-theme="dark"] .stat-donut-center strong,
+html[data-theme="dark"] .stat-kpi-item strong,
+html[data-theme="dark"] .stat-footer strong { color: #E8F4FA !important; }
+
+html[data-theme="dark"] .stat-legend-name,
+html[data-theme="dark"] .stat-vchart-label,
+html[data-theme="dark"] .stat-progress-name,
+html[data-theme="dark"] .stat-footer span { color: #9BB6C6 !important; }
+
+html[data-theme="dark"] .stat-legend-row strong,
+html[data-theme="dark"] .stat-vchart-value,
+html[data-theme="dark"] .stat-progress-row strong { color: #DCECF5 !important; }
