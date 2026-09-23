@@ -117,16 +117,6 @@ export async function GET() {
               ||
 
               jsonb_build_object(
-                'nama_sewa', NULL,
-                'ttl_sewa', NULL,
-                'krja_sewa', NULL,
-                'almt_sewa', NULL,
-                'nik_sewa', NULL
-              )
-
-              ||
-
-              jsonb_build_object(
                 'jml_bgn', f.jml_bgn,
                 'jenis_tnm', f.jenis_tnm,
                 'jumlah_tnm', f.jumlah_tnm,
