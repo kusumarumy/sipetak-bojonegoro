@@ -50,16 +50,16 @@ export default function UnggahBerkas({
     return map;
   }, [bidang.lampiran]);
 
-const fotoAda = WAJIB.filter((kategori) =>
-  perKategori.has(kategori)
-).length;
+  const fotoAda = WAJIB.filter((kategori) =>
+    perKategori.has(kategori)
+  ).length;
 
-const totalFoto = WAJIB.length;
+  const totalFoto = WAJIB.length;
 
-const persenFoto =
-  totalFoto > 0
-    ? Math.round((fotoAda / totalFoto) * 100)
-    : 0;
+  const persenFoto =
+    totalFoto > 0
+      ? Math.round((fotoAda / totalFoto) * 100)
+      : 0;
 
   async function unggah(
     kategori: KategoriLampiran,
@@ -70,15 +70,33 @@ const persenFoto =
     try {
       const exif = await bacaExif(file);
 
+      /*
+       * ==========================================
+       * 1. UPLOAD FILE KE R2
+       * ==========================================
+       *
+       * Sekarang menggunakan FID,
+       * bukan bidang.id.
+       */
+
       const fd = new FormData();
 
       fd.append("file", file);
+
       fd.append(
-        "bidang_id",
-        String(bidang.id)
+        "fid",
+        String(bidang.fid)
       );
-      fd.append("kategori", kategori);
-      fd.append("nama_asli", file.name);
+
+      fd.append(
+        "kategori",
+        kategori
+      );
+
+      fd.append(
+        "nama_asli",
+        file.name
+      );
 
       const naik = await fetch(
         "/api/lampiran/unggah",
@@ -94,8 +112,17 @@ const persenFoto =
         );
       }
 
-      const { object_key } =
-        await naik.json();
+      const {
+        object_key,
+      } = await naik.json();
+
+      /*
+       * ==========================================
+       * 2. SIMPAN METADATA KE DATABASE
+       * ==========================================
+       *
+       * Relasi bidang sekarang menggunakan FID.
+       */
 
       const simpan = await fetch(
         "/api/lampiran",
@@ -106,7 +133,7 @@ const persenFoto =
               "application/json",
           },
           body: JSON.stringify({
-            bidang_id: bidang.id,
+            fid: bidang.fid,
             kategori,
             object_key,
             nama_asli: file.name,
@@ -122,6 +149,11 @@ const persenFoto =
           await simpan.text()
         );
       }
+
+      /*
+       * Reload kartu supaya foto baru
+       * langsung muncul.
+       */
 
       await muatUlangKartu();
 
@@ -143,16 +175,18 @@ const persenFoto =
       setSedang(null);
     }
   }
-const kurang = WAJIB.filter(
-  (kategori) =>
-    !perKategori.has(kategori)
-);
+
+  const kurang = WAJIB.filter(
+    (kategori) =>
+      !perKategori.has(kategori)
+  );
 
   return (
     <div className="kb-upload">
 
       <div className="kb-upload-summary">
         <div className="kb-upload-summary-main">
+
           <div className="kb-upload-summary-icon">
             ▧
           </div>
@@ -183,7 +217,9 @@ const kurang = WAJIB.filter(
       </div>
 
       <div className="kb-upload-section">
+
         <div className="kb-upload-section-head">
+
           <div>
             <span className="kb-upload-kicker">
               Dokumentasi
@@ -194,17 +230,19 @@ const kurang = WAJIB.filter(
             </h4>
 
             <p>
-  Unggah foto bidang dan foto pemilik & petugas.
-  Foto bangunan bersifat opsional.
-</p>
+              Unggah foto bidang dan foto pemilik &amp; petugas.
+              Foto bangunan bersifat opsional.
+            </p>
           </div>
 
           <span className="kb-upload-count">
             {fotoAda}/{totalFoto}
           </span>
+
         </div>
 
         <div className="kb-photo-grid">
+
           {FOTO.map((kategori) => (
             <KartuFoto
               key={kategori}
@@ -224,11 +262,13 @@ const kurang = WAJIB.filter(
               }
             />
           ))}
+
         </div>
       </div>
 
       {kurang.length > 0 && (
         <div className="kb-upload-warning">
+
           <div className="kb-upload-warning-icon">
             !
           </div>
@@ -255,9 +295,12 @@ const kurang = WAJIB.filter(
               seluruh foto wajib tersedia.
             </small>
           </div>
+
         </div>
       )}
+
       <div className="kb-upload-security">
+
         <span className="kb-upload-security-icon">
           ◉
         </span>
@@ -274,7 +317,9 @@ const kurang = WAJIB.filter(
             bukan URL publik.
           </span>
         </div>
+
       </div>
+
     </div>
   );
 }
@@ -385,6 +430,7 @@ function KartuFoto({
           5
         )}`
       : null;
+
   function bukaUpload() {
     if (dapatUnggah) {
       input.current?.click();
@@ -450,8 +496,7 @@ function KartuFoto({
               (
                 event.key ===
                   "Enter" ||
-                event.key ===
-                  " "
+                event.key === " "
               ) &&
               ada &&
               src
@@ -500,6 +545,7 @@ function KartuFoto({
               </>
             ) : (
               <div className="kb-photo-placeholder">
+
                 <span>
                   {sedang
                     ? "…"
@@ -517,27 +563,30 @@ function KartuFoto({
                       : "Belum tersedia"}
                   </small>
                 )}
+
               </div>
             )}
 
             <span
-  className={
-    ada
-      ? "kb-badge-success"
-      : WAJIB.includes(kategori)
-        ? "kb-badge-required"
-        : "kb-badge-optional"
-  }
->
-  {ada
-    ? "✓ Tersimpan"
-    : WAJIB.includes(kategori)
-      ? "Wajib"
-      : "Opsional"}
-</span>
+              className={
+                ada
+                  ? "kb-badge-success"
+                  : WAJIB.includes(kategori)
+                    ? "kb-badge-required"
+                    : "kb-badge-optional"
+              }
+            >
+              {ada
+                ? "✓ Tersimpan"
+                : WAJIB.includes(kategori)
+                  ? "Wajib"
+                  : "Opsional"}
+            </span>
+
           </div>
 
           <div className="kb-photo-info">
+
             <strong>
               {KATEGORI_LABEL[
                 kategori
@@ -555,8 +604,11 @@ function KartuFoto({
                     ? "Klik untuk unggah"
                     : "Belum tersedia"}
             </span>
+
           </div>
+
         </div>
+
         {ada && (
           <div className="kb-file-meta">
 
@@ -584,7 +636,6 @@ function KartuFoto({
 
           </div>
         )}
-
 
         <input
           ref={input}
@@ -618,12 +669,13 @@ function KartuFoto({
                 : "Ganti foto"}
             </button>
           )}
-      </div>
 
+      </div>
 
       {previewOpen &&
         src && (
           <div className="kb-preview-modal">
+
             <div
               className="kb-preview-dialog"
               role="dialog"
@@ -634,6 +686,7 @@ function KartuFoto({
             >
 
               <div className="kb-preview-header">
+
                 <div>
                   <strong>
                     {
@@ -658,9 +711,11 @@ function KartuFoto({
                 >
                   ×
                 </button>
+
               </div>
 
               <div className="kb-preview-body">
+
                 <img
                   src={src}
                   alt={
@@ -669,18 +724,22 @@ function KartuFoto({
                     ]
                   }
                 />
+
               </div>
 
               <div className="kb-preview-footer">
+
                 <span>
                   {
                     lampiran?.nama_asli ??
                     "Foto lapangan"
                   }
                 </span>
+
               </div>
 
             </div>
+
           </div>
         )}
     </>
@@ -695,9 +754,7 @@ async function bacaExif(
   diambil_pada?: string;
 }> {
   if (
-    !file.type.startsWith(
-      "image/"
-    )
+    !file.type.startsWith("image/")
   ) {
     return {};
   }
@@ -853,9 +910,7 @@ async function bacaExif(
 
         if (waktu) {
           const [d, t] =
-            waktu.split(
-              " "
-            );
+            waktu.split(" ");
 
           if (
             d &&
@@ -961,6 +1016,7 @@ async function bacaExif(
         );
     }
   } catch {
+    // EXIF tidak wajib.
   }
 
   return {};
