@@ -504,7 +504,7 @@ export default function KartuBidang({
               "application/json",
           },
           body: JSON.stringify({
-            ke: target,
+            status: target,
           }),
         }
       );
