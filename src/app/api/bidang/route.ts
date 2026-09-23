@@ -73,10 +73,10 @@ export async function GET() {
                 'luas_atbt', f.luas_atbt,
 
                 'luas_terdampak_m2',
-                f.luas_terdampak_m2,
+                f.l_dampak,
 
                 'luas_sisa_m2',
-                f.luas_sisa_m2,
+                f.l_sisa,
 
                 'sumbergeom', f.sumbergeom,
                 'shape_leng', f.shape_leng,
@@ -117,11 +117,11 @@ export async function GET() {
               ||
 
               jsonb_build_object(
-                'nama_sewa', f.nama_sewa,
-                'ttl_sewa', f.ttl_sewa,
-                'krja_sewa', f.krja_sewa,
-                'almt_sewa', f.almt_sewa,
-                'nik_sewa', f.nik_sewa
+                'nama_sewa', NULL,
+                'ttl_sewa', NULL,
+                'krja_sewa', NULL,
+                'almt_sewa', NULL,
+                'nik_sewa', NULL
               )
 
               ||
@@ -147,8 +147,8 @@ export async function GET() {
 
               jsonb_build_object(
                 'status', f.status,
-                'catatan_supervisor', f.catatan_supervisor,
-                'diverifikasi_pada', f.diverifikasi_pada
+                'catatan_supervisor', f.cat_spv,
+                'diverifikasi_pada', f.verif_at
               )
             )
           ),
