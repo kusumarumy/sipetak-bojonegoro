@@ -8,7 +8,6 @@ export const runtime = "nodejs";
 
 export async function POST(req: NextRequest) {
   try {
-    
     if (!penyimpananSiap()) {
       return NextResponse.json(
         {
@@ -21,26 +20,75 @@ export async function POST(req: NextRequest) {
     const form = await req.formData();
 
     const file = form.get("file") as File | null;
-    const bidangId = form.get("bidang_id") as string | null;
+
+    // SEKARANG PAKAI FID
+    const fidText = form.get("fid") as string | null;
+
     const kategori = form.get("kategori") as string | null;
+
     const namaAsli =
       (form.get("nama_asli") as string) || "file";
 
-    if (!file || !bidangId || !kategori) {
+    if (!file || !fidText || !kategori) {
       return NextResponse.json(
         {
-          error: "file / bidang_id / kategori kosong",
+          error: "file / fid / kategori kosong",
         },
         { status: 400 }
       );
     }
 
+    const fid = Number(fidText);
+
+    if (!Number.isInteger(fid)) {
+      return NextResponse.json(
+        {
+          error: `FID tidak valid: ${fidText}`,
+        },
+        { status: 400 }
+      );
+    }
+
+    /*
+     * Pastikan FID memang ada di bidang_tanah
+     */
+    const hasilBidang = await query(
+      `
+      SELECT fid
+      FROM public.bidang_tanah
+      WHERE fid = $1
+      LIMIT 1
+      `,
+      [fid]
+    );
+
+    if (!hasilBidang[0]) {
+      return NextResponse.json(
+        {
+          error: `Bidang dengan FID ${fid} tidak ditemukan`,
+        },
+        { status: 404 }
+      );
+    }
+
+    /*
+     * Extension file
+     */
     const ext = namaAsli.includes(".")
       ? namaAsli.split(".").pop()?.toLowerCase() || "bin"
       : "bin";
 
+    /*
+     * Struktur R2:
+     *
+     * bidang/
+     *   191/
+     *     foto/
+     *       bidang/
+     *         123456-uuid.jpg
+     */
     const objectKey =
-      `bidang/${bidangId}/foto/${kategori}/` +
+      `bidang/${fid}/foto/${kategori}/` +
       `${Date.now()}-${randomUUID()}.${ext}`;
 
     const buffer = Buffer.from(
@@ -50,12 +98,15 @@ export async function POST(req: NextRequest) {
     console.log("UPLOAD REQUEST", {
       objectKey,
       namaAsli,
-      bidangId,
+      fid,
       kategori,
       mime: file.type,
       size: file.size,
     });
 
+    /*
+     * Upload ke R2
+     */
     await unggahObjek(
       objectKey,
       buffer,
@@ -66,6 +117,9 @@ export async function POST(req: NextRequest) {
       objectKey,
     });
 
+    /*
+     * User login
+     */
     const sesi = await auth();
 
     console.log("UPLOAD USER", {
@@ -74,26 +128,9 @@ export async function POST(req: NextRequest) {
       username: sesi?.user?.username,
     });
 
-
-    const hasilBidang = await query(
-      `
-      SELECT bidang_id
-      FROM public.bidang_tanah
-      WHERE id = $1
-      LIMIT 1
-      `,
-      [Number(bidangId)]
-    );
-
-    const bidangData = hasilBidang[0];
-
-    if (!bidangData) {
-      throw new Error(
-        `Bidang dengan id ${bidangId} tidak ditemukan`
-      );
-    }
-
-
+    /*
+     * IP address
+     */
     const ipAddress =
       req.headers
         .get("x-forwarded-for")
@@ -102,6 +139,15 @@ export async function POST(req: NextRequest) {
       req.headers.get("x-real-ip") ||
       null;
 
+    /*
+     * Audit log
+     *
+     * Untuk audit, kita tetap menggunakan
+     * kolom bidang_id jika kolom tersebut
+     * memang ada di audit_log.
+     *
+     * Nilainya sekarang adalah FID.
+     */
     await query(
       `
       INSERT INTO public.audit_log
@@ -135,8 +181,8 @@ export async function POST(req: NextRequest) {
       `,
       [
         "lampiran",
-        Number(bidangId),
-        bidangData.bidang_id,
+        fid,
+        fid,
         "UPLOAD",
         kategori,
         null,
@@ -150,8 +196,8 @@ export async function POST(req: NextRequest) {
     );
 
     console.log("AUDIT UPLOAD FINISHED", {
-      record_id: Number(bidangId),
-      bidang_id: bidangData.bidang_id,
+      record_id: fid,
+      bidang_id: fid,
       kategori,
       namaAsli,
       pengguna_id: sesi?.user?.id ?? null,
@@ -164,11 +210,15 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({
       success: true,
+      fid,
       object_key: objectKey,
     });
 
   } catch (e: any) {
-    console.error("API UNGGAH ERROR:", e);
+    console.error(
+      "API UNGGAH ERROR:",
+      e
+    );
 
     return NextResponse.json(
       {
