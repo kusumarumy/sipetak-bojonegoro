@@ -4896,12 +4896,13 @@ main.body {
 }
 
 .statistik-flyout {
-  --stat-red: #174A7E;
-  --stat-red-2: #245F91;
-  --stat-orange: #ea580c;
-  --stat-yellow: #eab308;
-  --stat-green: #16a34a;
-  --stat-pink: #174A7E;
+  --stat-red: #174A7E;        /* biru tua - warna utama */
+  --stat-red-2: #245F91;      /* biru medium */
+
+  --stat-orange: #2F80B7;     /* biru muda */
+  --stat-yellow: #4FA3C7;     /* cyan blue */
+  --stat-green: #63B4D5;      /* light blue */
+  --stat-pink: #8AC6DF;       /* biru sangat muda */
 
   --stat-text: #35556F;
   --stat-text-2: #607788;
