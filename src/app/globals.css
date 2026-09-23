@@ -261,13 +261,17 @@ header.bar {
 
   border-radius: 999px;
 
-  background: #ffcc00;
+  /* PUTIH */
+  background: #ffffff;
+
+  border: 1px solid #d4e5f1;
 
   box-shadow:
-    inset 0 0 0 1px rgba(0, 0, 0, .06);
+    inset 0 0 0 1px rgba(23, 105, 168, .04);
 
   transition:
-    background .2s ease;
+    background .2s ease,
+    border-color .2s ease;
 }
 
 .theme-switch-thumb {
@@ -284,15 +288,16 @@ header.bar {
 
   border-radius: 50%;
 
-  background: #fff;
+  background: #ffffff;
 
-  color: #f2a900;
+  /* ICON BIRU */
+  color: #1769a8;
 
   font-size: 15px;
   line-height: 1;
 
   box-shadow:
-    0 2px 5px rgba(0, 0, 0, .18);
+    0 2px 5px rgba(23, 105, 168, .16);
 
   transition:
     transform .2s ease,
