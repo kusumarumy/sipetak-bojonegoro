@@ -48,6 +48,11 @@ const tahunOpsional = z.preprocess(
     .optional()
 );
 
+/* =========================================================
+   GET DETAIL BIDANG
+   GET /api/bidang/:id
+   ========================================================= */
+
 export async function GET(
   _req: Request,
   { params }: Ctx
@@ -65,86 +70,83 @@ export async function GET(
   try {
     const [b] = await query<any>(
       `
-      SELECT
-        id,
-        objectid,
-        kodewilaya,
-        kecamatan,
-        kelurahan,
-        tipehak,
-        tipeproduk,
-        tahun,
+        SELECT
+          id,
+          objectid,
+          kodewilaya,
+          kecamatan,
+          kelurahan,
+          tipehak,
+          tipeproduk,
+          tahun,
 
-        nib,
+          nib,
 
-        luastertul,
-        luaspeta,
-        luas_tnh,
-        luas_terdampak_m2,
-        luas_sisa_m2,
-        sumbergeom,
+          luastertul,
+          luaspeta,
+          luas_tnh,
 
-        alatukur,
-        penggunaan,
-        metodukur,
+          l_dampak AS luas_terdampak_m2,
+          l_sisa AS luas_sisa_m2,
 
-        shape_leng,
-        shape_area,
+          sumbergeom,
 
-        hub_tnh,
-        kode_wwc,
-        jenis_tnh,
+          alatukur,
+          penggunaan,
+          metodukur,
 
-        kode_bid,
-        rt_rw,
+          shape_leng,
+          shape_area,
 
-        nama_milik,
-        ttl_milik,
-        krja_milik,
-        almt_milik,
-        nik_milik,
+          hub_tnh,
+          kode_wwc,
+          jenis_tnh,
 
-        nama_sewa,
-        ttl_sewa,
-        krja_sewa,
-        almt_sewa,
-        nik_sewa,
+          kode_bid,
+          rt_rw,
 
-        nomor_hp,
+          nama_milik,
+          ttl_milik,
+          krja_milik,
+          almt_milik,
+          nik_milik,
 
-        sta_tnh,
-        surat_hak,
-        nomor_hak,
+          nomor_hp,
 
-        ruang_atbt,
-        luas_atbt,
+          sta_tnh,
+          surat_hak,
+          nomor_hak,
 
-        jenis_tnm,
-        jumlah_tnm,
+          ruang_atbt,
+          luas_atbt,
 
-        jenis_bnd,
-        jumlah_bnd,
+          jenis_tnm,
+          jumlah_tnm,
 
-        beban_hak,
-        dampak_tnh,
-        jml_bgn,
+          jenis_bnd,
+          jumlah_bnd,
 
-        date_updt,
-        foto_tnh,
-        foto_wwc,
+          beban_hak,
+          dampak_tnh,
+          jml_bgn,
 
-        keterangan,
+          date_updt,
+          foto_tnh,
+          foto_wwc,
 
-        fid,
+          keterangan,
 
-        status,
-        catatan_supervisor,
-        diverifikasi_pada,
+          fid,
 
-        created_at
+          status,
 
-      FROM public.bidang_tanah
-      WHERE id = $1
+          cat_spv AS catatan_supervisor,
+          verif_at AS diverifikasi_pada,
+
+          created_at
+
+        FROM public.bidang_tanah
+        WHERE id = $1
       `,
       [id]
     );
@@ -152,51 +154,65 @@ export async function GET(
     if (!b) {
       return new NextResponse(
         "Bidang tidak ditemukan",
-        { status: 404 }
+        {
+          status: 404,
+        }
       );
     }
 
+    /* =====================================================
+       RIWAYAT
+       ===================================================== */
+
     const hasilRiwayat = await query<any>(
       `
-      SELECT
-        al.id,
-        al.aksi,
-        al.kolom,
-        al.nilai_lama,
-        al.nilai_baru,
-        al.pada,
-        p.nama AS nama_pengguna
-      FROM public.audit_log al
-      LEFT JOIN public.pengguna p
-        ON p.id = al.pengguna_id
-      WHERE al.tabel = 'bidang_tanah'
-        AND al.record_id = $1
-      ORDER BY al.pada DESC, al.id DESC
+        SELECT
+          al.id,
+          al.aksi,
+          al.kolom,
+          al.nilai_lama,
+          al.nilai_baru,
+          al.pada,
+          p.nama AS nama_pengguna
+        FROM public.audit_log al
+        LEFT JOIN public.pengguna p
+          ON p.id = al.pengguna_id
+        WHERE al.tabel = 'bidang_tanah'
+          AND al.record_id = $1
+        ORDER BY al.pada DESC, al.id DESC
       `,
       [id]
     );
 
+    /* =====================================================
+       LAMPIRAN
+       ===================================================== */
+
     const hasilLampiran = await query<any>(
       `
-      SELECT
-        id,
-        nib,
-        kategori,
-        object_key,
-        nama_asli,
-        mime,
-        ukuran_byte,
-        lat,
-        lon,
-        diambil_pada,
-        diunggah_pada,
-        sensitif
-      FROM public.lampiran
-      WHERE nib = $1
-      ORDER BY diunggah_pada DESC, id DESC
+        SELECT
+          id,
+          nib,
+          kategori,
+          object_key,
+          nama_asli,
+          mime,
+          ukuran_byte,
+          lat,
+          lon,
+          diambil_pada,
+          diunggah_pada,
+          sensitif
+        FROM public.lampiran
+        WHERE nib = $1
+        ORDER BY diunggah_pada DESC, id DESC
       `,
       [b.nib]
     );
+
+    /* =====================================================
+       DATA BIDANG
+       ===================================================== */
 
     const bidang = {
       id: String(b.id),
@@ -273,32 +289,7 @@ export async function GET(
       almt_milik: b.almt_milik,
       nik_milik: b.nik_milik,
 
-      nama_sewa: b.nama_sewa,
-      ttl_sewa: b.ttl_sewa,
-      krja_sewa: b.krja_sewa,
-      almt_sewa: b.almt_sewa,
-      nik_sewa: b.nik_sewa,
-
       nomor_hp: b.nomor_hp,
-
-      penyewa: b.nama_sewa
-        ? [
-            {
-              id: String(b.id),
-              urutan: 1,
-              nama: b.nama_sewa,
-              ttl: b.ttl_sewa,
-              pekerjaan: b.krja_sewa,
-              alamat: b.almt_sewa,
-              nik: b.nik_sewa,
-              telepon: b.nomor_hp,
-              hubungan: null,
-              npwp: null,
-              bank_nama: null,
-              bank_rek: null,
-            },
-          ]
-        : [],
 
       hub_tnh: b.hub_tnh,
       kode_wwc: b.kode_wwc,
@@ -360,6 +351,7 @@ export async function GET(
     };
 
     return NextResponse.json(bidang);
+
   } catch (error) {
     console.error(
       "GET /api/bidang/[id] ERROR:",
@@ -374,10 +366,17 @@ export async function GET(
             ? error.message
             : String(error),
       },
-      { status: 500 }
+      {
+        status: 500,
+      }
     );
   }
 }
+
+
+/* =========================================================
+   SCHEMA UPDATE
+   ========================================================= */
 
 const SkemaUbah = z.object({
   kecamatan:
@@ -459,7 +458,7 @@ const SkemaUbah = z.object({
     angkaOpsional,
 
   luas_atbt:
-    angkaOpsional,
+    z.string().max(120).nullish(),
 
   ruang_atbt:
     z.string().max(120).nullish(),
@@ -485,21 +484,6 @@ const SkemaUbah = z.object({
   nik_milik:
     z.string().max(32).nullish(),
 
-  nama_sewa:
-    z.string().max(160).nullish(),
-
-  ttl_sewa:
-    z.string().max(160).nullish(),
-
-  krja_sewa:
-    z.string().max(120).nullish(),
-
-  almt_sewa:
-    z.string().max(240).nullish(),
-
-  nik_sewa:
-    z.string().max(32).nullish(),
-
   nomor_hp:
     z.string().max(40).nullish(),
 
@@ -507,23 +491,100 @@ const SkemaUbah = z.object({
     z.string().max(160).nullish(),
 
   jumlah_tnm:
-    angkaOpsional,
+    z.string().max(120).nullish(),
 
   jenis_bnd:
     z.string().max(160).nullish(),
 
   jumlah_bnd:
-    angkaOpsional,
+    z.string().max(120).nullish(),
 
   jml_bgn:
-    angkaOpsional,
+    z.string().max(120).nullish(),
 
   date_updt:
     z.string().nullish(),
 
   keterangan:
     z.string().max(1000).nullish(),
+
+  catatan_supervisor:
+    z.string().max(1000).nullish(),
 });
+
+
+/* =========================================================
+   MAP FIELD API → FIELD DATABASE
+   ========================================================= */
+
+const FIELD_DB: Record<string, string> = {
+  kecamatan: "kecamatan",
+  kelurahan: "kelurahan",
+  rt_rw: "rt_rw",
+
+  kodewilaya: "kodewilaya",
+  kode_bid: "kode_bid",
+
+  tipehak: "tipehak",
+  tipeproduk: "tipeproduk",
+
+  nib: "nib",
+  tahun: "tahun",
+
+  surat_hak: "surat_hak",
+  nomor_hak: "nomor_hak",
+  beban_hak: "beban_hak",
+
+  penggunaan: "penggunaan",
+  hub_tnh: "hub_tnh",
+  kode_wwc: "kode_wwc",
+  jenis_tnh: "jenis_tnh",
+  sta_tnh: "sta_tnh",
+  dampak_tnh: "dampak_tnh",
+
+  alatukur: "alatukur",
+  metodukur: "metodukur",
+
+  luas_tnh: "luas_tnh",
+  luastertul: "luastertul",
+  luaspeta: "luaspeta",
+
+  sumbergeom: "sumbergeom",
+  shape_leng: "shape_leng",
+  shape_area: "shape_area",
+
+  luas_atbt: "luas_atbt",
+  ruang_atbt: "ruang_atbt",
+
+  luas_terdampak_m2: "l_dampak",
+  luas_sisa_m2: "l_sisa",
+
+  nama_milik: "nama_milik",
+  ttl_milik: "ttl_milik",
+  krja_milik: "krja_milik",
+  almt_milik: "almt_milik",
+  nik_milik: "nik_milik",
+
+  nomor_hp: "nomor_hp",
+
+  jenis_tnm: "jenis_tnm",
+  jumlah_tnm: "jumlah_tnm",
+
+  jenis_bnd: "jenis_bnd",
+  jumlah_bnd: "jumlah_bnd",
+
+  jml_bgn: "jml_bgn",
+
+  date_updt: "date_updt",
+  keterangan: "keterangan",
+
+  catatan_supervisor: "cat_spv",
+};
+
+
+/* =========================================================
+   PATCH UPDATE BIDANG
+   ========================================================= */
 
 export async function PATCH(
   req: Request,
@@ -556,9 +617,9 @@ export async function PATCH(
         status: StatusBidang;
       }>(
         `
-        SELECT status
-        FROM public.bidang_tanah
-        WHERE id = $1
+          SELECT status
+          FROM public.bidang_tanah
+          WHERE id = $1
         `,
         [id]
       );
@@ -566,7 +627,9 @@ export async function PATCH(
     if (!row) {
       return new NextResponse(
         "Bidang tidak ditemukan",
-        { status: 404 }
+        {
+          status: 404,
+        }
       );
     }
 
@@ -578,7 +641,9 @@ export async function PATCH(
     ) {
       return new NextResponse(
         "Bidang terkunci untuk peran ini",
-        { status: 403 }
+        {
+          status: 403,
+        }
       );
     }
 
@@ -594,22 +659,51 @@ export async function PATCH(
           detail:
             parsed.error.flatten(),
         },
-        { status: 400 }
+        {
+          status: 400,
+        }
       );
     }
 
-    const isi = Object.entries(
+    /*
+     * Ambil hanya field yang benar-benar
+     * dikirim oleh frontend.
+     */
+    const isiApi = Object.entries(
       parsed.data
     ).filter(
       ([, value]) =>
         value !== undefined
     );
 
-    if (!isi.length) {
+    if (!isiApi.length) {
       return NextResponse.json({
         ok: true,
       });
     }
+
+    /*
+     * Ubah nama field API menjadi
+     * nama kolom PostgreSQL.
+     */
+    const isi = isiApi.map(
+      ([kolom, nilai]) => {
+        const kolomDb =
+          FIELD_DB[kolom];
+
+        if (!kolomDb) {
+          throw new Error(
+            `Kolom tidak diizinkan: ${kolom}`
+          );
+        }
+
+        return [
+          kolomDb,
+          nilai,
+          kolom,
+        ] as const;
+      }
+    );
 
     await transaksi(
       sesi.user.id,
@@ -617,10 +711,10 @@ export async function PATCH(
         const hasilLama =
           await c.query<any>(
             `
-            SELECT *
-            FROM public.bidang_tanah
-            WHERE id = $1
-            FOR UPDATE
+              SELECT *
+              FROM public.bidang_tanah
+              WHERE id = $1
+              FOR UPDATE
             `,
             [id]
           );
@@ -634,34 +728,46 @@ export async function PATCH(
           );
         }
 
+        /*
+         * Bangun SET menggunakan
+         * nama kolom database.
+         */
         const set = isi
           .map(
-            ([kolom], index) =>
-              `${kolom} = $${index + 2}`
+            ([kolomDb], index) =>
+              `${kolomDb} = $${index + 2}`
           )
           .join(", ");
 
+        const nilaiUpdate =
+          isi.map(
+            ([, nilai]) => nilai
+          );
+
         await c.query(
           `
-          UPDATE public.bidang_tanah
-          SET ${set}
-          WHERE id = $1
+            UPDATE public.bidang_tanah
+            SET ${set}
+            WHERE id = $1
           `,
           [
             id,
-            ...isi.map(
-              ([, value]) =>
-                value
-            ),
+            ...nilaiUpdate,
           ]
         );
 
+        /*
+         * Audit log
+         */
         for (
-          const [kolom, nilaiBaru]
-          of isi
+          const [
+            kolomDb,
+            nilaiBaru,
+            kolomApi,
+          ] of isi
         ) {
           const nilaiLama =
-            lama[kolom];
+            lama[kolomDb];
 
           const lamaText =
             nilaiLama == null
@@ -673,7 +779,9 @@ export async function PATCH(
               ? null
               : String(nilaiBaru);
 
-          if (lamaText === baruText) {
+          if (
+            lamaText === baruText
+          ) {
             continue;
           }
 
@@ -706,39 +814,39 @@ export async function PATCH(
 
           await c.query(
             `
-            INSERT INTO public.audit_log (
-              tabel,
-              record_id,
-              bidang_id,
-              aksi,
-              kolom,
-              nilai_lama,
-              nilai_baru,
-              pengguna_id,
-              nama_akun,
-              ip_address,
-              pada
-            )
-            VALUES (
-              $1,
-              $2,
-              $3,
-              $4,
-              $5,
-              $6,
-              $7,
-              $8,
-              $9,
-              $10,
-              NOW()
-            )
+              INSERT INTO public.audit_log (
+                tabel,
+                record_id,
+                bidang_id,
+                aksi,
+                kolom,
+                nilai_lama,
+                nilai_baru,
+                pengguna_id,
+                nama_akun,
+                ip_address,
+                pada
+              )
+              VALUES (
+                $1,
+                $2,
+                $3,
+                $4,
+                $5,
+                $6,
+                $7,
+                $8,
+                $9,
+                $10,
+                NOW()
+              )
             `,
             [
               "bidang_tanah",
               id,
               id,
               aksi,
-              kolom,
+              kolomApi,
               lamaText,
               baruText,
               sesi.user.id,
@@ -753,6 +861,7 @@ export async function PATCH(
     return NextResponse.json({
       ok: true,
     });
+
   } catch (error) {
     console.error(
       "PATCH /api/bidang/[id] ERROR:",
@@ -768,7 +877,9 @@ export async function PATCH(
             ? error.message
             : String(error),
       },
-      { status: 500 }
+      {
+        status: 500,
+      }
     );
   }
 }
