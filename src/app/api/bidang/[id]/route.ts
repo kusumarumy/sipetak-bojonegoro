@@ -48,6 +48,7 @@ const tahunOpsional = z.preprocess(
     .optional()
 );
 
+
 /* =========================================================
    GET DETAIL BIDANG
    GET /api/bidang/:id
@@ -160,8 +161,9 @@ export async function GET(
       );
     }
 
+
     /* =====================================================
-       RIWAYAT
+       RIWAYAT AKSI
        ===================================================== */
 
     const hasilRiwayat = await query<any>(
@@ -174,17 +176,40 @@ export async function GET(
           al.nilai_baru,
           al.pada,
           p.nama AS nama_pengguna
+
         FROM public.audit_log al
+
         LEFT JOIN public.pengguna p
           ON p.id = al.pengguna_id
+
         WHERE al.tabel = 'bidang_tanah'
-          AND al.bidang_id = $1
-        ORDER BY al.pada DESC, al.id DESC
+
+          /*
+           * audit_log.bidang_id bertipe character varying.
+           *
+           * Data baru memakai FID.
+           * Data lama mungkin masih memakai id alfanumerik.
+           *
+           * Karena itu kita cek keduanya.
+           */
+          AND al.bidang_id IN (
+            $1::text,
+            $2::text
+          )
+
+        ORDER BY
+          al.pada DESC,
+          al.id DESC
       `,
-      [id]
+      [
+        String(b.fid),
+        String(b.id),
+      ]
     );
+
+
     /* =====================================================
-       LAMPIRAN
+       LAMPIRAN / FOTO
        ===================================================== */
 
     const hasilLampiran = await query<any>(
@@ -202,12 +227,18 @@ export async function GET(
           diambil_pada,
           diunggah_pada,
           sensitif
+
         FROM public.lampiran
+
         WHERE fid = $1
-        ORDER BY diunggah_pada DESC, id DESC
+
+        ORDER BY
+          diunggah_pada DESC,
+          id DESC
       `,
       [b.fid]
     );
+
 
     /* =====================================================
        DATA BIDANG
@@ -323,6 +354,11 @@ export async function GET(
       diverifikasi_pada:
         b.diverifikasi_pada,
 
+
+      /* ===================================================
+         LAMPIRAN
+         =================================================== */
+
       lampiran: hasilLampiran.map((l) => ({
         id: String(l.id),
         fid: l.fid,
@@ -337,6 +373,11 @@ export async function GET(
         diunggah_pada: l.diunggah_pada,
         sensitif: l.sensitif,
       })),
+
+
+      /* ===================================================
+         RIWAYAT
+         =================================================== */
 
       riwayat: hasilRiwayat.map((r) => ({
         id: r.id,
@@ -613,10 +654,13 @@ export async function PATCH(
   try {
     const [row] =
       await query<{
+        fid: number;
         status: StatusBidang;
       }>(
         `
-          SELECT status
+          SELECT
+            fid,
+            status
           FROM public.bidang_tanah
           WHERE id = $1
         `,
@@ -757,6 +801,9 @@ export async function PATCH(
 
         /*
          * Audit log
+         *
+         * bidang_id sekarang menggunakan FID,
+         * bukan ID alfanumerik bidang_tanah.
          */
         for (
           const [
@@ -842,8 +889,18 @@ export async function PATCH(
             `,
             [
               "bidang_tanah",
+
+              /*
+               * record_id tetap ID asli bidang
+               * karena ini identitas record.
+               */
               id,
-              id,
+
+              /*
+               * bidang_id memakai FID.
+               */
+              lama.fid,
+
               aksi,
               kolomApi,
               lamaText,
