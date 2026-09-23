@@ -13699,3 +13699,120 @@ a:hover {
 .sidebar-item.aktif::before {
   background: #73B9D1 !important;
 }
+
+
+/* =========================================================
+   SIDEBAR MENU — KOTAK BIRU + ICON PUTIH
+   Background sidebar tetap soft putih kebiruan
+   ========================================================= */
+
+/* Kotak menu */
+.sidebar-item {
+  background: linear-gradient(
+    145deg,
+    #38A9D3 0%,
+    #178EBE 100%
+  ) !important;
+
+  border: 1px solid #72C5E2 !important;
+
+  color: #FFFFFF !important;
+
+  box-shadow:
+    0 3px 10px rgba(19, 112, 151, 0.14) !important;
+}
+
+/* Teks menu */
+.sidebar-item span,
+.sidebar-item label,
+.sidebar-item .label,
+.sidebar-item .menu-label {
+  color: #FFFFFF !important;
+  font-weight: 700 !important;
+}
+
+/* Icon putih */
+.sidebar-item svg,
+.sidebar-item i,
+.sidebar-item .icon {
+  color: #FFFFFF !important;
+  stroke: #FFFFFF !important;
+  fill: none !important;
+  opacity: 1 !important;
+  filter: none !important;
+}
+
+/* Hover — sedikit lebih terang */
+.sidebar-item:hover {
+  background: linear-gradient(
+    145deg,
+    #49B9DF 0%,
+    #229DC9 100%
+  ) !important;
+
+  border-color: #8BD5EA !important;
+  color: #FFFFFF !important;
+
+  box-shadow:
+    0 5px 14px rgba(19, 112, 151, 0.18) !important;
+
+  transform: translateY(-1px);
+}
+
+.sidebar-item:hover span,
+.sidebar-item:hover label,
+.sidebar-item:hover .label,
+.sidebar-item:hover .menu-label {
+  color: #FFFFFF !important;
+}
+
+.sidebar-item:hover svg,
+.sidebar-item:hover i,
+.sidebar-item:hover .icon {
+  color: #FFFFFF !important;
+  stroke: #FFFFFF !important;
+}
+
+/* Menu aktif — biru lebih tegas */
+.sidebar-item.active,
+.sidebar-item.aktif {
+  background: linear-gradient(
+    145deg,
+    #167FAF 0%,
+    #096C99 100%
+  ) !important;
+
+  border-color: #75C9E4 !important;
+  color: #FFFFFF !important;
+
+  box-shadow:
+    0 5px 15px rgba(8, 102, 145, 0.22) !important;
+}
+
+.sidebar-item.active span,
+.sidebar-item.active label,
+.sidebar-item.active .label,
+.sidebar-item.active .menu-label,
+.sidebar-item.aktif span,
+.sidebar-item.aktif label,
+.sidebar-item.aktif .label,
+.sidebar-item.aktif .menu-label {
+  color: #FFFFFF !important;
+  font-weight: 800 !important;
+}
+
+.sidebar-item.active svg,
+.sidebar-item.active i,
+.sidebar-item.active .icon,
+.sidebar-item.aktif svg,
+.sidebar-item.aktif i,
+.sidebar-item.aktif .icon {
+  color: #FFFFFF !important;
+  stroke: #FFFFFF !important;
+}
+
+/* Aksen aktif */
+.sidebar-item.active::before,
+.sidebar-item.aktif::before {
+  background: #B9EAF7 !important;
+}
