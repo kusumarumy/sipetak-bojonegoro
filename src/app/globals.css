@@ -8243,31 +8243,12 @@ main.body {
   overflow-x: auto;
   overflow-y: hidden;
 
-  /* Bisa digeser horizontal */
-  -webkit-overflow-scrolling: touch;
-  overscroll-behavior-x: contain;
-
-  /* Firefox */
-  scrollbar-width: thin;
-  scrollbar-color: #c7cbd1 transparent;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
-/* Chrome / Edge */
 .kb-tabs::-webkit-scrollbar {
-  height: 5px;
-}
-
-.kb-tabs::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.kb-tabs::-webkit-scrollbar-thumb {
-  background: #c7cbd1;
-  border-radius: 999px;
-}
-
-.kb-tabs::-webkit-scrollbar-thumb:hover {
-  background: #9fa5ad;
+  display: none;
 }
 
 .kb-tab {
@@ -8300,6 +8281,27 @@ main.body {
   transition:
     background 0.18s ease,
     color 0.18s ease;
+}
+
+.kb-tab:hover {
+  background: #f3f5f8;
+  color: var(--kb-text);
+}
+
+.kb-tab.active {
+  background: var(--kb-red);
+  color: #fff;
+}
+
+.kb-tab-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  flex: 0 0 auto;
+
+  font-size: 13px;
+  line-height: 1;
 }
 
 
