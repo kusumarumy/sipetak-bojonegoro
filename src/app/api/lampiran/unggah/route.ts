@@ -21,7 +21,6 @@ export async function POST(req: NextRequest) {
 
     const file = form.get("file") as File | null;
 
-    // SEKARANG PAKAI FID
     const fidText = form.get("fid") as string | null;
 
     const kategori = form.get("kategori") as string | null;
