@@ -8234,21 +8234,40 @@ main.body {
   width: 100%;
   min-width: 0;
 
-  padding: 6px 8px;
+  padding: 6px 8px 8px;
 
   background: var(--kb-bg);
 
   border-bottom: 1px solid var(--kb-line);
 
+  /* TAB BISA DIGESER KE KANAN/KIRI */
   overflow-x: auto;
   overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  touch-action: pan-x;
+  -webkit-overflow-scrolling: touch;
 
-  scrollbar-width: none;
-  -ms-overflow-style: none;
+  /* Tampilkan scrollbar horizontal agar tab di kanan mudah ditemukan */
+  scrollbar-width: thin;
+  scrollbar-color: #b8bec7 transparent;
+  -ms-overflow-style: auto;
 }
 
 .kb-tabs::-webkit-scrollbar {
-  display: none;
+  height: 5px;
+}
+
+.kb-tabs::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.kb-tabs::-webkit-scrollbar-thumb {
+  background: #b8bec7;
+  border-radius: 999px;
+}
+
+.kb-tabs::-webkit-scrollbar-thumb:hover {
+  background: #9299a3;
 }
 
 .kb-tab {
@@ -12896,5 +12915,3 @@ html[data-theme="dark"] .layer-loading-spinner {
   border-color: #3A4655;
   border-top-color: #E9967A;
 }
-
-
