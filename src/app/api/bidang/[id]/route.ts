@@ -191,7 +191,7 @@ export async function GET(
       `
         SELECT
           id,
-          nib,
+          fid,
           kategori,
           object_key,
           nama_asli,
@@ -203,10 +203,10 @@ export async function GET(
           diunggah_pada,
           sensitif
         FROM public.lampiran
-        WHERE nib = $1
+        WHERE fid = $1
         ORDER BY diunggah_pada DESC, id DESC
       `,
-      [b.nib]
+      [b.fid]
     );
 
     /* =====================================================
@@ -325,7 +325,7 @@ export async function GET(
 
       lampiran: hasilLampiran.map((l) => ({
         id: String(l.id),
-        nib: String(l.nib),
+        fid: l.fid,
         kategori: l.kategori,
         object_key: l.object_key,
         nama_asli: l.nama_asli,
