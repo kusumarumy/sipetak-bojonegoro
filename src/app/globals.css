@@ -13254,3 +13254,112 @@ a:hover {
   background: #BFE0F4;
   color: #173F61;
 }
+
+
+/* =========================================================
+   SIDEBAR FINAL — SOFT WATER BLUE
+   Lebih lembut, tetapi icon/menu tetap jelas
+   ========================================================= */
+
+.sidebar {
+  background:
+    linear-gradient(
+      180deg,
+      #54C5E3 0%,
+      #39B3D7 38%,
+      #249FC9 70%,
+      #198FBD 100%
+    );
+
+  border-right: 1px solid rgba(255, 255, 255, 0.42);
+
+  box-shadow:
+    5px 0 22px rgba(18, 126, 164, 0.12);
+}
+
+/* Semua tombol menu */
+.sidebar-item {
+  color: #FFFFFF;
+  background: rgba(255, 255, 255, 0.08);
+
+  border: 1px solid rgba(255, 255, 255, 0.58);
+
+  box-shadow:
+    0 2px 7px rgba(0, 93, 130, 0.08);
+
+  transition:
+    background .18s ease,
+    border-color .18s ease,
+    color .18s ease,
+    box-shadow .18s ease,
+    transform .18s ease;
+}
+
+/* Hover */
+.sidebar-item:hover {
+  background: rgba(255, 255, 255, 0.22);
+  border-color: rgba(255, 255, 255, 0.82);
+  color: #FFFFFF;
+
+  box-shadow:
+    0 4px 12px rgba(0, 92, 128, 0.13);
+
+  transform: translateY(-1px);
+}
+
+/* Menu aktif */
+.sidebar-item.active,
+.sidebar-item.aktif {
+  background: #FFFFFF;
+  border-color: #FFFFFF;
+  color: #087EAD;
+
+  box-shadow:
+    0 4px 14px rgba(0, 89, 126, 0.16);
+}
+
+/* Hover pada menu aktif */
+.sidebar-item.active:hover,
+.sidebar-item.aktif:hover {
+  background: #F4FCFF;
+  color: #0676A3;
+}
+
+/* Aksen menu aktif */
+.sidebar-item.active::before,
+.sidebar-item.aktif::before {
+  background: #8DD9EA;
+}
+
+/* Icon */
+.sidebar-item svg {
+  color: currentColor;
+  stroke-width: 2;
+}
+
+/* Jika icon menggunakan lucide/font */
+.sidebar-item i,
+.sidebar-item .icon {
+  color: currentColor;
+}
+
+/* Label menu */
+.sidebar-item span {
+  color: inherit;
+  font-weight: 600;
+}
+
+/* Focus keyboard */
+.sidebar-item:focus-visible {
+  outline: 2px solid #FFFFFF;
+  outline-offset: 2px;
+}
+
+/* Sedikit lebih soft pada divider/area kosong */
+.sidebar::after {
+  background: linear-gradient(
+    180deg,
+    rgba(255,255,255,0.08),
+    rgba(255,255,255,0)
+  );
+}
