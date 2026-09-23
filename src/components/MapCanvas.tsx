@@ -1180,7 +1180,7 @@ map.addControl(
 
               '#FFD600',
 
-              '#F6CF03'
+              '#8df2ff'
             ],
 
             'fill-opacity': [
