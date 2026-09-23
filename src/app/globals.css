@@ -13402,3 +13402,227 @@ a:hover {
 .theme-switch.dark .theme-switch-thumb {
   color: #1769a8 !important;
 }
+
+
+/* =========================================================
+   FINAL SIDEBAR MENU — PUTIH & LEBIH TEGAS
+   ========================================================= */
+
+/* Semua menu sidebar */
+.sidebar-item {
+  color: #FFFFFF !important;
+
+  font-weight: 700 !important;
+  letter-spacing: .01em;
+
+  text-shadow:
+    0 1px 2px rgba(0, 70, 100, 0.12);
+
+  border-color: rgba(255, 255, 255, 0.62);
+}
+
+/* Label teks menu */
+.sidebar-item span,
+.sidebar-item label,
+.sidebar-item .label,
+.sidebar-item .menu-label {
+  color: #FFFFFF !important;
+  font-weight: 700 !important;
+}
+
+/* Icon menu */
+.sidebar-item svg,
+.sidebar-item i,
+.sidebar-item .icon {
+  color: #FFFFFF !important;
+  stroke: #FFFFFF !important;
+  opacity: 1 !important;
+  filter: drop-shadow(0 1px 1px rgba(0, 70, 100, 0.12));
+}
+
+/* Hover */
+.sidebar-item:hover {
+  color: #FFFFFF !important;
+  background: rgba(255, 255, 255, 0.24) !important;
+  border-color: rgba(255, 255, 255, 0.88) !important;
+}
+
+/* Menu aktif tetap putih dengan teks biru */
+.sidebar-item.active,
+.sidebar-item.aktif {
+  background: #FFFFFF !important;
+  color: #087EAD !important;
+  font-weight: 800 !important;
+  border-color: #FFFFFF !important;
+}
+
+/* Icon & label menu aktif */
+.sidebar-item.active span,
+.sidebar-item.active label,
+.sidebar-item.active .label,
+.sidebar-item.active .menu-label,
+.sidebar-item.aktif span,
+.sidebar-item.aktif label,
+.sidebar-item.aktif .label,
+.sidebar-item.aktif .menu-label {
+  color: #087EAD !important;
+  font-weight: 800 !important;
+}
+
+.sidebar-item.active svg,
+.sidebar-item.active i,
+.sidebar-item.active .icon,
+.sidebar-item.aktif svg,
+.sidebar-item.aktif i,
+.sidebar-item.aktif .icon {
+  color: #087EAD !important;
+  stroke: #087EAD !important;
+  opacity: 1 !important;
+}
+
+/* Aksen menu aktif */
+.sidebar-item.active::before,
+.sidebar-item.aktif::before {
+  background: #8DD9EA !important;
+}
+
+/* Focus keyboard */
+.sidebar-item:focus-visible {
+  outline: 2px solid #FFFFFF !important;
+  outline-offset: 2px;
+}
+
+
+/* =========================================================
+   FINAL SIDEBAR — PUTIH KEBIRUAN / CLEAN FRESH
+   Terinspirasi tone landing page:
+   atas sangat terang -> bawah sedikit lebih biru
+   ========================================================= */
+
+.sidebar {
+  background: linear-gradient(
+    180deg,
+    #F8FCFF 0%,
+    #F1F8FC 28%,
+    #E6F2F9 58%,
+    #D4E8F3 100%
+  ) !important;
+
+  border-right: 1px solid #C9DFEA !important;
+
+  box-shadow:
+    5px 0 22px rgba(58, 116, 145, 0.10) !important;
+}
+
+/* Menu sidebar */
+.sidebar-item {
+  color: #24536E !important;
+  background: rgba(255, 255, 255, 0.42) !important;
+
+  border: 1px solid rgba(174, 207, 222, 0.72) !important;
+
+  box-shadow:
+    0 2px 7px rgba(60, 112, 139, 0.06) !important;
+
+  text-shadow: none !important;
+}
+
+/* Label */
+.sidebar-item span,
+.sidebar-item label,
+.sidebar-item .label,
+.sidebar-item .menu-label {
+  color: #24536E !important;
+  font-weight: 700 !important;
+}
+
+/* Icon */
+.sidebar-item svg,
+.sidebar-item i,
+.sidebar-item .icon {
+  color: #24536E !important;
+  stroke: #24536E !important;
+  opacity: 1 !important;
+  filter: none !important;
+}
+
+/* Hover */
+.sidebar-item:hover {
+  background: rgba(255, 255, 255, 0.78) !important;
+  border-color: #A9CFDF !important;
+  color: #176A91 !important;
+
+  box-shadow:
+    0 4px 12px rgba(52, 111, 140, 0.10) !important;
+
+  transform: translateY(-1px);
+}
+
+.sidebar-item:hover span,
+.sidebar-item:hover label,
+.sidebar-item:hover .label,
+.sidebar-item:hover .menu-label {
+  color: #176A91 !important;
+}
+
+.sidebar-item:hover svg,
+.sidebar-item:hover i,
+.sidebar-item:hover .icon {
+  color: #176A91 !important;
+  stroke: #176A91 !important;
+}
+
+/* Menu aktif */
+.sidebar-item.active,
+.sidebar-item.aktif {
+  background: #FFFFFF !important;
+  border-color: #B8D8E6 !important;
+  color: #176A91 !important;
+
+  box-shadow:
+    0 4px 14px rgba(52, 111, 140, 0.13) !important;
+}
+
+.sidebar-item.active span,
+.sidebar-item.active label,
+.sidebar-item.active .label,
+.sidebar-item.active .menu-label,
+.sidebar-item.aktif span,
+.sidebar-item.aktif label,
+.sidebar-item.aktif .label,
+.sidebar-item.aktif .menu-label {
+  color: #176A91 !important;
+  font-weight: 800 !important;
+}
+
+.sidebar-item.active svg,
+.sidebar-item.active i,
+.sidebar-item.active .icon,
+.sidebar-item.aktif svg,
+.sidebar-item.aktif i,
+.sidebar-item.aktif .icon {
+  color: #176A91 !important;
+  stroke: #176A91 !important;
+}
+
+/* Aksen menu aktif */
+.sidebar-item.active::before,
+.sidebar-item.aktif::before {
+  background: #73B9D1 !important;
+}
+
+/* Focus */
+.sidebar-item:focus-visible {
+  outline: 2px solid #9CCDDD !important;
+  outline-offset: 2px;
+}
+
+/* Highlight lembut di sidebar */
+.sidebar::after {
+  background: linear-gradient(
+    180deg,
+    rgba(255,255,255,0.34),
+    rgba(255,255,255,0)
+  ) !important;
+  pointer-events: none;
+}
