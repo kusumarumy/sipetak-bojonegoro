@@ -178,7 +178,7 @@ export async function GET(
         LEFT JOIN public.pengguna p
           ON p.id = al.pengguna_id
         WHERE al.tabel = 'bidang_tanah'
-          AND al.record_id = $1
+          AND al.bidang_id = $1
         ORDER BY al.pada DESC, al.id DESC
       `,
       [id]
