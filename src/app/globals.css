@@ -12934,10 +12934,12 @@ html[data-theme="dark"] .layer-loading-spinner {
 
 
 /* =========================================================
-   FINAL COLOR TONE — BIRU CERAH / CLEAN WEBGIS
-   Mengurangi navy yang terlalu gelap dan membuat UI lebih
-   cerah, fresh, profesional, dan tetap kontras.
+   FINAL WEBGIS TONE — FRESH WATER BLUE
+   Sidebar: bright aqua / cyan-blue
+   Overall UI: clean, bright, professional
    ========================================================= */
+
+/* ---------- GLOBAL BRIGHT BLUE PALETTE ---------- */
 
 :root {
   --webgis-navy: #1769A8;
@@ -12959,7 +12961,56 @@ html[data-theme="dark"] .layer-loading-spinner {
   --webgis-muted: #6D879C;
 }
 
-/* Header / top user area */
+/* ---------- SIDEBAR / WATER BLUE ---------- */
+
+.sidebar {
+  background: linear-gradient(
+    180deg,
+    #4CC7EA 0%,
+    #20AAD8 45%,
+    #0793CC 100%
+  );
+
+  border-color: rgba(255, 255, 255, 0.30);
+
+  box-shadow:
+    6px 0 24px rgba(0, 130, 180, 0.15);
+}
+
+.sidebar-item {
+  color: #FFFFFF;
+  background: transparent;
+}
+
+.sidebar-item:hover {
+  background: rgba(255, 255, 255, 0.20);
+  color: #FFFFFF;
+}
+
+.sidebar-item.active,
+.sidebar-item.aktif {
+  background: #FFFFFF;
+  color: #087EB8;
+
+  box-shadow:
+    0 3px 12px rgba(0, 100, 160, 0.12);
+}
+
+.sidebar-item.active::before,
+.sidebar-item.aktif::before {
+  background: #A7E5F5;
+}
+
+.sidebar-item svg {
+  color: currentColor;
+}
+
+.sidebar-item span {
+  color: inherit;
+}
+
+/* ---------- HEADER ---------- */
+
 header.bar,
 .topbar,
 .app-header,
@@ -12969,6 +13020,7 @@ header.bar,
     #FFFFFF 0%,
     #F1F8FD 100%
   );
+
   border-color: #D4E5F1;
   color: #173F61;
 }
@@ -12980,11 +13032,14 @@ header.bar h1,
   color: #1769A8;
 }
 
-/* User panel */
+/* ---------- USER PANEL ---------- */
+
 .head-user {
   background: #FFFFFF;
   border-color: #D4E5F1;
-  box-shadow: 0 8px 24px rgba(23, 105, 168, .10);
+
+  box-shadow:
+    0 8px 24px rgba(23, 105, 168, .10);
 }
 
 .head-user-avatar {
@@ -13001,7 +13056,8 @@ header.bar h1,
   color: #173F61;
 }
 
-/* Theme switch */
+/* ---------- THEME SWITCH ---------- */
+
 .theme-switch-track {
   background: #F0C84B;
 }
@@ -13019,7 +13075,8 @@ header.bar h1,
   color: #F0C84B;
 }
 
-/* SIGN OUT */
+/* ---------- SIGN OUT ---------- */
+
 .head-logout {
   background: #1769A8;
   border-color: #1769A8;
@@ -13032,34 +13089,32 @@ header.bar h1,
   color: #FFFFFF;
 }
 
-/* Sidebar */
-.sidebar {
-  background: linear-gradient(
-    180deg,
-    #237BB8 0%,
-    #1769A8 100%
-  );
-  border-color: rgba(255,255,255,.18);
-  box-shadow: 8px 0 28px rgba(23, 105, 168, .14);
+/* ---------- PANELS ---------- */
+
+.flyout-panel,
+.search-flyout,
+.layer-panel,
+.control-panel,
+.panel {
+  background: rgba(255,255,255,.98);
+  border-color: #D4E5F1;
+  color: #173F61;
+
+  box-shadow:
+    0 14px 36px rgba(23,105,168,.12);
 }
 
-.sidebar-item {
-  color: rgba(255,255,255,.88);
+.flyout-panel h2,
+.flyout-panel h3,
+.search-flyout h2,
+.search-flyout h3,
+.panel h2,
+.panel h3 {
+  color: #1769A8;
 }
 
-.sidebar-item:hover,
-.sidebar-item.active,
-.sidebar-item.aktif {
-  background: rgba(255,255,255,.16);
-  color: #FFFFFF;
-}
+/* ---------- PRIMARY BUTTONS ---------- */
 
-.sidebar-item.active::before,
-.sidebar-item.aktif::before {
-  background: #75C4B0;
-}
-
-/* Primary buttons */
 .btn-primary,
 button.primary,
 .kb-primary {
@@ -13075,7 +13130,8 @@ button.primary:hover,
   border-color: #125487;
 }
 
-/* Secondary buttons */
+/* ---------- SECONDARY BUTTONS ---------- */
+
 button.secondary,
 .kb-secondary {
   background: #FFFFFF;
@@ -13089,28 +13145,8 @@ button.secondary:hover,
   border-color: #AFCFE3;
 }
 
-/* Panels / cards */
-.flyout-panel,
-.search-flyout,
-.layer-panel,
-.control-panel,
-.panel {
-  background: rgba(255,255,255,.98);
-  border-color: #D4E5F1;
-  color: #173F61;
-  box-shadow: 0 14px 36px rgba(23,105,168,.12);
-}
+/* ---------- INPUTS ---------- */
 
-.flyout-panel h2,
-.flyout-panel h3,
-.search-flyout h2,
-.search-flyout h3,
-.panel h2,
-.panel h3 {
-  color: #1769A8;
-}
-
-/* Inputs */
 input,
 select,
 textarea {
@@ -13123,10 +13159,13 @@ input:focus,
 select:focus,
 textarea:focus {
   border-color: #5BAE9D;
-  box-shadow: 0 0 0 3px rgba(91,174,157,.14);
+
+  box-shadow:
+    0 0 0 3px rgba(91,174,157,.14);
 }
 
-/* Accent */
+/* ---------- STATUS / ACCENT ---------- */
+
 .status-ok,
 .status-terverifikasi,
 .badge-ok,
@@ -13142,20 +13181,23 @@ textarea:focus {
   border-color: #E8D58A;
 }
 
-/* Map info / floating controls */
+/* ---------- MAP FLOATING INFO ---------- */
+
 .map-info {
   border-color: #D4E5F1;
-  box-shadow: 0 4px 14px rgba(23,105,168,.12);
+
+  box-shadow:
+    0 4px 14px rgba(23,105,168,.12);
 }
 
-/* =========================================================
-   KARTU BIDANG — CERAH
-   ========================================================= */
+/* ---------- KARTU BIDANG ---------- */
 
 .kartu.open.kb-modern {
   background: #FFFFFF;
   border-color: #D4E5F1;
-  box-shadow: 0 18px 42px rgba(23,105,168,.16);
+
+  box-shadow:
+    0 18px 42px rgba(23,105,168,.16);
 }
 
 .kb-tabs {
@@ -13187,7 +13229,8 @@ textarea:focus {
   background: #FFFFFF;
 }
 
-/* Badge / chip */
+/* ---------- KARTU BADGE / CHIP ---------- */
+
 .kb-badge,
 .kb-chip {
   background: #E8F4FC;
@@ -13195,7 +13238,8 @@ textarea:focus {
   color: #1769A8;
 }
 
-/* Links */
+/* ---------- LINKS ---------- */
+
 a {
   color: #1769A8;
 }
@@ -13204,7 +13248,8 @@ a:hover {
   color: #125487;
 }
 
-/* Selection */
+/* ---------- SELECTION ---------- */
+
 ::selection {
   background: #BFE0F4;
   color: #173F61;
