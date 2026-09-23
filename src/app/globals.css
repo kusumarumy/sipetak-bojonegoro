@@ -12931,3 +12931,281 @@ html[data-theme="dark"] .layer-loading-spinner {
   --pub-muted: #6C8195;
   --pub-danger: #B54F4F;
 }
+
+
+/* =========================================================
+   FINAL COLOR TONE — BIRU CERAH / CLEAN WEBGIS
+   Mengurangi navy yang terlalu gelap dan membuat UI lebih
+   cerah, fresh, profesional, dan tetap kontras.
+   ========================================================= */
+
+:root {
+  --webgis-navy: #1769A8;
+  --webgis-navy-dark: #125487;
+  --webgis-navy-soft: #E8F4FC;
+
+  --webgis-teal: #5BAE9D;
+  --webgis-teal-soft: #E8F6F2;
+
+  --webgis-gold: #DDB23D;
+  --webgis-gold-soft: #FFF7D9;
+
+  --webgis-bg: #F1F8FD;
+  --webgis-card: #FFFFFF;
+  --webgis-card-soft: #F7FBFE;
+
+  --webgis-line: #D4E5F1;
+  --webgis-text: #173F61;
+  --webgis-muted: #6D879C;
+}
+
+/* Header / top user area */
+header.bar,
+.topbar,
+.app-header,
+.navbar {
+  background: linear-gradient(
+    135deg,
+    #FFFFFF 0%,
+    #F1F8FD 100%
+  );
+  border-color: #D4E5F1;
+  color: #173F61;
+}
+
+header.bar strong,
+header.bar h1,
+.topbar strong,
+.app-header strong {
+  color: #1769A8;
+}
+
+/* User panel */
+.head-user {
+  background: #FFFFFF;
+  border-color: #D4E5F1;
+  box-shadow: 0 8px 24px rgba(23, 105, 168, .10);
+}
+
+.head-user-avatar {
+  background: #E8F4FC;
+  color: #1769A8;
+  border-color: #CFE3F1;
+}
+
+.head-user-role {
+  color: #7B94A7;
+}
+
+.head-user-info strong {
+  color: #173F61;
+}
+
+/* Theme switch */
+.theme-switch-track {
+  background: #F0C84B;
+}
+
+.theme-switch-thumb {
+  background: #FFFFFF;
+  color: #1769A8;
+}
+
+.theme-switch.dark .theme-switch-track {
+  background: #1769A8;
+}
+
+.theme-switch.dark .theme-switch-thumb {
+  color: #F0C84B;
+}
+
+/* SIGN OUT */
+.head-logout {
+  background: #1769A8;
+  border-color: #1769A8;
+  color: #FFFFFF;
+}
+
+.head-logout:hover {
+  background: #125487;
+  border-color: #125487;
+  color: #FFFFFF;
+}
+
+/* Sidebar */
+.sidebar {
+  background: linear-gradient(
+    180deg,
+    #237BB8 0%,
+    #1769A8 100%
+  );
+  border-color: rgba(255,255,255,.18);
+  box-shadow: 8px 0 28px rgba(23, 105, 168, .14);
+}
+
+.sidebar-item {
+  color: rgba(255,255,255,.88);
+}
+
+.sidebar-item:hover,
+.sidebar-item.active,
+.sidebar-item.aktif {
+  background: rgba(255,255,255,.16);
+  color: #FFFFFF;
+}
+
+.sidebar-item.active::before,
+.sidebar-item.aktif::before {
+  background: #75C4B0;
+}
+
+/* Primary buttons */
+.btn-primary,
+button.primary,
+.kb-primary {
+  background: #1769A8;
+  border-color: #1769A8;
+  color: #FFFFFF;
+}
+
+.btn-primary:hover,
+button.primary:hover,
+.kb-primary:hover {
+  background: #125487;
+  border-color: #125487;
+}
+
+/* Secondary buttons */
+button.secondary,
+.kb-secondary {
+  background: #FFFFFF;
+  border-color: #D4E5F1;
+  color: #1769A8;
+}
+
+button.secondary:hover,
+.kb-secondary:hover {
+  background: #E8F4FC;
+  border-color: #AFCFE3;
+}
+
+/* Panels / cards */
+.flyout-panel,
+.search-flyout,
+.layer-panel,
+.control-panel,
+.panel {
+  background: rgba(255,255,255,.98);
+  border-color: #D4E5F1;
+  color: #173F61;
+  box-shadow: 0 14px 36px rgba(23,105,168,.12);
+}
+
+.flyout-panel h2,
+.flyout-panel h3,
+.search-flyout h2,
+.search-flyout h3,
+.panel h2,
+.panel h3 {
+  color: #1769A8;
+}
+
+/* Inputs */
+input,
+select,
+textarea {
+  background: #FFFFFF;
+  border-color: #D4E5F1;
+  color: #173F61;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: #5BAE9D;
+  box-shadow: 0 0 0 3px rgba(91,174,157,.14);
+}
+
+/* Accent */
+.status-ok,
+.status-terverifikasi,
+.badge-ok,
+.success {
+  color: #4F9D8D;
+}
+
+.stat-gold,
+.badge-gold,
+.accent-gold {
+  color: #1769A8;
+  background: #FFF7D9;
+  border-color: #E8D58A;
+}
+
+/* Map info / floating controls */
+.map-info {
+  border-color: #D4E5F1;
+  box-shadow: 0 4px 14px rgba(23,105,168,.12);
+}
+
+/* =========================================================
+   KARTU BIDANG — CERAH
+   ========================================================= */
+
+.kartu.open.kb-modern {
+  background: #FFFFFF;
+  border-color: #D4E5F1;
+  box-shadow: 0 18px 42px rgba(23,105,168,.16);
+}
+
+.kb-tabs {
+  background: #F7FBFE;
+  border-bottom-color: #D4E5F1;
+}
+
+.kb-tab {
+  color: #6D879C;
+}
+
+.kb-tab:hover {
+  background: #E8F4FC;
+  color: #1769A8;
+}
+
+.kb-tab.active,
+.kb-tab.is-active {
+  background: #E8F4FC;
+  color: #1769A8;
+}
+
+.kb-tab.active::after,
+.kb-tab.is-active::after {
+  background: #5BAE9D;
+}
+
+.kb-scroll {
+  background: #FFFFFF;
+}
+
+/* Badge / chip */
+.kb-badge,
+.kb-chip {
+  background: #E8F4FC;
+  border-color: #CFE3F1;
+  color: #1769A8;
+}
+
+/* Links */
+a {
+  color: #1769A8;
+}
+
+a:hover {
+  color: #125487;
+}
+
+/* Selection */
+::selection {
+  background: #BFE0F4;
+  color: #173F61;
+}
