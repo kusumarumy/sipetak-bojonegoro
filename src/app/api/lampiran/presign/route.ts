@@ -7,9 +7,10 @@ import { urlUnggah } from "@/lib/r2";
 import type { StatusBidang } from "@/types";
 
 const Skema = z.object({
-  bidang_id: z
-    .string()
-    .regex(/^\d+$/, "ID bidang tidak valid"),
+  fid: z.coerce
+    .number()
+    .int()
+    .positive("FID tidak valid"),
 
   kategori: z
     .string()
@@ -61,17 +62,23 @@ export async function POST(req: Request) {
     const sesi = await auth();
 
     if (!sesi?.user) {
-      return new NextResponse("Belum masuk", { status: 401 });
+      return new NextResponse(
+        "Belum masuk",
+        { status: 401 }
+      );
     }
 
     const body = await req.json();
-    const parsed = Skema.safeParse(body);
+
+    const parsed =
+      Skema.safeParse(body);
 
     if (!parsed.success) {
       return NextResponse.json(
         {
           pesan: "Berkas ditolak",
-          detail: parsed.error.flatten(),
+          detail:
+            parsed.error.flatten(),
         },
         { status: 400 }
       );
@@ -79,72 +86,169 @@ export async function POST(req: Request) {
 
     const d = parsed.data;
 
+    /*
+     * Cari bidang berdasarkan FID,
+     * bukan ID sumber.
+     */
     const [b] = await query<{
-      id: number;
+      id: string;
+      fid: number;
       status: StatusBidang;
     }>(
       `
-      SELECT id, status
+      SELECT
+        id,
+        fid,
+        status
       FROM public.bidang_tanah
-      WHERE id = $1
+      WHERE fid = $1
+      LIMIT 1
       `,
-      [d.bidang_id]
+      [d.fid]
     );
 
     if (!b) {
-      return new NextResponse("Bidang tidak ditemukan", { status: 404 });
+      return new NextResponse(
+        "Bidang tidak ditemukan",
+        { status: 404 }
+      );
     }
 
-    if (!dapatMengubahAtribut(sesi.user.peran, b.status)) {
-      return new NextResponse("Bidang terkunci untuk peran ini", { status: 403 });
+    /*
+     * Cek apakah user masih boleh
+     * mengubah data bidang.
+     */
+    if (
+      !dapatMengubahAtribut(
+        sesi.user.peran,
+        b.status
+      )
+    ) {
+      return new NextResponse(
+        "Bidang terkunci untuk peran ini",
+        { status: 403 }
+      );
     }
 
+    /*
+     * Tentukan folder R2.
+     */
     let folder = "lainnya";
 
-    if (KATEGORI_FOTO.has(d.kategori)) {
+    if (
+      KATEGORI_FOTO.has(
+        d.kategori
+      )
+    ) {
       folder = "foto";
-    } else if (KATEGORI_DOKUMEN.has(d.kategori)) {
+    } else if (
+      KATEGORI_DOKUMEN.has(
+        d.kategori
+      )
+    ) {
       folder = "dokumen";
     } else {
       return NextResponse.json(
-        { pesan: "Kategori berkas tidak dikenali" },
+        {
+          pesan:
+            "Kategori berkas tidak dikenali",
+        },
         { status: 400 }
       );
     }
 
-    const ekstensi = d.nama_asli.includes(".")
-      ? (d.nama_asli.split(".").pop() ?? "bin")
-          .toLowerCase()
-          .replace(/[^a-z0-9]/g, "")
-      : "bin";
+    /*
+     * Ambil extension file.
+     */
+    const ekstensi =
+      d.nama_asli.includes(".")
+        ? (
+            d.nama_asli
+              .split(".")
+              .pop() ?? "bin"
+          )
+            .toLowerCase()
+            .replace(
+              /[^a-z0-9]/g,
+              ""
+            )
+        : "bin";
 
-    const namaUnik = `\({Date.now()}-\){crypto.randomUUID()}.${ekstensi}`;
-    const object_key = `bidang/\({b.id}/\){folder}/\({d.kategori}/\){namaUnik}`;
+    /*
+     * Nama file unik.
+     */
+    const namaUnik =
+      `${Date.now()}-${crypto.randomUUID()}.${ekstensi}`;
 
-    console.log("[R2 PRESIGN]", {
-      bucket: process.env.BOJO_R2_BUCKET ? "configured" : "MISSING",
-      account: process.env.BOJO_R2_ACCOUNT_ID ? "configured" : "MISSING",
-      access: process.env.BOJO_R2_ACCESS_KEY_ID ? "configured" : "MISSING",
-      secret: process.env.BOJO_R2_SECRET_ACCESS_KEY ? "configured" : "MISSING",
-      bidang_id: b.id,
-      kategori: d.kategori,
-      object_key,
-      mime: d.mime,
-    });
+    /*
+     * R2 sekarang menggunakan FID.
+     *
+     * Contoh:
+     * bidang/191/foto/foto_bidang/xxxxx.jpg
+     */
+    const object_key =
+      `bidang/${b.fid}/${folder}/${d.kategori}/${namaUnik}`;
 
-    const url = await urlUnggah(object_key, d.mime);
+    console.log(
+      "[R2 PRESIGN]",
+      {
+        bucket:
+          process.env.BOJO_R2_BUCKET
+            ? "configured"
+            : "MISSING",
+
+        account:
+          process.env.BOJO_R2_ACCOUNT_ID
+            ? "configured"
+            : "MISSING",
+
+        access:
+          process.env.BOJO_R2_ACCESS_KEY_ID
+            ? "configured"
+            : "MISSING",
+
+        secret:
+          process.env.BOJO_R2_SECRET_ACCESS_KEY
+            ? "configured"
+            : "MISSING",
+
+        fid: b.fid,
+        kategori: d.kategori,
+        object_key,
+        mime: d.mime,
+      }
+    );
+
+    /*
+     * Buat presigned upload URL.
+     */
+    const url =
+      await urlUnggah(
+        object_key,
+        d.mime
+      );
 
     return NextResponse.json({
       url,
       object_key,
+      fid: b.fid,
     });
+
   } catch (error) {
-    console.error("POST /api/lampiran/presign ERROR:", error);
+    console.error(
+      "POST /api/lampiran/presign ERROR:",
+      error
+    );
 
     return NextResponse.json(
       {
-        pesan: "Gagal membuat URL upload",
-        error: error instanceof Error ? error.message : String(error),
+        pesan:
+          "Gagal membuat URL upload",
+
+        error:
+          error instanceof Error
+            ? error.message
+            : String(error),
       },
       { status: 500 }
     );
