@@ -13816,3 +13816,91 @@ a:hover {
 .sidebar-item.aktif::before {
   background: #B9EAF7 !important;
 }
+
+
+/* =========================================================
+   FINAL SIDEBAR BLUE — MATCH SIGN OUT
+   Warna utama mengikuti tombol SIGN OUT: #1769A8
+   ========================================================= */
+
+.sidebar-item {
+  background: #1769A8 !important;
+  border-color: #1769A8 !important;
+  color: #FFFFFF !important;
+
+  box-shadow:
+    0 3px 10px rgba(23, 105, 168, 0.14) !important;
+}
+
+.sidebar-item span,
+.sidebar-item label,
+.sidebar-item .label,
+.sidebar-item .menu-label {
+  color: #FFFFFF !important;
+}
+
+.sidebar-item svg,
+.sidebar-item i,
+.sidebar-item .icon {
+  color: #FFFFFF !important;
+  stroke: #FFFFFF !important;
+  fill: none !important;
+  opacity: 1 !important;
+}
+
+/* Hover: sedikit lebih terang */
+.sidebar-item:hover {
+  background: #2378B5 !important;
+  border-color: #2378B5 !important;
+  color: #FFFFFF !important;
+}
+
+.sidebar-item:hover span,
+.sidebar-item:hover label,
+.sidebar-item:hover .label,
+.sidebar-item:hover .menu-label,
+.sidebar-item:hover svg,
+.sidebar-item:hover i,
+.sidebar-item:hover .icon {
+  color: #FFFFFF !important;
+  stroke: #FFFFFF !important;
+}
+
+/* Aktif: sedikit lebih gelap */
+.sidebar-item.active,
+.sidebar-item.aktif {
+  background: #125487 !important;
+  border-color: #125487 !important;
+  color: #FFFFFF !important;
+
+  box-shadow:
+    0 5px 15px rgba(18, 84, 135, 0.22) !important;
+}
+
+.sidebar-item.active span,
+.sidebar-item.active label,
+.sidebar-item.active .label,
+.sidebar-item.active .menu-label,
+.sidebar-item.aktif span,
+.sidebar-item.aktif label,
+.sidebar-item.aktif .label,
+.sidebar-item.aktif .menu-label {
+  color: #FFFFFF !important;
+  font-weight: 800 !important;
+}
+
+.sidebar-item.active svg,
+.sidebar-item.active i,
+.sidebar-item.active .icon,
+.sidebar-item.aktif svg,
+.sidebar-item.aktif i,
+.sidebar-item.aktif .icon {
+  color: #FFFFFF !important;
+  stroke: #FFFFFF !important;
+}
+
+/* Aksen aktif */
+.sidebar-item.active::before,
+.sidebar-item.aktif::before {
+  background: #8BC8E7 !important;
+}
