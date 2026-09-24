@@ -477,21 +477,6 @@ if (DTM.aws) {
   };
 }
 
-    if (ADA_KONTUR.lidar) {
-      sources.kontur_lidar = {
-        type: 'vector',
-        url:
-          `pmtiles://${KONTUR.lidar.url}`
-      };
-    }
-
-    if (ADA_KONTUR.foto) {
-      sources.kontur_foto = {
-        type: 'vector',
-        url:
-          `pmtiles://${KONTUR.foto.url}`
-      };
-    }
 
     const layersAwal: any[] = [
       {
@@ -941,21 +926,7 @@ map.addControl(
             L.id === 'bidang'
           ) {
             continue;
-          }
-          map.addSource(
-            L.id,
-            {
-              type: 'geojson',
-              data:
-                L.id === 'traseg'
-                  ? TRASEG_URL
-                  : L.id === 'kontur_kawasan'
-                    ? VECTOR.konturKawasan
-                    : L.id === 'kontur_trase'
-                      ? VECTOR.konturTrase
-                      : `/api/layers/${L.sumber}`
-            }
-          );
+          };
 
           const vis =
             layerAktif[L.id]
