@@ -3,22 +3,15 @@ import { z } from 'zod';
 import { auth } from '@/lib/auth';
 import { query, transaksi } from '@/lib/db';
 import { transisiSah } from '@/lib/rbac';
-import { WAJIB, type StatusBidang } from '@/types';
+import type { StatusBidang } from '@/types';
 
 const Skema = z.object({
   ke: z.enum([
-    'draft',
-    'terkirim',
     'terverifikasi',
     'revisi',
   ]),
   catatan: z.string().max(1000).optional(),
 });
-
-/**
- * POST /api/bidang/:id/status
- * Memindahkan bidang dalam alur verifikasi.
- */
 export async function POST(
   req: Request,
   { params }: { params: Promise<{ id: string }> }
@@ -33,18 +26,22 @@ export async function POST(
 
   const { id } = await params;
 
-  const parsed = Skema.safeParse(await req.json());
+  const parsed = Skema.safeParse(
+    await req.json()
+  );
 
   if (!parsed.success) {
-    return new NextResponse('Permintaan tidak valid', {
-      status: 400,
-    });
+    return new NextResponse(
+      'Permintaan tidak valid',
+      {
+        status: 400,
+      }
+    );
   }
 
   const { ke, catatan } = parsed.data;
 
   try {
-    // Ambil status bidang
     const [b] = await query<{
       status: StatusBidang;
     }>(
@@ -57,12 +54,13 @@ export async function POST(
     );
 
     if (!b) {
-      return new NextResponse('Bidang tidak ditemukan', {
-        status: 404,
-      });
+      return new NextResponse(
+        'Bidang tidak ditemukan',
+        {
+          status: 404,
+        }
+      );
     }
-
-    // Periksa apakah transisi status diperbolehkan
     if (
       !transisiSah(
         b.status,
@@ -72,49 +70,16 @@ export async function POST(
     ) {
       return NextResponse.json(
         {
-          pesan: `Tidak bisa memindahkan bidang dari "${b.status}" ke "${ke}" dengan peran ${sesi.user.peran}.`,
+          pesan:
+            `Tidak bisa memindahkan bidang dari ` +
+            `"${b.status}" ke "${ke}" ` +
+            `dengan peran ${sesi.user.peran}.`,
         },
         {
           status: 403,
         }
       );
     }
-
-    // Jika dikirim, pastikan berkas wajib lengkap
-    if (ke === 'terkirim') {
-      const ada = await query<{
-        kategori: string;
-      }>(
-        `
-          SELECT DISTINCT kategori
-          FROM public.lampiran
-          WHERE bidang_id = $1
-        `,
-        [id]
-      );
-
-      const punya = new Set(
-        ada.map((r) => r.kategori)
-      );
-
-      const kurang = WAJIB.filter(
-        (k) => !punya.has(k)
-      );
-
-      if (kurang.length) {
-        return NextResponse.json(
-          {
-            pesan: 'Berkas wajib belum lengkap.',
-            kurang,
-          },
-          {
-            status: 422,
-          }
-        );
-      }
-    }
-
-    // Jika dikembalikan untuk revisi, alasan wajib diisi
     if (
       ke === 'revisi' &&
       !catatan?.trim()
@@ -129,8 +94,6 @@ export async function POST(
         }
       );
     }
-
-    // Update status bidang
     await transaksi(
       sesi.user.id,
       async (c) => {
@@ -159,7 +122,7 @@ export async function POST(
           [
             id,
             ke,
-            catatan ?? null,
+            catatan?.trim() || null,
           ]
         );
       }
@@ -178,7 +141,8 @@ export async function POST(
 
     return NextResponse.json(
       {
-        pesan: 'Gagal mengubah status bidang',
+        pesan:
+          'Gagal mengubah status bidang',
         error:
           error instanceof Error
             ? error.message
