@@ -3527,7 +3527,7 @@ main.body {
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  border: 1px solid rgba(176, 47, 47, 0.35);
+  border: 1px solid rgb(51 47 176 / 35%);
   border-radius: 8px;
   background: rgba(23, 74, 126, 0.08);
   color: #174A7E;
@@ -4371,18 +4371,15 @@ main.body {
 }
 
 .daftar-head-icon {
-  width: 33px;
-  height: 33px;
-
-  flex: 0 0 29px;
-
+  width: 30px;
+  height: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
 
   box-sizing: border-box;
 
-  border: 1px solid var(--terrain-ui-line, #E1EAF1);
+  border: 1px solid rgb(51 47 176 / 35%);
   border-radius: 7px;
 
   background: #F3F8FC;
@@ -4392,7 +4389,6 @@ main.body {
 
 .daftar-head-icon svg {
   display: block;
-
   width: 15px;
   height: 15px;
 }
@@ -5926,8 +5922,8 @@ main.body {
 
 /* Icon */
 .panel-kepemilikan .panel-title-icon {
-  width: 42px;
-  height: 42px;
+  width: 30px;
+  height: 30px;
   min-width: 42px;
   flex: 0 0 42px;
 
@@ -11440,7 +11436,7 @@ main.body {
   height: 30px;
   flex: 0 0 30px;
   border-radius: 8px;
-  border: 1px solid rgba(176, 47, 47, .35);
+  border: 1px solid rgb(51 47 176 / 35%);
   background: var(--terrain-ui-accent-soft);
   color: var(--terrain-ui-accent);
 }
