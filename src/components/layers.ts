@@ -31,7 +31,7 @@ export const LAYERS: DefLayer[] = [
   nama: 'Bidang tanah',
   sumber: 'bidang',
   tipe: 'fill',
-  warna: '#F6CF03',
+  warna: '#8df2ff',
   opasitas: 0.50,
   bawaan: true,
   grup: 'Bidang Tanah'
