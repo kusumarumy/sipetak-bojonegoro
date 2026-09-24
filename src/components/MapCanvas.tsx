@@ -10,7 +10,6 @@ import { useApp, type Basemap } from '@/store/useApp';
 
 import {
   LAYERS,
-  KONTUR,
   DTM
 } from './layers';
 
@@ -21,11 +20,6 @@ import {
 const pmtiles = new Protocol();
 let protokolTerpasang = false;
 
-const siap = (url?: string) =>
-  !!url &&
-  !url.includes('contoh.id') &&
-  (url.startsWith('http') ||
-    url.startsWith('/'));
 class AppScaleControl extends maplibregl.ScaleControl {
   private element: HTMLElement | null = null;
   onAdd(map: MLMap) {
@@ -36,10 +30,6 @@ class AppScaleControl extends maplibregl.ScaleControl {
     return this.element;
   }
 }
-const ADA_KONTUR = {
-  lidar: siap(KONTUR.lidar.url),
-  foto: siap(KONTUR.foto.url)
-};
 
 const TRASEG_URL =
   'https://raw.githubusercontent.com/kusumarumy/sipetak-bojonegoro/main/data/wgs84/traseg.geojson';
@@ -867,58 +857,6 @@ map.addControl(
       'load',
       () => {
         for (
-          const [k, def]
-          of [
-            [
-              'lidar',
-              KONTUR.lidar
-            ],
-            [
-              'foto',
-              KONTUR.foto
-            ]
-          ] as const
-        ) {
-          if (
-            !ADA_KONTUR[k]
-          ) {
-            continue;
-          }
-          map.addLayer({
-            id: def.id,
-            type: 'line',
-            source:
-              k === 'lidar'
-                ? 'kontur_lidar'
-                : 'kontur_foto',
-            'source-layer':
-              'kontur',
-            minzoom: 13,
-            layout: {
-              visibility: 'none'
-            },
-            paint: {
-              'line-color':
-                def.warna,
-              'line-width': [
-                'case',
-                [
-                  '==',
-                  [
-                    'get',
-                    'mayor'
-                  ],
-                  1
-                ],
-                1.2,
-
-                0.55
-              ],
-              'line-opacity': 0.7
-            }
-          });
-        }
-        for (
           const L
           of LAYERS
         ) {
@@ -927,7 +865,18 @@ map.addControl(
           ) {
             continue;
           };
-
+      map.addSource(
+        L.id,
+        {
+          type: 'geojson',
+          data:
+            L.id === 'traseg'
+              ? TRASEG_URL
+              : L.id === 'kontur_kawasan'
+                ? VECTOR.konturKawasan
+                : `/api/layers/${L.sumber}`
+        }
+      );
           const vis =
             layerAktif[L.id]
               ? 'visible'
@@ -1815,25 +1764,6 @@ map.addControl(
             null
           );
 
-          for (
-            const def
-            of [
-              KONTUR.lidar,
-              KONTUR.foto
-            ]
-          ) {
-            if (
-              map.getLayer(
-                def.id
-              )
-            ) {
-              map.setLayoutProperty(
-                def.id,
-                'visibility',
-                'none'
-              );
-            }
-          }
 
           map.easeTo({
             pitch: 0,
@@ -1892,25 +1822,6 @@ map.setTerrain({
   source: src,
   exaggeration: 1
 });
-        for (
-          const def
-          of [
-            KONTUR.lidar,
-            KONTUR.foto
-          ]
-        ) {
-          if (
-            map.getLayer(
-              def.id
-            )
-          ) {
-            map.setLayoutProperty(
-              def.id,
-              'visibility',
-              'none'
-            );
-          }
-        }
 
         map.easeTo({
           pitch: 52,
