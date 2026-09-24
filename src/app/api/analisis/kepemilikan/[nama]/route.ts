@@ -27,8 +27,7 @@ export async function GET(
     }
 
     const bidang = await query<{
-      id: number;
-      bidang_id: string | null;
+      id: string;
       nib: string | null;
 
       nama_milik: string | null;
@@ -51,28 +50,28 @@ export async function GET(
       `
       SELECT
         id,
-        bidang_id,
         nib,
 
         nama_milik,
         nik_milik,
 
-        nama_sewa,
-        nik_sewa,
+        NULL::varchar AS nama_sewa,
+        NULL::varchar AS nik_sewa,
 
         kecamatan,
         kelurahan,
 
         luas_tnh,
-        luas_terdampak_m2,
-        luas_sisa_m2,
+
+        l_dampak AS luas_terdampak_m2,
+        l_sisa AS luas_sisa_m2,
 
         dampak_tnh,
         penggunaan,
         sta_tnh
       FROM public.bidang_tanah
       WHERE TRIM(nama_milik) = $1
-      ORDER BY bidang_id ASC
+      ORDER BY nib ASC
       `,
       [namaBersih]
     );
@@ -85,15 +84,13 @@ export async function GET(
 
     const totalLuasTerdampak = bidang.reduce(
       (total, b) =>
-        total +
-        (Number(b.luas_terdampak_m2) || 0),
+        total + (Number(b.luas_terdampak_m2) || 0),
       0
     );
 
     const totalLuasSisa = bidang.reduce(
       (total, b) =>
-        total +
-        (Number(b.luas_sisa_m2) || 0),
+        total + (Number(b.luas_sisa_m2) || 0),
       0
     );
 
