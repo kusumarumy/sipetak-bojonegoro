@@ -19,12 +19,12 @@ const GROUP_ICONS: Record<
 > = {
   'Rencana Trase': {
     path: 'M4 18L9 13L13 15L20 6',
-    color: '#E53935',
+    color: '#F9A825',
   },
 
   'Bidang Tanah': {
     path: 'M5 5H19V19H5Z M9 5V19 M15 5V19 M5 9H19 M5 15H19',
-    color: '#F9A825',
+    color: '#8df2ff',
   },
 
   'Hipsografi': {
