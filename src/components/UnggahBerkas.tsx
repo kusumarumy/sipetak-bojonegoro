@@ -349,6 +349,11 @@ function KartuFoto({
   const [previewLoading, setPreviewLoading] =
     useState(false);
 
+  const [zoom, setZoom] = useState(1);
+  const [pan, setPan] = useState({ x: 0, y: 0 });
+  const [dragging, setDragging] = useState(false);
+  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+
   const ada = !!lampiran;
 
   const dapatUnggah =
@@ -439,8 +444,56 @@ function KartuFoto({
 
   function bukaPreview() {
     if (src) {
+      setZoom(1);
+      setPan({ x: 0, y: 0 });
+      setDragging(false);
       setPreviewOpen(true);
     }
+  }
+
+  function tutupPreview() {
+    setPreviewOpen(false);
+    setZoom(1);
+    setPan({ x: 0, y: 0 });
+    setDragging(false);
+  }
+
+  function zoomKe(nilai: number) {
+    const next = Math.min(5, Math.max(0.5, nilai));
+    setZoom(next);
+    if (next <= 1) setPan({ x: 0, y: 0 });
+  }
+
+  function resetZoom() {
+    setZoom(1);
+    setPan({ x: 0, y: 0 });
+  }
+
+  function handleWheel(event: React.WheelEvent<HTMLDivElement>) {
+    event.preventDefault();
+    zoomKe(zoom + (event.deltaY < 0 ? 0.15 : -0.15));
+  }
+
+  function mulaiDrag(event: React.PointerEvent<HTMLDivElement>) {
+    if (zoom <= 1) return;
+    event.currentTarget.setPointerCapture(event.pointerId);
+    setDragging(true);
+    setDragStart({
+      x: event.clientX - pan.x,
+      y: event.clientY - pan.y,
+    });
+  }
+
+  function gerakDrag(event: React.PointerEvent<HTMLDivElement>) {
+    if (!dragging) return;
+    setPan({
+      x: event.clientX - dragStart.x,
+      y: event.clientY - dragStart.y,
+    });
+  }
+
+  function selesaiDrag() {
+    setDragging(false);
   }
 
   return (
@@ -704,9 +757,7 @@ function KartuFoto({
                 <button
                   type="button"
                   className="kb-preview-close"
-                  onClick={() =>
-                    setPreviewOpen(false)
-                  }
+                  onClick={tutupPreview}
                   aria-label="Tutup preview"
                 >
                   ×
@@ -714,17 +765,132 @@ function KartuFoto({
 
               </div>
 
-              <div className="kb-preview-body">
-
+              <div
+                className="kb-preview-body"
+                onWheel={handleWheel}
+                onPointerDown={mulaiDrag}
+                onPointerMove={gerakDrag}
+                onPointerUp={selesaiDrag}
+                onPointerCancel={selesaiDrag}
+                onDoubleClick={resetZoom}
+                style={{
+                  cursor:
+                    zoom > 1
+                      ? dragging
+                        ? "grabbing"
+                        : "grab"
+                      : "default",
+                  overflow: "hidden",
+                  touchAction: "none",
+                }}
+              >
                 <img
                   src={src}
-                  alt={
-                    KATEGORI_LABEL[
-                      kategori
-                    ]
-                  }
+                  alt={KATEGORI_LABEL[kategori]}
+                  draggable={false}
+                  style={{
+                    transform:
+                      `translate(${pan.x}px, ${pan.y}px) scale(${zoom})`,
+                    transformOrigin: "center center",
+                    transition: dragging
+                      ? "none"
+                      : "transform 120ms ease-out",
+                    maxWidth: "none",
+                    userSelect: "none",
+                    pointerEvents: "none",
+                  }}
                 />
 
+                <div
+                  style={{
+                    position: "absolute",
+                    right: "14px",
+                    bottom: "14px",
+                    display: "flex",
+                    gap: "6px",
+                    padding: "6px",
+                    borderRadius: "10px",
+                    background: "rgba(10,14,20,.82)",
+                    border: "1px solid rgba(255,255,255,.12)",
+                    zIndex: 5,
+                  }}
+                  onPointerDown={(e) => e.stopPropagation()}
+                  onWheel={(e) => e.stopPropagation()}
+                >
+                  <button
+                    type="button"
+                    onClick={() => zoomKe(zoom - 0.25)}
+                    disabled={zoom <= 0.5}
+                    title="Zoom out"
+                    style={{
+                      width: "34px",
+                      height: "34px",
+                      border: 0,
+                      borderRadius: "7px",
+                      background: "rgba(255,255,255,.12)",
+                      color: "#fff",
+                      fontSize: "20px",
+                      cursor: zoom <= 0.5 ? "not-allowed" : "pointer",
+                    }}
+                  >
+                    −
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={resetZoom}
+                    title="Reset zoom"
+                    style={{
+                      minWidth: "58px",
+                      height: "34px",
+                      border: 0,
+                      borderRadius: "7px",
+                      background: "rgba(255,255,255,.12)",
+                      color: "#fff",
+                      fontSize: "12px",
+                      fontWeight: 700,
+                      cursor: "pointer",
+                    }}
+                  >
+                    {Math.round(zoom * 100)}%
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => zoomKe(zoom + 0.25)}
+                    disabled={zoom >= 5}
+                    title="Zoom in"
+                    style={{
+                      width: "34px",
+                      height: "34px",
+                      border: 0,
+                      borderRadius: "7px",
+                      background: "rgba(255,255,255,.12)",
+                      color: "#fff",
+                      fontSize: "20px",
+                      cursor: zoom >= 5 ? "not-allowed" : "pointer",
+                    }}
+                  >
+                    +
+                  </button>
+                </div>
+
+                <div
+                  style={{
+                    position: "absolute",
+                    left: "14px",
+                    bottom: "14px",
+                    padding: "6px 9px",
+                    borderRadius: "7px",
+                    background: "rgba(10,14,20,.68)",
+                    color: "rgba(255,255,255,.82)",
+                    fontSize: "11px",
+                    pointerEvents: "none",
+                    zIndex: 4,
+                  }}
+                >
+                  Scroll untuk zoom · drag untuk geser · double-click reset
+                </div>
               </div>
 
               <div className="kb-preview-footer">
