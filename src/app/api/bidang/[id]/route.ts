@@ -48,7 +48,17 @@ const tahunOpsional = z.preprocess(
     .optional()
 );
 
+function terisi(value: unknown): boolean {
+  if (value === null || value === undefined) {
+    return false;
+  }
 
+  if (typeof value === "string") {
+    return value.trim() !== "";
+  }
+
+  return true;
+}
 /* =========================================================
    GET DETAIL BIDANG
    GET /api/bidang/:id
@@ -548,8 +558,6 @@ const SkemaUbah = z.object({
   keterangan:
     z.string().max(1000).nullish(),
 
-  catatan_supervisor:
-    z.string().max(1000).nullish(),
 });
 
 
@@ -618,7 +626,6 @@ const FIELD_DB: Record<string, string> = {
   date_updt: "date_updt",
   keterangan: "keterangan",
 
-  catatan_supervisor: "cat_spv",
 };
 
 
@@ -748,6 +755,9 @@ export async function PATCH(
       }
     );
 
+    let statusAkhir: StatusBidang = row.status;
+    let lengkap = false;
+
     await transaksi(
       sesi.user.id,
       async (c) => {
@@ -800,10 +810,174 @@ export async function PATCH(
         );
 
         /*
-         * Audit log
+         * Ambil data terbaru setelah update.
+         * Data ini digunakan untuk menentukan
+         * apakah bidang sudah lengkap.
+         */
+        const hasilBaru =
+          await c.query<{
+            fid: number;
+            nama_milik: string | null;
+            nib: string | null;
+            luas_tnh: number | null;
+            luastertul: number | null;
+            luaspeta: number | null;
+            penggunaan: string | null;
+            jml_bgn: string | null;
+            status: StatusBidang;
+          }>(
+            `
+              SELECT
+                fid,
+                nama_milik,
+                nib,
+                luas_tnh,
+                luastertul,
+                luaspeta,
+                penggunaan,
+                jml_bgn,
+                status
+              FROM public.bidang_tanah
+              WHERE id = $1
+            `,
+            [id]
+          );
+
+        const baru =
+          hasilBaru.rows[0];
+
+        if (!baru) {
+          throw new Error(
+            "Data bidang tidak ditemukan setelah diperbarui"
+          );
+        }
+
+        /*
+         * Cek kelengkapan data untuk pendata.
          *
-         * bidang_id sekarang menggunakan FID,
-         * bukan ID alfanumerik bidang_tanah.
+         * Pendata tidak mengirim secara manual.
+         * Jika data pada status draft/revisi sudah
+         * lengkap, bidang otomatis masuk ke tahap
+         * menunggu verifikasi.
+         */
+        statusAkhir = baru.status;
+
+        if (
+          sesi.user.peran === "pendata" &&
+          (
+            baru.status === "draft" ||
+            baru.status === "revisi"
+          )
+        ) {
+          const dataUtamaLengkap =
+            terisi(baru.nama_milik) &&
+            terisi(baru.nib) &&
+            (
+              terisi(baru.luas_tnh) ||
+              terisi(baru.luastertul) ||
+              terisi(baru.luaspeta)
+            ) &&
+            terisi(baru.penggunaan) &&
+            terisi(baru.jml_bgn);
+
+          const hasilLampiran =
+            await c.query<{
+              kategori: string;
+            }>(
+              `
+                SELECT DISTINCT kategori
+                FROM public.lampiran
+                WHERE fid = $1
+              `,
+              [baru.fid]
+            );
+
+          const kategoriLampiran =
+            new Set(
+              hasilLampiran.rows.map(
+                (r) => r.kategori
+              )
+            );
+
+          const fotoLengkap =
+            kategoriLampiran.has(
+              "foto_bidang"
+            ) &&
+            kategoriLampiran.has(
+              "foto_pemilik_petugas"
+            );
+
+          lengkap =
+            dataUtamaLengkap &&
+            fotoLengkap;
+
+          if (lengkap) {
+            await c.query(
+              `
+                UPDATE public.bidang_tanah
+                SET
+                  status = 'terkirim',
+                  verif_at = NULL
+                WHERE id = $1
+              `,
+              [id]
+            );
+
+            statusAkhir = "terkirim";
+          }
+        }
+        /*
+         * Audit perubahan status otomatis.
+         */
+        if (
+          statusAkhir !== lama.status
+        ) {
+          await c.query(
+            `
+              INSERT INTO public.audit_log (
+                tabel,
+                record_id,
+                bidang_id,
+                aksi,
+                kolom,
+                nilai_lama,
+                nilai_baru,
+                pengguna_id,
+                nama_akun,
+                ip_address,
+                pada
+              )
+              VALUES (
+                $1,
+                $2,
+                $3,
+                $4,
+                $5,
+                $6,
+                $7,
+                $8,
+                $9,
+                $10,
+                NOW()
+              )
+            `,
+            [
+              "bidang_tanah",
+              id,
+              lama.fid,
+              "UPDATE",
+              "status",
+              lama.status,
+              statusAkhir,
+              sesi.user.id,
+              namaAkun,
+              ipAddress,
+            ]
+          );
+        }
+
+        /*
+         * Audit perubahan atribut.
          */
         for (
           const [
@@ -889,18 +1063,8 @@ export async function PATCH(
             `,
             [
               "bidang_tanah",
-
-              /*
-               * record_id tetap ID asli bidang
-               * karena ini identitas record.
-               */
               id,
-
-              /*
-               * bidang_id memakai FID.
-               */
               lama.fid,
-
               aksi,
               kolomApi,
               lamaText,
@@ -916,6 +1080,8 @@ export async function PATCH(
 
     return NextResponse.json({
       ok: true,
+      status: statusAkhir,
+      lengkap,
     });
 
   } catch (error) {
