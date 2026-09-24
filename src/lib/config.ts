@@ -1,10 +1,6 @@
 export const R2 =
   process.env.NEXT_PUBLIC_R2_BASE_URL ??
   "https://dppt-bojonegoro.ruli-andaru.workers.dev";
-export const VECTOR = {
-  konturKawasan: `${R2}/vector/kontur_kawasan.geojson`,
-  konturTrase: `${R2}/vector/kontur_trase.geojson`,
-} as const;
 
 export const MAP = {
   center: [111.879, -7.168] as [number, number],
@@ -20,18 +16,6 @@ export const TERRAIN_OPTIONS = {
     label: "DTM Rencana Trace",
     tiles: [
       `${R2}/dtm_trase/{z}/{x}/{y}.png`,
-    ],
-    encoding: "terrarium" as const,
-    minzoom: 10,
-    maxzoom: 18,
-    adjustable: false,
-  },
-
-  kawasan: {
-    id: "kawasan",
-    label: "DTM Kawasan",
-    tiles: [
-      `${R2}/dtm_kawasan/{z}/{x}/{y}.png`,
     ],
     encoding: "terrarium" as const,
     minzoom: 10,
