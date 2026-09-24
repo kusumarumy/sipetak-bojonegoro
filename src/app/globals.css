@@ -4061,6 +4061,25 @@ main.body {
   flex-direction: column;
   align-items: center;
 
+  background: #FFFFFF;
+
+  border-right: 1px solid #D9EAF2;
+
+  box-shadow:
+    6px 0 24px rgba(0, 90, 130, 0.08);
+}
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+
+  width: 72px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
   background: linear-gradient(
     180deg,
     #4CC7EA 0%,
