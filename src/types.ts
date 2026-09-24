@@ -229,10 +229,10 @@ export interface Bidang {
   geometry?: unknown;
   created_at?: string | null;
 
-  // Status aplikasi
-  status: StatusBidang;
-  catatan_supervisor: string | null;
-  diverifikasi_pada: string | null;
+// Status aplikasi
+status: StatusBidang;
+cat_spv?: string | null;
+verif_at?: string | null;
 
   // Relasi aplikasi
   pemilik: Pemilik[];
