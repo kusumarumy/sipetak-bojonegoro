@@ -4492,7 +4492,7 @@ main.body {
 .daftar-actions button {
   flex: 0 0 auto;
 
-  height: 22px;
+  height: 28px;
   min-height: 22px;
 
   box-sizing: border-box;
@@ -4540,8 +4540,8 @@ main.body {
 }
 
 .daftar-close {
-  width: 30px;
-  height: 30px;
+  width: 28px;
+  height: 28px;
 
   flex: 0 0 30px;
 
@@ -4557,9 +4557,9 @@ main.body {
   border: 0;
   border-radius: 7px;
 
-  background: #bf00002e;
+  background: #ffffff;
 
-  color: #6C8195;
+  color: #174A7E;
 
   cursor: pointer;
 }
@@ -5977,8 +5977,8 @@ main.body {
 
 /* Tombol close */
 .panel-kepemilikan .panel-close {
-  width: 38px;
-  height: 38px;
+  width: 28px;
+  height: 28px;
   min-width: 38px;
   flex: 0 0 38px;
 
@@ -5987,7 +5987,6 @@ main.body {
   justify-content: center;
 
   padding: 0;
-
   color: #35556F;
   background: #fff;
 
