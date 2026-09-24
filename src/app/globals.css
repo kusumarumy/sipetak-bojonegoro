@@ -488,145 +488,6 @@ main.body {
   bottom: auto !important;
   flex: 0 0 auto;
 }
-.sidebar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  width: 72px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background: #174A7E;
-  border-right: 1px solid #e1e6ed;
-  z-index: 900;
-}
-
-.sidebar-menu {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-top: 88px;
-}
-
-.sidebar-item {
-  position: relative;
-  width: 48px;
-  height: 48px;
-
-  margin-bottom: 8px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  padding: 0;
-
-  border: 1px solid #e2e7ee;
-  border-radius: 8px;
-
-  background: #ffffff;
-
-  color: #274a83;
-
-  cursor: pointer;
-
-  transition:
-    background .16s ease,
-    border-color .16s ease,
-    color .16s ease,
-    box-shadow .16s ease,
-    transform .16s ease;
-}
-
-.sidebar-icon {
-  width: 22px;
-  height: 22px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.sidebar-icon svg {
-  width: 22px;
-  height: 22px;
-
-  fill: none;
-  stroke: currentColor;
-
-  stroke-width: 1.7;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.sidebar-item:hover {
-  background: #f4f7fb;
-
-  border-color: #cbd7e6;
-
-  color: #173f78;
-
-  box-shadow:
-    0 2px 8px rgba(24, 55, 90, .08);
-
-  transform: translateX(1px);
-}
-
-.sidebar-item.active {
-  background: #edf4fc;
-
-  border-color: #c2d3e7;
-
-  color: #164f91;
-
-  box-shadow:
-    0 2px 8px rgba(30, 70, 115, .08);
-}
-
-.sidebar-tooltip {
-  position: absolute;
-
-  left: calc(100% + 9px);
-  top: 50%;
-
-  transform:
-    translateY(-50%)
-    translateX(-4px);
-
-  padding: 7px 10px;
-
-  background: #183451;
-  color: #ffffff;
-
-  border-radius: 5px;
-
-  font-size: 10px;
-  font-weight: 600;
-
-  line-height: 1;
-
-  white-space: nowrap;
-
-  opacity: 0;
-  visibility: hidden;
-
-  pointer-events: none;
-
-  transition:
-    opacity .12s ease,
-    transform .12s ease;
-}
-
-.sidebar-item:hover .sidebar-tooltip {
-  opacity: 1;
-  visibility: visible;
-
-  transform:
-    translateY(-50%)
-    translateX(0);
-}
 
 .flyout-panel {
   position: fixed;
@@ -4188,6 +4049,305 @@ main.body {
   font-size: 11px;
 }
 
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+
+  width: 72px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  background: linear-gradient(
+    180deg,
+    #4CC7EA 0%,
+    #20AAD8 45%,
+    #0793CC 100%
+  );
+
+  border-right: 1px solid rgba(255, 255, 255, 0.30);
+
+  box-shadow:
+    6px 0 24px rgba(0, 130, 180, 0.15);
+
+  z-index: 900;
+}
+
+.sidebar-menu {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  padding-top: 88px;
+}
+
+.sidebar-item {
+  position: relative;
+
+  width: 48px;
+  height: 48px;
+
+  margin-bottom: 8px;
+  padding: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid rgba(255, 255, 255, 0.42);
+  border-radius: 8px;
+
+  background: rgba(255, 255, 255, 0.08);
+
+  color: #FFFFFF;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 2px 8px rgba(0, 93, 130, 0.08);
+
+  transition:
+    background 0.16s ease,
+    border-color 0.16s ease,
+    color 0.16s ease,
+    box-shadow 0.16s ease,
+    transform 0.16s ease;
+}
+
+.sidebar-icon {
+  width: 22px;
+  height: 22px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: currentColor;
+}
+
+.sidebar-icon svg {
+  width: 22px;
+  height: 22px;
+
+  fill: none;
+  stroke: currentColor;
+
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.sidebar-item svg,
+.sidebar-item i,
+.sidebar-item .icon {
+  color: currentColor;
+  stroke: currentColor;
+}
+
+.sidebar-item span,
+.sidebar-item label,
+.sidebar-item .label,
+.sidebar-item .menu-label {
+  color: inherit;
+}
+
+.sidebar-item:hover {
+  background: rgba(255, 255, 255, 0.20);
+
+  border-color: rgba(255, 255, 255, 0.72);
+
+  color: #FFFFFF;
+
+  box-shadow:
+    0 3px 10px rgba(0, 100, 145, 0.13);
+
+  transform: translateX(1px);
+}
+
+.sidebar-item.active,
+.sidebar-item.aktif {
+  background: #FFFFFF;
+
+  border-color: #FFFFFF;
+
+  color: #087EB8;
+
+  box-shadow:
+    0 3px 12px rgba(0, 100, 160, 0.12);
+}
+
+.sidebar-item.active span,
+.sidebar-item.active label,
+.sidebar-item.active .label,
+.sidebar-item.active .menu-label,
+.sidebar-item.aktif span,
+.sidebar-item.aktif label,
+.sidebar-item.aktif .label,
+.sidebar-item.aktif .menu-label {
+  color: #087EB8;
+  font-weight: 800;
+}
+
+.sidebar-item.active svg,
+.sidebar-item.active i,
+.sidebar-item.active .icon,
+.sidebar-item.aktif svg,
+.sidebar-item.aktif i,
+.sidebar-item.aktif .icon {
+  color: #087EB8;
+  stroke: #087EB8;
+}
+
+.sidebar-item.active::before,
+.sidebar-item.aktif::before {
+  content: "";
+
+  position: absolute;
+
+  left: -1px;
+  top: 8px;
+  bottom: 8px;
+
+  width: 3px;
+
+  border-radius: 0 3px 3px 0;
+
+  background: #A7E5F5;
+}
+
+.sidebar-item:focus-visible {
+  outline: 2px solid #FFFFFF;
+  outline-offset: 2px;
+}
+
+.sidebar-tooltip {
+  position: absolute;
+
+  left: calc(100% + 9px);
+  top: 50%;
+
+  transform:
+    translateY(-50%)
+    translateX(-4px);
+
+  padding: 7px 10px;
+
+  background: #183451;
+  color: #FFFFFF;
+
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 5px;
+
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1;
+
+  white-space: nowrap;
+
+  opacity: 0;
+  visibility: hidden;
+
+  pointer-events: none;
+
+  transition:
+    opacity 0.12s ease,
+    transform 0.12s ease;
+}
+
+.sidebar-item:hover .sidebar-tooltip {
+  opacity: 1;
+  visibility: visible;
+
+  transform:
+    translateY(-50%)
+    translateX(0);
+}
+
+html[data-theme="dark"] .sidebar {
+  background: linear-gradient(
+    180deg,
+    #123E5D 0%,
+    #0E557D 52%,
+    #0A4265 100%
+  );
+
+  border-right-color: rgba(255, 255, 255, 0.12);
+
+  box-shadow:
+    6px 0 24px rgba(0, 0, 0, 0.28);
+}
+
+html[data-theme="dark"] .sidebar-item {
+  background: #eff8ff;
+
+  border-color: rgba(255, 255, 255, 0.18);
+
+  color: #000000;
+
+  box-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+html[data-theme="dark"] .sidebar-item svg,
+html[data-theme="dark"] .sidebar-item i,
+html[data-theme="dark"] .sidebar-item .icon,
+html[data-theme="dark"] .sidebar-item .sidebar-icon {
+  color: #000000;
+  stroke: #000000;
+}
+
+html[data-theme="dark"] .sidebar-item:hover {
+  background: #dceffc;
+
+  border-color: rgba(255, 255, 255, 0.40);
+
+  color: #000000;
+}
+
+html[data-theme="dark"] .sidebar-item:hover svg,
+html[data-theme="dark"] .sidebar-item:hover i,
+html[data-theme="dark"] .sidebar-item:hover .icon,
+html[data-theme="dark"] .sidebar-item:hover .sidebar-icon {
+  color: #000000;
+  stroke: #000000;
+}
+
+html[data-theme="dark"] .sidebar-item.active,
+html[data-theme="dark"] .sidebar-item.aktif {
+  background: #FFFFFF;
+
+  border-color: #FFFFFF;
+
+  color: #087EB8;
+
+  box-shadow:
+    0 3px 8px rgba(0, 0, 0, 0.14);
+}
+
+html[data-theme="dark"] .sidebar-item.active svg,
+html[data-theme="dark"] .sidebar-item.active i,
+html[data-theme="dark"] .sidebar-item.active .icon,
+html[data-theme="dark"] .sidebar-item.active .sidebar-icon,
+html[data-theme="dark"] .sidebar-item.aktif svg,
+html[data-theme="dark"] .sidebar-item.aktif i,
+html[data-theme="dark"] .sidebar-item.aktif .icon,
+html[data-theme="dark"] .sidebar-item.aktif .sidebar-icon {
+  color: #087EB8;
+  stroke: #087EB8;
+}
+
+html[data-theme="dark"] .sidebar-tooltip {
+  background: #102B40;
+
+  border-color: #29485C;
+
+  color: #FFFFFF;
+}
 .daftar-overlay {
   position: absolute;
   inset: 0;
@@ -12795,18 +12955,6 @@ html[data-theme="dark"] .layer-loading-spinner {
   --pub-text: #17324D;
   --pub-muted: #6C8195;
   --pub-danger: #B54F4F;
-}
-
-
-/* =========================================================
-   FINAL WEBGIS TONE — FRESH WATER BLUE
-   Sidebar: bright aqua / cyan-blue
-   Overall UI: clean, bright, professional
-   ========================================================= */
-
-/* ---------- GLOBAL BRIGHT BLUE PALETTE ---------- */
-
-:root {
   --webgis-navy: #1769A8;
   --webgis-navy-dark: #125487;
   --webgis-navy-soft: #E8F4FC;
@@ -12826,51 +12974,7 @@ html[data-theme="dark"] .layer-loading-spinner {
   --webgis-muted: #6D879C;
 }
 
-.sidebar {
-  background: linear-gradient(
-    180deg,
-    #4CC7EA 0%,
-    #20AAD8 45%,
-    #0793CC 100%
-  );
 
-  border-color: rgba(255, 255, 255, 0.30);
-
-  box-shadow:
-    6px 0 24px rgba(0, 130, 180, 0.15);
-}
-
-.sidebar-item {
-  color: #FFFFFF;
-  background: transparent;
-}
-
-.sidebar-item:hover {
-  background: rgba(255, 255, 255, 0.20);
-  color: #FFFFFF;
-}
-
-.sidebar-item.active,
-.sidebar-item.aktif {
-  background: #FFFFFF;
-  color: #087EB8;
-
-  box-shadow:
-    0 3px 12px rgba(0, 100, 160, 0.12);
-}
-
-.sidebar-item.active::before,
-.sidebar-item.aktif::before {
-  background: #A7E5F5;
-}
-
-.sidebar-item svg {
-  color: currentColor;
-}
-
-.sidebar-item span {
-  color: inherit;
-}
 
 header.bar,
 .topbar,
@@ -12929,36 +13033,26 @@ header.bar h1,
 
 .theme-switch {
   position: relative;
-
   width: 52px;
   height: 30px;
-
   padding: 0;
   flex: none;
-
   border: 0;
   background: transparent;
-
   cursor: pointer;
 }
 
 .theme-switch-track {
   position: absolute;
   inset: 0;
-
   display: flex;
   align-items: center;
-
   border: 1px solid #d4e5f1;
   border-radius: 999px;
-
   background: #ffee00;
-
   box-shadow:
     inset 0 0 0 1px rgba(23, 105, 168, 0.04);
-
   filter: none;
-
   transition:
     background 0.2s ease,
     filter 0.2s ease;
@@ -12997,7 +13091,7 @@ header.bar h1,
 }
 
 .theme-switch.dark .theme-switch-track {
-  background: #ffffff;
+  background: #001749;
   filter: none;
 }
 
@@ -13218,616 +13312,6 @@ a:hover {
 }
 
 
-/* =========================================================
-   SIDEBAR FINAL — SOFT WATER BLUE
-   Lebih lembut, tetapi icon/menu tetap jelas
-   ========================================================= */
-
-.sidebar {
-  background:
-    linear-gradient(
-      180deg,
-      #54C5E3 0%,
-      #39B3D7 38%,
-      #249FC9 70%,
-      #198FBD 100%
-    );
-
-  border-right: 1px solid rgba(255, 255, 255, 0.42);
-
-  box-shadow:
-    5px 0 22px rgba(18, 126, 164, 0.12);
-}
-
-/* Semua tombol menu */
-.sidebar-item {
-  color: #FFFFFF;
-  background: rgba(255, 255, 255, 0.08);
-
-  border: 1px solid rgba(255, 255, 255, 0.58);
-
-  box-shadow:
-    0 2px 7px rgba(0, 93, 130, 0.08);
-
-  transition:
-    background .18s ease,
-    border-color .18s ease,
-    color .18s ease,
-    box-shadow .18s ease,
-    transform .18s ease;
-}
-
-/* Hover */
-.sidebar-item:hover {
-  background: rgba(255, 255, 255, 0.22);
-  border-color: rgba(255, 255, 255, 0.82);
-  color: #FFFFFF;
-
-  box-shadow:
-    0 4px 12px rgba(0, 92, 128, 0.13);
-
-  transform: translateY(-1px);
-}
-
-/* Menu aktif */
-.sidebar-item.active,
-.sidebar-item.aktif {
-  background: #FFFFFF;
-  border-color: #FFFFFF;
-  color: #087EAD;
-
-  box-shadow:
-    0 4px 14px rgba(0, 89, 126, 0.16);
-}
-
-/* Hover pada menu aktif */
-.sidebar-item.active:hover,
-.sidebar-item.aktif:hover {
-  background: #F4FCFF;
-  color: #0676A3;
-}
-
-/* Aksen menu aktif */
-.sidebar-item.active::before,
-.sidebar-item.aktif::before {
-  background: #8DD9EA;
-}
-
-/* Icon */
-.sidebar-item svg {
-  color: currentColor;
-  stroke-width: 2;
-}
-
-/* Jika icon menggunakan lucide/font */
-.sidebar-item i,
-.sidebar-item .icon {
-  color: currentColor;
-}
-
-/* Label menu */
-.sidebar-item span {
-  color: inherit;
-  font-weight: 600;
-}
-
-/* Focus keyboard */
-.sidebar-item:focus-visible {
-  outline: 2px solid #FFFFFF;
-  outline-offset: 2px;
-}
-
-/* Sedikit lebih soft pada divider/area kosong */
-.sidebar::after {
-  background: linear-gradient(
-    180deg,
-    rgba(255,255,255,0.08),
-    rgba(255,255,255,0)
-  );
-}
-
-
-
-/* =========================================================
-   FINAL SIDEBAR MENU — PUTIH & LEBIH TEGAS
-   ========================================================= */
-
-/* Semua menu sidebar */
-.sidebar-item {
-  color: #FFFFFF !important;
-
-  font-weight: 700 !important;
-  letter-spacing: .01em;
-
-  text-shadow:
-    0 1px 2px rgba(0, 70, 100, 0.12);
-
-  border-color: rgba(255, 255, 255, 0.62);
-}
-
-/* Label teks menu */
-.sidebar-item span,
-.sidebar-item label,
-.sidebar-item .label,
-.sidebar-item .menu-label {
-  color: #FFFFFF !important;
-  font-weight: 700 !important;
-}
-
-/* Icon menu */
-.sidebar-item svg,
-.sidebar-item i,
-.sidebar-item .icon {
-  color: #FFFFFF !important;
-  stroke: #FFFFFF !important;
-  opacity: 1 !important;
-  filter: drop-shadow(0 1px 1px rgba(0, 70, 100, 0.12));
-}
-
-/* Hover */
-.sidebar-item:hover {
-  color: #FFFFFF !important;
-  background: rgba(255, 255, 255, 0.24) !important;
-  border-color: rgba(255, 255, 255, 0.88) !important;
-}
-
-/* Menu aktif tetap putih dengan teks biru */
-.sidebar-item.active,
-.sidebar-item.aktif {
-  background: #FFFFFF !important;
-  color: #087EAD !important;
-  font-weight: 800 !important;
-  border-color: #FFFFFF !important;
-}
-
-/* Icon & label menu aktif */
-.sidebar-item.active span,
-.sidebar-item.active label,
-.sidebar-item.active .label,
-.sidebar-item.active .menu-label,
-.sidebar-item.aktif span,
-.sidebar-item.aktif label,
-.sidebar-item.aktif .label,
-.sidebar-item.aktif .menu-label {
-  color: #087EAD !important;
-  font-weight: 800 !important;
-}
-
-.sidebar-item.active svg,
-.sidebar-item.active i,
-.sidebar-item.active .icon,
-.sidebar-item.aktif svg,
-.sidebar-item.aktif i,
-.sidebar-item.aktif .icon {
-  color: #087EAD !important;
-  stroke: #087EAD !important;
-  opacity: 1 !important;
-}
-
-/* Aksen menu aktif */
-.sidebar-item.active::before,
-.sidebar-item.aktif::before {
-  background: #8DD9EA !important;
-}
-
-/* Focus keyboard */
-.sidebar-item:focus-visible {
-  outline: 2px solid #FFFFFF !important;
-  outline-offset: 2px;
-}
-
-
-/* =========================================================
-   FINAL SIDEBAR — PUTIH KEBIRUAN / CLEAN FRESH
-   Terinspirasi tone landing page:
-   atas sangat terang -> bawah sedikit lebih biru
-   ========================================================= */
-
-.sidebar {
-  background: linear-gradient(
-    180deg,
-    #F8FCFF 0%,
-    #F1F8FC 28%,
-    #E6F2F9 58%,
-    #D4E8F3 100%
-  ) !important;
-
-  border-right: 1px solid #C9DFEA !important;
-
-  box-shadow:
-    5px 0 22px rgba(58, 116, 145, 0.10) !important;
-}
-
-/* Menu sidebar */
-.sidebar-item {
-  color: #24536E !important;
-  background: rgba(255, 255, 255, 0.42) !important;
-
-  border: 1px solid rgba(174, 207, 222, 0.72) !important;
-
-  box-shadow:
-    0 2px 7px rgba(60, 112, 139, 0.06) !important;
-
-  text-shadow: none !important;
-}
-
-/* Label */
-.sidebar-item span,
-.sidebar-item label,
-.sidebar-item .label,
-.sidebar-item .menu-label {
-  color: #24536E !important;
-  font-weight: 700 !important;
-}
-
-/* Icon */
-.sidebar-item svg,
-.sidebar-item i,
-.sidebar-item .icon {
-  color: #24536E !important;
-  stroke: #24536E !important;
-  opacity: 1 !important;
-  filter: none !important;
-}
-
-/* Hover */
-.sidebar-item:hover {
-  background: rgba(255, 255, 255, 0.78) !important;
-  border-color: #A9CFDF !important;
-  color: #176A91 !important;
-
-  box-shadow:
-    0 4px 12px rgba(52, 111, 140, 0.10) !important;
-
-  transform: translateY(-1px);
-}
-
-.sidebar-item:hover span,
-.sidebar-item:hover label,
-.sidebar-item:hover .label,
-.sidebar-item:hover .menu-label {
-  color: #176A91 !important;
-}
-
-.sidebar-item:hover svg,
-.sidebar-item:hover i,
-.sidebar-item:hover .icon {
-  color: #176A91 !important;
-  stroke: #176A91 !important;
-}
-
-/* Menu aktif */
-.sidebar-item.active,
-.sidebar-item.aktif {
-  background: #FFFFFF !important;
-  border-color: #B8D8E6 !important;
-  color: #176A91 !important;
-
-  box-shadow:
-    0 4px 14px rgba(52, 111, 140, 0.13) !important;
-}
-
-.sidebar-item.active span,
-.sidebar-item.active label,
-.sidebar-item.active .label,
-.sidebar-item.active .menu-label,
-.sidebar-item.aktif span,
-.sidebar-item.aktif label,
-.sidebar-item.aktif .label,
-.sidebar-item.aktif .menu-label {
-  color: #176A91 !important;
-  font-weight: 800 !important;
-}
-
-.sidebar-item.active svg,
-.sidebar-item.active i,
-.sidebar-item.active .icon,
-.sidebar-item.aktif svg,
-.sidebar-item.aktif i,
-.sidebar-item.aktif .icon {
-  color: #176A91 !important;
-  stroke: #176A91 !important;
-}
-
-/* Aksen menu aktif */
-.sidebar-item.active::before,
-.sidebar-item.aktif::before {
-  background: #73B9D1 !important;
-}
-
-/* Focus */
-.sidebar-item:focus-visible {
-  outline: 2px solid #9CCDDD !important;
-  outline-offset: 2px;
-}
-
-/* Highlight lembut di sidebar */
-.sidebar::after {
-  background: linear-gradient(
-    180deg,
-    rgba(255,255,255,0.34),
-    rgba(255,255,255,0)
-  ) !important;
-  pointer-events: none;
-}
-
-
-/* =========================================================
-   SIDEBAR ICON — BIRU
-   Background tetap putih kebiruan / clean
-   ========================================================= */
-
-.sidebar-item svg,
-.sidebar-item i,
-.sidebar-item .icon {
-  color: #176A91 !important;
-  stroke: #176A91 !important;
-  fill: none !important;
-  opacity: 1 !important;
-  filter: none !important;
-}
-
-/* Teks menu tetap biru dan tegas */
-.sidebar-item,
-.sidebar-item span,
-.sidebar-item label,
-.sidebar-item .label,
-.sidebar-item .menu-label {
-  color: #24536E !important;
-  font-weight: 700 !important;
-}
-
-/* Hover */
-.sidebar-item:hover {
-  color: #0F638A !important;
-}
-
-.sidebar-item:hover svg,
-.sidebar-item:hover i,
-.sidebar-item:hover .icon {
-  color: #0F638A !important;
-  stroke: #0F638A !important;
-}
-
-/* Menu aktif */
-.sidebar-item.active,
-.sidebar-item.aktif {
-  color: #176A91 !important;
-  background: #FFFFFF !important;
-}
-
-.sidebar-item.active span,
-.sidebar-item.active label,
-.sidebar-item.active .label,
-.sidebar-item.active .menu-label,
-.sidebar-item.aktif span,
-.sidebar-item.aktif label,
-.sidebar-item.aktif .label,
-.sidebar-item.aktif .menu-label {
-  color: #176A91 !important;
-  font-weight: 800 !important;
-}
-
-.sidebar-item.active svg,
-.sidebar-item.active i,
-.sidebar-item.active .icon,
-.sidebar-item.aktif svg,
-.sidebar-item.aktif i,
-.sidebar-item.aktif .icon {
-  color: #176A91 !important;
-  stroke: #176A91 !important;
-}
-
-/* Aksen aktif tetap lebih terang */
-.sidebar-item.active::before,
-.sidebar-item.aktif::before {
-  background: #73B9D1 !important;
-}
-
-
-/* =========================================================
-   SIDEBAR MENU — KOTAK BIRU + ICON PUTIH
-   Background sidebar tetap soft putih kebiruan
-   ========================================================= */
-
-/* Kotak menu */
-.sidebar-item {
-  background: linear-gradient(
-    145deg,
-    #38A9D3 0%,
-    #178EBE 100%
-  ) !important;
-
-  border: 1px solid #72C5E2 !important;
-
-  color: #FFFFFF !important;
-
-  box-shadow:
-    0 3px 10px rgba(19, 112, 151, 0.14) !important;
-}
-
-/* Teks menu */
-.sidebar-item span,
-.sidebar-item label,
-.sidebar-item .label,
-.sidebar-item .menu-label {
-  color: #FFFFFF !important;
-  font-weight: 700 !important;
-}
-
-/* Icon putih */
-.sidebar-item svg,
-.sidebar-item i,
-.sidebar-item .icon {
-  color: #FFFFFF !important;
-  stroke: #FFFFFF !important;
-  fill: none !important;
-  opacity: 1 !important;
-  filter: none !important;
-}
-
-/* Hover — sedikit lebih terang */
-.sidebar-item:hover {
-  background: linear-gradient(
-    145deg,
-    #49B9DF 0%,
-    #229DC9 100%
-  ) !important;
-
-  border-color: #8BD5EA !important;
-  color: #FFFFFF !important;
-
-  box-shadow:
-    0 5px 14px rgba(19, 112, 151, 0.18) !important;
-
-  transform: translateY(-1px);
-}
-
-.sidebar-item:hover span,
-.sidebar-item:hover label,
-.sidebar-item:hover .label,
-.sidebar-item:hover .menu-label {
-  color: #FFFFFF !important;
-}
-
-.sidebar-item:hover svg,
-.sidebar-item:hover i,
-.sidebar-item:hover .icon {
-  color: #FFFFFF !important;
-  stroke: #FFFFFF !important;
-}
-
-/* Menu aktif — biru lebih tegas */
-.sidebar-item.active,
-.sidebar-item.aktif {
-  background: linear-gradient(
-    145deg,
-    #167FAF 0%,
-    #096C99 100%
-  ) !important;
-
-  border-color: #75C9E4 !important;
-  color: #FFFFFF !important;
-
-  box-shadow:
-    0 5px 15px rgba(8, 102, 145, 0.22) !important;
-}
-
-.sidebar-item.active span,
-.sidebar-item.active label,
-.sidebar-item.active .label,
-.sidebar-item.active .menu-label,
-.sidebar-item.aktif span,
-.sidebar-item.aktif label,
-.sidebar-item.aktif .label,
-.sidebar-item.aktif .menu-label {
-  color: #FFFFFF !important;
-  font-weight: 800 !important;
-}
-
-.sidebar-item.active svg,
-.sidebar-item.active i,
-.sidebar-item.active .icon,
-.sidebar-item.aktif svg,
-.sidebar-item.aktif i,
-.sidebar-item.aktif .icon {
-  color: #FFFFFF !important;
-  stroke: #FFFFFF !important;
-}
-
-/* Aksen aktif */
-.sidebar-item.active::before,
-.sidebar-item.aktif::before {
-  background: #B9EAF7 !important;
-}
-
-
-/* =========================================================
-   FINAL SIDEBAR BLUE — MATCH SIGN OUT
-   Warna utama mengikuti tombol SIGN OUT: #1769A8
-   ========================================================= */
-
-.sidebar-item {
-  background: #1769A8 !important;
-  border-color: #1769A8 !important;
-  color: #FFFFFF !important;
-
-  box-shadow:
-    0 3px 10px rgba(23, 105, 168, 0.14) !important;
-}
-
-.sidebar-item span,
-.sidebar-item label,
-.sidebar-item .label,
-.sidebar-item .menu-label {
-  color: #FFFFFF !important;
-}
-
-.sidebar-item svg,
-.sidebar-item i,
-.sidebar-item .icon {
-  color: #FFFFFF !important;
-  stroke: #FFFFFF !important;
-  fill: none !important;
-  opacity: 1 !important;
-}
-
-/* Hover: sedikit lebih terang */
-.sidebar-item:hover {
-  background: #2378B5 !important;
-  border-color: #2378B5 !important;
-  color: #FFFFFF !important;
-}
-
-.sidebar-item:hover span,
-.sidebar-item:hover label,
-.sidebar-item:hover .label,
-.sidebar-item:hover .menu-label,
-.sidebar-item:hover svg,
-.sidebar-item:hover i,
-.sidebar-item:hover .icon {
-  color: #FFFFFF !important;
-  stroke: #FFFFFF !important;
-}
-
-/* Aktif: sedikit lebih gelap */
-.sidebar-item.active,
-.sidebar-item.aktif {
-  background: #125487 !important;
-  border-color: #125487 !important;
-  color: #FFFFFF !important;
-
-  box-shadow:
-    0 5px 15px rgba(18, 84, 135, 0.22) !important;
-}
-
-.sidebar-item.active span,
-.sidebar-item.active label,
-.sidebar-item.active .label,
-.sidebar-item.active .menu-label,
-.sidebar-item.aktif span,
-.sidebar-item.aktif label,
-.sidebar-item.aktif .label,
-.sidebar-item.aktif .menu-label {
-  color: #FFFFFF !important;
-  font-weight: 800 !important;
-}
-
-.sidebar-item.active svg,
-.sidebar-item.active i,
-.sidebar-item.active .icon,
-.sidebar-item.aktif svg,
-.sidebar-item.aktif i,
-.sidebar-item.aktif .icon {
-  color: #FFFFFF !important;
-  stroke: #FFFFFF !important;
-}
-
-/* Aksen aktif */
-.sidebar-item.active::before,
-.sidebar-item.aktif::before {
-  background: #8BC8E7 !important;
-}
 
 
 /* =========================================================
@@ -13964,54 +13448,6 @@ a:hover {
   color: #96721B !important;
 }
 
-/* ---------- SIDEBAR: KEEP SIGN-OUT BLUE ---------- */
-
-.sidebar-item {
-  background: #1769A8 !important;
-  border-color: #1769A8 !important;
-  color: #FFFFFF !important;
-}
-
-.sidebar-item svg,
-.sidebar-item i,
-.sidebar-item .icon,
-.sidebar-item span,
-.sidebar-item label,
-.sidebar-item .label,
-.sidebar-item .menu-label {
-  color: #FFFFFF !important;
-  stroke: #FFFFFF !important;
-}
-
-.sidebar-item:hover {
-  background: #2378B5 !important;
-  border-color: #2378B5 !important;
-}
-
-.sidebar-item.active,
-.sidebar-item.aktif {
-  background: #125487 !important;
-  border-color: #125487 !important;
-  color: #FFFFFF !important;
-}
-
-.sidebar-item.active svg,
-.sidebar-item.active i,
-.sidebar-item.active .icon,
-.sidebar-item.active span,
-.sidebar-item.active label,
-.sidebar-item.active .label,
-.sidebar-item.active .menu-label,
-.sidebar-item.aktif svg,
-.sidebar-item.aktif i,
-.sidebar-item.aktif .icon,
-.sidebar-item.aktif span,
-.sidebar-item.aktif label,
-.sidebar-item.aktif .label,
-.sidebar-item.aktif .menu-label {
-  color: #FFFFFF !important;
-  stroke: #FFFFFF !important;
-}
 
 /* =========================================================
    DARK MODE — CLEAN BLUE, NO MAROON
@@ -14078,383 +13514,6 @@ html[data-theme="dark"] body {
   color: #E8F4FA !important;
 }
 
-/* Dark sidebar: keep blue identity */
-html[data-theme="dark"] .sidebar {
-  background: linear-gradient(
-    180deg,
-    #123E5D 0%,
-    #0E557D 52%,
-    #0A4265 100%
-  ) !important;
-
-  border-right-color: #28556D !important;
-}
-
-html[data-theme="dark"] .sidebar-item {
-  background: #1769A8 !important;
-  border-color: #2B86B8 !important;
-  color: #FFFFFF !important;
-}
-
-html[data-theme="dark"] .sidebar-item:hover {
-  background: #2185B9 !important;
-  border-color: #52A9D0 !important;
-}
-
-html[data-theme="dark"] .sidebar-item.active,
-html[data-theme="dark"] .sidebar-item.aktif {
-  background: #0E5E8C !important;
-  border-color: #4AA7CE !important;
-}
-
-
-/* Dark flyouts / panels */
-html[data-theme="dark"] .flyout-panel,
-html[data-theme="dark"] .search-flyout,
-html[data-theme="dark"] .layer-panel,
-html[data-theme="dark"] .control-panel,
-html[data-theme="dark"] .panel,
-html[data-theme="dark"] .basemap-flyout,
-html[data-theme="dark"] .statistik-flyout,
-html[data-theme="dark"] .daftar-flyout {
-  background: #102B40 !important;
-  border-color: #29485C !important;
-  color: #DCECF4 !important;
-  box-shadow: 0 16px 38px rgba(0,0,0,.38) !important;
-}
-
-/* Dark panel headings */
-html[data-theme="dark"] .flyout-title,
-html[data-theme="dark"] .search-title,
-html[data-theme="dark"] .layer-panel-title,
-html[data-theme="dark"] .basemap-panel-title,
-html[data-theme="dark"] .statistik-title,
-html[data-theme="dark"] .daftar-title strong {
-  color: #DDEFF7 !important;
-}
-
-html[data-theme="dark"] .flyout-subtitle,
-html[data-theme="dark"] .search-subtitle,
-html[data-theme="dark"] .layer-panel-subtitle,
-html[data-theme="dark"] .basemap-panel-subtitle,
-html[data-theme="dark"] .statistik-subtitle,
-html[data-theme="dark"] .daftar-subtitle {
-  color: #88A6B7 !important;
-}
-
-/* Dark layer panel */
-html[data-theme="dark"] .layer-group {
-  background: #132F44 !important;
-  border-color: #29485C !important;
-}
-
-html[data-theme="dark"] .layer-group-head {
-  color: #D9EAF2 !important;
-  border-bottom-color: #29485C !important;
-}
-
-html[data-theme="dark"] .layer-group-head:hover {
-  background: #173A52 !important;
-}
-
-html[data-theme="dark"] .layer-group-title {
-  color: #9DB7C6 !important;
-}
-
-html[data-theme="dark"] .group-chevron,
-html[data-theme="dark"] .group-icon {
-  color: #79BCD7 !important;
-}
-
-html[data-theme="dark"] .group-icon {
-  background: rgba(58,157,204,.12) !important;
-}
-
-html[data-theme="dark"] .layer-list {
-  background: #0E2638 !important;
-  border-top-color: #29485C !important;
-}
-
-html[data-theme="dark"] .layer-row {
-  color: #C9DCE6 !important;
-}
-
-html[data-theme="dark"] .layer-row:hover,
-html[data-theme="dark"] .layer-item:hover {
-  background: #173A52 !important;
-}
-
-html[data-theme="dark"] .layer-item.active,
-html[data-theme="dark"] .layer-item.active > .layer-row {
-  background: #1A4661 !important;
-}
-
-html[data-theme="dark"] .layer-name,
-html[data-theme="dark"] .layer-item.active .layer-name {
-  color: #E1EFF5 !important;
-}
-
-/* Dark checkbox */
-html[data-theme="dark"] .gis-check {
-  background: #173A52 !important;
-  border-color: #416277 !important;
-}
-
-html[data-theme="dark"]
-.layer-row input[type="checkbox"]:checked + .gis-check {
-  background: #1769A8 !important;
-  border-color: #4BA7CF !important;
-  color: #FFFFFF !important;
-}
-
-/* Dark filters */
-html[data-theme="dark"] .filter-card,
-html[data-theme="dark"] .filter-result-card,
-html[data-theme="dark"] .filter-active-box,
-html[data-theme="dark"] .filter-dropdown {
-  background: #132F44 !important;
-  border-color: #29485C !important;
-  color: #DCECF4 !important;
-}
-
-html[data-theme="dark"] .filter-select,
-html[data-theme="dark"] .filter-input,
-html[data-theme="dark"] .filter-multi-trigger {
-  background: #0E2638 !important;
-  border-color: #36566A !important;
-  color: #DCECF4 !important;
-}
-
-html[data-theme="dark"] .filter-select:focus,
-html[data-theme="dark"] .filter-input:focus {
-  border-color: #3A9DCC !important;
-  box-shadow: 0 0 0 3px rgba(58,157,204,.16) !important;
-}
-
-html[data-theme="dark"] .filter-apply {
-  background: #1769A8 !important;
-  border-color: #1769A8 !important;
-  color: #FFFFFF !important;
-}
-
-html[data-theme="dark"] .filter-apply:hover {
-  background: #2378B5 !important;
-}
-
-/* Dark basemap cards */
-html[data-theme="dark"] .basemap-card {
-  background: #132F44 !important;
-  border-color: #35576A !important;
-  color: #DCECF4 !important;
-}
-
-html[data-theme="dark"] .basemap-card:hover {
-  background: #173A52 !important;
-  border-color: #4A86A2 !important;
-}
-
-html[data-theme="dark"] .basemap-card.active {
-  background: #183F57 !important;
-  border-color: #3A9DCC !important;
-}
-
-html[data-theme="dark"] .basemap-card-label,
-html[data-theme="dark"] .basemap-card.active .basemap-card-label {
-  color: #DCECF4 !important;
-}
-
-html[data-theme="dark"] .basemap-card.active::after,
-html[data-theme="dark"] .basemap-check {
-  background: #1769A8 !important;
-  color: #FFFFFF !important;
-}
-
-/* Dark search */
-html[data-theme="dark"] .search-input-wrap input {
-  background: #0E2638 !important;
-  border-color: #36566A !important;
-  color: #E1EFF5 !important;
-}
-
-html[data-theme="dark"] .search-result-item:hover {
-  background: #173A52 !important;
-}
-
-html[data-theme="dark"] .search-result-main strong {
-  color: #DDEFF7 !important;
-}
-
-html[data-theme="dark"] .search-result-main span,
-html[data-theme="dark"] .search-result-location span {
-  color: #8FA9B8 !important;
-}
-
-/* Dark terrain */
-html[data-theme="dark"] .terrain-segment {
-  background: #132F44 !important;
-  border-color: #35576A !important;
-}
-
-html[data-theme="dark"] .terrain-segment button {
-  color: #A8BFCC !important;
-}
-
-html[data-theme="dark"] .terrain-segment button:hover {
-  color: #63B4D5 !important;
-}
-
-html[data-theme="dark"] .terrain-segment button.active {
-  background: #1769A8 !important;
-  color: #FFFFFF !important;
-}
-
-/* Dark statistics */
-html[data-theme="dark"] .stat-kpi,
-html[data-theme="dark"] .stat-card,
-html[data-theme="dark"] .stat-composition {
-  background: #132F44 !important;
-  border-color: #29485C !important;
-}
-
-html[data-theme="dark"] .stat-kpi-title,
-html[data-theme="dark"] .stat-card-title,
-html[data-theme="dark"] .stat-composition-title,
-html[data-theme="dark"] .stat-kpi-label,
-html[data-theme="dark"] .stat-card-label,
-html[data-theme="dark"] .stat-composition-label {
-  color: #8FA9B8 !important;
-}
-
-html[data-theme="dark"] .stat-kpi-value,
-html[data-theme="dark"] .stat-card-value,
-html[data-theme="dark"] .stat-composition-value {
-  color: #E4F2F8 !important;
-}
-
-/* Dark table */
-html[data-theme="dark"] .daftar-table-wrap {
-  background: #102B40 !important;
-}
-
-html[data-theme="dark"] .daftar-table th {
-  background: #173A52 !important;
-  color: #AFC6D2 !important;
-  border-color: #29485C !important;
-}
-
-html[data-theme="dark"] .daftar-table td {
-  color: #D5E5ED !important;
-  border-color: #29485C !important;
-}
-
-html[data-theme="dark"] .daftar-table tbody tr:hover {
-  background: #173A52 !important;
-}
-
-/* Dark inputs globally */
-html[data-theme="dark"] input,
-html[data-theme="dark"] select,
-html[data-theme="dark"] textarea {
-  background: #0E2638 !important;
-  border-color: #36566A !important;
-  color: #E1EFF5 !important;
-}
-
-html[data-theme="dark"] input::placeholder,
-html[data-theme="dark"] textarea::placeholder {
-  color: #6F8B9C !important;
-}
-
-/* Dark buttons */
-html[data-theme="dark"] button.primary,
-html[data-theme="dark"] .btn-primary,
-html[data-theme="dark"] .kb-primary {
-  background: #1769A8 !important;
-  border-color: #1769A8 !important;
-  color: #FFFFFF !important;
-}
-
-html[data-theme="dark"] button.primary:hover,
-html[data-theme="dark"] .btn-primary:hover,
-html[data-theme="dark"] .kb-primary:hover {
-  background: #2378B5 !important;
-}
-
-/* Dark Kartu Bidang */
-html[data-theme="dark"] .kartu.open.kb-modern {
-  background: #102B40 !important;
-  border-color: #29485C !important;
-  color: #DCECF4 !important;
-}
-
-html[data-theme="dark"] .kb-tabs {
-  background: #0E2638 !important;
-  border-bottom-color: #29485C !important;
-}
-
-html[data-theme="dark"] .kb-tab {
-  color: #8FA9B8 !important;
-}
-
-html[data-theme="dark"] .kb-tab:hover,
-html[data-theme="dark"] .kb-tab.active,
-html[data-theme="dark"] .kb-tab.is-active {
-  background: #173A52 !important;
-  color: #63B4D5 !important;
-}
-
-html[data-theme="dark"] .kb-tab.active::after,
-html[data-theme="dark"] .kb-tab.is-active::after {
-  background: #63B8A8 !important;
-}
-
-html[data-theme="dark"] .kb-scroll {
-  background: #102B40 !important;
-}
-
-/* Dark chips / badges */
-html[data-theme="dark"] .kb-badge,
-html[data-theme="dark"] .kb-chip {
-  background: #173A52 !important;
-  border-color: #365E73 !important;
-  color: #8ED0E8 !important;
-}
-
-html[data-theme="dark"] .kb-danger {
-  background: #3A2630 !important;
-  border-color: #6A4653 !important;
-  color: #E7A8B4 !important;
-}
-
-/* Dark links */
-html[data-theme="dark"] a {
-  color: #63B4D5 !important;
-}
-
-html[data-theme="dark"] a:hover {
-  color: #8ED0E8 !important;
-}
-
-/* Dark close buttons */
-html[data-theme="dark"] .flyout-close,
-html[data-theme="dark"] .filter-close,
-html[data-theme="dark"] .search-close,
-html[data-theme="dark"] .basemap-panel-close,
-html[data-theme="dark"] .statistik-close {
-  background: #173A52 !important;
-  border-color: #36566A !important;
-  color: #BFD5DF !important;
-}
-
-html[data-theme="dark"] .flyout-close:hover,
-html[data-theme="dark"] .filter-close:hover,
-html[data-theme="dark"] .search-close:hover,
-html[data-theme="dark"] .basemap-panel-close:hover,
-html[data-theme="dark"] .statistik-close:hover {
-  background: #1769A8 !important;
-  border-color: #1769A8 !important;
-  color: #FFFFFF !important;
-}
 
 
 /* =========================================================
