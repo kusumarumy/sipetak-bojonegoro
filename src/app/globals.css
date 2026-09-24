@@ -1777,6 +1777,7 @@ main.body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  background: #eff8ff;
 
   padding-top: 88px;
 }
@@ -1963,10 +1964,6 @@ main.body {
 }
 
 
-/* =========================================================
-   DARK MODE
-   ========================================================= */
-
 html[data-theme="dark"] .sidebar {
   background: linear-gradient(
     180deg,
@@ -2005,13 +2002,14 @@ html[data-theme="dark"] .sidebar-item.aktif {
 
   color: #087EB8;
 }
-
-html[data-theme="dark"] .sidebar-item.active svg,
-html[data-theme="dark"] .sidebar-item.active i,
-html[data-theme="dark"] .sidebar-item.active .icon,
-html[data-theme="dark"] .sidebar-item.aktif svg,
-html[data-theme="dark"] .sidebar-item.aktif i,
-html[data-theme="dark"] .sidebar-item.aktif .icon {
+html[data-theme="dark"] .theme-switch:hover .theme-switch-track {
+  background: #111111;
+  filter: none;
+}
+html[data-theme="dark"] .sidebar-item svg,
+html[data-theme="dark"] .sidebar-item i,
+html[data-theme="dark"] .sidebar-item .icon,
+html[data-theme="dark"] .sidebar-icon {
   color: #000000;
   stroke: #000000;
 }
@@ -13058,7 +13056,7 @@ header.bar h1,
 }
 
 .theme-switch:hover .theme-switch-track {
-  background: #ffffff;
+  background: #ffa200;
   filter: none;
 }
 
