@@ -1,16 +1,22 @@
-'use client';
+"use client";
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from "react";
 
 type AuditLog = {
   id?: number | string;
-  nib?: string;
+
+  // ID bidang_tanah
   record_id?: number | string;
-  bidang_id?: string;
+
+  // NIB bidang
+  nib?: string;
+
   aksi?: string;
   kolom?: string;
+
   nilai_lama?: any;
   nilai_baru?: any;
+
   nama_akun?: string;
   pengguna_id?: string;
   ip_address?: string;
@@ -22,7 +28,7 @@ type Props = {
 };
 
 const fmtTanggal = (value?: string) => {
-  if (!value) return '—';
+  if (!value) return "—";
 
   const d = new Date(value);
 
@@ -30,21 +36,21 @@ const fmtTanggal = (value?: string) => {
     return value;
   }
 
-  return d.toLocaleString('id-ID', {
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
+  return d.toLocaleString("id-ID", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
   });
 };
 
 const fmtNilai = (value: any) => {
-  if (value == null || value === '') {
-    return '—';
+  if (value == null || value === "") {
+    return "—";
   }
 
-  if (typeof value === 'object') {
+  if (typeof value === "object") {
     return JSON.stringify(value);
   }
 
@@ -52,10 +58,10 @@ const fmtNilai = (value: any) => {
 };
 
 const labelAksi: Record<string, string> = {
-  UPLOAD: 'UPLOAD',
-  INPUT: 'INPUT',
-  UPDATE: 'UPDATE',
-  DELETE: 'DELETE',
+  UPLOAD: "UPLOAD",
+  INPUT: "INPUT",
+  UPDATE: "UPDATE",
+  DELETE: "DELETE",
 };
 
 export default function RiwayatAksi({
@@ -64,24 +70,24 @@ export default function RiwayatAksi({
   const [data, setData] = useState<AuditLog[]>([]);
   const [memuat, setMemuat] = useState(true);
 
-  const [filter, setFilter] = useState('semua');
+  const [filter, setFilter] = useState("semua");
 
   const [sortKolom, setSortKolom] =
-    useState('pada');
+    useState("pada");
 
   const [sortArah, setSortArah] =
-    useState<'asc' | 'desc'>('desc');
+    useState<"asc" | "desc">("desc");
 
   const ubahSort = (kolom: string) => {
     if (sortKolom === kolom) {
       setSortArah(
-        sortArah === 'asc'
-          ? 'desc'
-          : 'asc'
+        sortArah === "asc"
+          ? "desc"
+          : "asc"
       );
     } else {
       setSortKolom(kolom);
-      setSortArah('asc');
+      setSortArah("asc");
     }
   };
 
@@ -91,9 +97,9 @@ export default function RiwayatAksi({
         setMemuat(true);
 
         const r = await fetch(
-          '/api/riwayat',
+          "/api/riwayat",
           {
-            cache: 'no-store',
+            cache: "no-store",
           }
         );
 
@@ -112,13 +118,15 @@ export default function RiwayatAksi({
             ? hasil
             : []
         );
+
       } catch (err) {
         console.error(
-          'Gagal mengambil riwayat aksi:',
+          "Gagal mengambil riwayat aksi:",
           err
         );
 
         setData([]);
+
       } finally {
         setMemuat(false);
       }
@@ -138,25 +146,25 @@ export default function RiwayatAksi({
       input: data.filter(
         (d) =>
           d.aksi?.toUpperCase() ===
-          'INPUT'
+          "INPUT"
       ).length,
 
       update: data.filter(
         (d) =>
           d.aksi?.toUpperCase() ===
-          'UPDATE'
+          "UPDATE"
       ).length,
 
       upload: data.filter(
         (d) =>
           d.aksi?.toUpperCase() ===
-          'UPLOAD'
+          "UPLOAD"
       ).length,
 
       delete: data.filter(
         (d) =>
           d.aksi?.toUpperCase() ===
-          'DELETE'
+          "DELETE"
       ).length,
     };
   }, [data]);
@@ -167,7 +175,7 @@ export default function RiwayatAksi({
 
   const dataTampil = useMemo(() => {
     const hasil =
-      filter === 'semua'
+      filter === "semua"
         ? [...data]
         : data.filter(
             (d) =>
@@ -176,11 +184,11 @@ export default function RiwayatAksi({
           );
 
     hasil.sort((a, b) => {
-      let nilaiA: string | number = '';
-      let nilaiB: string | number = '';
+      let nilaiA: string | number = "";
+      let nilaiB: string | number = "";
 
       switch (sortKolom) {
-        case 'pada':
+        case "pada":
           nilaiA = a.pada
             ? new Date(
                 a.pada
@@ -192,50 +200,48 @@ export default function RiwayatAksi({
                 b.pada
               ).getTime()
             : 0;
+
           break;
 
-        case 'nama_akun':
+        case "nama_akun":
           nilaiA =
-            a.nama_akun ?? '';
+            a.nama_akun ?? "";
 
           nilaiB =
-            b.nama_akun ?? '';
+            b.nama_akun ?? "";
+
           break;
 
-        case 'nib':
-          nilaiA = a.nib ?? '';
-          nilaiB = b.nib ?? '';
+        case "nib":
+          nilaiA = a.nib ?? "";
+          nilaiB = b.nib ?? "";
+
           break;
 
-        case 'record_id':
-          nilaiA = Number(
-            a.record_id ?? 0
+        case "id":
+          nilaiA = String(
+            a.record_id ?? ""
           );
 
-          nilaiB = Number(
-            b.record_id ?? 0
+          nilaiB = String(
+            b.record_id ?? ""
           );
+
           break;
 
-        case 'bidang_id':
-          nilaiA =
-            a.bidang_id ?? '';
+        case "aksi":
+          nilaiA = a.aksi ?? "";
+          nilaiB = b.aksi ?? "";
 
-          nilaiB =
-            b.bidang_id ?? '';
           break;
 
-        case 'aksi':
-          nilaiA = a.aksi ?? '';
-          nilaiB = b.aksi ?? '';
+        case "kolom":
+          nilaiA = a.kolom ?? "";
+          nilaiB = b.kolom ?? "";
+
           break;
 
-        case 'kolom':
-          nilaiA = a.kolom ?? '';
-          nilaiB = b.kolom ?? '';
-          break;
-
-        case 'nilai_lama':
+        case "nilai_lama":
           nilaiA = fmtNilai(
             a.nilai_lama
           );
@@ -243,9 +249,10 @@ export default function RiwayatAksi({
           nilaiB = fmtNilai(
             b.nilai_lama
           );
+
           break;
 
-        case 'nilai_baru':
+        case "nilai_baru":
           nilaiA = fmtNilai(
             a.nilai_baru
           );
@@ -253,16 +260,15 @@ export default function RiwayatAksi({
           nilaiB = fmtNilai(
             b.nilai_baru
           );
+
           break;
       }
 
       let hasilSort = 0;
 
       if (
-        typeof nilaiA ===
-          'number' &&
-        typeof nilaiB ===
-          'number'
+        typeof nilaiA === "number" &&
+        typeof nilaiB === "number"
       ) {
         hasilSort =
           nilaiA - nilaiB;
@@ -271,14 +277,14 @@ export default function RiwayatAksi({
           nilaiA
         ).localeCompare(
           String(nilaiB),
-          'id-ID',
+          "id-ID",
           {
             numeric: true,
           }
         );
       }
 
-      return sortArah === 'asc'
+      return sortArah === "asc"
         ? hasilSort
         : -hasilSort;
     });
@@ -299,12 +305,12 @@ export default function RiwayatAksi({
     kolom: string
   ) => {
     if (sortKolom !== kolom) {
-      return '↕';
+      return "↕";
     }
 
-    return sortArah === 'asc'
-      ? '↑'
-      : '↓';
+    return sortArah === "asc"
+      ? "↑"
+      : "↓";
   };
 
   return (
@@ -312,186 +318,194 @@ export default function RiwayatAksi({
 
       <section className="daftar-bidang">
 
-<div className="daftar-head">
+        <div className="daftar-head">
 
-  <div className="daftar-head-row">
+          <div className="daftar-head-row">
 
-    <div className="daftar-head-top">
+            <div className="daftar-head-top">
 
-      <div className="daftar-head-main">
+              <div className="daftar-head-main">
 
-        <div className="daftar-head-icon">
-          <svg
-            viewBox="0 0 24 24"
-            aria-hidden="true"
-          >
-            <path
-              d="M12 7v5l3 2"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.7"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
+                <div className="daftar-head-icon">
+                  <svg
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M12 7v5l3 2"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.7"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
 
-            <path
-              d="M20 12a8 8 0 1 1-2.34-5.66"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.7"
-              strokeLinecap="round"
-            />
+                    <path
+                      d="M20 12a8 8 0 1 1-2.34-5.66"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.7"
+                      strokeLinecap="round"
+                    />
 
-            <path
-              d="M17 4v4h4"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.7"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </div>
+                    <path
+                      d="M17 4v4h4"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.7"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </div>
 
-        <div className="daftar-title-wrap">
+                <div className="daftar-title-wrap">
 
-          <div className="daftar-title">
+                  <div className="daftar-title">
 
-            <strong>
-              RIWAYAT AKSI
-            </strong>
+                    <strong>
+                      RIWAYAT AKSI
+                    </strong>
 
-            <span className="daftar-count">
-              {memuat
-                ? 'Memuat…'
-                : `${dataTampil.length.toLocaleString(
-                    'id-ID'
-                  )} aktivitas`}
-            </span>
+                    <span className="daftar-count">
+                      {memuat
+                        ? "Memuat…"
+                        : `${dataTampil.length.toLocaleString(
+                            "id-ID"
+                          )} aktivitas`}
+                    </span>
+
+                  </div>
+
+                  <span className="daftar-subtitle">
+                    Audit trail aktivitas perubahan data
+                  </span>
+
+                </div>
+
+              </div>
+
+            </div>
+
+            {/* =================================================
+                ACTIONS
+                ================================================= */}
+
+            <div className="daftar-actions">
+
+              {/* CLOSE */}
+
+              <button
+                type="button"
+                className="daftar-close"
+                onClick={onClose}
+                aria-label="Tutup riwayat aksi"
+                title="Tutup"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M6 6l12 12M18 6L6 18"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                  />
+                </svg>
+              </button>
+
+              {/* SEMUA */}
+
+              <button
+                type="button"
+                className={
+                  filter === "semua"
+                    ? "active"
+                    : ""
+                }
+                onClick={() =>
+                  setFilter("semua")
+                }
+              >
+                SEMUA ({jumlah.semua})
+              </button>
+
+              {/* INPUT */}
+
+              <button
+                type="button"
+                className={
+                  filter === "INPUT"
+                    ? "active"
+                    : ""
+                }
+                onClick={() =>
+                  setFilter("INPUT")
+                }
+              >
+                INPUT ({jumlah.input})
+              </button>
+
+              {/* UPDATE */}
+
+              <button
+                type="button"
+                className={
+                  filter === "UPDATE"
+                    ? "active"
+                    : ""
+                }
+                onClick={() =>
+                  setFilter("UPDATE")
+                }
+              >
+                UPDATE ({jumlah.update})
+              </button>
+
+              {/* UPLOAD */}
+
+              <button
+                type="button"
+                className={
+                  filter === "UPLOAD"
+                    ? "active"
+                    : ""
+                }
+                onClick={() =>
+                  setFilter("UPLOAD")
+                }
+              >
+                UPLOAD ({jumlah.upload})
+              </button>
+
+              {/* DELETE */}
+
+              <button
+                type="button"
+                className={
+                  filter === "DELETE"
+                    ? "active"
+                    : ""
+                }
+                onClick={() =>
+                  setFilter("DELETE")
+                }
+              >
+                DELETE ({jumlah.delete})
+              </button>
+
+            </div>
 
           </div>
 
-          <span className="daftar-subtitle">
-            Audit trail aktivitas perubahan data
-          </span>
-
         </div>
 
-      </div>
+        {/* =================================================
+            TABLE
+            ================================================= */}
 
-    </div>
-
-
-    {/* =================================================
-        ACTIONS
-        URUTAN:
-        CLOSE → SEMUA → INPUT → UPDATE → UPLOAD → DELETE
-        ================================================= */}
-
-    <div className="daftar-actions">
-
-      {/* CLOSE */}
-      <button
-        type="button"
-        className="daftar-close"
-        onClick={onClose}
-        aria-label="Tutup riwayat aksi"
-        title="Tutup"
-      >
-        <svg
-          viewBox="0 0 24 24"
-          aria-hidden="true"
-        >
-          <path
-            d="M6 6l12 12M18 6L6 18"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-          />
-        </svg>
-      </button>
-
-      {/* SEMUA */}
-      <button
-        type="button"
-        className={
-          filter === 'semua'
-            ? 'active'
-            : ''
-        }
-        onClick={() =>
-          setFilter('semua')
-        }
-      >
-        SEMUA ({jumlah.semua})
-      </button>
-
-      {/* INPUT */}
-      <button
-        type="button"
-        className={
-          filter === 'INPUT'
-            ? 'active'
-            : ''
-        }
-        onClick={() =>
-          setFilter('INPUT')
-        }
-      >
-        INPUT ({jumlah.input})
-      </button>
-
-      {/* UPDATE */}
-      <button
-        type="button"
-        className={
-          filter === 'UPDATE'
-            ? 'active'
-            : ''
-        }
-        onClick={() =>
-          setFilter('UPDATE')
-        }
-      >
-        UPDATE ({jumlah.update})
-      </button>
-
-      {/* UPLOAD */}
-      <button
-        type="button"
-        className={
-          filter === 'UPLOAD'
-            ? 'active'
-            : ''
-        }
-        onClick={() =>
-          setFilter('UPLOAD')
-        }
-      >
-        UPLOAD ({jumlah.upload})
-      </button>
-
-      {/* DELETE */}
-      <button
-        type="button"
-        className={
-          filter === 'DELETE'
-            ? 'active'
-            : ''
-        }
-        onClick={() =>
-          setFilter('DELETE')
-        }
-      >
-        DELETE ({jumlah.delete})
-      </button>
-
-    </div>
-
-  </div>
-
-</div>
         <div className="daftar-table-wrap">
 
           <table className="daftar-table">
@@ -500,23 +514,27 @@ export default function RiwayatAksi({
 
               <tr>
 
+                {/* WAKTU */}
+
                 <th>
                   <button
                     type="button"
                     className="sort-header"
                     onClick={() =>
-                      ubahSort('pada')
+                      ubahSort("pada")
                     }
                   >
-                    <span>WAKTU</span>
+                    <span>
+                      WAKTU
+                    </span>
 
                     <span className="sort-icon">
-                      {iconSort(
-                        'pada'
-                      )}
+                      {iconSort("pada")}
                     </span>
                   </button>
                 </th>
+
+                {/* NAMA AKUN */}
 
                 <th>
                   <button
@@ -524,7 +542,7 @@ export default function RiwayatAksi({
                     className="sort-header"
                     onClick={() =>
                       ubahSort(
-                        'nama_akun'
+                        "nama_akun"
                       )
                     }
                   >
@@ -534,98 +552,80 @@ export default function RiwayatAksi({
 
                     <span className="sort-icon">
                       {iconSort(
-                        'nama_akun'
+                        "nama_akun"
                       )}
                     </span>
                   </button>
                 </th>
+
+                {/* NIB */}
 
                 <th>
                   <button
                     type="button"
                     className="sort-header"
                     onClick={() =>
-                      ubahSort('nib')
-                    }
-                  >
-                    <span>NIB</span>
-
-                    <span className="sort-icon">
-                      {iconSort(
-                        'nib'
-                      )}
-                    </span>
-                  </button>
-                </th>
-
-                <th>
-                  <button
-                    type="button"
-                    className="sort-header"
-                    onClick={() =>
-                      ubahSort(
-                        'record_id'
-                      )
+                      ubahSort("nib")
                     }
                   >
                     <span>
-                      RECORD ID
+                      NIB
                     </span>
 
                     <span className="sort-icon">
-                      {iconSort(
-                        'record_id'
-                      )}
+                      {iconSort("nib")}
                     </span>
                   </button>
                 </th>
+
+                {/* ID BIDANG */}
 
                 <th>
                   <button
                     type="button"
                     className="sort-header"
                     onClick={() =>
-                      ubahSort(
-                        'bidang_id'
-                      )
+                      ubahSort("id")
                     }
                   >
                     <span>
-                      BIDANG ID
+                      ID
                     </span>
 
                     <span className="sort-icon">
-                      {iconSort(
-                        'bidang_id'
-                      )}
+                      {iconSort("id")}
                     </span>
                   </button>
                 </th>
+
+                {/* AKSI */}
 
                 <th>
                   <button
                     type="button"
                     className="sort-header"
                     onClick={() =>
-                      ubahSort('aksi')
+                      ubahSort("aksi")
                     }
                   >
-                    <span>AKSI</span>
+                    <span>
+                      AKSI
+                    </span>
 
                     <span className="sort-icon">
-                      {iconSort(
-                        'aksi'
-                      )}
+                      {iconSort("aksi")}
                     </span>
                   </button>
                 </th>
+
+                {/* KOLOM */}
 
                 <th>
                   <button
                     type="button"
                     className="sort-header"
                     onClick={() =>
-                      ubahSort('kolom')
+                      ubahSort("kolom")
                     }
                   >
                     <span>
@@ -633,12 +633,12 @@ export default function RiwayatAksi({
                     </span>
 
                     <span className="sort-icon">
-                      {iconSort(
-                        'kolom'
-                      )}
+                      {iconSort("kolom")}
                     </span>
                   </button>
                 </th>
+
+                {/* NILAI LAMA */}
 
                 <th>
                   <button
@@ -646,7 +646,7 @@ export default function RiwayatAksi({
                     className="sort-header"
                     onClick={() =>
                       ubahSort(
-                        'nilai_lama'
+                        "nilai_lama"
                       )
                     }
                   >
@@ -656,11 +656,13 @@ export default function RiwayatAksi({
 
                     <span className="sort-icon">
                       {iconSort(
-                        'nilai_lama'
+                        "nilai_lama"
                       )}
                     </span>
                   </button>
                 </th>
+
+                {/* NILAI BARU */}
 
                 <th>
                   <button
@@ -668,7 +670,7 @@ export default function RiwayatAksi({
                     className="sort-header"
                     onClick={() =>
                       ubahSort(
-                        'nilai_baru'
+                        "nilai_baru"
                       )
                     }
                   >
@@ -678,7 +680,7 @@ export default function RiwayatAksi({
 
                     <span className="sort-icon">
                       {iconSort(
-                        'nilai_baru'
+                        "nilai_baru"
                       )}
                     </span>
                   </button>
@@ -694,7 +696,7 @@ export default function RiwayatAksi({
 
                 <tr>
                   <td
-                    colSpan={9}
+                    colSpan={8}
                     className="daftar-empty"
                   >
                     Memuat riwayat aksi...
@@ -705,7 +707,7 @@ export default function RiwayatAksi({
 
                 <tr>
                   <td
-                    colSpan={9}
+                    colSpan={8}
                     className="daftar-empty"
                   >
                     Tidak ada riwayat aksi.
@@ -723,38 +725,43 @@ export default function RiwayatAksi({
                       }
                     >
 
+                      {/* WAKTU */}
+
                       <td>
                         {fmtTanggal(
                           item.pada
                         )}
                       </td>
 
+                      {/* NAMA AKUN */}
+
                       <td>
                         {item.nama_akun ??
-                          '—'}
+                          "—"}
                       </td>
+
+                      {/* NIB */}
 
                       <td className="kode">
                         {item.nib ??
-                          '—'}
+                          "—"}
                       </td>
 
-                      <td className="angka">
-                        {item.record_id ??
-                          '—'}
-                      </td>
+                      {/* ID */}
 
                       <td className="kode">
-                        {item.bidang_id ??
-                          '—'}
+                        {item.record_id ??
+                          "—"}
                       </td>
+
+                      {/* AKSI */}
 
                       <td>
 
                         <span
                           className={`status-daftar audit-${
                             item.aksi?.toLowerCase() ??
-                            ''
+                            ""
                           }`}
                         >
 
@@ -763,26 +770,32 @@ export default function RiwayatAksi({
                           {
                             labelAksi[
                               item.aksi?.toUpperCase() ??
-                                ''
+                                ""
                             ] ??
                             item.aksi ??
-                            '—'
+                            "—"
                           }
 
                         </span>
 
                       </td>
 
+                      {/* KOLOM */}
+
                       <td>
                         {item.kolom ??
-                          '—'}
+                          "—"}
                       </td>
+
+                      {/* NILAI LAMA */}
 
                       <td>
                         {fmtNilai(
                           item.nilai_lama
                         )}
                       </td>
+
+                      {/* NILAI BARU */}
 
                       <td>
                         {fmtNilai(
