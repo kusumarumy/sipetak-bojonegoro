@@ -8,7 +8,10 @@ type AuditLog = {
   // ID bidang_tanah
   record_id?: number | string;
 
-  // NIB bidang
+  // FID bidang_tanah
+  fid?: number | string;
+
+  // NIB bidang_tanah
   nib?: string;
 
   aksi?: string;
@@ -70,7 +73,8 @@ export default function RiwayatAksi({
   const [data, setData] = useState<AuditLog[]>([]);
   const [memuat, setMemuat] = useState(true);
 
-  const [filter, setFilter] = useState("semua");
+  const [filter, setFilter] =
+    useState("semua");
 
   const [sortKolom, setSortKolom] =
     useState("pada");
@@ -118,7 +122,6 @@ export default function RiwayatAksi({
             ? hasil
             : []
         );
-
       } catch (err) {
         console.error(
           "Gagal mengambil riwayat aksi:",
@@ -126,7 +129,6 @@ export default function RiwayatAksi({
         );
 
         setData([]);
-
       } finally {
         setMemuat(false);
       }
@@ -578,7 +580,7 @@ export default function RiwayatAksi({
                   </button>
                 </th>
 
-                {/* ID BIDANG */}
+                {/* ID */}
 
                 <th>
                   <button
