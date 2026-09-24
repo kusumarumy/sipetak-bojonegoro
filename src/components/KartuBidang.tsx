@@ -810,7 +810,7 @@ await muatUlangKartu();
 <Field
   label="Diverifikasi pada"
   value={formatDate(
-    b.diverifikasi_pada
+    b.verif_at
   )}
 />
 
