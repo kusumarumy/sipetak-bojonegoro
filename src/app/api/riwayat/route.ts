@@ -17,12 +17,13 @@ export async function GET() {
         a.id,
 
         /*
-         * ID record bidang_tanah
+         * ID yang tersimpan di audit_log.
+         * Saat ini nilainya adalah FID bidang.
          */
         a.record_id,
 
         /*
-         * Data bidang
+         * Data bidang berdasarkan FID
          */
         b.fid,
         b.nib,
@@ -50,7 +51,7 @@ export async function GET() {
       FROM public.audit_log a
 
       LEFT JOIN public.bidang_tanah b
-        ON b.id = a.record_id::text
+        ON b.fid = a.record_id
 
       ORDER BY
         a.id DESC
