@@ -155,19 +155,6 @@ export const LAYERS: DefLayer[] = [
   warna: '#9ED45E',
   grup: 'Utilitas'
 },
-  /*
-  {
-  id: 'kontur_kawasan',
-  nama: 'Kontur Kawasan',
-  sumber: 'kontur_kawasan',
-  tipe: 'line',
-  warna: '#A67C52',
-  garis: true,
-  lebar: 1.2,
-  opasitas: 0.75,
-  grup: 'Hipsografi'
-},
-
 {
   id: 'kontur_trase',
   nama: 'Kontur Trase',
@@ -179,24 +166,8 @@ export const LAYERS: DefLayer[] = [
   opasitas: 0.85,
   grup: 'Hipsografi'
 },
-*/
 ];
 
-export const KONTUR = {
-  lidar: {
-    id: 'kontur_lidar',
-    nama: 'Kontur LiDAR',
-    warna: '#B4A7EE',
-    url: process.env.NEXT_PUBLIC_TILES_KONTUR_LIDAR
-  },
-
-  foto: {
-    id: 'kontur_foto',
-    nama: 'Kontur foto udara',
-    warna: '#7FCFD6',
-    url: process.env.NEXT_PUBLIC_TILES_KONTUR_FOTO
-  }
-};
 
 export const DTM = {
   trace:
@@ -264,5 +235,7 @@ export const LABEL_LAYER:
     'Rel kereta api',
 
   jalan:
-    'Jalan eksisting'
+    'Jalan eksisting',
+  kontur_traseg:
+    'Kontur Trase G'
 };
