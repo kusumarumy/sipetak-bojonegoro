@@ -1773,12 +1773,9 @@ main.body {
 
 .sidebar-menu {
   width: 100%;
-
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: #eff8ff;
-
   padding-top: 88px;
 }
 
