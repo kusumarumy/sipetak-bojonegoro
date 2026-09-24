@@ -12394,51 +12394,31 @@ a:hover {
 
 
 
-
 html[data-theme="dark"] {
   --chassis: #10385F;
   --chassis2: #174A7E;
   --chassis3: #245F91;
-
   --line: #263D4E;
   --line-soft: #1C2E3C;
-
   --text: #17324D;
   --dim: #8CA1B2;
   --faint: #607788;
-
   --accent: #174A7E;
   --accent2: #5E9F91;
-
   --mapbg: #10385F;
-
   --shadow: 0 10px 30px rgba(0, 0, 0, .38);
-
-  /* CARD */
-  --card-bg:
-    linear-gradient(
-      135deg,
-      rgba(34, 143, 148, .14),
-      rgba(14, 43, 54, .42)
-    );
-
+  --card-bg: linear-gradient(135deg, rgba(34, 143, 148, .14), rgba(14, 43, 54, .42));
   --card-line: rgba(61, 180, 180, .10);
   --card-highlight: rgba(255, 255, 255, .025);
-
   --card-title: #DCE9EC;
   --card-group: #87A2AD;
   --card-text: #17324D;
   --card-muted: #71919D;
-
-  /* TERRAIN */
   --terrain-bg: rgba(5, 23, 32, .42);
   --terrain-line: rgba(83, 155, 169, .28);
   --terrain-text: #607788;
-
   --terrain-active: #2FA9A8;
   --terrain-active-text: #FFFFFF;
-
-  /* TERRAIN UI */
   --terrain-ui-bg: #17324D;
   --terrain-ui-soft: #1D1518;
   --terrain-ui-line: #4B353A;
