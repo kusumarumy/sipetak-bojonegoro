@@ -13,10 +13,6 @@ import {
   DTM
 } from './layers';
 
-import {
-  VECTOR
-} from '@/lib/config';
-
 const pmtiles = new Protocol();
 let protokolTerpasang = false;
 
