@@ -2007,8 +2007,8 @@ html[data-theme="dark"] .sidebar-item svg,
 html[data-theme="dark"] .sidebar-item i,
 html[data-theme="dark"] .sidebar-item .icon,
 html[data-theme="dark"] .sidebar-icon {
-  color: #000000;
-  stroke: #000000;
+  color: #123E5D;
+  stroke: #123E5D;
 }
 
 html[data-theme="dark"] .sidebar-tooltip {
