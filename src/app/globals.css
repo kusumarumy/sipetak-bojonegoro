@@ -13440,4 +13440,325 @@ html[data-theme="dark"] .panel {
   box-shadow: var(--terrain-ui-shadow);
 }
 
+/* =========================================================
+   DARK BLUE MEDIUM — UI PANEL OVERRIDE
+   Tidak mengubah map, layout, ukuran, atau struktur komponen.
+   Hanya menaikkan tone panel dari hitam/maroon menjadi biru.
+   ========================================================= */
+
+html[data-theme="dark"] {
+  --dark-panel: #173F61;
+  --dark-panel-2: #1D4668;
+  --dark-panel-3: #245F91;
+  --dark-panel-hover: #2B638C;
+  --dark-panel-line: #3B6585;
+  --dark-panel-line-soft: rgba(255,255,255,.14);
+  --dark-panel-text: #DCE9EC;
+  --dark-panel-muted: #A7BDCB;
+  --dark-panel-faint: #8CA7B8;
+}
+
+html[data-theme="dark"] .flyout-panel,
+html[data-theme="dark"] .filter-flyout,
+html[data-theme="dark"] .search-flyout,
+html[data-theme="dark"] .basemap-flyout,
+html[data-theme="dark"] .statistik-flyout,
+html[data-theme="dark"] .daftar-flyout,
+html[data-theme="dark"] .layer-panel,
+html[data-theme="dark"] .control-panel,
+html[data-theme="dark"] .panel {
+  background: var(--dark-panel);
+  border-color: var(--dark-panel-line);
+  color: var(--dark-panel-text);
+  box-shadow: 0 10px 30px rgba(0,0,0,.30);
+}
+
+html[data-theme="dark"] .flyout-header,
+html[data-theme="dark"] .flyout-body,
+html[data-theme="dark"] .filter-head,
+html[data-theme="dark"] .filter-body,
+html[data-theme="dark"] .search-head,
+html[data-theme="dark"] .search-body,
+html[data-theme="dark"] .basemap-flyout-head,
+html[data-theme="dark"] .basemap-flyout-body,
+html[data-theme="dark"] .statistik-body,
+html[data-theme="dark"] .daftar-head,
+html[data-theme="dark"] .daftar-table-wrap {
+  background: var(--dark-panel);
+}
+
+html[data-theme="dark"] .flyout-header,
+html[data-theme="dark"] .filter-head,
+html[data-theme="dark"] .search-head,
+html[data-theme="dark"] .basemap-flyout-head,
+html[data-theme="dark"] .daftar-head {
+  border-bottom-color: var(--dark-panel-line);
+}
+
+html[data-theme="dark"] .layer-group,
+html[data-theme="dark"] .filter-card,
+html[data-theme="dark"] .filter-result-card,
+html[data-theme="dark"] .stat-kpi,
+html[data-theme="dark"] .stat-card,
+html[data-theme="dark"] .stat-composition,
+html[data-theme="dark"] .daftar-actions button,
+html[data-theme="dark"] .basemap-card,
+html[data-theme="dark"] .terrain-segment,
+html[data-theme="dark"] .style-segment {
+  background: var(--dark-panel-2);
+  border-color: var(--dark-panel-line);
+}
+
+html[data-theme="dark"] .layer-group-head:hover,
+html[data-theme="dark"] .layer-item:hover,
+html[data-theme="dark"] .layer-row:hover,
+html[data-theme="dark"] .filter-option:hover,
+html[data-theme="dark"] .daftar-actions button:hover,
+html[data-theme="dark"] .basemap-card:hover,
+html[data-theme="dark"] .terrain-segment button:hover {
+  background: var(--dark-panel-hover);
+}
+
+html[data-theme="dark"] .layer-list,
+html[data-theme="dark"] .layer-properties,
+html[data-theme="dark"] .filter-select,
+html[data-theme="dark"] .filter-input,
+html[data-theme="dark"] .filter-multi-trigger,
+html[data-theme="dark"] .filter-dropdown,
+html[data-theme="dark"] .filter-status-option,
+html[data-theme="dark"] .filter-reset,
+html[data-theme="dark"] .search-input-wrap input,
+html[data-theme="dark"] .search-result-item,
+html[data-theme="dark"] .basemap-card-preview,
+html[data-theme="dark"] .stat-footer,
+html[data-theme="dark"] .stat-chart-popup,
+html[data-theme="dark"] .daftar-table td,
+html[data-theme="dark"] .status-daftar {
+  background: var(--dark-panel-2);
+  border-color: var(--dark-panel-line);
+}
+
+html[data-theme="dark"] .layer-item.active,
+html[data-theme="dark"] .layer-item.active > .layer-row,
+html[data-theme="dark"] .filter-status-option.is-selected,
+html[data-theme="dark"] .filter-multi-trigger.has-value,
+html[data-theme="dark"] .filter-active-box,
+html[data-theme="dark"] .basemap-card.active {
+  background: var(--dark-panel-3);
+  border-color: #2FA9A8;
+}
+
+html[data-theme="dark"] .gis-check,
+html[data-theme="dark"] .filter-checkbox,
+html[data-theme="dark"] .style-segment,
+html[data-theme="dark"] .terrain-segment,
+html[data-theme="dark"] .basemap-card-icon {
+  background: rgba(255,255,255,.09);
+  border-color: var(--dark-panel-line);
+}
+
+html[data-theme="dark"] .style-segment button.active,
+html[data-theme="dark"] .terrain-segment button.active {
+  background: #174A7E;
+  color: #FFFFFF;
+}
+
+html[data-theme="dark"] .filter-apply,
+html[data-theme="dark"] .daftar-actions button.active {
+  background: #174A7E;
+  border-color: #174A7E;
+  color: #FFFFFF;
+}
+
+html[data-theme="dark"] .filter-apply:hover {
+  background: #245F91;
+  border-color: #245F91;
+}
+
+html[data-theme="dark"] .flyout-close,
+html[data-theme="dark"] .filter-close,
+html[data-theme="dark"] .search-close,
+html[data-theme="dark"] .basemap-panel-close,
+html[data-theme="dark"] .statistik-close,
+html[data-theme="dark"] .stat-chart-popup-close {
+  background: var(--dark-panel-2);
+  border-color: var(--dark-panel-line);
+  color: var(--dark-panel-muted);
+}
+
+html[data-theme="dark"] .flyout-close:hover,
+html[data-theme="dark"] .filter-close:hover,
+html[data-theme="dark"] .search-close:hover,
+html[data-theme="dark"] .basemap-panel-close:hover,
+html[data-theme="dark"] .statistik-close:hover,
+html[data-theme="dark"] .stat-chart-popup-close:hover {
+  background: var(--dark-panel-3);
+  border-color: #2FA9A8;
+  color: #FFFFFF;
+}
+
+html[data-theme="dark"] .filter-chip,
+html[data-theme="dark"] .filter-summary-chip,
+html[data-theme="dark"] .group-count {
+  background: rgba(47,169,168,.16);
+  color: #BFE4E1;
+  border-color: rgba(47,169,168,.28);
+}
+
+html[data-theme="dark"] .flyout-kicker,
+html[data-theme="dark"] .filter-icon,
+html[data-theme="dark"] .terrain-panel-icon,
+html[data-theme="dark"] .search-icon,
+html[data-theme="dark"] .basemap-panel-icon,
+html[data-theme="dark"] .statistik-icon,
+html[data-theme="dark"] .daftar-head-icon {
+  color: #B7D5E4;
+}
+
+html[data-theme="dark"] .flyout-title,
+html[data-theme="dark"] .filter-title,
+html[data-theme="dark"] .terrain-panel-title,
+html[data-theme="dark"] .search-title,
+html[data-theme="dark"] .basemap-panel-title,
+html[data-theme="dark"] .statistik-title,
+html[data-theme="dark"] .layer-panel-title {
+  color: #DCE9EC;
+}
+
+html[data-theme="dark"] .flyout-subtitle,
+html[data-theme="dark"] .filter-subtitle,
+html[data-theme="dark"] .terrain-panel-subtitle,
+html[data-theme="dark"] .search-subtitle,
+html[data-theme="dark"] .basemap-panel-subtitle,
+html[data-theme="dark"] .statistik-subtitle,
+html[data-theme="dark"] .layer-panel-subtitle,
+html[data-theme="dark"] .daftar-subtitle {
+  color: var(--dark-panel-muted);
+}
+
+html[data-theme="dark"] .layer-group-title,
+html[data-theme="dark"] .layer-name,
+html[data-theme="dark"] .filter-card-title,
+html[data-theme="dark"] .filter-option-name,
+html[data-theme="dark"] .search-result-main strong,
+html[data-theme="dark"] .basemap-card-label,
+html[data-theme="dark"] .stat-card-title,
+html[data-theme="dark"] .stat-small-title,
+html[data-theme="dark"] .daftar-table td {
+  color: var(--dark-panel-text);
+}
+
+html[data-theme="dark"] .property-label,
+html[data-theme="dark"] .filter-placeholder,
+html[data-theme="dark"] .filter-result-info span,
+html[data-theme="dark"] .search-result-main span,
+html[data-theme="dark"] .search-result-location span,
+html[data-theme="dark"] .stat-kpi-label,
+html[data-theme="dark"] .stat-card-label,
+html[data-theme="dark"] .stat-composition-label,
+html[data-theme="dark"] .stat-footer span,
+html[data-theme="dark"] .daftar-count,
+html[data-theme="dark"] .daftar-title span:last-child {
+  color: var(--dark-panel-faint);
+}
+
+html[data-theme="dark"] .search-result-item:hover {
+  background: var(--dark-panel-hover);
+  border-color: #2FA9A8;
+}
+
+html[data-theme="dark"] .basemap-card.active {
+  box-shadow: 0 0 0 1px rgba(47,169,168,.28), 0 4px 12px rgba(0,0,0,.22);
+}
+
+html[data-theme="dark"] .basemap-card-preview {
+  background: linear-gradient(135deg, #2A5575, #1D4668);
+}
+
+html[data-theme="dark"] .basemap-card-footer {
+  background: rgba(8,29,47,.22);
+  border-top-color: var(--dark-panel-line);
+}
+
+html[data-theme="dark"] .terrain-segment button {
+  color: var(--dark-panel-muted);
+}
+
+html[data-theme="dark"] .terrain-segment button.active {
+  background: #174A7E;
+  color: #FFFFFF;
+}
+
+html[data-theme="dark"] .stat-card,
+html[data-theme="dark"] .stat-composition,
+html[data-theme="dark"] .stat-kpi {
+  background: var(--dark-panel-2) !important;
+  border-color: var(--dark-panel-line) !important;
+}
+
+html[data-theme="dark"] .stat-card-title,
+html[data-theme="dark"] .stat-small-title,
+html[data-theme="dark"] .stat-donut-center strong,
+html[data-theme="dark"] .stat-kpi-item strong,
+html[data-theme="dark"] .stat-footer strong {
+  color: #DCE9EC !important;
+}
+
+html[data-theme="dark"] .stat-legend-name,
+html[data-theme="dark"] .stat-vchart-label,
+html[data-theme="dark"] .stat-progress-name,
+html[data-theme="dark"] .stat-footer span {
+  color: var(--dark-panel-muted) !important;
+}
+
+html[data-theme="dark"] .daftar-table th {
+  background: var(--dark-panel-2);
+  color: var(--dark-panel-text);
+  border-color: var(--dark-panel-line);
+}
+
+html[data-theme="dark"] .daftar-table tbody tr:hover,
+html[data-theme="dark"] .daftar-table tbody tr:hover td {
+  background: var(--dark-panel-hover);
+}
+
+html[data-theme="dark"] .gate {
+  background: #102B40;
+  color: var(--dark-panel-text);
+}
+
+html[data-theme="dark"] .gate-card {
+  background: var(--dark-panel);
+  border-color: var(--dark-panel-line);
+}
+
+html[data-theme="dark"] .gate-top {
+  border-bottom-color: var(--dark-panel-line);
+}
+
+html[data-theme="dark"] .gate-top h1 {
+  color: var(--dark-panel-text);
+}
+
+html[data-theme="dark"] .gate .field input {
+  background: var(--dark-panel-2);
+  color: var(--dark-panel-text);
+  border-color: var(--dark-panel-line);
+}
+
+html[data-theme="dark"] .layer-loading {
+  background: rgba(23,63,97,.96);
+  border-color: var(--dark-panel-line);
+}
+
+html[data-theme="dark"] .layer-loading-head,
+html[data-theme="dark"] .layer-loading-item {
+  color: var(--dark-panel-text);
+}
+
+html[data-theme="dark"] .layer-loading-spinner {
+  border-color: var(--dark-panel-line);
+  border-top-color: #2FA9A8;
+}
+
 
