@@ -151,8 +151,8 @@ export async function GET(
 
           status,
 
-          cat_spv AS catatan_supervisor,
-          verif_at AS diverifikasi_pada,
+          cat_spv,
+          verif_at,
 
           created_at
 
@@ -358,16 +358,9 @@ export async function GET(
 
       status: b.status,
 
-      catatan_supervisor:
-        b.catatan_supervisor,
+      cat_spv: b.cat_spv,
+      verif_at: b.verif_at,
 
-      diverifikasi_pada:
-        b.diverifikasi_pada,
-
-
-      /* ===================================================
-         LAMPIRAN
-         =================================================== */
 
       lampiran: hasilLampiran.map((l) => ({
         id: String(l.id),
