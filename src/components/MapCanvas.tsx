@@ -865,18 +865,16 @@ map.addControl(
           ) {
             continue;
           };
-      map.addSource(
-        L.id,
-        {
-          type: 'geojson',
-          data:
-            L.id === 'traseg'
-              ? TRASEG_URL
-              : L.id === 'kontur_kawasan'
-                ? VECTOR.konturKawasan
-                : `/api/layers/${L.sumber}`
-        }
-      );
+map.addSource(
+  L.id,
+  {
+    type: 'geojson',
+    data:
+      L.id === 'traseg'
+        ? TRASEG_URL
+        : `/api/layers/${L.sumber}`
+  }
+);
           const vis =
             layerAktif[L.id]
               ? 'visible'
