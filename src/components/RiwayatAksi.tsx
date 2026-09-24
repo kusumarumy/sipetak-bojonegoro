@@ -591,7 +591,7 @@ export default function RiwayatAksi({
                     }
                   >
                     <span>
-                      ID
+                      FID
                     </span>
 
                     <span className="sort-icon">
