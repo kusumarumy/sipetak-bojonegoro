@@ -234,83 +234,6 @@ header.bar {
   flex: none;
 }
 
-.theme-switch {
-  width: 52px;
-  height: 30px;
-
-  position: relative;
-
-  padding: 0;
-
-  border: 0;
-
-  background: transparent;
-
-  cursor: pointer;
-
-  flex: none;
-}
-
-.theme-switch-track {
-  position: absolute;
-
-  inset: 0;
-
-  display: flex;
-  align-items: center;
-
-  border-radius: 999px;
-
-  background: #ffee00;
-
-  box-shadow:
-    inset 0 0 0 1px rgba(0, 0, 0, .06);
-
-  transition:
-    background .2s ease;
-}
-
-.theme-switch-thumb {
-  position: absolute;
-
-  left: 3px;
-
-  width: 24px;
-  height: 24px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 50%;
-
-  background: #fff;
-
-  color: #f2a900;
-
-  font-size: 15px;
-  line-height: 1;
-
-  box-shadow:
-    0 2px 5px rgba(0, 0, 0, .18);
-
-  transition:
-    transform .2s ease,
-    color .2s ease;
-}
-
-.theme-switch.dark .theme-switch-track {
-  background: #001dff;
-}
-
-.theme-switch.dark .theme-switch-thumb {
-  transform: translateX(22px);
-  color: #008fff;
-}
-
-.theme-switch:hover .theme-switch-track {
-  filter: brightness(.96);
-}
 
 .head-user-profile {
   display: flex;
@@ -7749,64 +7672,6 @@ main.body {
   opacity: .8;
 }
 
-/* =========================================================
-   SWITCHER TEMA
-   ========================================================= */
-
-.theme-switcher {
-  position: fixed;
-
-  top: 28px;
-  right: 24px;
-
-  z-index: 1100;
-
-  display: flex;
-
-  border: 1px solid var(--line);
-
-  background: var(--chassis2);
-}
-
-.theme-switcher button {
-  height: 32px;
-
-  padding: 0 14px;
-
-  border: 0;
-
-  border-right: 1px solid var(--line);
-
-  background: transparent;
-
-  color: var(--faint);
-
-  font-family: var(--f-disp);
-
-  font-size: 10.5px;
-
-  font-weight: 600;
-
-  letter-spacing: .09em;
-
-  cursor: pointer;
-}
-
-.theme-switcher button:last-child {
-  border-right: 0;
-}
-
-.theme-switcher button:hover {
-  background: var(--chassis3);
-
-  color: var(--text);
-}
-
-.theme-switcher button.aktif {
-  background: var(--chassis3);
-
-  color: var(--accent);
-}
 
 /* =========================================================
    LOGIN CARD
@@ -12961,8 +12826,6 @@ html[data-theme="dark"] .layer-loading-spinner {
   --webgis-muted: #6D879C;
 }
 
-/* ---------- SIDEBAR / WATER BLUE ---------- */
-
 .sidebar {
   background: linear-gradient(
     180deg,
@@ -13009,8 +12872,6 @@ html[data-theme="dark"] .layer-loading-spinner {
   color: inherit;
 }
 
-/* ---------- HEADER ---------- */
-
 header.bar,
 .topbar,
 .app-header,
@@ -13031,8 +12892,6 @@ header.bar h1,
 .app-header strong {
   color: #1769A8;
 }
-
-/* ---------- USER PANEL ---------- */
 
 .head-user {
   background: #FFFFFF;
@@ -13056,27 +12915,6 @@ header.bar h1,
   color: #173F61;
 }
 
-/* ---------- THEME SWITCH ---------- */
-
-.theme-switch-track {
-  background: #F0C84B;
-}
-
-.theme-switch-thumb {
-  background: #FFFFFF;
-  color: #1769A8;
-}
-
-.theme-switch.dark .theme-switch-track {
-  background: #1769A8;
-}
-
-.theme-switch.dark .theme-switch-thumb {
-  color: #F0C84B;
-}
-
-/* ---------- SIGN OUT ---------- */
-
 .head-logout {
   background: #1769A8;
   border-color: #1769A8;
@@ -13089,7 +12927,131 @@ header.bar h1,
   color: #FFFFFF;
 }
 
-/* ---------- PANELS ---------- */
+.theme-switch {
+  position: relative;
+
+  width: 52px;
+  height: 30px;
+
+  padding: 0;
+  flex: none;
+
+  border: 0;
+  background: transparent;
+
+  cursor: pointer;
+}
+
+.theme-switch-track {
+  position: absolute;
+  inset: 0;
+
+  display: flex;
+  align-items: center;
+
+  border: 1px solid #d4e5f1;
+  border-radius: 999px;
+
+  background: #ffee00;
+
+  box-shadow:
+    inset 0 0 0 1px rgba(23, 105, 168, 0.04);
+
+  filter: none;
+
+  transition:
+    background 0.2s ease,
+    filter 0.2s ease;
+}
+
+.theme-switch-thumb {
+  position: absolute;
+  left: 3px;
+
+  width: 24px;
+  height: 24px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #ffffff;
+  color: #1769a8;
+
+  font-size: 15px;
+  line-height: 1;
+
+  box-shadow:
+    0 2px 5px rgba(23, 105, 168, 0.16);
+
+  transition:
+    transform 0.2s ease,
+    color 0.2s ease;
+}
+
+.theme-switch:hover .theme-switch-track {
+  background: #ffffff;
+  filter: none;
+}
+
+.theme-switch.dark .theme-switch-track {
+  background: #ffffff;
+  filter: none;
+}
+
+.theme-switch.dark .theme-switch-thumb {
+  transform: translateX(22px);
+  color: #1769a8;
+}
+
+.theme-switcher {
+  position: fixed;
+
+  top: 28px;
+  right: 24px;
+
+  z-index: 1100;
+
+  display: flex;
+
+  border: 1px solid var(--line);
+  background: var(--chassis2);
+}
+
+.theme-switcher button {
+  height: 32px;
+
+  padding: 0 14px;
+
+  border: 0;
+  border-right: 1px solid var(--line);
+
+  background: transparent;
+  color: var(--faint);
+
+  font-family: var(--f-disp);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+
+  cursor: pointer;
+}
+
+.theme-switcher button:last-child {
+  border-right: 0;
+}
+
+.theme-switcher button:hover {
+  background: var(--chassis3);
+  color: var(--text);
+}
+
+.theme-switcher button.aktif {
+  background: var(--chassis3);
+  color: var(--accent);
+}
 
 .flyout-panel,
 .search-flyout,
@@ -13364,44 +13326,6 @@ a:hover {
   );
 }
 
-
-/* =========================================================
-   FINAL FIX — THEME SWITCH PUTIH
-   Override warna kuning pada toggle tema
-   ========================================================= */
-
-.theme-switch .theme-switch-track {
-  background: #ffffff !important;
-  border: 1px solid #d4e5f1 !important;
-
-  box-shadow:
-    inset 0 0 0 1px rgba(23, 105, 168, 0.04) !important;
-
-  filter: none !important;
-}
-
-.theme-switch .theme-switch-thumb {
-  background: #ffffff !important;
-  color: #1769a8 !important;
-
-  box-shadow:
-    0 2px 5px rgba(23, 105, 168, 0.16) !important;
-}
-
-/* Hover tetap putih */
-.theme-switch:hover .theme-switch-track {
-  background: #ffffff !important;
-  filter: none !important;
-}
-
-/* Dark mode: track tetap putih sesuai permintaan */
-.theme-switch.dark .theme-switch-track {
-  background: #ffffff !important;
-}
-
-.theme-switch.dark .theme-switch-thumb {
-  color: #1769a8 !important;
-}
 
 
 /* =========================================================
