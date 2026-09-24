@@ -34,19 +34,12 @@ export async function GET(
 
   try {
     const file = LAYER_FILES[nama];
-
-    // =========================
-    // LAYER TIDAK DIKENAL
-    // =========================
     if (!file) {
       return new NextResponse('Layer tidak dikenal', {
         status: 404,
       });
     }
 
-    // =========================
-    // SEMUA LAYER DARI GITHUB
-    // =========================
     const url = `${GITHUB_RAW_BASE}/${file}`;
 
     const response = await fetch(url, {
