@@ -111,11 +111,11 @@ export async function POST(
                 END,
 
               verif_at =
-                CASE
-                  WHEN $2 = 'terverifikasi'
-                  THEN NOW()
-                  ELSE NULL
-                END
+  CASE
+    WHEN $2 = 'terverifikasi'
+    THEN NOW()::text
+    ELSE NULL
+  END
 
             WHERE id = $1
           `,
