@@ -3,15 +3,7 @@
 import { useState } from 'react';
 import { useApp } from '@/store/useApp';
 import { LAYERS } from './layers';
-import {
-  Route,
-  LandPlot,
-  Mountain,
-  Waves,
-  Waypoints,
-  Trees,
-  Cable,
-} from 'lucide-react';
+
 const GROUP_ORDER = [
   'Rencana Trase',
   'Bidang Tanah',
@@ -21,36 +13,45 @@ const GROUP_ORDER = [
   'Tutupan Lahan',
   'Utilitas',
 ];
-const GROUP_ICONS = {
+const GROUP_ICONS: Record<
+  string,
+  { path: string; color: string }
+> = {
   'Rencana Trase': {
-    icon: Route,
+    path: 'M4 18L9 13L13 15L20 6',
     color: '#E53935',
   },
+
   'Bidang Tanah': {
-    icon: LandPlot,
+    path: 'M5 5H19V19H5Z M9 5V19 M15 5V19 M5 9H19 M5 15H19',
     color: '#F9A825',
   },
+
   'Hipsografi': {
-    icon: Mountain,
+    path: 'M3 19L9 9L13 14L16 10L21 19 M5 17H19',
     color: '#795548',
   },
+
   'Jaringan Irigasi': {
-    icon: Waves,
+    path: 'M3 8C6 5 8 11 11 8C14 5 16 11 21 7 M3 14C6 11 8 17 11 14C14 11 16 17 21 13',
     color: '#1E88E5',
   },
+
   'Jaringan Transportasi': {
-    icon: Waypoints,
+    path: 'M4 6H20 M4 12H20 M4 18H20 M8 4L4 6L8 8 M16 10L20 12L16 14 M8 16L4 18L8 20',
     color: '#546E7A',
   },
+
   'Tutupan Lahan': {
-    icon: Trees,
+    path: 'M12 3L20 8L17 18L7 18L4 8Z M4 8L12 12L20 8 M12 12V21',
     color: '#43A047',
   },
+
   'Utilitas': {
-    icon: Cable,
+    path: 'M13 2L5 13H11L10 22L19 10H13Z',
     color: '#8E24AA',
   },
-} as const;
+};
 
 type PanelMode = 'terrain' | 'layer' | null;
 
@@ -307,27 +308,36 @@ const [grupTerbuka, setGrupTerbuka] =
   </svg>
 </span>
 
-<span className="group-icon">
-  {(() => {
-    const GroupIcon = GROUP_ICONS[
-      g as keyof typeof GROUP_ICONS
-    ];
-
-    if (!GroupIcon) return null;
-
-    const Icon = GroupIcon.icon;
-
-    return (
-      <Icon
-        size={17}
-        strokeWidth={1.8}
-        color={GroupIcon.color}
-        aria-hidden="true"
-      />
-    );
-  })()}
+<span
+  className="group-icon"
+  style={{
+    color:
+      GROUP_ICONS[g]?.color ?? 'currentColor',
+  }}
+>
+  {GROUP_ICONS[g] ? (
+    <svg
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+    >
+      {GROUP_ICONS[g].path
+        .split(' M')
+        .map((path, i) => (
+          <path
+            key={i}
+            d={(i === 0 ? path : `M${path}`)}
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        ))}
+    </svg>
+  ) : (
+    '•'
+  )}
 </span>
-
                         <span className="layer-group-title">
                           {g}
                         </span>
