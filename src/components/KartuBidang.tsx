@@ -248,22 +248,43 @@ function Completeness({
   bidang: any;
 }) {
   const checks = [
+    // 1. Nama pemilik
     Boolean(
       bidang?.nama_milik ||
         bidang?.pemilik?.[0]?.nama
     ),
+
+    // 2. NIB
     Boolean(bidang?.nib),
+
+    // 3. Salah satu data luas
     bidang?.luas_tnh != null ||
       bidang?.luastertul != null ||
       bidang?.luaspeta != null,
+
+    // 4. Penggunaan tanah
     Boolean(bidang?.penggunaan),
-    bidang?.jml_bgn != null,
+
+    // 5. Jumlah bangunan
+    bidang?.jml_bgn != null &&
+      bidang?.jml_bgn !== "",
+
+    // 6. Foto bidang
     Boolean(
       bidang?.lampiran?.some(
         (x: any) =>
           x.kategori === "foto_bidang"
       ) ||
         bidang?.foto_tnh
+    ),
+
+    // 7. Foto pemilik & petugas
+    Boolean(
+      bidang?.lampiran?.some(
+        (x: any) =>
+          x.kategori ===
+          "foto_pemilik_petugas"
+      )
     ),
   ];
 
@@ -323,9 +344,14 @@ export default function KartuBidang({
   const [draft, setDraft] =
     useState<Record<string, any>>({});
 
-  const [busy, setBusy] =
-    useState(false);
+const [busy, setBusy] =
+  useState(false);
 
+const [showRevisi, setShowRevisi] =
+  useState(false);
+
+const [catatanRevisi, setCatatanRevisi] =
+  useState("");
   const status: StatusBidang =
     b?.status ?? "draft";
 
@@ -365,13 +391,15 @@ export default function KartuBidang({
     }));
   };
 
-  useEffect(() => {
-    if (!b?.id) return;
+useEffect(() => {
+  if (!b?.id) return;
 
-    setTab("ringkas");
-    setEdit(false);
-    setDraft({});
-  }, [b?.id]);
+  setTab("ringkas");
+  setEdit(false);
+  setDraft({});
+  setShowRevisi(false);
+  setCatatanRevisi("");
+}, [b?.id]);
 
   const pemilik: Pemilik | null =
     useMemo(
@@ -395,152 +423,202 @@ export default function KartuBidang({
   const luasSisa =
     b?.luas_sisa_m2;
 
-  async function simpan() {
-    if (!b?.id) return;
+ async function simpan() {
+  if (!b?.id) return;
 
-    if (Object.keys(draft).length === 0) {
-      setEdit(false);
-      return;
-    }
-
-    setBusy(true);
-
-    try {
-      console.log(
-        "DATA YANG AKAN DISIMPAN:",
-        draft
-      );
-
-      const response = await fetch(
-        `/api/bidang/${b.id}`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type":
-              "application/json",
-          },
-          body: JSON.stringify(draft),
-        }
-      );
-
-      const contentType =
-        response.headers.get(
-          "content-type"
-        ) ?? "";
-
-      let hasil: any = null;
-
-      if (
-        contentType.includes(
-          "application/json"
-        )
-      ) {
-        hasil =
-          await response.json();
-      } else {
-        const text =
-          await response.text();
-
-        hasil = {
-          pesan: text,
-        };
-      }
-
-      console.log(
-        "RESPONSE SIMPAN:",
-        response.status,
-        hasil
-      );
-
-      if (!response.ok) {
-        throw new Error(
-          hasil?.error ??
-            hasil?.pesan ??
-            "Gagal menyimpan perubahan"
-        );
-      }
-
-      setEdit(false);
-      setDraft({});
-
-      await muatUlangKartu();
-
-      beriPesan(
-        "Perubahan berhasil disimpan"
-      );
-    } catch (error) {
-      console.error(
-        "ERROR SIMPAN BIDANG:",
-        error
-      );
-
-      beriPesan(
-        error instanceof Error
-          ? error.message
-          : "Gagal menyimpan perubahan"
-      );
-    } finally {
-      setBusy(false);
-    }
+  if (Object.keys(draft).length === 0) {
+    setEdit(false);
+    return;
   }
 
-  async function pindahStatus(
-    target:
-      | "terkirim"
-      | "terverifikasi"
-      | "revisi"
-  ) {
-    if (!b?.id) return;
+  setBusy(true);
 
-    setBusy(true);
+  try {
+    console.log(
+      "DATA YANG AKAN DISIMPAN:",
+      draft
+    );
 
-    try {
-      const response = await fetch(
-        `/api/bidang/${b.id}/status`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type":
-              "application/json",
-          },
-          body: JSON.stringify({
-            ke: target,
-          }),
-        }
-      );
+    const response = await fetch(
+      `/api/bidang/${b.id}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type":
+            "application/json",
+        },
+        body: JSON.stringify(draft),
+      }
+    );
 
+    const contentType =
+      response.headers.get(
+        "content-type"
+      ) ?? "";
+
+    let hasil: any = null;
+
+    if (
+      contentType.includes(
+        "application/json"
+      )
+    ) {
+      hasil =
+        await response.json();
+    } else {
       const text =
         await response.text();
 
-      if (!response.ok) {
-        throw new Error(
-          text ||
-            "Gagal mengubah status"
-        );
-      }
-
-      await muatUlangKartu();
-
-      beriPesan(
-        target === "terkirim"
-          ? "Bidang dikirim untuk verifikasi"
-          : target ===
-              "terverifikasi"
-            ? "Bidang berhasil diverifikasi"
-            : "Bidang dikembalikan untuk revisi"
-      );
-    } catch (error) {
-      console.error(error);
-
-      beriPesan(
-        error instanceof Error
-          ? error.message
-          : "Gagal mengubah status"
-      );
-    } finally {
-      setBusy(false);
+      hasil = {
+        pesan: text,
+      };
     }
+
+    console.log(
+      "RESPONSE SIMPAN:",
+      response.status,
+      hasil
+    );
+
+    if (!response.ok) {
+      throw new Error(
+        hasil?.error ??
+          hasil?.pesan ??
+          "Gagal menyimpan perubahan"
+      );
+    }
+
+    setEdit(false);
+    setDraft({});
+
+    await muatUlangKartu();
+
+    if (
+      hasil?.status === "terkirim"
+    ) {
+      beriPesan(
+        "Perubahan berhasil disimpan dan dikirim untuk verifikasi."
+      );
+    } else {
+      beriPesan(
+        "Perubahan berhasil disimpan."
+      );
+    }
+  } catch (error) {
+    console.error(
+      "ERROR SIMPAN BIDANG:",
+      error
+    );
+
+    beriPesan(
+      error instanceof Error
+        ? error.message
+        : "Gagal menyimpan perubahan"
+    );
+  } finally {
+    setBusy(false);
   }
+}
+
+async function pindahStatus(
+  target:
+    | "terkirim"
+    | "terverifikasi"
+    | "revisi"
+) {
+  if (!b?.id) return;
+
+  if (
+    target === "revisi" &&
+    !catatanRevisi.trim()
+  ) {
+    beriPesan(
+      "Tulis alasan revisi terlebih dahulu."
+    );
+    return;
+  }
+
+  setBusy(true);
+
+  try {
+    const response = await fetch(
+      `/api/bidang/${b.id}/status`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type":
+            "application/json",
+        },
+        body: JSON.stringify({
+          ke: target,
+          ...(target === "revisi"
+            ? {
+                catatan:
+                  catatanRevisi.trim(),
+              }
+            : {}),
+        }),
+      }
+    );
+
+    const contentType =
+      response.headers.get(
+        "content-type"
+      ) ?? "";
+
+    let hasil: any = null;
+
+    if (
+      contentType.includes(
+        "application/json"
+      )
+    ) {
+      hasil =
+        await response.json();
+    } else {
+      const text =
+        await response.text();
+
+      hasil = {
+        pesan: text,
+      };
+    }
+
+    if (!response.ok) {
+      throw new Error(
+        hasil?.pesan ??
+          hasil?.error ??
+          "Gagal mengubah status"
+      );
+    }
+
+setCatatanRevisi("");
+setShowRevisi(false);
+
+await muatUlangKartu();
+
+    beriPesan(
+      target === "terkirim"
+        ? "Bidang dikirim untuk verifikasi"
+        : target === "terverifikasi"
+          ? "Bidang berhasil diverifikasi"
+          : "Bidang dikembalikan untuk revisi"
+    );
+  } catch (error) {
+    console.error(
+      "ERROR UBAH STATUS:",
+      error
+    );
+
+    beriPesan(
+      error instanceof Error
+        ? error.message
+        : "Gagal mengubah status"
+    );
+  } finally {
+    setBusy(false);
+  }
+}
 
   const tabContent = useMemo(() => {
     if (!b) return null;
@@ -738,10 +816,11 @@ export default function KartuBidang({
 
   </div>
 
-{b.catatan_supervisor && ( <Field
-   label="Catatan supervisor"
-   value={b.catatan_supervisor}
- />
+{b.cat_spv && (
+  <Field
+    label="Catatan supervisor"
+    value={b.cat_spv}
+  />
 )}
 
 </Section>
@@ -1524,7 +1603,62 @@ export default function KartuBidang({
         {tabContent}
       </div>
 
-      <footer className="kb-footer">
+{bolehVerifikasi && showRevisi && (
+  <div className="kb-revisi-box">
+    <label htmlFor="catatan-revisi">
+      Catatan revisi
+    </label>
+
+    <textarea
+      id="catatan-revisi"
+      value={catatanRevisi}
+      onChange={(e) =>
+        setCatatanRevisi(e.target.value)
+      }
+      placeholder="Jelaskan data yang perlu diperbaiki..."
+      rows={3}
+      maxLength={1000}
+      disabled={busy}
+    />
+
+    <small>
+      Catatan wajib diisi jika bidang
+      dikembalikan untuk revisi.
+    </small>
+
+    <div className="kb-revisi-actions">
+      <button
+        type="button"
+        className="kb-secondary"
+        disabled={busy}
+        onClick={() => {
+          setShowRevisi(false);
+          setCatatanRevisi("");
+        }}
+      >
+        Batal
+      </button>
+
+      <button
+        type="button"
+        className="kb-danger"
+        disabled={
+          busy ||
+          !catatanRevisi.trim()
+        }
+        onClick={() =>
+          pindahStatus("revisi")
+        }
+      >
+        {busy
+          ? "Memproses…"
+          : "Kembalikan untuk revisi"}
+      </button>
+    </div>
+  </div>
+)}
+
+<footer className="kb-footer">
         {edit ? (
           <>
             <button
@@ -1584,18 +1718,17 @@ export default function KartuBidang({
 
             {bolehVerifikasi && (
               <>
-                <button
-                  type="button"
-                  className="kb-danger"
-                  disabled={busy}
-                  onClick={() =>
-                    pindahStatus(
-                      "revisi"
-                    )
-                  }
-                >
-                  Revisi
-                </button>
+<button
+  type="button"
+  className="kb-danger"
+  disabled={busy}
+  onClick={() => {
+    setCatatanRevisi("");
+    setShowRevisi(true);
+  }}
+>
+  Revisi
+</button>
 
                 <button
                   type="button"
