@@ -150,7 +150,7 @@ header.bar {
   font-size: 22px;
   line-height: 1;
   font-weight: 800;
-  color: #174A7E;
+  color: #003f80;
   white-space: nowrap;
 }
 
@@ -1961,60 +1961,7 @@ main.body {
 }
 
 
-html[data-theme="dark"] .sidebar {
-  background: linear-gradient(
-    180deg,
-    #123E5D 0%,
-    #0E557D 52%,
-    #0A4265 100%
-  );
 
-  border-right-color: rgba(255, 255, 255, 0.12);
-
-  box-shadow:
-    6px 0 24px rgba(0, 0, 0, 0.28);
-}
-
-html[data-theme="dark"] .sidebar-item {
-  background: #eff8ff !important;
-
-  border-color: rgba(255, 255, 255, 0.18);
-
-  color: #FFFFFF;
-}
-
-html[data-theme="dark"] .sidebar-item:hover {
-  background: rgba(255, 255, 255, 0.16);
-
-  border-color: rgba(255, 255, 255, 0.32);
-
-  color: #FFFFFF;
-}
-
-html[data-theme="dark"] .sidebar-item.active,
-html[data-theme="dark"] .sidebar-item.aktif {
-  background: #FFFFFF;
-
-  border-color: #FFFFFF;
-
-  color: #087EB8;
-}
-html[data-theme="dark"] .theme-switch:hover .theme-switch-track {
-  background: #111111;
-  filter: none;
-}
-html[data-theme="dark"] .sidebar-item svg,
-html[data-theme="dark"] .sidebar-item i,
-html[data-theme="dark"] .sidebar-item .icon,
-html[data-theme="dark"] .sidebar-icon {
-  color: #123E5D;
-  stroke: #123E5D;
-}
-
-html[data-theme="dark"] .sidebar-tooltip {
-  background: #102B40;
-  border-color: #29485C;
-}
 
 .filter-flyout {
   position: fixed;
@@ -11822,9 +11769,631 @@ html[data-theme="dark"] .sidebar-tooltip {
   }
 }
 
+:root {
+  --pub-blue: #174A7E;
+  --pub-blue-dark: #10385F;
+  --pub-blue-soft: #EAF2F9;
+  --pub-teal: #5E9F91;
+  --pub-green: #B7D8CC;
+  --pub-gold: #E7C982;
+  --pub-border: #D9E4EE;
+  --pub-text: #17324D;
+  --pub-muted: #6C8195;
+  --pub-danger: #B54F4F;
+  --webgis-navy: #1769A8;
+  --webgis-navy-dark: #125487;
+  --webgis-navy-soft: #E8F4FC;
+
+  --webgis-teal: #5BAE9D;
+  --webgis-teal-soft: #E8F6F2;
+
+  --webgis-gold: #DDB23D;
+  --webgis-gold-soft: #FFF7D9;
+
+  --webgis-bg: #F1F8FD;
+  --webgis-card: #FFFFFF;
+  --webgis-card-soft: #F7FBFE;
+
+  --webgis-line: #D4E5F1;
+  --webgis-text: #173F61;
+  --webgis-muted: #6D879C;
+}
+
+
+
+header.bar,
+.topbar,
+.app-header,
+.navbar {
+  background: linear-gradient(
+    135deg,
+    #FFFFFF 0%,
+    #F1F8FD 100%
+  );
+
+  border-color: #D4E5F1;
+  color: #173F61;
+}
+
+header.bar strong,
+header.bar h1,
+.topbar strong,
+.app-header strong {
+  color: #1769A8;
+}
+
+.head-user {
+  background: #FFFFFF;
+  border-color: #D4E5F1;
+
+  box-shadow:
+    0 8px 24px rgba(23, 105, 168, .10);
+}
+
+.head-user-avatar {
+  background: #E8F4FC;
+  color: #1769A8;
+  border-color: #CFE3F1;
+}
+
+.head-user-role {
+  color: #7B94A7;
+}
+
+.head-user-info strong {
+  color: #173F61;
+}
+
+.head-logout {
+  background: #1769A8;
+  border-color: #1769A8;
+  color: #FFFFFF;
+}
+
+.head-logout:hover {
+  background: #125487;
+  border-color: #125487;
+  color: #FFFFFF;
+}
+
+.theme-switch {
+  position: relative;
+  width: 52px;
+  height: 30px;
+  padding: 0;
+  flex: none;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.theme-switch-track {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  border: 1px solid #d4e5f1;
+  border-radius: 999px;
+  background: #ffee00;
+  box-shadow:
+    inset 0 0 0 1px rgba(23, 105, 168, 0.04);
+  filter: none;
+  transition:
+    background 0.2s ease,
+    filter 0.2s ease;
+}
+
+.theme-switch-thumb {
+  position: absolute;
+  left: 3px;
+
+  width: 24px;
+  height: 24px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #ffffff;
+  color: #1769a8;
+
+  font-size: 15px;
+  line-height: 1;
+
+  box-shadow:
+    0 2px 5px rgba(23, 105, 168, 0.16);
+
+  transition:
+    transform 0.2s ease,
+    color 0.2s ease;
+}
+
+.theme-switch:hover .theme-switch-track {
+  background: #ffa200;
+  filter: none;
+}
+
+.theme-switch.dark .theme-switch-track {
+  background: #001749;
+  filter: none;
+}
+
+.theme-switch.dark .theme-switch-thumb {
+  transform: translateX(22px);
+  color: #1769a8;
+}
+
+.theme-switcher {
+  position: fixed;
+
+  top: 28px;
+  right: 24px;
+
+  z-index: 1100;
+
+  display: flex;
+
+  border: 1px solid var(--line);
+  background: var(--chassis2);
+}
+
+.theme-switcher button {
+  height: 32px;
+
+  padding: 0 14px;
+
+  border: 0;
+  border-right: 1px solid var(--line);
+
+  background: transparent;
+  color: var(--faint);
+
+  font-family: var(--f-disp);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+
+  cursor: pointer;
+}
+
+.theme-switcher button:last-child {
+  border-right: 0;
+}
+
+.theme-switcher button:hover {
+  background: var(--chassis3);
+  color: var(--text);
+}
+
+.theme-switcher button.aktif {
+  background: var(--chassis3);
+  color: var(--accent);
+}
+
+.flyout-panel,
+.search-flyout,
+.layer-panel,
+.control-panel,
+.panel {
+  background: rgba(255,255,255,.98);
+  border-color: #D4E5F1;
+  color: #173F61;
+
+  box-shadow:
+    0 14px 36px rgba(23,105,168,.12);
+}
+
+.flyout-panel h2,
+.flyout-panel h3,
+.search-flyout h2,
+.search-flyout h3,
+.panel h2,
+.panel h3 {
+  color: #1769A8;
+}
+
+/* ---------- PRIMARY BUTTONS ---------- */
+
+.btn-primary,
+button.primary,
+.kb-primary {
+  background: #1769A8;
+  border-color: #1769A8;
+  color: #FFFFFF;
+}
+
+.btn-primary:hover,
+button.primary:hover,
+.kb-primary:hover {
+  background: #125487;
+  border-color: #125487;
+}
+
+/* ---------- SECONDARY BUTTONS ---------- */
+
+button.secondary,
+.kb-secondary {
+  background: #FFFFFF;
+  border-color: #D4E5F1;
+  color: #1769A8;
+}
+
+button.secondary:hover,
+.kb-secondary:hover {
+  background: #E8F4FC;
+  border-color: #AFCFE3;
+}
+
+/* ---------- INPUTS ---------- */
+
+input,
+select,
+textarea {
+  background: #FFFFFF;
+  border-color: #D4E5F1;
+  color: #173F61;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: #5BAE9D;
+
+  box-shadow:
+    0 0 0 3px rgba(91,174,157,.14);
+}
+
+/* ---------- STATUS / ACCENT ---------- */
+
+.status-ok,
+.status-terverifikasi,
+.badge-ok,
+.success {
+  color: #4F9D8D;
+}
+
+.stat-gold,
+.badge-gold,
+.accent-gold {
+  color: #1769A8;
+  background: #FFF7D9;
+  border-color: #E8D58A;
+}
+
+/* ---------- MAP FLOATING INFO ---------- */
+
+.map-info {
+  border-color: #D4E5F1;
+
+  box-shadow:
+    0 4px 14px rgba(23,105,168,.12);
+}
+
+/* ---------- KARTU BIDANG ---------- */
+
+.kartu.open.kb-modern {
+  background: #FFFFFF;
+  border-color: #D4E5F1;
+
+  box-shadow:
+    0 18px 42px rgba(23,105,168,.16);
+}
+
+.kb-tabs {
+  background: #F7FBFE;
+  border-bottom-color: #D4E5F1;
+}
+
+.kb-tab {
+  color: #6D879C;
+}
+
+.kb-tab:hover {
+  background: #E8F4FC;
+  color: #1769A8;
+}
+
+.kb-tab.active,
+.kb-tab.is-active {
+  background: #E8F4FC;
+  color: #1769A8;
+}
+
+.kb-tab.active::after,
+.kb-tab.is-active::after {
+  background: #5BAE9D;
+}
+
+.kb-scroll {
+  background: #FFFFFF;
+}
+
+/* ---------- KARTU BADGE / CHIP ---------- */
+
+.kb-badge,
+.kb-chip {
+  background: #E8F4FC;
+  border-color: #CFE3F1;
+  color: #1769A8;
+}
+
+/* ---------- LINKS ---------- */
+
+a {
+  color: #1769A8;
+}
+
+a:hover {
+  color: #125487;
+}
+
+/* ---------- SELECTION ---------- */
+
+::selection {
+  background: #BFE0F4;
+  color: #173F61;
+}
+
+
+
+
 /* =========================================================
-   DARK THEME — GLOBAL
+   FINAL COLOR CLEANUP
+   Merah/maroon -> blue/teal palette
+   Dark mode -> proper dark blue theme
    ========================================================= */
+
+/* ---------- LIGHT MODE: REMOVE RED / MAROON ACCENTS ---------- */
+
+:root {
+  --pub-danger: #D65C5C;
+}
+
+/* Generic danger/status accents */
+.kb-danger {
+  background: #FFF1F2 !important;
+  color: #B94A5A !important;
+  border-color: #F0CDD3 !important;
+}
+
+/* Style segment active */
+.style-segment button.active {
+  background: #E8F4FC !important;
+  color: #1769A8 !important;
+}
+
+/* Red notification / small badges */
+.kb-status,
+.kb-badge {
+  border-color: #D4E5F1;
+}
+
+.kb-badge-danger,
+.kb-status-danger {
+  background: #FFF1F2 !important;
+  color: #B94A5A !important;
+  border-color: #F0CDD3 !important;
+}
+
+/* Filter active area */
+.filter-active-box {
+  border-color: #B8D8E6 !important;
+  background: #F5FBFE !important;
+}
+
+/* Small red accents in cards / forms */
+.kb-card-danger,
+.kb-alert-danger,
+.kb-warning-danger {
+  border-color: #F0CDD3 !important;
+  background: #FFF5F6 !important;
+  color: #B94A5A !important;
+}
+
+/* Popup / action buttons */
+.pop > button:hover {
+  background: #E8F4FC !important;
+  border-color: #1769A8 !important;
+  color: #1769A8 !important;
+}
+
+/* Basemap active card */
+.basemap-card.active {
+  border-color: #1769A8 !important;
+  background: #F4FAFE !important;
+}
+
+.basemap-card.active .basemap-card-label {
+  color: #1769A8 !important;
+}
+
+.basemap-card.active::after,
+.basemap-card.active .basemap-check {
+  background: #1769A8 !important;
+  color: #FFFFFF !important;
+}
+
+/* Basemap / layer icon accents */
+.layer-panel-icon,
+.basemap-panel-icon {
+  color: #1769A8 !important;
+  background: #E8F4FC !important;
+  border-color: #CFE3F1 !important;
+}
+
+/* Red-looking layer group accents */
+.layer-group-title,
+.layer-name {
+  color: #496A80;
+}
+
+.layer-group-head:hover {
+  background: #F1F8FC !important;
+}
+
+/* Checked layer */
+.layer-row input[type="checkbox"]:checked + .gis-check {
+  background: #1769A8 !important;
+  border-color: #1769A8 !important;
+  color: #FFFFFF !important;
+}
+
+/* Active filter / selected controls */
+.filter-status-option.is-selected,
+.filter-option.is-selected {
+  border-color: #1769A8 !important;
+  background: #EAF5FB !important;
+  color: #1769A8 !important;
+}
+
+.filter-apply {
+  background: #1769A8 !important;
+  border-color: #1769A8 !important;
+  color: #FFFFFF !important;
+}
+
+.filter-apply:hover {
+  background: #125487 !important;
+}
+
+/* Status colors that were maroon */
+.status-danger,
+.status-rejected,
+.status-ditolak {
+  color: #B94A5A !important;
+}
+
+/* Keep warning semantics but remove maroon tone */
+.status-warning,
+.badge-warning {
+  background: #FFF7DF !important;
+  border-color: #E9D58D !important;
+  color: #96721B !important;
+}
+
+
+
+
+
+
+/* =========================================================
+   STATISTIKA — BLUE OVERRIDE
+   Tambahan ini sengaja diletakkan paling bawah agar menang
+   dari deklarasi warna statistik yang sebelumnya.
+   ========================================================= */
+
+.statistik-flyout {
+  --stat-red: #174A7E;
+  --stat-red-2: #245F91;
+  --stat-orange: #2F80B7;
+  --stat-yellow: #4FA3C7;
+  --stat-green: #63B4D5;
+  --stat-pink: #8AC6DF;
+
+  --stat-text: #35556F;
+  --stat-text-2: #607788;
+  --stat-muted: #8AA0B2;
+  --stat-bg: #FFFFFF;
+  --stat-soft: #F7FAFC;
+  --stat-track: #EDF1F5;
+  --stat-line: #E1EAF1;
+}
+
+/* Header */
+.statistik-icon {
+  color: #174A7E !important;
+  background: #F3F8FC !important;
+  border-color: #C9DCE9 !important;
+}
+
+.statistik-title {
+  color: #174A7E !important;
+}
+
+.statistik-close:hover {
+  color: #174A7E !important;
+  background: #F3F8FC !important;
+  border-color: #C9DCE9 !important;
+}
+
+/* Bar chart */
+.stat-vchart-item:nth-child(1) .stat-vchart-bar { background: #174A7E !important; }
+.stat-vchart-item:nth-child(2) .stat-vchart-bar { background: #245F91 !important; }
+.stat-vchart-item:nth-child(3) .stat-vchart-bar { background: #2F80B7 !important; }
+.stat-vchart-item:nth-child(4) .stat-vchart-bar { background: #4FA3C7 !important; }
+.stat-vchart-item:nth-child(5) .stat-vchart-bar { background: #63B4D5 !important; }
+.stat-vchart-item:nth-child(6) .stat-vchart-bar { background: #8AC6DF !important; }
+.stat-vchart-item:nth-child(7) .stat-vchart-bar { background: #A8D8E7 !important; }
+.stat-vchart-bar { background: #174A7E !important; }
+
+.stat-vchart-item:focus-visible .stat-vchart-bar {
+  outline-color: rgba(23, 74, 126, .35) !important;
+}
+
+/* Legend dots */
+.stat-legend-row:nth-child(1) .stat-legend-dot { background: #174A7E !important; }
+.stat-legend-row:nth-child(2) .stat-legend-dot { background: #245F91 !important; }
+.stat-legend-row:nth-child(3) .stat-legend-dot { background: #2F80B7 !important; }
+.stat-legend-row:nth-child(4) .stat-legend-dot { background: #4FA3C7 !important; }
+.stat-legend-row:nth-child(5) .stat-legend-dot { background: #63B4D5 !important; }
+.stat-legend-row:nth-child(6) .stat-legend-dot { background: #8AC6DF !important; }
+.stat-legend-dot { background: #174A7E !important; }
+
+/* Progress dots */
+.stat-progress-row:nth-child(1) .stat-status-dot { background: #174A7E !important; }
+.stat-progress-row:nth-child(2) .stat-status-dot { background: #245F91 !important; }
+.stat-progress-row:nth-child(3) .stat-status-dot { background: #2F80B7 !important; }
+.stat-progress-row:nth-child(4) .stat-status-dot { background: #4FA3C7 !important; }
+.stat-progress-row:nth-child(5) .stat-status-dot { background: #63B4D5 !important; }
+.stat-progress-row:nth-child(6) .stat-status-dot { background: #8AC6DF !important; }
+.stat-status-dot { background: #174A7E !important; }
+
+/* Donut SVG — force blue palette when the chart uses SVG paths/circles. */
+.stat-donut svg path:nth-child(1),
+.stat-donut svg circle:nth-child(1) { stroke: #174A7E !important; }
+.stat-donut svg path:nth-child(2),
+.stat-donut svg circle:nth-child(2) { stroke: #245F91 !important; }
+.stat-donut svg path:nth-child(3),
+.stat-donut svg circle:nth-child(3) { stroke: #2F80B7 !important; }
+.stat-donut svg path:nth-child(4),
+.stat-donut svg circle:nth-child(4) { stroke: #4FA3C7 !important; }
+.stat-donut svg path:nth-child(5),
+.stat-donut svg circle:nth-child(5) { stroke: #63B4D5 !important; }
+.stat-donut svg path:nth-child(6),
+.stat-donut svg circle:nth-child(6) { stroke: #8AC6DF !important; }
+.stat-donut svg path:nth-child(7),
+.stat-donut svg circle:nth-child(7) { stroke: #A8D8E7 !important; }
+
+/* If a donut has a single SVG element, at least make its stroke blue. */
+.stat-donut svg path,
+.stat-donut svg circle {
+  stroke: #174A7E !important;
+}
+
+/* Restore per-segment colors after the generic rule above. */
+.stat-donut svg path:nth-child(1), .stat-donut svg circle:nth-child(1) { stroke: #174A7E !important; }
+.stat-donut svg path:nth-child(2), .stat-donut svg circle:nth-child(2) { stroke: #245F91 !important; }
+.stat-donut svg path:nth-child(3), .stat-donut svg circle:nth-child(3) { stroke: #2F80B7 !important; }
+.stat-donut svg path:nth-child(4), .stat-donut svg circle:nth-child(4) { stroke: #4FA3C7 !important; }
+.stat-donut svg path:nth-child(5), .stat-donut svg circle:nth-child(5) { stroke: #63B4D5 !important; }
+.stat-donut svg path:nth-child(6), .stat-donut svg circle:nth-child(6) { stroke: #8AC6DF !important; }
+.stat-donut svg path:nth-child(7), .stat-donut svg circle:nth-child(7) { stroke: #A8D8E7 !important; }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 html[data-theme="dark"] {
   --chassis: #10385F;
@@ -11881,6 +12450,60 @@ html[data-theme="dark"] {
   --terrain-ui-shadow: 0 10px 30px rgba(0, 0, 0, .35);
 }
 
+html[data-theme="dark"] .sidebar {
+  background: linear-gradient(
+    180deg,
+    #123E5D 0%,
+    #0E557D 52%,
+    #0A4265 100%
+  );
+
+  border-right-color: rgba(255, 255, 255, 0.12);
+
+  box-shadow:
+    6px 0 24px rgba(0, 0, 0, 0.28);
+}
+
+html[data-theme="dark"] .sidebar-item {
+  background: #eff8ff !important;
+
+  border-color: rgba(255, 255, 255, 0.18);
+
+  color: #FFFFFF;
+}
+
+html[data-theme="dark"] .sidebar-item:hover {
+  background: rgba(255, 255, 255, 0.16);
+
+  border-color: rgba(255, 255, 255, 0.32);
+
+  color: #FFFFFF;
+}
+
+html[data-theme="dark"] .sidebar-item.active,
+html[data-theme="dark"] .sidebar-item.aktif {
+  background: #FFFFFF;
+
+  border-color: #FFFFFF;
+
+  color: #087EB8;
+}
+html[data-theme="dark"] .theme-switch:hover .theme-switch-track {
+  background: #111111;
+  filter: none;
+}
+html[data-theme="dark"] .sidebar-item svg,
+html[data-theme="dark"] .sidebar-item i,
+html[data-theme="dark"] .sidebar-item .icon,
+html[data-theme="dark"] .sidebar-icon {
+  color: #123E5D;
+  stroke: #123E5D;
+}
+
+html[data-theme="dark"] .sidebar-tooltip {
+  background: #102B40;
+  border-color: #29485C;
+}
 html[data-theme="dark"] .layer-panel-icon {
   color: #9FC5D8;
   background: rgba(23, 74, 126, .12);
@@ -12462,48 +13085,39 @@ html[data-theme="dark"] .basemap-flyout-head {
   background: var(--terrain-ui-bg);
   border-bottom-color: var(--terrain-ui-line);
 }
-
 html[data-theme="dark"] .basemap-panel-icon {
   border-color: rgba(213, 138, 154, .35);
   background: rgba(23, 74, 126, .12);
   color: #9FC5D8;
 }
-
 html[data-theme="dark"] .basemap-panel-title {
   color: #C9DCE9;
 }
-
 html[data-theme="dark"] .basemap-panel-subtitle {
   color: #7A8F9F;
 }
-
 html[data-theme="dark"] .basemap-panel-close {
   background: #17324D;
   border-color: #35556F;
   color: #A9BDCC;
 }
-
 html[data-theme="dark"] .basemap-panel-close:hover {
   background: #17324D;
   border-color: #174A7E;
   color: #FFFFFF;
 }
-
 html[data-theme="dark"] .basemap-flyout-body {
   background: var(--terrain-ui-bg);
 }
-
 html[data-theme="dark"] .basemap-card {
   background: var(--terrain-ui-soft);
   color: var(--terrain-ui-text);
   border-color: var(--terrain-ui-line);
 }
-
 html[data-theme="dark"] .basemap-card:hover {
   border-color: #6B4B53;
   background: #281C20;
 }
-
 html[data-theme="dark"] .basemap-card.active {
   border-color: #174A7E;
   background: #281C20;
@@ -12511,7 +13125,6 @@ html[data-theme="dark"] .basemap-card.active {
     0 0 0 1px rgba(155, 31, 59, .18),
     0 4px 12px rgba(0, 0, 0, .25);
 }
-
 html[data-theme="dark"] .basemap-card-preview {
   background:
     linear-gradient(
@@ -12520,949 +13133,341 @@ html[data-theme="dark"] .basemap-card-preview {
       #21191D
     );
 }
-
 html[data-theme="dark"] .basemap-card-icon {
   background: rgba(255, 255, 255, .08);
 }
-
 html[data-theme="dark"] .basemap-card-footer {
   background: #281C20;
   border-top-color: var(--terrain-ui-line);
 }
-
 html[data-theme="dark"] .basemap-card-label {
   color: #A9BDCC;
 }
-
 html[data-theme="dark"] .basemap-card.active .basemap-card-label {
   color: #C9DCE9;
 }
-
 html[data-theme="dark"] .statistik-flyout {
   background: var(--terrain-ui-bg);
   border-color: var(--terrain-ui-line);
   box-shadow: var(--terrain-ui-shadow);
-
   --stat-text: #35556F;
   --stat-text-2: #607788;
   --stat-muted: #6C8195;
 }
-
 html[data-theme="dark"] .statistik-head {
   background: var(--terrain-ui-bg);
   border-bottom-color: var(--terrain-ui-line);
 }
-
 html[data-theme="dark"] .statistik-icon {
   border-color: rgba(213, 138, 154, .35);
   background: rgba(23, 74, 126, .12);
   color: #9FC5D8;
 }
-
 html[data-theme="dark"] .statistik-title {
   color: #C9DCE9;
 }
-
 html[data-theme="dark"] .statistik-subtitle {
   color: #7A8F9F;
 }
-
 html[data-theme="dark"] .statistik-close {
   background: #17324D;
   border-color: #35556F;
   color: #A9BDCC;
 }
-
 html[data-theme="dark"] .statistik-close:hover {
   background: #17324D;
   border-color: #174A7E;
   color: #FFFFFF;
 }
-
 html[data-theme="dark"] .statistik-body {
   background: var(--terrain-ui-bg);
 }
-
 html[data-theme="dark"] .statistik-loading {
   color: #A9969D;
 }
-
 html[data-theme="dark"] .statistik-loading span {
   border-color: var(--terrain-ui-line);
   border-top-color: #9FC5D8;
 }
-
 html[data-theme="dark"] .stat-kpi,
 html[data-theme="dark"] .stat-card,
 html[data-theme="dark"] .stat-composition {
   background: #17324D;
   border-color: var(--terrain-ui-line);
 }
-
 html[data-theme="dark"] .stat-kpi-title,
 html[data-theme="dark"] .stat-card-title,
 html[data-theme="dark"] .stat-composition-title {
   color: #A9BDCC;
 }
-
 html[data-theme="dark"] .stat-kpi-value,
 html[data-theme="dark"] .stat-card-value,
 html[data-theme="dark"] .stat-composition-value {
   color: #A9BDCC;
 }
-
 html[data-theme="dark"] .stat-kpi-label,
 html[data-theme="dark"] .stat-card-label,
 html[data-theme="dark"] .stat-composition-label {
   color: #6C8195;
 }
-
 html[data-theme="dark"] .stat-kpi-main span,
 html[data-theme="dark"] .stat-kpi-item span {
   color: #6C8195;
 }
-
 html[data-theme="dark"] .stat-kpi-item strong {
   color: #A9BDCC;
 }
-
 html[data-theme="dark"] .stat-card-title-row > span {
   color: #A9969D;
   background: #35272B;
   border-color: var(--terrain-ui-line);
 }
-
 html[data-theme="dark"] .stat-progress-name {
   color: #607788;
 }
-
 html[data-theme="dark"] .stat-progress-row strong {
   color: #A9BDCC;
 }
-
 html[data-theme="dark"] .stat-donut-center strong {
   color: #A9BDCC;
 }
-
 html[data-theme="dark"] .stat-donut-center span {
   color: #6C8195;
 }
-
 html[data-theme="dark"] .stat-vchart-item {
   background: transparent;
   border: 0;
 }
-
 html[data-theme="dark"] .stat-vchart-value {
   color: #A9BDCC;
 }
-
 html[data-theme="dark"] .stat-vchart-label {
   color: #A9969D;
 }
-
 html[data-theme="dark"] .stat-small-title {
   color: #A9BDCC;
 }
-
 html[data-theme="dark"] .stat-legend-name {
   color: #A9969D;
 }
-
 html[data-theme="dark"] .stat-legend-row strong {
   color: #A9BDCC;
 }
-
 html[data-theme="dark"] .stat-footer {
   background: #17324D;
   border-color: var(--terrain-ui-line);
 }
-
 html[data-theme="dark"] .stat-footer span {
   color: #6C8195;
 }
-
 html[data-theme="dark"] .stat-footer strong {
   color: #A9BDCC;
 }
-
 html[data-theme="dark"] .stat-footer > div + div {
   border-left-color: var(--terrain-ui-line);
 }
-
 html[data-theme="dark"] .stat-chart-popup {
   background: #17324D;
   border-color: var(--terrain-ui-line);
   box-shadow: 0 8px 22px rgba(0, 0, 0, .35);
 }
-
 html[data-theme="dark"] .stat-chart-popup-head {
   border-bottom-color: var(--terrain-ui-line);
 }
-
 html[data-theme="dark"] .stat-chart-popup-kicker {
   color: #6C8195;
 }
-
 html[data-theme="dark"] .stat-chart-popup-title {
   color: #E2D4D8;
 }
-
 html[data-theme="dark"] .stat-chart-popup-close {
   background: #17324D;
   border-color: #35556F;
   color: #7A8F9F;
 }
-
 html[data-theme="dark"] .stat-chart-popup-close:hover {
   color: #FFFFFF;
   background: #17324D;
   border-color: #174A7E;
 }
-
 html[data-theme="dark"] .stat-chart-popup-label {
   color: #D9E4EE;
 }
-
 html[data-theme="dark"] .stat-chart-popup-number {
   color: #9FC5D8;
 }
-
 html[data-theme="dark"] .stat-chart-popup-caption {
   color: #6C8195;
 }
-
 html[data-theme="dark"] .stat-chart-popup-percent {
   color: #BDAEB3;
 }
-
 html[data-theme="dark"] .stat-chart-popup-percent span {
   color: #817277;
 }
- 
 html[data-theme="dark"] .daftar-flyout {
   background: var(--terrain-ui-bg);
   border-color: var(--terrain-ui-line);
   box-shadow: var(--terrain-ui-shadow);
 }
-
 html[data-theme="dark"] .daftar-head {
   background: var(--terrain-ui-bg);
   border-color: var(--terrain-ui-line);
 }
-
 html[data-theme="dark"] .daftar-head-icon {
   background: var(--terrain-ui-accent-soft);
   border-color: rgba(213, 138, 154, .35);
   color: #9FC5D8;
 }
-
 html[data-theme="dark"] .daftar-title strong {
   color: var(--terrain-ui-title);
 }
-
 html[data-theme="dark"] .daftar-title span:first-child {
   color: var(--terrain-ui-muted);
 }
-
 html[data-theme="dark"] .daftar-title span:last-child {
   color: #817277;
 }
-
 html[data-theme="dark"] .daftar-subtitle {
   color: var(--terrain-ui-muted);
 }
-
 html[data-theme="dark"] .daftar-count {
   color: #6C8195;
 }
-
 html[data-theme="dark"] .daftar-actions button {
   background: var(--terrain-ui-soft);
   border-color: var(--terrain-ui-line);
   color: var(--terrain-ui-text);
 }
-
 html[data-theme="dark"] .daftar-actions button:hover {
   background: #17324D;
   border-color: #6B4650;
   color: #C9DCE9;
 }
-
 html[data-theme="dark"] .daftar-actions button.active {
   background: var(--terrain-ui-accent);
   border-color: var(--terrain-ui-accent);
   color: #FFFFFF;
 }
-
 html[data-theme="dark"] .daftar-table-wrap {
   background: var(--terrain-ui-bg);
 }
-
 html[data-theme="dark"] .daftar-table th {
   background: var(--terrain-ui-soft);
   color: #A9969D;
   border-color: var(--terrain-ui-line);
 }
-
 html[data-theme="dark"] .daftar-table td {
   background: var(--terrain-ui-bg);
   color: #A9BDCC;
   border-color: #49383D;
 }
-
 html[data-theme="dark"] .daftar-table tbody tr:hover {
   background: #17324D;
 }
-
 html[data-theme="dark"] .daftar-table tbody tr:hover td {
   background: #17324D;
 }
-
 html[data-theme="dark"] .daftar-table .kode {
   color: #9FC5D8;
 }
-
 html[data-theme="dark"] .status-daftar {
   background: var(--terrain-ui-soft);
   border-color: var(--terrain-ui-line);
   color: var(--terrain-ui-text);
 }
-
 html[data-theme="dark"] .daftar-empty {
   color: var(--terrain-ui-muted) !important;
 }
-
 html[data-theme="dark"] .gate {
   background: #09131D;
   color: #E8EDF3;
 }
-
 html[data-theme="dark"] .gate-card {
   background: #111F29;
   border-color: #294457;
-
   box-shadow:
     0 18px 45px rgba(0, 0, 0, .28);
 }
-
 html[data-theme="dark"] .gate-top {
   border-bottom-color: #294457;
 }
-
 html[data-theme="dark"] .gate-top h1 {
   color: #EDF3F8;
 }
-
 html[data-theme="dark"] .gate-top p {
   color: #8BA9C3;
 }
-
 html[data-theme="dark"] .gate .lbl {
   color: #7097B8;
 }
-
 html[data-theme="dark"] .gate .field input {
   background: #0C1721;
   color: #EDF3F8;
   border-color: #294457;
 }
-
 html[data-theme="dark"] .gate-foot {
   color: #7097B8;
   border-top-color: #294457;
 }
-
 html[data-theme="dark"] .terrain-segment,
 html[data-theme="dark"] .basemap-card {
   border-color: var(--terrain-ui-line);
 }
-
 html[data-theme="dark"] .terrain-segment {
   background: var(--terrain-ui-soft);
 }
-
 html[data-theme="dark"] .basemap-card {
   background: var(--terrain-ui-soft);
   color: var(--terrain-ui-text);
 }
 html[data-theme="dark"] .layer-loading {
   background: rgba(20, 28, 38, 0.96);
-
   border-color: #344252;
-
   box-shadow:
     0 8px 24px rgba(0, 0, 0, 0.28);
 }
-
 html[data-theme="dark"] .layer-loading-head {
   color: #AAB7C6;
 }
-
 html[data-theme="dark"] .layer-loading-item {
   color: #E4EAF1;
 }
-
 html[data-theme="dark"] .layer-loading-spinner {
   border-color: #3A4655;
   border-top-color: #E9967A;
 }
-
-/* =========================================================
-   WEBGIS THEME — NAVY / TEAL / GOLD
-   ========================================================= */
-:root {
-  --pub-blue: #174A7E;
-  --pub-blue-dark: #10385F;
-  --pub-blue-soft: #EAF2F9;
-  --pub-teal: #5E9F91;
-  --pub-green: #B7D8CC;
-  --pub-gold: #E7C982;
-  --pub-border: #D9E4EE;
-  --pub-text: #17324D;
-  --pub-muted: #6C8195;
-  --pub-danger: #B54F4F;
-  --webgis-navy: #1769A8;
-  --webgis-navy-dark: #125487;
-  --webgis-navy-soft: #E8F4FC;
-
-  --webgis-teal: #5BAE9D;
-  --webgis-teal-soft: #E8F6F2;
-
-  --webgis-gold: #DDB23D;
-  --webgis-gold-soft: #FFF7D9;
-
-  --webgis-bg: #F1F8FD;
-  --webgis-card: #FFFFFF;
-  --webgis-card-soft: #F7FBFE;
-
-  --webgis-line: #D4E5F1;
-  --webgis-text: #173F61;
-  --webgis-muted: #6D879C;
-}
-
-
-
-header.bar,
-.topbar,
-.app-header,
-.navbar {
-  background: linear-gradient(
-    135deg,
-    #FFFFFF 0%,
-    #F1F8FD 100%
-  );
-
-  border-color: #D4E5F1;
-  color: #173F61;
-}
-
-header.bar strong,
-header.bar h1,
-.topbar strong,
-.app-header strong {
-  color: #1769A8;
-}
-
-.head-user {
-  background: #FFFFFF;
-  border-color: #D4E5F1;
-
-  box-shadow:
-    0 8px 24px rgba(23, 105, 168, .10);
-}
-
-.head-user-avatar {
-  background: #E8F4FC;
-  color: #1769A8;
-  border-color: #CFE3F1;
-}
-
-.head-user-role {
-  color: #7B94A7;
-}
-
-.head-user-info strong {
-  color: #173F61;
-}
-
-.head-logout {
-  background: #1769A8;
-  border-color: #1769A8;
-  color: #FFFFFF;
-}
-
-.head-logout:hover {
-  background: #125487;
-  border-color: #125487;
-  color: #FFFFFF;
-}
-
-.theme-switch {
-  position: relative;
-  width: 52px;
-  height: 30px;
-  padding: 0;
-  flex: none;
-  border: 0;
-  background: transparent;
-  cursor: pointer;
-}
-
-.theme-switch-track {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  border: 1px solid #d4e5f1;
-  border-radius: 999px;
-  background: #ffee00;
-  box-shadow:
-    inset 0 0 0 1px rgba(23, 105, 168, 0.04);
-  filter: none;
-  transition:
-    background 0.2s ease,
-    filter 0.2s ease;
-}
-
-.theme-switch-thumb {
-  position: absolute;
-  left: 3px;
-
-  width: 24px;
-  height: 24px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 50%;
-
-  background: #ffffff;
-  color: #1769a8;
-
-  font-size: 15px;
-  line-height: 1;
-
-  box-shadow:
-    0 2px 5px rgba(23, 105, 168, 0.16);
-
-  transition:
-    transform 0.2s ease,
-    color 0.2s ease;
-}
-
-.theme-switch:hover .theme-switch-track {
-  background: #ffa200;
-  filter: none;
-}
-
-.theme-switch.dark .theme-switch-track {
-  background: #001749;
-  filter: none;
-}
-
-.theme-switch.dark .theme-switch-thumb {
-  transform: translateX(22px);
-  color: #1769a8;
-}
-
-.theme-switcher {
-  position: fixed;
-
-  top: 28px;
-  right: 24px;
-
-  z-index: 1100;
-
-  display: flex;
-
-  border: 1px solid var(--line);
-  background: var(--chassis2);
-}
-
-.theme-switcher button {
-  height: 32px;
-
-  padding: 0 14px;
-
-  border: 0;
-  border-right: 1px solid var(--line);
-
-  background: transparent;
-  color: var(--faint);
-
-  font-family: var(--f-disp);
-  font-size: 10.5px;
-  font-weight: 600;
-  letter-spacing: 0.09em;
-
-  cursor: pointer;
-}
-
-.theme-switcher button:last-child {
-  border-right: 0;
-}
-
-.theme-switcher button:hover {
-  background: var(--chassis3);
-  color: var(--text);
-}
-
-.theme-switcher button.aktif {
-  background: var(--chassis3);
-  color: var(--accent);
-}
-
-.flyout-panel,
-.search-flyout,
-.layer-panel,
-.control-panel,
-.panel {
-  background: rgba(255,255,255,.98);
-  border-color: #D4E5F1;
-  color: #173F61;
-
-  box-shadow:
-    0 14px 36px rgba(23,105,168,.12);
-}
-
-.flyout-panel h2,
-.flyout-panel h3,
-.search-flyout h2,
-.search-flyout h3,
-.panel h2,
-.panel h3 {
-  color: #1769A8;
-}
-
-/* ---------- PRIMARY BUTTONS ---------- */
-
-.btn-primary,
-button.primary,
-.kb-primary {
-  background: #1769A8;
-  border-color: #1769A8;
-  color: #FFFFFF;
-}
-
-.btn-primary:hover,
-button.primary:hover,
-.kb-primary:hover {
-  background: #125487;
-  border-color: #125487;
-}
-
-/* ---------- SECONDARY BUTTONS ---------- */
-
-button.secondary,
-.kb-secondary {
-  background: #FFFFFF;
-  border-color: #D4E5F1;
-  color: #1769A8;
-}
-
-button.secondary:hover,
-.kb-secondary:hover {
-  background: #E8F4FC;
-  border-color: #AFCFE3;
-}
-
-/* ---------- INPUTS ---------- */
-
-input,
-select,
-textarea {
-  background: #FFFFFF;
-  border-color: #D4E5F1;
-  color: #173F61;
-}
-
-input:focus,
-select:focus,
-textarea:focus {
-  border-color: #5BAE9D;
-
-  box-shadow:
-    0 0 0 3px rgba(91,174,157,.14);
-}
-
-/* ---------- STATUS / ACCENT ---------- */
-
-.status-ok,
-.status-terverifikasi,
-.badge-ok,
-.success {
-  color: #4F9D8D;
-}
-
-.stat-gold,
-.badge-gold,
-.accent-gold {
-  color: #1769A8;
-  background: #FFF7D9;
-  border-color: #E8D58A;
-}
-
-/* ---------- MAP FLOATING INFO ---------- */
-
-.map-info {
-  border-color: #D4E5F1;
-
-  box-shadow:
-    0 4px 14px rgba(23,105,168,.12);
-}
-
-/* ---------- KARTU BIDANG ---------- */
-
-.kartu.open.kb-modern {
-  background: #FFFFFF;
-  border-color: #D4E5F1;
-
-  box-shadow:
-    0 18px 42px rgba(23,105,168,.16);
-}
-
-.kb-tabs {
-  background: #F7FBFE;
-  border-bottom-color: #D4E5F1;
-}
-
-.kb-tab {
-  color: #6D879C;
-}
-
-.kb-tab:hover {
-  background: #E8F4FC;
-  color: #1769A8;
-}
-
-.kb-tab.active,
-.kb-tab.is-active {
-  background: #E8F4FC;
-  color: #1769A8;
-}
-
-.kb-tab.active::after,
-.kb-tab.is-active::after {
-  background: #5BAE9D;
-}
-
-.kb-scroll {
-  background: #FFFFFF;
-}
-
-/* ---------- KARTU BADGE / CHIP ---------- */
-
-.kb-badge,
-.kb-chip {
-  background: #E8F4FC;
-  border-color: #CFE3F1;
-  color: #1769A8;
-}
-
-/* ---------- LINKS ---------- */
-
-a {
-  color: #1769A8;
-}
-
-a:hover {
-  color: #125487;
-}
-
-/* ---------- SELECTION ---------- */
-
-::selection {
-  background: #BFE0F4;
-  color: #173F61;
-}
-
-
-
-
-/* =========================================================
-   FINAL COLOR CLEANUP
-   Merah/maroon -> blue/teal palette
-   Dark mode -> proper dark blue theme
-   ========================================================= */
-
-/* ---------- LIGHT MODE: REMOVE RED / MAROON ACCENTS ---------- */
-
-:root {
-  --pub-danger: #D65C5C;
-}
-
-/* Generic danger/status accents */
-.kb-danger {
-  background: #FFF1F2 !important;
-  color: #B94A5A !important;
-  border-color: #F0CDD3 !important;
-}
-
-/* Style segment active */
-.style-segment button.active {
-  background: #E8F4FC !important;
-  color: #1769A8 !important;
-}
-
-/* Red notification / small badges */
-.kb-status,
-.kb-badge {
-  border-color: #D4E5F1;
-}
-
-.kb-badge-danger,
-.kb-status-danger {
-  background: #FFF1F2 !important;
-  color: #B94A5A !important;
-  border-color: #F0CDD3 !important;
-}
-
-/* Filter active area */
-.filter-active-box {
-  border-color: #B8D8E6 !important;
-  background: #F5FBFE !important;
-}
-
-/* Small red accents in cards / forms */
-.kb-card-danger,
-.kb-alert-danger,
-.kb-warning-danger {
-  border-color: #F0CDD3 !important;
-  background: #FFF5F6 !important;
-  color: #B94A5A !important;
-}
-
-/* Popup / action buttons */
-.pop > button:hover {
-  background: #E8F4FC !important;
-  border-color: #1769A8 !important;
-  color: #1769A8 !important;
-}
-
-/* Basemap active card */
-.basemap-card.active {
-  border-color: #1769A8 !important;
-  background: #F4FAFE !important;
-}
-
-.basemap-card.active .basemap-card-label {
-  color: #1769A8 !important;
-}
-
-.basemap-card.active::after,
-.basemap-card.active .basemap-check {
-  background: #1769A8 !important;
-  color: #FFFFFF !important;
-}
-
-/* Basemap / layer icon accents */
-.layer-panel-icon,
-.basemap-panel-icon {
-  color: #1769A8 !important;
-  background: #E8F4FC !important;
-  border-color: #CFE3F1 !important;
-}
-
-/* Red-looking layer group accents */
-.layer-group-title,
-.layer-name {
-  color: #496A80;
-}
-
-.layer-group-head:hover {
-  background: #F1F8FC !important;
-}
-
-/* Checked layer */
-.layer-row input[type="checkbox"]:checked + .gis-check {
-  background: #1769A8 !important;
-  border-color: #1769A8 !important;
-  color: #FFFFFF !important;
-}
-
-/* Active filter / selected controls */
-.filter-status-option.is-selected,
-.filter-option.is-selected {
-  border-color: #1769A8 !important;
-  background: #EAF5FB !important;
-  color: #1769A8 !important;
-}
-
-.filter-apply {
-  background: #1769A8 !important;
-  border-color: #1769A8 !important;
-  color: #FFFFFF !important;
-}
-
-.filter-apply:hover {
-  background: #125487 !important;
-}
-
-/* Status colors that were maroon */
-.status-danger,
-.status-rejected,
-.status-ditolak {
-  color: #B94A5A !important;
-}
-
-/* Keep warning semantics but remove maroon tone */
-.status-warning,
-.badge-warning {
-  background: #FFF7DF !important;
-  border-color: #E9D58D !important;
-  color: #96721B !important;
-}
-
-
-/* =========================================================
-   DARK MODE — CLEAN BLUE, NO MAROON
-   ========================================================= */
-
 html[data-theme="dark"] {
   color-scheme: dark;
-
   --chassis: #0B2032;
   --chassis2: #103A5A;
   --chassis3: #155B82;
-
   --line: #28465C;
   --line-soft: #1B3448;
-
   --text: #E8F4FA;
   --dim: #A9C0CF;
   --faint: #7895A7;
-
   --accent: #3A9DCC;
   --accent2: #63B8A8;
-
   --mapbg: #0A1D2D;
-
   --shadow: 0 12px 32px rgba(0, 0, 0, .42);
-
   --card-bg:
     linear-gradient(
       135deg,
       rgba(38, 142, 184, .16),
       rgba(8, 30, 46, .70)
     );
-
   --card-line: rgba(91, 174, 205, .18);
   --card-highlight: rgba(255, 255, 255, .035);
-
   --card-title: #E8F4FA;
   --card-group: #9AB4C4;
   --card-text: #D8E8F0;
   --card-muted: #87A4B5;
-
   --terrain-bg: rgba(5, 23, 32, .58);
   --terrain-line: rgba(83, 170, 195, .30);
   --terrain-text: #8FA9B8;
-
   --terrain-active: #329BC2;
   --terrain-active-text: #FFFFFF;
-
   --terrain-ui-bg: #102B40;
   --terrain-ui-soft: #132F44;
   --terrain-ui-line: #29485C;
@@ -13473,120 +13478,11 @@ html[data-theme="dark"] {
   --terrain-ui-muted: #7E9BAB;
   --terrain-ui-shadow: 0 12px 32px rgba(0, 0, 0, .40);
 }
-
-/* Dark page / map shell */
 html[data-theme="dark"],
 html[data-theme="dark"] body {
   background: #0B2032 !important;
   color: #E8F4FA !important;
 }
-
-
-
-/* =========================================================
-   STATISTIKA — BLUE OVERRIDE
-   Tambahan ini sengaja diletakkan paling bawah agar menang
-   dari deklarasi warna statistik yang sebelumnya.
-   ========================================================= */
-
-.statistik-flyout {
-  --stat-red: #174A7E;
-  --stat-red-2: #245F91;
-  --stat-orange: #2F80B7;
-  --stat-yellow: #4FA3C7;
-  --stat-green: #63B4D5;
-  --stat-pink: #8AC6DF;
-
-  --stat-text: #35556F;
-  --stat-text-2: #607788;
-  --stat-muted: #8AA0B2;
-  --stat-bg: #FFFFFF;
-  --stat-soft: #F7FAFC;
-  --stat-track: #EDF1F5;
-  --stat-line: #E1EAF1;
-}
-
-/* Header */
-.statistik-icon {
-  color: #174A7E !important;
-  background: #F3F8FC !important;
-  border-color: #C9DCE9 !important;
-}
-
-.statistik-title {
-  color: #174A7E !important;
-}
-
-.statistik-close:hover {
-  color: #174A7E !important;
-  background: #F3F8FC !important;
-  border-color: #C9DCE9 !important;
-}
-
-/* Bar chart */
-.stat-vchart-item:nth-child(1) .stat-vchart-bar { background: #174A7E !important; }
-.stat-vchart-item:nth-child(2) .stat-vchart-bar { background: #245F91 !important; }
-.stat-vchart-item:nth-child(3) .stat-vchart-bar { background: #2F80B7 !important; }
-.stat-vchart-item:nth-child(4) .stat-vchart-bar { background: #4FA3C7 !important; }
-.stat-vchart-item:nth-child(5) .stat-vchart-bar { background: #63B4D5 !important; }
-.stat-vchart-item:nth-child(6) .stat-vchart-bar { background: #8AC6DF !important; }
-.stat-vchart-item:nth-child(7) .stat-vchart-bar { background: #A8D8E7 !important; }
-.stat-vchart-bar { background: #174A7E !important; }
-
-.stat-vchart-item:focus-visible .stat-vchart-bar {
-  outline-color: rgba(23, 74, 126, .35) !important;
-}
-
-/* Legend dots */
-.stat-legend-row:nth-child(1) .stat-legend-dot { background: #174A7E !important; }
-.stat-legend-row:nth-child(2) .stat-legend-dot { background: #245F91 !important; }
-.stat-legend-row:nth-child(3) .stat-legend-dot { background: #2F80B7 !important; }
-.stat-legend-row:nth-child(4) .stat-legend-dot { background: #4FA3C7 !important; }
-.stat-legend-row:nth-child(5) .stat-legend-dot { background: #63B4D5 !important; }
-.stat-legend-row:nth-child(6) .stat-legend-dot { background: #8AC6DF !important; }
-.stat-legend-dot { background: #174A7E !important; }
-
-/* Progress dots */
-.stat-progress-row:nth-child(1) .stat-status-dot { background: #174A7E !important; }
-.stat-progress-row:nth-child(2) .stat-status-dot { background: #245F91 !important; }
-.stat-progress-row:nth-child(3) .stat-status-dot { background: #2F80B7 !important; }
-.stat-progress-row:nth-child(4) .stat-status-dot { background: #4FA3C7 !important; }
-.stat-progress-row:nth-child(5) .stat-status-dot { background: #63B4D5 !important; }
-.stat-progress-row:nth-child(6) .stat-status-dot { background: #8AC6DF !important; }
-.stat-status-dot { background: #174A7E !important; }
-
-/* Donut SVG — force blue palette when the chart uses SVG paths/circles. */
-.stat-donut svg path:nth-child(1),
-.stat-donut svg circle:nth-child(1) { stroke: #174A7E !important; }
-.stat-donut svg path:nth-child(2),
-.stat-donut svg circle:nth-child(2) { stroke: #245F91 !important; }
-.stat-donut svg path:nth-child(3),
-.stat-donut svg circle:nth-child(3) { stroke: #2F80B7 !important; }
-.stat-donut svg path:nth-child(4),
-.stat-donut svg circle:nth-child(4) { stroke: #4FA3C7 !important; }
-.stat-donut svg path:nth-child(5),
-.stat-donut svg circle:nth-child(5) { stroke: #63B4D5 !important; }
-.stat-donut svg path:nth-child(6),
-.stat-donut svg circle:nth-child(6) { stroke: #8AC6DF !important; }
-.stat-donut svg path:nth-child(7),
-.stat-donut svg circle:nth-child(7) { stroke: #A8D8E7 !important; }
-
-/* If a donut has a single SVG element, at least make its stroke blue. */
-.stat-donut svg path,
-.stat-donut svg circle {
-  stroke: #174A7E !important;
-}
-
-/* Restore per-segment colors after the generic rule above. */
-.stat-donut svg path:nth-child(1), .stat-donut svg circle:nth-child(1) { stroke: #174A7E !important; }
-.stat-donut svg path:nth-child(2), .stat-donut svg circle:nth-child(2) { stroke: #245F91 !important; }
-.stat-donut svg path:nth-child(3), .stat-donut svg circle:nth-child(3) { stroke: #2F80B7 !important; }
-.stat-donut svg path:nth-child(4), .stat-donut svg circle:nth-child(4) { stroke: #4FA3C7 !important; }
-.stat-donut svg path:nth-child(5), .stat-donut svg circle:nth-child(5) { stroke: #63B4D5 !important; }
-.stat-donut svg path:nth-child(6), .stat-donut svg circle:nth-child(6) { stroke: #8AC6DF !important; }
-.stat-donut svg path:nth-child(7), .stat-donut svg circle:nth-child(7) { stroke: #A8D8E7 !important; }
-
-/* Dark mode */
 html[data-theme="dark"] .statistik-flyout {
   --stat-red: #63B4D5;
   --stat-red-2: #4FA3C7;
@@ -13602,65 +13498,63 @@ html[data-theme="dark"] .statistik-flyout {
   --stat-track: #24475C;
   --stat-line: #29485C;
 }
-
 html[data-theme="dark"] .statistik-head {
   background: #102B40 !important;
   border-bottom-color: #29485C !important;
 }
-
 html[data-theme="dark"] .statistik-icon {
   background: rgba(99, 180, 213, .12) !important;
   border-color: rgba(99, 180, 213, .35) !important;
   color: #63B4D5 !important;
 }
-
 html[data-theme="dark"] .statistik-title { color: #8FD0EA !important; }
-
 html[data-theme="dark"] .statistik-close {
   background: #102B40 !important;
   border-color: #29485C !important;
   color: #B7CEDB !important;
 }
-
 html[data-theme="dark"] .statistik-close:hover {
   background: #1769A8 !important;
   border-color: #1769A8 !important;
   color: #FFFFFF !important;
 }
-
 html[data-theme="dark"] .stat-vchart-item:nth-child(1) .stat-vchart-bar { background: #174A7E !important; }
 html[data-theme="dark"] .stat-vchart-item:nth-child(2) .stat-vchart-bar { background: #245F91 !important; }
 html[data-theme="dark"] .stat-vchart-item:nth-child(3) .stat-vchart-bar { background: #2F80B7 !important; }
 html[data-theme="dark"] .stat-vchart-item:nth-child(4) .stat-vchart-bar { background: #4FA3C7 !important; }
 html[data-theme="dark"] .stat-vchart-item:nth-child(5) .stat-vchart-bar { background: #63B4D5 !important; }
 html[data-theme="dark"] .stat-vchart-item:nth-child(6) .stat-vchart-bar { background: #8AC6DF !important; }
-
 html[data-theme="dark"] .stat-donut svg path:nth-child(1), html[data-theme="dark"] .stat-donut svg circle:nth-child(1) { stroke: #174A7E !important; }
 html[data-theme="dark"] .stat-donut svg path:nth-child(2), html[data-theme="dark"] .stat-donut svg circle:nth-child(2) { stroke: #245F91 !important; }
 html[data-theme="dark"] .stat-donut svg path:nth-child(3), html[data-theme="dark"] .stat-donut svg circle:nth-child(3) { stroke: #2F80B7 !important; }
 html[data-theme="dark"] .stat-donut svg path:nth-child(4), html[data-theme="dark"] .stat-donut svg circle:nth-child(4) { stroke: #4FA3C7 !important; }
 html[data-theme="dark"] .stat-donut svg path:nth-child(5), html[data-theme="dark"] .stat-donut svg circle:nth-child(5) { stroke: #63B4D5 !important; }
 html[data-theme="dark"] .stat-donut svg path:nth-child(6), html[data-theme="dark"] .stat-donut svg circle:nth-child(6) { stroke: #8AC6DF !important; }
-
 html[data-theme="dark"] .stat-card,
 html[data-theme="dark"] .stat-composition,
 html[data-theme="dark"] .stat-kpi {
   background: #132F44 !important;
   border-color: #29485C !important;
 }
-
 html[data-theme="dark"] .stat-card-title,
 html[data-theme="dark"] .stat-small-title { color: #DCECF5 !important; }
-
 html[data-theme="dark"] .stat-donut-center strong,
 html[data-theme="dark"] .stat-kpi-item strong,
 html[data-theme="dark"] .stat-footer strong { color: #E8F4FA !important; }
-
 html[data-theme="dark"] .stat-legend-name,
 html[data-theme="dark"] .stat-vchart-label,
 html[data-theme="dark"] .stat-progress-name,
 html[data-theme="dark"] .stat-footer span { color: #9BB6C6 !important; }
-
 html[data-theme="dark"] .stat-legend-row strong,
 html[data-theme="dark"] .stat-vchart-value,
 html[data-theme="dark"] .stat-progress-row strong { color: #DCECF5 !important; }
+html[data-theme="dark"] .flyout-panel,
+html[data-theme="dark"] .search-flyout,
+html[data-theme="dark"] .layer-panel,
+html[data-theme="dark"] .control-panel,
+html[data-theme="dark"] .panel {
+  background: var(--terrain-ui-bg);
+  border-color: var(--terrain-ui-line);
+  color: var(--terrain-ui-text);
+  box-shadow: var(--terrain-ui-shadow);
+}
