@@ -4283,38 +4283,19 @@ html[data-theme="dark"] .sidebar {
 }
 
 html[data-theme="dark"] .sidebar-item {
-  background: #eff8ff;
+  background: #eff8ff !important;
 
   border-color: rgba(255, 255, 255, 0.18);
 
-  color: #000000;
-
-  box-shadow:
-    0 2px 6px rgba(0, 0, 0, 0.08);
-}
-
-html[data-theme="dark"] .sidebar-item svg,
-html[data-theme="dark"] .sidebar-item i,
-html[data-theme="dark"] .sidebar-item .icon,
-html[data-theme="dark"] .sidebar-item .sidebar-icon {
-  color: #000000;
-  stroke: #000000;
+  color: #FFFFFF;
 }
 
 html[data-theme="dark"] .sidebar-item:hover {
-  background: #dceffc;
+  background: rgba(255, 255, 255, 0.16);
 
-  border-color: rgba(255, 255, 255, 0.40);
+  border-color: rgba(255, 255, 255, 0.32);
 
-  color: #000000;
-}
-
-html[data-theme="dark"] .sidebar-item:hover svg,
-html[data-theme="dark"] .sidebar-item:hover i,
-html[data-theme="dark"] .sidebar-item:hover .icon,
-html[data-theme="dark"] .sidebar-item:hover .sidebar-icon {
-  color: #000000;
-  stroke: #000000;
+  color: #FFFFFF;
 }
 
 html[data-theme="dark"] .sidebar-item.active,
@@ -4324,29 +4305,21 @@ html[data-theme="dark"] .sidebar-item.aktif {
   border-color: #FFFFFF;
 
   color: #087EB8;
-
-  box-shadow:
-    0 3px 8px rgba(0, 0, 0, 0.14);
 }
 
 html[data-theme="dark"] .sidebar-item.active svg,
 html[data-theme="dark"] .sidebar-item.active i,
 html[data-theme="dark"] .sidebar-item.active .icon,
-html[data-theme="dark"] .sidebar-item.active .sidebar-icon,
 html[data-theme="dark"] .sidebar-item.aktif svg,
 html[data-theme="dark"] .sidebar-item.aktif i,
-html[data-theme="dark"] .sidebar-item.aktif .icon,
-html[data-theme="dark"] .sidebar-item.aktif .sidebar-icon {
-  color: #087EB8;
-  stroke: #087EB8;
+html[data-theme="dark"] .sidebar-item.aktif .icon {
+  color: #000000;
+  stroke: #000000;
 }
 
 html[data-theme="dark"] .sidebar-tooltip {
   background: #102B40;
-
   border-color: #29485C;
-
-  color: #FFFFFF;
 }
 .daftar-overlay {
   position: absolute;
