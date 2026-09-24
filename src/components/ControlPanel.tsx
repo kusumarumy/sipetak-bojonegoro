@@ -3,7 +3,15 @@
 import { useState } from 'react';
 import { useApp } from '@/store/useApp';
 import { LAYERS } from './layers';
-
+import {
+  Route,
+  LandPlot,
+  Mountain,
+  Waves,
+  Waypoints,
+  Trees,
+  Cable,
+} from 'lucide-react';
 const GROUP_ORDER = [
   'Rencana Trase',
   'Bidang Tanah',
@@ -13,15 +21,36 @@ const GROUP_ORDER = [
   'Tutupan Lahan',
   'Utilitas',
 ];
-const GROUP_ICONS: Record<string, string> = {
-  'Rencana Trase': '⌁',
-  'Bidang Tanah': '▦',
-  'Hipsografi': '⌁',
-  'Jaringan Irigasi': '≈',
-  'Jaringan Transportasi': '⇆',
-  'Tutupan Lahan': '◈',
-  'Utilitas': '⌁',
-};
+const GROUP_ICONS = {
+  'Rencana Trase': {
+    icon: Route,
+    color: '#E53935',
+  },
+  'Bidang Tanah': {
+    icon: LandPlot,
+    color: '#F9A825',
+  },
+  'Hipsografi': {
+    icon: Mountain,
+    color: '#795548',
+  },
+  'Jaringan Irigasi': {
+    icon: Waves,
+    color: '#1E88E5',
+  },
+  'Jaringan Transportasi': {
+    icon: Waypoints,
+    color: '#546E7A',
+  },
+  'Tutupan Lahan': {
+    icon: Trees,
+    color: '#43A047',
+  },
+  'Utilitas': {
+    icon: Cable,
+    color: '#8E24AA',
+  },
+} as const;
 
 type PanelMode = 'terrain' | 'layer' | null;
 
@@ -278,9 +307,26 @@ const [grupTerbuka, setGrupTerbuka] =
   </svg>
 </span>
 
-                        <span className="group-icon">
-                          {GROUP_ICONS[g] ?? '•'}
-                        </span>
+<span className="group-icon">
+  {(() => {
+    const GroupIcon = GROUP_ICONS[
+      g as keyof typeof GROUP_ICONS
+    ];
+
+    if (!GroupIcon) return null;
+
+    const Icon = GroupIcon.icon;
+
+    return (
+      <Icon
+        size={17}
+        strokeWidth={1.8}
+        color={GroupIcon.color}
+        aria-hidden="true"
+      />
+    );
+  })()}
+</span>
 
                         <span className="layer-group-title">
                           {g}
