@@ -1767,6 +1767,8 @@ main.body {
 
   box-shadow:
     6px 0 24px rgba(0, 90, 130, 0.08);
+
+  z-index: 1000;
 }
 
 .sidebar-menu {
