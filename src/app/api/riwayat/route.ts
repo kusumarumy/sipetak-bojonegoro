@@ -14,14 +14,43 @@ export async function GET() {
   try {
     const data = await query(`
       SELECT
-        a.*,
+        a.id,
+
+        /*
+         * ID record bidang_tanah
+         */
+        a.record_id,
+
+        /*
+         * Data bidang
+         */
         b.fid,
-        b.id AS bidang_id,
-        b.nib
+        b.nib,
+
+        /*
+         * Informasi aksi
+         */
+        a.aksi,
+        a.kolom,
+        a.nilai_lama,
+        a.nilai_baru,
+
+        /*
+         * Informasi pengguna
+         */
+        a.pengguna_id,
+        a.nama_akun,
+        a.ip_address,
+
+        /*
+         * Waktu aksi
+         */
+        a.pada
+
       FROM public.audit_log a
 
       LEFT JOIN public.bidang_tanah b
-        ON b.id = a.record_id::varchar
+        ON b.id = a.record_id::text
 
       ORDER BY
         a.id DESC
