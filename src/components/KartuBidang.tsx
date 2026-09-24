@@ -11,7 +11,6 @@ import {
 } from "@/types";
 import {
   dapatMengubahAtribut,
-  dapatMengirim,
   dapatMemverifikasi,
 } from "@/lib/rbac";
 
@@ -361,13 +360,6 @@ const [catatanRevisi, setCatatanRevisi] =
       )
     : false;
 
-  const bolehKirim = b
-    ? dapatMengirim(
-        peran,
-        b.status
-      )
-    : false;
-
   const bolehVerifikasi = b
     ? dapatMemverifikasi(
         peran,
@@ -410,17 +402,6 @@ useEffect(() => {
     b?.nama_milik ??
     pemilik?.nama ??
     "Pemilik belum diisi";
-
-  const luas =
-    b?.luas_tnh ??
-    b?.luastertul ??
-    b?.luaspeta;
-
-  const luasTerdampak =
-    b?.luas_terdampak_m2;
-
-  const luasSisa =
-    b?.luas_sisa_m2;
 
  async function simpan() {
   if (!b?.id) return;
@@ -521,7 +502,6 @@ useEffect(() => {
 
 async function pindahStatus(
   target:
-    | "terkirim"
     | "terverifikasi"
     | "revisi"
 ) {
@@ -596,13 +576,11 @@ setShowRevisi(false);
 
 await muatUlangKartu();
 
-    beriPesan(
-      target === "terkirim"
-        ? "Bidang dikirim untuk verifikasi"
-        : target === "terverifikasi"
-          ? "Bidang berhasil diverifikasi"
-          : "Bidang dikembalikan untuk revisi"
-    );
+beriPesan(
+  target === "terverifikasi"
+    ? "Bidang berhasil diverifikasi"
+    : "Bidang dikembalikan untuk revisi"
+);
   } catch (error) {
     console.error(
       "ERROR UBAH STATUS:",
@@ -1698,22 +1676,7 @@ await muatUlangKartu();
               </button>
             )}
 
-            {bolehKirim && (
-              <button
-                type="button"
-                className="kb-primary"
-                disabled={busy}
-                onClick={() =>
-                  pindahStatus(
-                    "terkirim"
-                  )
-                }
-              >
-                {busy
-                  ? "Memproses…"
-                  : "Kirim verifikasi"}
-              </button>
-            )}
+            
 
             {bolehVerifikasi && (
               <>
@@ -1745,7 +1708,6 @@ await muatUlangKartu();
             )}
 
             {!bolehEdit &&
-              !bolehKirim &&
               !bolehVerifikasi && (
                 <button
                   type="button"
