@@ -156,9 +156,9 @@ export const LAYERS: DefLayer[] = [
   grup: 'Utilitas'
 },
 {
-  id: 'kontur_trase',
-  nama: 'Kontur Trase',
-  sumber: 'kontur_trase',
+  id: 'kontur_traseg',
+  nama: 'Kontur Trase G',
+  sumber: 'kontur_traseg',
   tipe: 'line',
   warna: '#8B5E3C',
   garis: true,
