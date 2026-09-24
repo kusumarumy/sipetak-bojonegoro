@@ -270,13 +270,12 @@ function Completeness({
       bidang?.jml_bgn !== "",
 
     // 6. Foto bidang
-    Boolean(
-      bidang?.lampiran?.some(
-        (x: any) =>
-          x.kategori === "foto_bidang"
-      ) ||
-        bidang?.foto_tnh
-    ),
+Boolean(
+  bidang?.lampiran?.some(
+    (x: any) =>
+      x.kategori === "foto_bidang"
+  )
+),
 
     // 7. Foto pemilik & petugas
     Boolean(
