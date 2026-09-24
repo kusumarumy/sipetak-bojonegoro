@@ -1069,33 +1069,14 @@ map.addSource(
           source: 'bidang',
 
           paint: {
-            'fill-color': [
-              'case',
-
-              [
-                'boolean',
-                [
-                  'feature-state',
-                  'analisis'
-                ],
-                false
-              ],
-
-              '#00E5FF',
-
-              [
-                'boolean',
-                [
-                  'feature-state',
-                  'sel'
-                ],
-                false
-              ],
-
-              '#FFD600',
-
-              '#8df2ff'
-            ],
+'fill-color': [
+  'case',
+  ['boolean', ['feature-state', 'analisis'], false],
+  '#00E5FF',
+  ['boolean', ['feature-state', 'sel'], false],
+  '#FFD600',
+  '#8df2ff'
+],
 
             'fill-opacity': [
               'case',
