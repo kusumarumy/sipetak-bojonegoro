@@ -168,18 +168,15 @@ export const LAYERS: DefLayer[] = [
 },
 ];
 
-
 export const DTM = {
   trace:
-    `${process.env.NEXT_PUBLIC_R2_BASE_URL ?? ''}/dtm_trase/{z}/{x}/{y}.png`,
-
+    `${process.env.NEXT_PUBLIC_R2_BASE_URL ?? ''}/dtm/{z}/{x}/{y}.png`,
   aws:
     'https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png'
 };
 
 export const ORTHO =
   process.env.NEXT_PUBLIC_TILES_ORTHO ?? '';
-
 
 export const WARNA_DAMPAK:
   [string, string][] = [
