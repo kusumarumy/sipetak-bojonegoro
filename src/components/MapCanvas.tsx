@@ -441,16 +441,16 @@ const terpilihRef =
         'Orthophoto DPPT Bojonegoro 2026'
     };
 
-    if (DTM.trace) {
-      sources.dtm_trace = {
-        type: 'raster-dem',
-        tiles: [DTM.trace],
-        tileSize: 256,
-        encoding: 'terrarium',
-        minzoom: 10,
-        maxzoom: 18
-      };
-    }
+if (DTM.trace) {
+  sources.dtm = {
+    type: 'raster-dem',
+    tiles: [DTM.trace],
+    tileSize: 256,
+    encoding: 'terrarium',
+    minzoom: 17,
+    maxzoom: 17
+  };
+}
 
 if (DTM.aws) {
   sources.dtm_aws = {
@@ -1750,7 +1750,7 @@ map.addSource(
 
 const src =
   dtm === 'trace'
-    ? 'dtm_trace'
+    ? 'dtm'
     : 'dtm_aws';
 
 const urlDTM =
