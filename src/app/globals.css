@@ -13204,7 +13204,7 @@ html[data-theme="dark"] .daftar-head-icon {
 }
 
 html[data-theme="dark"] .daftar-title strong {
-  color: var(--terrain-ui-title);
+  color: #ffffff;
 }
 
 html[data-theme="dark"] .daftar-title span:first-child,
