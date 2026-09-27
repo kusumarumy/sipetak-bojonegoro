@@ -4281,7 +4281,7 @@ main.body {
   position: absolute !important;
   left: 82px !important;
   top: 88px !important;
-  width: 800px !important;
+  width: 1000px !important;
   height: min(560px, calc(100vh - 155px));
   min-height: 0;
   margin: 0 !important;
@@ -4458,7 +4458,7 @@ main.body {
     --terrain-ui-font,
     var(--f-body, Arial, sans-serif)
   );
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 600;
   line-height: 1.15;
 }
@@ -4513,7 +4513,7 @@ main.body {
     var(--f-body, Arial, sans-serif)
   );
 
-  font-size: 7px;
+  font-size: 9px;
   font-weight: 800;
 
   letter-spacing: 0.045em;
@@ -4703,7 +4703,7 @@ main.body {
 
   font-family: var(--terrain-ui-font, var(--f-body, Arial, sans-serif));
 
-  font-size: 9px;
+  font-size: 12px;
 
   font-weight: 800;
 
@@ -4743,7 +4743,7 @@ main.body {
 
   color: var(--terrain-ui-text, #374151);
 
-  font-size: 10px;
+  font-size: 12px;
 
   font-weight: 500;
 
@@ -13755,5 +13755,51 @@ html[data-theme="dark"] .layer-loading-spinner {
   border-color: var(--dark-panel-line);
   border-top-color: #2FA9A8;
 }
+/* =========================================================
+   DAFTAR BIDANG — DARK TEXT
+   ========================================================= */
 
+html[data-theme="dark"] .daftar-table th {
+  background: var(--dark-panel-2);
+  color: #FFFFFF;
+  border-color: var(--dark-panel-line);
+}
+
+html[data-theme="dark"] .daftar-table th .sort-header {
+  color: #FFFFFF;
+}
+
+html[data-theme="dark"] .daftar-table th .sort-header:hover {
+  color: #FFFFFF;
+}
+
+html[data-theme="dark"] .daftar-table td {
+  background: var(--dark-panel-2);
+  color: #FFFFFF;
+  border-color: var(--dark-panel-line-soft);
+}
+
+html[data-theme="dark"] .daftar-table .kode {
+  color: #FFFFFF;
+}
+
+html[data-theme="dark"] .daftar-table .angka {
+  color: #FFFFFF;
+}
+
+html[data-theme="dark"] .daftar-table tbody tr:hover,
+html[data-theme="dark"] .daftar-table tbody tr:hover td {
+  background: var(--dark-panel-hover);
+  color: #FFFFFF;
+}
+
+html[data-theme="dark"] .status-daftar {
+  background: var(--dark-panel-2);
+  border-color: var(--dark-panel-line);
+  color: #FFFFFF;
+}
+
+html[data-theme="dark"] .daftar-empty {
+  color: var(--dark-panel-muted) !important;
+}
 
