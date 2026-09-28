@@ -1,22 +1,12 @@
 'use client';
 
-import {
-  useEffect,
-  useRef,
-  useState
-} from 'react';
-
+import { useEffect, useRef, useState } from 'react';
 import maplibregl, {
   Map as MLMap,
   Popup
 } from 'maplibre-gl';
-
 import { Protocol } from 'pmtiles';
-
-import {
-  useApp,
-  type Basemap
-} from '@/store/useApp';
+import { useApp, type Basemap } from '@/store/useApp';
 
 import {
   LAYERS,
@@ -24,19 +14,14 @@ import {
 } from './layers';
 
 const pmtiles = new Protocol();
-
 let protokolTerpasang = false;
 
-class AppScaleControl
-  extends maplibregl.ScaleControl {
-
+class AppScaleControl extends maplibregl.ScaleControl {
   private element: HTMLElement | null = null;
-
   onAdd(map: MLMap) {
     this.element = super.onAdd(map);
     return this.element;
   }
-
   getElement() {
     return this.element;
   }
@@ -46,28 +31,23 @@ const TRASEG_URL =
   'https://raw.githubusercontent.com/kusumarumy/sipetak-bojonegoro/main/data/wgs84/traseg.geojson';
 
 export default function MapCanvas() {
+const ref =
+  useRef<HTMLDivElement>(null);
 
-  const ref =
-    useRef<HTMLDivElement>(null);
+const mapRef =
+  useRef<MLMap | null>(null);
 
-  const mapRef =
-    useRef<MLMap | null>(null);
+const scaleSlotRef =
+  useRef<HTMLDivElement>(null);
 
-  const scaleSlotRef =
-    useRef<HTMLDivElement>(null);
-
-  const popupRef =
-    useRef<Popup | null>(null);
-
-  const terpilihRef =
-    useRef<string | number | null>(null);
-
+const popupRef =
+  useRef<Popup | null>(null);
+const terpilihRef =
+  useRef<string | number | null>(null);
   const analisisRef =
     useRef<(string | number)[]>([]);
-
   const layerLoadingDimintaRef =
     useRef<Set<string>>(new Set());
-
   const [infoPeta, setInfoPeta] =
     useState({
       lon: 0,
@@ -76,10 +56,10 @@ export default function MapCanvas() {
       pitch: 0,
       bearing: 0
     });
-
   const [layerLoading, setLayerLoading] =
     useState<string[]>([]);
-
+  const [bangunanTerpilih, setBangunanTerpilih] =
+    useState<Record<string, any> | null>(null);
   const {
     basemap,
     setBasemap,
@@ -94,18 +74,10 @@ export default function MapCanvas() {
     beriPesan
   } = useApp();
 
-  /*
-   * =====================================================
-   * ANALISIS BIDANG
-   * =====================================================
-   */
-
   useEffect(() => {
-
     const handleAnalisisBidang = (
       event: Event
     ) => {
-
       const customEvent =
         event as CustomEvent<{
           ids?: (string | number)[];
@@ -115,9 +87,9 @@ export default function MapCanvas() {
         customEvent.detail?.ids ?? [];
 
       for (
-        const id of analisisRef.current
+        const id
+        of analisisRef.current
       ) {
-
         mapRef.current?.setFeatureState(
           {
             source: 'bidang',
@@ -140,11 +112,10 @@ export default function MapCanvas() {
       ) {
         return;
       }
-
       for (
-        const id of ids
+        const id
+        of ids
       ) {
-
         map.setFeatureState(
           {
             source: 'bidang',
@@ -155,47 +126,27 @@ export default function MapCanvas() {
           }
         );
       }
-
       analisisRef.current = ids;
     };
-
     window.addEventListener(
       'analisis-bidang',
       handleAnalisisBidang
     );
-
     return () => {
-
       window.removeEventListener(
         'analisis-bidang',
         handleAnalisisBidang
       );
     };
-
   }, []);
 
-  /*
-   * =====================================================
-   * RESET ANALISIS
-   * =====================================================
-   */
-
   useEffect(() => {
-
     const handleResetAnalisis = () => {
-
-      const map =
-        mapRef.current;
-
+      const map = mapRef.current;
       popupRef.current?.remove();
       popupRef.current = null;
-
       if (map) {
-
-        for (
-          const id of analisisRef.current
-        ) {
-
+        for (const id of analisisRef.current) {
           map.setFeatureState(
             {
               source: 'bidang',
@@ -206,11 +157,7 @@ export default function MapCanvas() {
             }
           );
         }
-
-        if (
-          terpilihRef.current !== null
-        ) {
-
+        if (terpilihRef.current !== null) {
           map.setFeatureState(
             {
               source: 'bidang',
@@ -225,41 +172,27 @@ export default function MapCanvas() {
 
       analisisRef.current = [];
       terpilihRef.current = null;
+      setBangunanTerpilih(null);
     };
-
     window.addEventListener(
       'reset-analisis-bidang',
       handleResetAnalisis
     );
-
     return () => {
-
       window.removeEventListener(
         'reset-analisis-bidang',
         handleResetAnalisis
       );
     };
-
   }, []);
 
-  /*
-   * =====================================================
-   * RESET PILIHAN BIDANG
-   * =====================================================
-   */
-
   useEffect(() => {
-
     const handleResetPilihanBidang = () => {
-
-      const map =
-        mapRef.current;
-
+      const map = mapRef.current;
       if (
         map &&
         terpilihRef.current !== null
       ) {
-
         map.setFeatureState(
           {
             source: 'bidang',
@@ -270,94 +203,68 @@ export default function MapCanvas() {
           }
         );
       }
-
       terpilihRef.current = null;
-
+      setBangunanTerpilih(null);
       popupRef.current?.remove();
       popupRef.current = null;
     };
-
     window.addEventListener(
       'reset-pilihan-bidang',
       handleResetPilihanBidang
     );
-
     return () => {
-
       window.removeEventListener(
         'reset-pilihan-bidang',
         handleResetPilihanBidang
       );
     };
-
   }, []);
 
-  /*
-   * =====================================================
-   * FOKUS BIDANG
-   * =====================================================
-   */
-
   useEffect(() => {
-
     const handleFokusBidang = (
       event: Event
     ) => {
-
       const customEvent =
         event as CustomEvent<{
           id?: string | number;
         }>;
-
       const id =
         customEvent.detail?.id;
-
       const map =
         mapRef.current;
-
       if (
         id === undefined ||
         !map
       ) {
         return;
       }
-
       const fokus = () => {
-
         if (!map.isStyleLoaded()) {
           return;
         }
-
         if (!map.getSource('bidang')) {
           return;
         }
-
         const features =
           map.querySourceFeatures(
             'bidang'
           );
-
         const feature =
           features.find(
             (f) =>
               String(f.id) ===
               String(id)
           );
-
         if (!feature) {
-
           console.warn(
             'Bidang tidak ditemukan di source:',
             id
           );
-
           return;
         }
-
         if (
           feature.id !== undefined
         ) {
-
           sorot(
             map,
             feature.id
@@ -370,7 +277,6 @@ export default function MapCanvas() {
         const tambahKoordinat = (
           coords: any
         ) => {
-
           if (
             !Array.isArray(coords)
           ) {
@@ -379,10 +285,11 @@ export default function MapCanvas() {
 
           if (
             coords.length >= 2 &&
-            typeof coords[0] === 'number' &&
-            typeof coords[1] === 'number'
+            typeof coords[0] ===
+              'number' &&
+            typeof coords[1] ===
+              'number'
           ) {
-
             bounds.extend(
               coords as [
                 number,
@@ -396,7 +303,6 @@ export default function MapCanvas() {
           for (
             const c of coords
           ) {
-
             tambahKoordinat(c);
           }
         };
@@ -407,7 +313,6 @@ export default function MapCanvas() {
         if (
           geometry?.coordinates
         ) {
-
           tambahKoordinat(
             geometry.coordinates
           );
@@ -437,11 +342,8 @@ export default function MapCanvas() {
       if (
         map.isStyleLoaded()
       ) {
-
         fokus();
-
       } else {
-
         map.once(
           'load',
           fokus
@@ -455,32 +357,21 @@ export default function MapCanvas() {
     );
 
     return () => {
-
       window.removeEventListener(
         'fokus-bidang',
         handleFokusBidang
       );
     };
-
   }, []);
 
-  /*
-   * =====================================================
-   * INISIALISASI MAP
-   * =====================================================
-   */
-
   useEffect(() => {
-
     if (
       !ref.current ||
       mapRef.current
     ) {
       return;
     }
-
     if (!protokolTerpasang) {
-
       maplibregl.addProtocol(
         'pmtiles',
         pmtiles.tile
@@ -490,7 +381,6 @@ export default function MapCanvas() {
     }
 
     const sources: any = {
-
       'esri-streets': {
         type: 'raster',
         tiles: [
@@ -555,42 +445,30 @@ export default function MapCanvas() {
         'Orthophoto DPPT Bojonegoro 2026'
     };
 
-    if (DTM.trace) {
+if (DTM.trace) {
+  sources.dtm = {
+    type: 'raster-dem',
+    tiles: [DTM.trace],
+    tileSize: 256,
+    encoding: 'terrarium',
+    minzoom: 17,
+    maxzoom: 17
+  };
+}
 
-      sources.dtm = {
-        type: 'raster-dem',
-        tiles: [
-          DTM.trace
-        ],
-        tileSize: 256,
-        encoding: 'terrarium',
-        minzoom: 17,
-        maxzoom: 17
-      };
-    }
+if (DTM.aws) {
+  sources.dtm_aws = {
+    type: 'raster-dem',
+    tiles: [DTM.aws],
+    tileSize: 256,
+    encoding: 'terrarium',
+    minzoom: 0,
+    maxzoom: 15
+  };
+}
 
-    if (DTM.aws) {
-
-      sources.dtm_aws = {
-        type: 'raster-dem',
-        tiles: [
-          DTM.aws
-        ],
-        tileSize: 256,
-        encoding: 'terrarium',
-        minzoom: 0,
-        maxzoom: 15
-      };
-    }
-
-    /*
-     * ===================================================
-     * BASEMAP
-     * ===================================================
-     */
 
     const layersAwal: any[] = [
-
       {
         id: 'bg',
         type: 'background',
@@ -692,12 +570,6 @@ export default function MapCanvas() {
       }
     });
 
-    /*
-     * ===================================================
-     * CREATE MAP
-     * ===================================================
-     */
-
     const map =
       new maplibregl.Map({
         container: ref.current,
@@ -734,21 +606,13 @@ export default function MapCanvas() {
     const sourceLayerIds =
       new Set(
         LAYERS.map(
-          (layer) =>
-            layer.id
+          (layer) => layer.id
         )
       );
-
-    /*
-     * ===================================================
-     * LOADING LAYER
-     * ===================================================
-     */
 
     const mulaiLoadingLayer = (
       sourceId: string
     ) => {
-
       if (
         !sourceLayerIds.has(
           sourceId
@@ -789,7 +653,6 @@ export default function MapCanvas() {
     const selesaiLoadingLayer = (
       sourceId: string
     ) => {
-
       if (
         !sourceLayerIds.has(
           sourceId
@@ -814,10 +677,8 @@ export default function MapCanvas() {
     const cekSumberSelesai = (
       sourceId: string
     ) => {
-
       requestAnimationFrame(
         () => {
-
           if (
             !mapRef.current ||
             !layerLoadingDimintaRef.current.has(
@@ -832,7 +693,6 @@ export default function MapCanvas() {
               sourceId
             )
           ) {
-
             selesaiLoadingLayer(
               sourceId
             );
@@ -844,7 +704,6 @@ export default function MapCanvas() {
     const handleSourceLoading = (
       e: any
     ) => {
-
       const sourceId =
         e?.sourceId;
 
@@ -860,7 +719,6 @@ export default function MapCanvas() {
     const handleSourceData = (
       e: any
     ) => {
-
       const sourceId =
         e?.sourceId;
 
@@ -871,7 +729,6 @@ export default function MapCanvas() {
       if (
         e.isSourceLoaded
       ) {
-
         selesaiLoadingLayer(
           sourceId
         );
@@ -881,7 +738,6 @@ export default function MapCanvas() {
     const handleMapError = (
       e: any
     ) => {
-
       const sourceId =
         e?.error?.sourceId ??
         e?.sourceId;
@@ -892,7 +748,6 @@ export default function MapCanvas() {
           sourceId
         )
       ) {
-
         selesaiLoadingLayer(
           sourceId
         );
@@ -914,28 +769,16 @@ export default function MapCanvas() {
       handleMapError
     );
 
-    /*
-     * ===================================================
-     * MAP INFO
-     * ===================================================
-     */
-
     const perbaruiInfoPeta =
       () => {
-
         const center =
           map.getCenter();
 
         setInfoPeta({
-
           lon: center.lng,
-
           lat: center.lat,
-
           zoom: map.getZoom(),
-
           pitch: map.getPitch(),
-
           bearing:
             map.getBearing()
         });
@@ -963,12 +806,6 @@ export default function MapCanvas() {
 
     perbaruiInfoPeta();
 
-    /*
-     * ===================================================
-     * RESIZE
-     * ===================================================
-     */
-
     const resizeObserver =
       new ResizeObserver(
         () => {
@@ -980,101 +817,74 @@ export default function MapCanvas() {
       ref.current
     );
 
-    /*
-     * ===================================================
-     * CONTROLS
-     * ===================================================
-     */
+map.addControl(
+  new maplibregl.NavigationControl({
+    visualizePitch: true
+  }),
+  'top-right'
+);
 
-    map.addControl(
-      new maplibregl.NavigationControl({
-        visualizePitch: true
-      }),
-      'top-right'
-    );
+const scaleControl =
+  new AppScaleControl({
+    maxWidth: 100,
+    unit: 'metric'
+  });
 
-    const scaleControl =
-      new AppScaleControl({
-        maxWidth: 100,
-        unit: 'metric'
-      });
+map.addControl(
+  scaleControl,
+  'bottom-right'
+);
 
-    map.addControl(
-      scaleControl,
-      'bottom-right'
-    );
+const scaleElement =
+  scaleControl.getElement();
 
-    const scaleElement =
-      scaleControl.getElement();
+if (
+  scaleElement &&
+  scaleSlotRef.current
+) {
+  scaleSlotRef.current.appendChild(
+    scaleElement
+  );
+}
 
-    if (
-      scaleElement &&
-      scaleSlotRef.current
-    ) {
-
-      scaleSlotRef.current.appendChild(
-        scaleElement
-      );
-    }
-
-    map.addControl(
-      new maplibregl.AttributionControl({
-        compact: true
-      }),
-      'bottom-left'
-    );
-
-    /*
-     * ===================================================
-     * LOAD DATA LAYERS
-     * ===================================================
-     */
-
+map.addControl(
+  new maplibregl.AttributionControl({
+    compact: true
+  }),
+  'bottom-left'
+);
     map.on(
       'load',
       () => {
-
         for (
-          const L of LAYERS
+          const L
+          of LAYERS
         ) {
-
-          /*
-           * Bidang dibuat khusus
-           * di bawah.
-           */
           if (
             L.id === 'bidang'
           ) {
             continue;
           }
-
-          map.addSource(
-            L.id,
-            {
-              type: 'geojson',
-
-              data:
-                L.id === 'traseg'
-                  ? TRASEG_URL
-                  : `/api/layers/${L.sumber}`
-            }
-          );
-
+map.addSource(
+  L.id,
+  {
+    type: 'geojson',
+    data:
+      L.id === 'traseg'
+        ? TRASEG_URL
+        : `/api/layers/${L.sumber}`
+  }
+);
           const vis =
             layerAktif[L.id]
               ? 'visible'
               : 'none';
-
-          /*
-           * FILL
-           */
 
           if (
             L.tipe === 'fill'
           ) {
 
             map.addLayer({
-
               id: L.id,
 
               type: 'fill',
@@ -1086,7 +896,6 @@ export default function MapCanvas() {
               },
 
               paint: {
-
                 'fill-color':
                   L.warna,
 
@@ -1096,12 +905,7 @@ export default function MapCanvas() {
               }
             });
 
-            /*
-             * Outline
-             */
-
             map.addLayer({
-
               id:
                 L.id + '-ln',
 
@@ -1114,30 +918,21 @@ export default function MapCanvas() {
               },
 
               paint: {
-
                 'line-color':
                   L.warna,
 
-                'line-width':
-                  1.2,
+                'line-width': 1.2,
 
                 'line-opacity':
                   0.85
               }
             });
 
-          }
-
-          /*
-           * LINE
-           */
-
-          else if (
+          } else if (
             L.tipe === 'line'
           ) {
 
             map.addLayer({
-
               id: L.id,
 
               type: 'line',
@@ -1149,7 +944,6 @@ export default function MapCanvas() {
               },
 
               paint: {
-
                 'line-color':
                   L.warna,
 
@@ -1168,16 +962,9 @@ export default function MapCanvas() {
               }
             });
 
-          }
-
-          /*
-           * CIRCLE
-           */
-
-          else {
+          } else {
 
             map.addLayer({
-
               id: L.id,
 
               type: 'circle',
@@ -1189,7 +976,6 @@ export default function MapCanvas() {
               },
 
               paint: {
-
                 'circle-radius':
                   4,
 
@@ -1206,15 +992,13 @@ export default function MapCanvas() {
           }
         }
 
-        /*
-         * =================================================
-         * TRASE HALO
-         * =================================================
-         */
-
         if (
-          map.getSource('traseg') &&
-          map.getLayer('traseg')
+          map.getSource(
+            'traseg'
+          ) &&
+          map.getLayer(
+            'traseg'
+          )
         ) {
 
           map.addLayer(
@@ -1235,7 +1019,6 @@ export default function MapCanvas() {
               },
 
               paint: {
-
                 'line-color':
                   '#FFFFFF',
 
@@ -1271,65 +1054,33 @@ export default function MapCanvas() {
           );
         }
 
-        /*
-         * =================================================
-         * BIDANG TANAH
-         * =================================================
-         */
-
         map.addSource(
           'bidang',
           {
             type: 'geojson',
 
-            data:
-              '/api/bidang',
+            data: '/api/bidang',
 
-            promoteId:
-              'id'
+            promoteId: 'id'
           }
         );
 
         map.addLayer({
+          id: 'bidang',
 
-          id:
-            'bidang',
+          type: 'fill',
 
-          type:
-            'fill',
-
-          source:
-            'bidang',
+          source: 'bidang',
 
           paint: {
-
-            'fill-color': [
-              'case',
-
-              [
-                'boolean',
-                [
-                  'feature-state',
-                  'analisis'
-                ],
-                false
-              ],
-
-              '#00E5FF',
-
-              [
-                'boolean',
-                [
-                  'feature-state',
-                  'sel'
-                ],
-                false
-              ],
-
-              '#FFD600',
-
-              '#8df2ff'
-            ],
+'fill-color': [
+  'case',
+  ['boolean', ['feature-state', 'analisis'], false],
+  '#00E5FF',
+  ['boolean', ['feature-state', 'sel'], false],
+  '#FFD600',
+  '#8df2ff'
+],
 
             'fill-opacity': [
               'case',
@@ -1366,7 +1117,6 @@ export default function MapCanvas() {
               ],
 
               0.95,
-
               [
                 'boolean',
                 [
@@ -1377,43 +1127,23 @@ export default function MapCanvas() {
               ],
 
               0.74,
-
               0.90
             ]
           }
         });
 
-        /*
-         * Trase tetap berada
-         * di bawah layer data.
-         */
-
-        posisikanTraseDiBawahLayerData(
-          map
-        );
-
-        /*
-         * =================================================
-         * OUTLINE BIDANG
-         * =================================================
-         */
+        posisikanTraseDiBawahLayerData(map);
 
         map.addLayer({
+          id: 'bidang-ln',
 
-          id:
-            'bidang-ln',
+          type: 'line',
 
-          type:
-            'line',
-
-          source:
-            'bidang',
+          source: 'bidang',
 
           paint: {
-
             'line-color': [
               'case',
-
               [
                 'boolean',
                 [
@@ -1425,6 +1155,7 @@ export default function MapCanvas() {
 
               '#00E5FF',
 
+              // Filter
               [
                 'boolean',
                 [
@@ -1435,7 +1166,6 @@ export default function MapCanvas() {
               ],
 
               '#FFFFFF',
-
               [
                 'boolean',
                 [
@@ -1446,13 +1176,11 @@ export default function MapCanvas() {
               ],
 
               '#FFFFFF',
-
               'rgba(14,23,32,.45)'
             ],
 
             'line-width': [
               'case',
-
               [
                 'boolean',
                 [
@@ -1463,7 +1191,6 @@ export default function MapCanvas() {
               ],
 
               2.5,
-
               [
                 'boolean',
                 [
@@ -1474,7 +1201,6 @@ export default function MapCanvas() {
               ],
 
               2.2,
-
               [
                 'boolean',
                 [
@@ -1485,7 +1211,6 @@ export default function MapCanvas() {
               ],
 
               3,
-
               0.6
             ],
 
@@ -1508,96 +1233,64 @@ export default function MapCanvas() {
           }
         });
 
-        /*
-         * =================================================
-         * LABEL BIDANG
-         * =================================================
-         */
-
         map.addLayer({
+          id: 'bidang-lb',
 
-          id:
-            'bidang-lb',
+          type: 'symbol',
 
-          type:
-            'symbol',
+          source: 'bidang',
 
-          source:
-            'bidang',
-
-          minzoom:
-            13,
+          minzoom: 13,
 
           layout: {
-
-            visibility:
-              'none',
+            visibility: 'none',
 
             'text-field': [
               'to-string',
-
               [
                 'get',
                 'nib'
               ]
             ],
 
-            'text-size':
-              12,
+            'text-size': 12,
 
-            'text-anchor':
-              'center',
+            'text-anchor': 'center',
 
-            'text-allow-overlap':
-              true,
+            'text-allow-overlap': true,
 
-            'text-ignore-placement':
-              true
+            'text-ignore-placement': true
           },
 
           paint: {
-
             'text-color':
               '#1E2733',
 
             'text-halo-color':
               'rgba(255,255,255,.9)',
 
-            'text-halo-width':
-              1.1
+            'text-halo-width': 1.1
           }
         });
 
-        /*
-         * =================================================
-         * FILTER BIDANG
-         * =================================================
-         */
-
         map.addLayer({
-
           id:
             'bidang-filter',
 
-          type:
-            'fill',
+          type: 'fill',
 
-          source:
-            'bidang',
+          source: 'bidang',
 
           filter: [
             '==',
-
             [
               'get',
               '__filter_never_match__'
             ],
-
             '__never__'
           ],
 
           paint: {
-
             'fill-color':
               '#FF1744',
 
@@ -1607,78 +1300,45 @@ export default function MapCanvas() {
         });
 
         map.addLayer({
-
           id:
             'bidang-filter-ln',
 
-          type:
-            'line',
+          type: 'line',
 
-          source:
-            'bidang',
+          source: 'bidang',
 
           filter: [
             '==',
-
             [
               'get',
               '__filter_never_match__'
             ],
-
             '__never__'
           ],
 
           paint: {
-
             'line-color':
               '#FF1744',
 
-            'line-width':
-              3,
+            'line-width': 3,
 
-            'line-opacity':
-              1
+            'line-opacity': 1
           }
         });
 
-        /*
-         * =================================================
-         * BANGUNAN DI ATAS BIDANG
-         * =================================================
-         */
-
-        posisikanBangunanDiAtasBidang(
-          map
-        );
-
-        /*
-         * =================================================
-         * TEMA
-         * =================================================
-         */
+        // Bangunan berada di atas bidang tanah.
+        // Style layer lain tetap tidak diubah.
+        posisikanBangunanDiAtasBidang(map);
 
         warnaiTema(map);
-
-        /*
-         * =================================================
-         * INTERAKSI
-         * =================================================
-         */
 
         pasangInteraksi(map);
       }
     );
 
-    /*
-     * ===================================================
-     * MAP ERROR
-     * ===================================================
-     */
-
     map.on(
       'error',
       (e) => {
-
         console.warn(
           'MapLibre:',
           e.error?.message ?? e
@@ -1686,14 +1346,7 @@ export default function MapCanvas() {
       }
     );
 
-    /*
-     * ===================================================
-     * CLEANUP
-     * ===================================================
-     */
-
     return () => {
-
       resizeObserver.disconnect();
 
       map.off(
@@ -1712,15 +1365,14 @@ export default function MapCanvas() {
       );
 
       layerLoadingDimintaRef.current.clear();
-
       setLayerLoading([]);
 
       popupRef.current?.remove();
 
       for (
-        const id of analisisRef.current
+        const id
+        of analisisRef.current
       ) {
-
         map.setFeatureState(
           {
             source: 'bidang',
@@ -1738,35 +1390,23 @@ export default function MapCanvas() {
 
       mapRef.current = null;
     };
-
   }, []);
-
-  /*
-   * =====================================================
-   * INTERAKSI
-   * =====================================================
-   */
 
   function pasangInteraksi(
     map: MLMap
   ) {
-
     let hov:
       | string
       | number
       | null = null;
 
-    /*
-     * ===================================================
-     * HOVER BIDANG
-     * ===================================================
-     */
-
+    // =====================================================
+    // HOVER BIDANG TANAH
+    // =====================================================
     map.on(
       'mousemove',
       'bidang',
       (e) => {
-
         map.getCanvas()
           .style.cursor =
           'pointer';
@@ -1783,7 +1423,6 @@ export default function MapCanvas() {
         if (
           hov !== null
         ) {
-
           map.setFeatureState(
             {
               source: 'bidang',
@@ -1813,14 +1452,12 @@ export default function MapCanvas() {
       'mouseleave',
       'bidang',
       () => {
-
         map.getCanvas()
           .style.cursor = '';
 
         if (
           hov !== null
         ) {
-
           map.setFeatureState(
             {
               source: 'bidang',
@@ -1836,17 +1473,14 @@ export default function MapCanvas() {
       }
     );
 
-    /*
-     * ===================================================
-     * CLICK BIDANG
-     * ===================================================
-     */
-
+    // =====================================================
+    // KLIK BIDANG TANAH
+    // Style dan perilaku kartu bidang tetap seperti sekarang.
+    // =====================================================
     map.on(
       'click',
       'bidang',
       (e) => {
-
         const f =
           e.features?.[0];
 
@@ -1864,62 +1498,53 @@ export default function MapCanvas() {
             'div'
           );
 
-        el.className =
-          'pop';
+        el.className = 'pop';
 
         el.innerHTML = `
-          <div class="ph">
+<div class="ph">
+  <div class="id">
+    ${p.nib ?? 'NIB tidak tersedia'}
+  </div>
 
-            <div class="id">
-              ${escapeHtml(
-                p.nib ??
-                'NIB tidak tersedia'
-              )}
-            </div>
+  <div class="nm">
+    ${p.nama_milik ?? 'Nama pemilik tidak tersedia'}
+  </div>
+</div>
 
-            <div class="nm">
-              ${escapeHtml(
-                p.nama_milik ??
-                'Nama pemilik tidak tersedia'
-              )}
-            </div>
+<div class="pb">
 
-          </div>
+  <div>
+    <span>
+      Luas bidang
+    </span>
 
-          <div class="pb">
+    <b>
+      ${fmt(
+        p.luas_tnh
+      )} m²
+    </b>
+  </div>
 
-            <div>
-              <span>
-                Luas bidang
-              </span>
+  <div>
+    <span>
+      Penggunaan
+    </span>
 
-              <b>
-                ${fmt(
-                  p.luas_tnh
-                )} m²
-              </b>
-            </div>
+    <b
+      style="font-family:var(--f-body)"
+    >
+      ${
+        p.penggunaan ??
+        '—'
+      }
+    </b>
+  </div>
 
-            <div>
-              <span>
-                Penggunaan
-              </span>
+</div>
 
-              <b
-                style="font-family:var(--f-body)"
-              >
-                ${escapeHtml(
-                  p.penggunaan ??
-                  '—'
-                )}
-              </b>
-            </div>
-
-          </div>
-
-          <button>
-            Buka kartu bidang
-          </button>
+<button>
+  Buka kartu bidang
+</button>
         `;
 
         el
@@ -1929,6 +1554,7 @@ export default function MapCanvas() {
           .addEventListener(
             'click',
             () => {
+              setBangunanTerpilih(null);
 
               pilihBidang(
                 p.id
@@ -1937,7 +1563,6 @@ export default function MapCanvas() {
               if (
                 f.id !== undefined
               ) {
-
                 sorot(
                   map,
                   f.id
@@ -1948,39 +1573,48 @@ export default function MapCanvas() {
             }
           );
 
+        const fotoEl =
+          el.querySelector(
+            'img'
+          );
+
+        if (fotoEl) {
+          fotoEl.addEventListener(
+            'error',
+            () => {
+              (fotoEl.parentElement as HTMLElement | null)
+                ?.style.setProperty(
+                  'display',
+                  'none'
+                );
+            }
+          );
+        }
+
         popupRef.current =
           new maplibregl.Popup({
-
-            closeButton:
-              true,
-
-            offset:
-              12,
-
-            maxWidth:
-              'none'
+            closeButton: true,
+            offset: 12,
+            maxWidth: 'none'
           })
             .setLngLat(
               e.lngLat
             )
-            .setDOMContent(
-              el
-            )
+            .setDOMContent(el)
             .addTo(map);
       }
     );
 
-    /*
-     * ===================================================
-     * HOVER BANGUNAN
-     * ===================================================
-     */
-
+    // =====================================================
+    // BANGUNAN
+    // Klik bangunan membuka popup khusus bangunan.
+    // Bangunan berada di atas bidang sehingga event ini
+    // tetap bisa menangkap klik pada footprint bangunan.
+    // =====================================================
     map.on(
-      'mousemove',
+      'mouseenter',
       'bangunan',
       () => {
-
         map.getCanvas()
           .style.cursor =
           'pointer';
@@ -1991,24 +1625,15 @@ export default function MapCanvas() {
       'mouseleave',
       'bangunan',
       () => {
-
         map.getCanvas()
-          .style.cursor =
-          '';
+          .style.cursor = '';
       }
     );
-
-    /*
-     * ===================================================
-     * CLICK BANGUNAN
-     * ===================================================
-     */
 
     map.on(
       'click',
       'bangunan',
       (e) => {
-
         const f =
           e.features?.[0];
 
@@ -2017,535 +1642,26 @@ export default function MapCanvas() {
         }
 
         const p =
-          f.properties as any;
+          (f.properties ?? {}) as Record<string, any>;
 
         popupRef.current?.remove();
+        popupRef.current = null;
 
-        const foto =
-          safeImageUrl(
-            p.foto_bgn
-          );
-
-        const fotoHtml =
-          foto
-            ? `
-              <div
-                style="
-                  width:100%;
-                  height:190px;
-                  border-radius:14px;
-                  overflow:hidden;
-                  background:#EEF2F7;
-                  margin-bottom:14px;
-                "
-              >
-                <img
-                  src="${foto}"
-                  alt="Foto bangunan"
-                  style="
-                    width:100%;
-                    height:100%;
-                    object-fit:cover;
-                    display:block;
-                  "
-                  onerror="
-                    this.style.display='none';
-                  "
-                />
-              </div>
-            `
-            : '';
-
-        const el =
-          document.createElement(
-            'div'
-          );
-
-        el.className =
-          'pop bangunan-pop';
-
-        el.innerHTML = `
-          <div
-            style="
-              width:390px;
-              max-width:calc(100vw - 50px);
-              font-family:var(--f-body,Arial,sans-serif);
-              color:#1E2733;
-            "
-          >
-
-            ${fotoHtml}
-
-            <div
-              style="
-                display:flex;
-                align-items:flex-start;
-                justify-content:space-between;
-                gap:14px;
-                margin-bottom:14px;
-              "
-            >
-
-              <div>
-
-                <div
-                  style="
-                    font-size:11px;
-                    font-weight:800;
-                    letter-spacing:.08em;
-                    color:#718096;
-                    text-transform:uppercase;
-                    margin-bottom:4px;
-                  "
-                >
-                  KARTU BANGUNAN
-                </div>
-
-                <div
-                  style="
-                    font-size:23px;
-                    line-height:1.1;
-                    font-weight:800;
-                    color:#17202B;
-                  "
-                >
-                  ${escapeHtml(
-                    p.id ??
-                    p.fid ??
-                    '—'
-                  )}
-                </div>
-
-                <div
-                  style="
-                    font-size:13px;
-                    color:#718096;
-                    margin-top:5px;
-                  "
-                >
-                  ${escapeHtml(
-                    p.jenis_bgn ??
-                    'Jenis bangunan tidak tersedia'
-                  )}
-                </div>
-
-              </div>
-
-              <div
-                style="
-                  background:#EEF3F8;
-                  color:#42617D;
-                  border-radius:999px;
-                  padding:7px 11px;
-                  font-size:11px;
-                  font-weight:700;
-                  white-space:nowrap;
-                "
-              >
-                Bangunan
-              </div>
-
-            </div>
-
-            <div
-              style="
-                border:1px solid #E1E7EF;
-                border-radius:14px;
-                padding:15px;
-                background:#FFFFFF;
-              "
-            >
-
-              <div
-                style="
-                  font-size:15px;
-                  font-weight:800;
-                  margin-bottom:4px;
-                  color:#17202B;
-                "
-              >
-                Informasi bangunan
-              </div>
-
-              <div
-                style="
-                  font-size:12px;
-                  color:#718096;
-                  margin-bottom:14px;
-                "
-              >
-                Data bangunan hasil inventarisasi
-              </div>
-
-              <div
-                style="
-                  display:grid;
-                  grid-template-columns:1fr 1fr;
-                  gap:16px 20px;
-                "
-              >
-
-                <div>
-                  <div
-                    style="
-                      font-size:10px;
-                      font-weight:700;
-                      color:#718096;
-                      text-transform:uppercase;
-                      margin-bottom:4px;
-                    "
-                  >
-                    FID
-                  </div>
-
-                  <div
-                    style="
-                      font-size:13px;
-                      color:#17202B;
-                    "
-                  >
-                    ${escapeHtml(
-                      p.fid ??
-                      '—'
-                    )}
-                  </div>
-                </div>
-
-                <div>
-                  <div
-                    style="
-                      font-size:10px;
-                      font-weight:700;
-                      color:#718096;
-                      text-transform:uppercase;
-                      margin-bottom:4px;
-                    "
-                  >
-                    ID
-                  </div>
-
-                  <div
-                    style="
-                      font-size:13px;
-                      color:#17202B;
-                    "
-                  >
-                    ${escapeHtml(
-                      p.id ??
-                      '—'
-                    )}
-                  </div>
-                </div>
-
-                <div>
-                  <div
-                    style="
-                      font-size:10px;
-                      font-weight:700;
-                      color:#718096;
-                      text-transform:uppercase;
-                      margin-bottom:4px;
-                    "
-                  >
-                    JENIS BANGUNAN
-                  </div>
-
-                  <div
-                    style="
-                      font-size:13px;
-                      color:#17202B;
-                    "
-                  >
-                    ${escapeHtml(
-                      p.jenis_bgn ??
-                      '—'
-                    )}
-                  </div>
-                </div>
-
-                <div>
-                  <div
-                    style="
-                      font-size:10px;
-                      font-weight:700;
-                      color:#718096;
-                      text-transform:uppercase;
-                      margin-bottom:4px;
-                    "
-                  >
-                    FUNGSI BANGUNAN
-                  </div>
-
-                  <div
-                    style="
-                      font-size:13px;
-                      color:#17202B;
-                    "
-                  >
-                    ${escapeHtml(
-                      p.fungsi_bgn ??
-                      '—'
-                    )}
-                  </div>
-                </div>
-
-                <div>
-                  <div
-                    style="
-                      font-size:10px;
-                      font-weight:700;
-                      color:#718096;
-                      text-transform:uppercase;
-                      margin-bottom:4px;
-                    "
-                  >
-                    JUMLAH BANGUNAN
-                  </div>
-
-                  <div
-                    style="
-                      font-size:13px;
-                      color:#17202B;
-                    "
-                  >
-                    ${fmt(
-                      p.jml_bgn
-                    )}
-                  </div>
-                </div>
-
-                <div>
-                  <div
-                    style="
-                      font-size:10px;
-                      font-weight:700;
-                      color:#718096;
-                      text-transform:uppercase;
-                      margin-bottom:4px;
-                    "
-                  >
-                    JUMLAH LANTAI
-                  </div>
-
-                  <div
-                    style="
-                      font-size:13px;
-                      color:#17202B;
-                    "
-                  >
-                    ${fmt(
-                      p.jml_lnt
-                    )}
-                  </div>
-                </div>
-
-                <div>
-                  <div
-                    style="
-                      font-size:10px;
-                      font-weight:700;
-                      color:#718096;
-                      text-transform:uppercase;
-                      margin-bottom:4px;
-                    "
-                  >
-                    LUAS BANGUNAN
-                  </div>
-
-                  <div
-                    style="
-                      font-size:13px;
-                      font-weight:700;
-                      color:#17202B;
-                    "
-                  >
-                    ${fmt(
-                      p.luas_bgn
-                    )} m²
-                  </div>
-                </div>
-
-                <div>
-                  <div
-                    style="
-                      font-size:10px;
-                      font-weight:700;
-                      color:#718096;
-                      text-transform:uppercase;
-                      margin-bottom:4px;
-                    "
-                  >
-                    TANGGAL UPDATE
-                  </div>
-
-                  <div
-                    style="
-                      font-size:13px;
-                      color:#17202B;
-                    "
-                  >
-                    ${escapeHtml(
-                      p.date_updt ??
-                      '—'
-                    )}
-                  </div>
-                </div>
-
-              </div>
-
-              <div
-                style="
-                  margin-top:17px;
-                  padding-top:15px;
-                  border-top:1px solid #E8EDF3;
-                "
-              >
-
-                <div
-                  style="
-                    font-size:10px;
-                    font-weight:700;
-                    color:#718096;
-                    text-transform:uppercase;
-                    margin-bottom:5px;
-                  "
-                >
-                  ALAMAT BANGUNAN
-                </div>
-
-                <div
-                  style="
-                    font-size:13px;
-                    line-height:1.5;
-                    color:#17202B;
-                  "
-                >
-                  ${escapeHtml(
-                    p.alamat_bgn ??
-                    '—'
-                  )}
-                </div>
-
-              </div>
-
-              <div
-                style="
-                  margin-top:15px;
-                  padding-top:15px;
-                  border-top:1px solid #E8EDF3;
-                "
-              >
-
-                <div
-                  style="
-                    font-size:10px;
-                    font-weight:700;
-                    color:#718096;
-                    text-transform:uppercase;
-                    margin-bottom:5px;
-                  "
-                >
-                  UPDATE
-                </div>
-
-                <div
-                  style="
-                    font-size:13px;
-                    line-height:1.5;
-                    color:#17202B;
-                  "
-                >
-                  ${escapeHtml(
-                    p.update ??
-                    '—'
-                  )}
-                </div>
-
-              </div>
-
-              ${
-                !foto &&
-                p.foto_bgn
-                  ? `
-                    <div
-                      style="
-                        margin-top:15px;
-                        padding-top:15px;
-                        border-top:1px solid #E8EDF3;
-                      "
-                    >
-                      <div
-                        style="
-                          font-size:10px;
-                          font-weight:700;
-                          color:#718096;
-                          text-transform:uppercase;
-                          margin-bottom:5px;
-                        "
-                      >
-                        FOTO BANGUNAN
-                      </div>
-
-                      <div
-                        style="
-                          font-size:13px;
-                          color:#17202B;
-                          word-break:break-word;
-                        "
-                      >
-                        ${escapeHtml(
-                          p.foto_bgn
-                        )}
-                      </div>
-                    </div>
-                  `
-                  : ''
-              }
-
-            </div>
-
-          </div>
-        `;
-
-        popupRef.current =
-          new maplibregl.Popup({
-
-            closeButton:
-              true,
-
-            offset:
-              14,
-
-            maxWidth:
-              'none'
-          })
-            .setLngLat(
-              e.lngLat
-            )
-            .setDOMContent(
-              el
-            )
-            .addTo(map);
+        // Pastikan kartu bidang yang mungkin sedang terbuka ikut ditutup.
+        pilihBidang(null);
+        setBangunanTerpilih(p);
       }
     );
   }
-
-  /*
-   * =====================================================
-   * SOROT BIDANG
-   * =====================================================
-   */
 
   function sorot(
     map: MLMap,
     fid: string | number
   ) {
-
     if (
       terpilihRef.current !==
       null
     ) {
-
       map.setFeatureState(
         {
           source: 'bidang',
@@ -2574,14 +1690,7 @@ export default function MapCanvas() {
     );
   }
 
-  /*
-   * =====================================================
-   * BASEMAP
-   * =====================================================
-   */
-
   useEffect(() => {
-
     const map =
       mapRef.current;
 
@@ -2595,11 +1704,9 @@ export default function MapCanvas() {
       id: string;
       basemap: Basemap;
     }[] = [
-
       {
         id:
           'bm-esri-streets',
-
         basemap:
           'esri-streets'
       },
@@ -2607,7 +1714,6 @@ export default function MapCanvas() {
       {
         id:
           'bm-esri',
-
         basemap:
           'esri'
       },
@@ -2615,7 +1721,6 @@ export default function MapCanvas() {
       {
         id:
           'bm-google-hybrid',
-
         basemap:
           'google-hybrid'
       },
@@ -2623,7 +1728,6 @@ export default function MapCanvas() {
       {
         id:
           'bm-google-streets',
-
         basemap:
           'google-streets'
       },
@@ -2631,7 +1735,6 @@ export default function MapCanvas() {
       {
         id:
           'bm-opentopo',
-
         basemap:
           'opentopo'
       },
@@ -2639,16 +1742,15 @@ export default function MapCanvas() {
       {
         id:
           'bm-ortho',
-
         basemap:
           'ortho'
       }
     ];
 
     for (
-      const item of basemapLayers
+      const item
+      of basemapLayers
     ) {
-
       if (
         !map.getLayer(
           item.id
@@ -2672,20 +1774,12 @@ export default function MapCanvas() {
           : 'none'
       );
     }
-
   }, [
     basemap,
     beriPesan
   ]);
 
-  /*
-   * =====================================================
-   * DTM
-   * =====================================================
-   */
-
   useEffect(() => {
-
     const map =
       mapRef.current;
 
@@ -2695,7 +1789,6 @@ export default function MapCanvas() {
 
     const terapkanDTM =
       () => {
-
         if (
           !map.isStyleLoaded()
         ) {
@@ -2705,10 +1798,10 @@ export default function MapCanvas() {
         if (
           dtm === 'off'
         ) {
-
           map.setTerrain(
             null
           );
+
 
           map.easeTo({
             pitch: 0,
@@ -2718,66 +1811,55 @@ export default function MapCanvas() {
           return;
         }
 
-        const src =
-          dtm === 'trace'
-            ? 'dtm'
-            : 'dtm_aws';
+const src =
+  dtm === 'trace'
+    ? 'dtm'
+    : 'dtm_aws';
 
-        const urlDTM =
-          dtm === 'trace'
-            ? DTM.trace
-            : DTM.aws;
+const urlDTM =
+  dtm === 'trace'
+    ? DTM.trace
+    : DTM.aws;
 
-        if (!urlDTM) {
+if (!urlDTM) {
+  map.setTerrain(null);
 
-          map.setTerrain(
-            null
-          );
+  beriPesan(
+    `DTM ${
+      dtm === 'trace'
+        ? 'Rencana Trace'
+        : 'AWS'
+    } belum tersedia.`
+  );
 
-          beriPesan(
-            `DTM ${
-              dtm === 'trace'
-                ? 'Rencana Trace'
-                : 'AWS'
-            } belum tersedia.`
-          );
+  return;
+}
 
-          return;
-        }
+if (!map.getSource(src)) {
+  console.warn(
+    'Source DTM tidak ditemukan:',
+    src
+  );
 
-        if (
-          !map.getSource(src)
-        ) {
+  map.setTerrain(null);
 
-          console.warn(
-            'Source DTM tidak ditemukan:',
-            src
-          );
+  beriPesan(
+    `Source ${
+      dtm === 'trace'
+        ? 'DTM Rencana Trace'
+        : 'DTM AWS'
+    } belum tersedia.`
+  );
 
-          map.setTerrain(
-            null
-          );
+  return;
+}
 
-          beriPesan(
-            `Source ${
-              dtm === 'trace'
-                ? 'DTM Rencana Trace'
-                : 'DTM AWS'
-            } belum tersedia.`
-          );
+map.setTerrain(null);
 
-          return;
-        }
-
-        map.setTerrain(
-          null
-        );
-
-        map.setTerrain({
-          source: src,
-          exaggeration:
-            exag ?? 1
-        });
+map.setTerrain({
+  source: src,
+  exaggeration: 1
+});
 
         map.easeTo({
           pitch: 52,
@@ -2788,11 +1870,8 @@ export default function MapCanvas() {
     if (
       map.isStyleLoaded()
     ) {
-
       terapkanDTM();
-
     } else {
-
       map.once(
         'load',
         terapkanDTM
@@ -2800,66 +1879,42 @@ export default function MapCanvas() {
     }
 
     return () => {
-
       map.off(
         'load',
         terapkanDTM
       );
     };
-
-  }, [
-    dtm,
-    exag,
-    beriPesan
-  ]);
-
-  /*
-   * =====================================================
-   * LABEL NOMOR BIDANG
-   * =====================================================
-   */
+  }, [dtm]);
 
   useEffect(() => {
-
-    const map =
-      mapRef.current;
+    const map = mapRef.current;
 
     if (!map) {
       return;
     }
 
-    const perbaruiLabelNomor =
-      () => {
+    const perbaruiLabelNomor = () => {
+      if (
+        !map.isStyleLoaded() ||
+        !map.getLayer('bidang-lb')
+      ) {
+        return;
+      }
 
-        if (
-          !map.isStyleLoaded() ||
-          !map.getLayer(
-            'bidang-lb'
-          )
-        ) {
-          return;
-        }
+      const zoom = map.getZoom();
 
-        const zoom =
-          map.getZoom();
+      map.setLayoutProperty(
+        'bidang-lb',
+        'visibility',
+        zoom >= 15
+          ? 'visible'
+          : 'none'
+      );
+    };
 
-        map.setLayoutProperty(
-          'bidang-lb',
-          'visibility',
-          zoom >= 15
-            ? 'visible'
-            : 'none'
-        );
-      };
-
-    if (
-      map.isStyleLoaded()
-    ) {
-
+    if (map.isStyleLoaded()) {
       perbaruiLabelNomor();
-
     } else {
-
       map.once(
         'load',
         perbaruiLabelNomor
@@ -2872,23 +1927,14 @@ export default function MapCanvas() {
     );
 
     return () => {
-
       map.off(
         'zoom',
         perbaruiLabelNomor
       );
     };
-
   }, []);
 
-  /*
-   * =====================================================
-   * VISIBILITY LAYER
-   * =====================================================
-   */
-
   useEffect(() => {
-
     const map =
       mapRef.current;
 
@@ -2899,9 +1945,9 @@ export default function MapCanvas() {
     }
 
     for (
-      const L of LAYERS
+      const L
+      of LAYERS
     ) {
-
       const aktif =
         !!layerAktif[L.id];
 
@@ -2915,7 +1961,6 @@ export default function MapCanvas() {
           L.id
         )
       ) {
-
         map.setLayoutProperty(
           L.id,
           'visibility',
@@ -2928,7 +1973,6 @@ export default function MapCanvas() {
           L.id + '-ln'
         )
       ) {
-
         map.setLayoutProperty(
           L.id + '-ln',
           'visibility',
@@ -2937,7 +1981,6 @@ export default function MapCanvas() {
       }
 
       if (aktif) {
-
         layerLoadingDimintaRef.current.add(
           L.id
         );
@@ -2947,21 +1990,16 @@ export default function MapCanvas() {
             L.id
           )
         ) {
-
           selesaiLoadingLayerAktif(
             L.id
           );
-
         } else {
-
           cekLoadingLayerAktif(
             L.id,
             map
           );
         }
-
       } else {
-
         layerLoadingDimintaRef.current.delete(
           L.id
         );
@@ -2976,16 +2014,11 @@ export default function MapCanvas() {
       }
     }
 
-    /*
-     * Trase
-     */
-
     if (
       map.getLayer(
         'traseg'
       )
     ) {
-
       map.setLayoutProperty(
         'traseg',
         'visibility',
@@ -3001,7 +2034,6 @@ export default function MapCanvas() {
         'traseg_halo'
       )
     ) {
-
       map.setLayoutProperty(
         'traseg_halo',
         'visibility',
@@ -3012,31 +2044,13 @@ export default function MapCanvas() {
       );
     }
 
-    /*
-     * Pastikan bangunan
-     * tetap di atas bidang.
-     */
-
-    posisikanBangunanDiAtasBidang(
-      map
-    );
-
-    posisikanTraseDiBawahLayerData(
-      map
-    );
-
+    posisikanTraseDiBawahLayerData(map);
+    posisikanBangunanDiAtasBidang(map);
   }, [
     layerAktif
   ]);
 
-  /*
-   * =====================================================
-   * FILTER BIDANG
-   * =====================================================
-   */
-
   useEffect(() => {
-
     const map =
       mapRef.current;
 
@@ -3046,7 +2060,6 @@ export default function MapCanvas() {
 
     const terapkanFilter =
       () => {
-
         if (
           !map.getLayer(
             'bidang-filter'
@@ -3077,11 +2090,8 @@ export default function MapCanvas() {
     if (
       map.isStyleLoaded()
     ) {
-
       terapkanFilter();
-
     } else {
-
       map.once(
         'load',
         terapkanFilter
@@ -3089,201 +2099,328 @@ export default function MapCanvas() {
     }
 
     return () => {
-
       map.off(
         'load',
         terapkanFilter
       );
     };
-
   }, [
     filterBidang
   ]);
 
-  /*
-   * =====================================================
-   * TEMA
-   * =====================================================
-   */
 
   useEffect(() => {
-
     const map =
       mapRef.current;
 
     if (
       map?.isStyleLoaded()
     ) {
-
-      warnaiTema(
-        map
-      );
+      warnaiTema(map);
     }
-
   }, [
     tema
   ]);
 
-  /*
-   * =====================================================
-   * RENDER
-   * =====================================================
-   */
+return (
+  <div
+    ref={ref}
+    className="canvas"
+  >
 
-  return (
+    {layerLoading.length > 0 && (
+      <div className="layer-loading">
+        <strong className="layer-loading-title">
+          MEMUAT LAYER
+        </strong>
 
-    <div
-      ref={ref}
-      className="canvas"
-    >
+        <div className="layer-loading-text">
+          {(() => {
+            const namaLayer =
+              layerLoading
+                .map(
+                  (id) =>
+                    LAYERS.find(
+                      (layer) =>
+                        layer.id === id
+                    )?.nama
+                )
+                .filter(Boolean) as string[];
 
-      {layerLoading.length > 0 && (
+            if (
+              namaLayer.length === 0
+            ) {
+              return 'Layer sedang dimuat...';
+            }
 
-        <div className="layer-loading">
+            let daftarLayer = '';
 
-          <strong className="layer-loading-title">
-            MEMUAT LAYER
-          </strong>
+            if (
+              namaLayer.length === 1
+            ) {
+              daftarLayer =
+                namaLayer[0];
+            } else if (
+              namaLayer.length === 2
+            ) {
+              daftarLayer =
+                `${namaLayer[0]} dan ${namaLayer[1]}`;
+            } else {
+              daftarLayer =
+                namaLayer
+                  .slice(0, -1)
+                  .join(', ') +
+                ', dan ' +
+                namaLayer[
+                  namaLayer.length - 1
+                ];
+            }
 
-          <div className="layer-loading-text">
+            return `${daftarLayer} sedang dimuat...`;
+          })()}
+        </div>
+      </div>
+    )}
 
-            {(() => {
+    {bangunanTerpilih && (
+      <aside
+        className="kartu open kb-modern kb-bangunan-modern"
+        aria-label="Kartu bangunan"
+      >
+        <header className="kb-header">
+          <div className="kb-header-top">
+            <button
+              className="kb-close"
+              type="button"
+              onClick={() => setBangunanTerpilih(null)}
+              aria-label="Tutup kartu bangunan"
+            >
+              ×
+            </button>
 
-              const namaLayer =
-                layerLoading
-                  .map(
-                    (id) =>
-                      LAYERS.find(
-                        (layer) =>
-                          layer.id === id
-                      )?.nama
-                  )
-                  .filter(Boolean) as string[];
+            <div className="kb-title">
+              <span className="kb-eyebrow">
+                Kartu bangunan
+              </span>
 
-              if (
-                namaLayer.length === 0
-              ) {
+              <strong>
+                {bangunanTerpilih.id ??
+                  bangunanTerpilih.fid ??
+                  'ID bangunan belum diisi'}
+              </strong>
 
-                return 'Layer sedang dimuat...';
-              }
+              <span className="kb-owner">
+                {bangunanTerpilih.jenis_bgn ??
+                  'Jenis bangunan belum diisi'}
+              </span>
+            </div>
 
-              let daftarLayer = '';
-
-              if (
-                namaLayer.length === 1
-              ) {
-
-                daftarLayer =
-                  namaLayer[0];
-
-              } else if (
-                namaLayer.length === 2
-              ) {
-
-                daftarLayer =
-                  `${namaLayer[0]} dan ${namaLayer[1]}`;
-
-              } else {
-
-                daftarLayer =
-                  namaLayer
-                    .slice(0, -1)
-                    .join(', ') +
-                  ', dan ' +
-                  namaLayer[
-                    namaLayer.length - 1
-                  ];
-              }
-
-              return `${daftarLayer} sedang dimuat...`;
-
-            })()}
-
+            <span className="kb-status status-draft">
+              Bangunan
+            </span>
           </div>
+        </header>
 
+        <div className="kb-scroll kb-bangunan-scroll">
+          {(() => {
+            const foto = safeImageUrl(
+              bangunanTerpilih.foto_bgn
+            );
+
+            return (
+              <>
+                {foto && (
+                  <div
+                    style={{
+                      marginBottom: 10,
+                      borderRadius: 12,
+                      overflow: 'hidden',
+                      border: '1px solid var(--kb-line)',
+                      background: 'var(--kb-bg)',
+                    }}
+                  >
+                    <img
+                      src={foto}
+                      alt="Foto bangunan"
+                      style={{
+                        display: 'block',
+                        width: '100%',
+                        maxHeight: 220,
+                        objectFit: 'cover',
+                      }}
+                      onError={(event) => {
+                        event.currentTarget.parentElement?.remove();
+                      }}
+                    />
+                  </div>
+                )}
+
+                <section className="kb-section">
+                  <div className="kb-section-head">
+                    <h3>Informasi bangunan</h3>
+                    <p>
+                      Identitas dan data bangunan hasil inventarisasi
+                    </p>
+                  </div>
+
+                  <div className="kb-grid two">
+                    <div className="kb-field">
+                      <label>FID</label>
+                      <div className="kb-value">
+                        {bangunanTerpilih.fid ?? '—'}
+                      </div>
+                    </div>
+
+                    <div className="kb-field">
+                      <label>ID</label>
+                      <div className="kb-value">
+                        {bangunanTerpilih.id ?? '—'}
+                      </div>
+                    </div>
+
+                    <div className="kb-field">
+                      <label>Jenis bangunan</label>
+                      <div className="kb-value">
+                        {bangunanTerpilih.jenis_bgn ?? '—'}
+                      </div>
+                    </div>
+
+                    <div className="kb-field">
+                      <label>Fungsi bangunan</label>
+                      <div className="kb-value">
+                        {bangunanTerpilih.fungsi_bgn ?? '—'}
+                      </div>
+                    </div>
+
+                    <div className="kb-field">
+                      <label>Jumlah bangunan</label>
+                      <div className="kb-value">
+                        {fmt(bangunanTerpilih.jml_bgn)}
+                      </div>
+                    </div>
+
+                    <div className="kb-field">
+                      <label>Jumlah lantai</label>
+                      <div className="kb-value">
+                        {fmt(bangunanTerpilih.jml_lnt)}
+                      </div>
+                    </div>
+
+                    <div className="kb-field">
+                      <label>Luas bangunan</label>
+                      <div className="kb-value">
+                        {fmt(bangunanTerpilih.luas_bgn)} m²
+                      </div>
+                    </div>
+
+                    <div className="kb-field">
+                      <label>Tanggal update</label>
+                      <div className="kb-value">
+                        {formatTanggal(bangunanTerpilih.date_updt)}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div
+                    className="kb-field"
+                    style={{ marginTop: 10 }}
+                  >
+                    <label>Alamat bangunan</label>
+                    <div className="kb-value">
+                      {bangunanTerpilih.alamat_bgn ?? '—'}
+                    </div>
+                  </div>
+
+                  <div
+                    className="kb-field"
+                    style={{ marginTop: 10 }}
+                  >
+                    <label>Update</label>
+                    <div className="kb-value">
+                      {bangunanTerpilih.update ?? '—'}
+                    </div>
+                  </div>
+
+                  {!foto && bangunanTerpilih.foto_bgn && (
+                    <div
+                      className="kb-field"
+                      style={{ marginTop: 10 }}
+                    >
+                      <label>Foto bangunan</label>
+                      <div className="kb-value">
+                        {bangunanTerpilih.foto_bgn}
+                      </div>
+                    </div>
+                  )}
+                </section>
+              </>
+            );
+          })()}
         </div>
-      )}
+      </aside>
+    )}
 
-      <div className="map-bottom-right">
+    <div className="map-bottom-right">
 
-        <div
-          ref={scaleSlotRef}
-          className="map-scale-slot"
-        />
+      <div
+        ref={scaleSlotRef}
+        className="map-scale-slot"
+      />
 
-        <div className="map-info">
+      <div className="map-info">
+        <span>
+          Lon{' '}
+          {infoPeta.lon.toFixed(5)}
+        </span>
 
-          <span>
-            Lon{' '}
-            {infoPeta.lon.toFixed(5)}
-          </span>
+        <span>
+          Lat{' '}
+          {infoPeta.lat.toFixed(5)}
+        </span>
 
-          <span>
-            Lat{' '}
-            {infoPeta.lat.toFixed(5)}
-          </span>
+        <span>
+          Zoom{' '}
+          {infoPeta.zoom.toFixed(1)}
+        </span>
 
-          <span>
-            Zoom{' '}
-            {infoPeta.zoom.toFixed(1)}
-          </span>
+        <span>
+          Kemiringan{' '}
+          {infoPeta.pitch.toFixed(0)}
+          °
+        </span>
 
-          <span>
-            Kemiringan{' '}
-            {infoPeta.pitch.toFixed(0)}
-            °
-          </span>
-
-          <span>
-            Arah{' '}
-            {infoPeta.bearing.toFixed(0)}
-            °
-          </span>
-
-        </div>
-
+        <span>
+          Arah{' '}
+          {infoPeta.bearing.toFixed(0)}
+          °
+        </span>
       </div>
 
     </div>
-  );
+  </div>
+);
 }
-
-/*
- * =======================================================
- * LOADING HELPERS
- * =======================================================
- */
 
 function selesaiLoadingLayerAktif(
   sourceId: string
 ) {
-  return sourceId;
 }
+
 
 function cekLoadingLayerAktif(
   sourceId: string,
   map: MLMap
 ) {
-
-  requestAnimationFrame(
-    () => {
-
-      if (
-        map.isSourceLoaded(
-          sourceId
-        )
-      ) {
-        return;
-      }
+  requestAnimationFrame(() => {
+    if (
+      map.isSourceLoaded(
+        sourceId
+      )
+    ) {
     }
-  );
+  });
 }
 
-/*
- * =======================================================
- * FILTER BIDANG
- * =======================================================
- */
 
 const ekspresiFilterBidang = (
   filter: {
@@ -3294,7 +2431,6 @@ const ekspresiFilterBidang = (
     penggunaan: string[];
   }
 ): any => {
-
   const kondisi: any[] =
     ['all'];
 
@@ -3302,7 +2438,6 @@ const ekspresiFilterBidang = (
     property: string,
     values: string[]
   ) => {
-
     if (
       !values.length
     ) {
@@ -3311,19 +2446,13 @@ const ekspresiFilterBidang = (
 
     kondisi.push([
       'match',
-
-      [
-        'get',
-        property
-      ],
-
+      ['get', property],
       ...values.flatMap(
         (value) => [
           value,
           true
         ]
       ),
-
       false
     ]);
   };
@@ -3356,15 +2485,12 @@ const ekspresiFilterBidang = (
   if (
     kondisi.length === 1
   ) {
-
     return [
       '==',
-
       [
         'get',
         '__filter_never_match__'
       ],
-
       '__never__'
     ];
   }
@@ -3372,185 +2498,111 @@ const ekspresiFilterBidang = (
   return kondisi;
 };
 
-/*
- * =======================================================
- * FORMAT
- * =======================================================
- */
-
-const fmt = (
-  n:
-    number |
-    string |
-    null |
-    undefined
-) => {
-
-  if (
-    n === null ||
-    n === undefined ||
-    n === ''
-  ) {
-
-    return '—';
-  }
-
-  const number =
-    Number(n);
-
-  if (
-    Number.isNaN(number)
-  ) {
-
-    return escapeHtml(
-      String(n)
-    );
-  }
-
-  return number.toLocaleString(
-    'id-ID'
-  );
-};
-
-/*
- * =======================================================
- * ESCAPE HTML
- * =======================================================
- */
-
 function escapeHtml(
-  value: any
-): string {
-
+  value: unknown
+) {
   return String(
     value ?? ''
   )
-    .replace(
-      /&/g,
-      '&amp;'
-    )
-    .replace(
-      /</g,
-      '&lt;'
-    )
-    .replace(
-      />/g,
-      '&gt;'
-    )
-    .replace(
-      /"/g,
-      '&quot;'
-    )
-    .replace(
-      /'/g,
-      '&#039;'
-    );
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#039;');
 }
 
-/*
- * =======================================================
- * FOTO BANGUNAN
- * =======================================================
- */
-
-function safeImageUrl(
-  value: any
-): string | null {
-
-  if (
-    !value ||
-    typeof value !== 'string'
-  ) {
-
-    return null;
+function formatTanggal(
+  value: unknown
+) {
+  if (!value) {
+    return '—';
   }
 
-  const valueTrim =
-    value.trim();
-
-  if (!valueTrim) {
-    return null;
-  }
-
-  /*
-   * URL absolute.
-   */
+  const text = String(value);
+  const date = new Date(text);
 
   if (
-    valueTrim.startsWith(
-      'https://'
-    ) ||
-    valueTrim.startsWith(
-      'http://'
+    Number.isNaN(
+      date.getTime()
     )
   ) {
-
-    return escapeHtml(
-      valueTrim
-    );
+    return text;
   }
 
-  /*
-   * Path lokal/web.
-   */
-
-  if (
-    valueTrim.startsWith('/')
-  ) {
-
-    return escapeHtml(
-      valueTrim
-    );
-  }
-
-  return null;
+  return date.toLocaleDateString(
+    'id-ID',
+    {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric'
+    }
+  );
 }
 
-/*
- * =======================================================
- * POSISI TRASE
- * =======================================================
- */
+const fmt = (
+  n: number | null
+) =>
+  (n ?? 0).toLocaleString(
+    'id-ID'
+  );
+
+function posisikanBangunanDiAtasBidang(
+  map: MLMap
+) {
+  if (
+    !map.getLayer('bangunan') ||
+    !map.getLayer('bangunan-ln') ||
+    !map.getLayer('bidang')
+  ) {
+    return;
+  }
+
+  // Bangunan berada di atas seluruh layer bidang tanah.
+  // Tidak mengubah warna, opacity, atau style layer lain.
+  const target =
+    map.getLayer('bidang-filter-ln')
+      ? 'bidang-filter-ln'
+      : map.getLayer('bidang-filter')
+        ? 'bidang-filter'
+        : map.getLayer('bidang-lb')
+          ? 'bidang-lb'
+          : map.getLayer('bidang-ln')
+            ? 'bidang-ln'
+            : 'bidang';
+
+  map.moveLayer(
+    'bangunan',
+    target
+  );
+
+  map.moveLayer(
+    'bangunan-ln',
+    target
+  );
+}
 
 function posisikanTraseDiBawahLayerData(
   map: MLMap
 ) {
-
   if (
-    !map.getLayer(
-      'traseg_halo'
-    ) ||
-    !map.getLayer(
-      'traseg'
-    )
+    !map.getLayer('traseg_halo') ||
+    !map.getLayer('traseg')
   ) {
-
     return;
   }
 
-  /*
-   * Trase berada di atas basemap,
-   * tetapi di bawah layer data.
-   */
-
-  const layerPertama =
-    LAYERS.find(
-      (L) =>
-        L.id !== 'traseg' &&
-        map.getLayer(
-          L.id
-        )
-    )?.id;
+  // Trase berada di atas basemap, tetapi di bawah seluruh layer data.
+  const layerPertama = LAYERS.find(
+    (L) =>
+      L.id !== 'traseg' &&
+      map.getLayer(L.id)
+  )?.id;
 
   const target =
     layerPertama ??
-    (
-      map.getLayer(
-        'bidang'
-      )
-        ? 'bidang'
-        : undefined
-    );
+    (map.getLayer('bidang')
+      ? 'bidang'
+      : undefined);
 
   if (!target) {
     return;
@@ -3567,159 +2619,38 @@ function posisikanTraseDiBawahLayerData(
   );
 }
 
-/*
- * =======================================================
- * POSISI BANGUNAN DI ATAS BIDANG
- * =======================================================
- */
-
-function posisikanBangunanDiAtasBidang(
-  map: MLMap
-) {
-
-  if (
-    !map.getLayer(
-      'bangunan'
-    )
-  ) {
-    return;
-  }
-
-  /*
-   * Target bidang-ln berarti:
-   *
-   * bidang fill
-   * ↓
-   * bangunan
-   * bangunan outline
-   * ↓
-   * bidang outline
-   * ↓
-   * label bidang
-   *
-   * Jadi bangunan terlihat jelas
-   * di atas bidang tanah.
-   */
-
-  if (
-    map.getLayer(
-      'bidang-ln'
-    )
-  ) {
-
-    map.moveLayer(
-      'bangunan',
-      'bidang-ln'
-    );
-
-    if (
-      map.getLayer(
-        'bangunan-ln'
-      )
-    ) {
-
-      map.moveLayer(
-        'bangunan-ln',
-        'bidang-ln'
-      );
-    }
-
-    return;
-  }
-
-  /*
-   * Fallback apabila bidang-ln
-   * belum tersedia.
-   */
-
-  if (
-    map.getLayer(
-      'bidang'
-    )
-  ) {
-
-    map.moveLayer(
-      'bangunan',
-      'bidang'
-    );
-
-    if (
-      map.getLayer(
-        'bangunan-ln'
-      )
-    ) {
-
-      map.moveLayer(
-        'bangunan-ln',
-        'bidang'
-      );
-    }
-  }
-}
-
-/*
- * =======================================================
- * TEMA
- * =======================================================
- */
-
 function warnaiTema(
   map: MLMap
 ) {
-
   const gelap =
-    document
-      .documentElement
-      .dataset
-      .theme ===
+    document.documentElement
+      .dataset.theme ===
     'dark';
 
-  if (
-    map.getLayer(
-      'bg'
-    )
-  ) {
+  map.setPaintProperty(
+    'bg',
+    'background-color',
+    gelap
+      ? '#0E1720'
+      : '#E7EBF3'
+  );
 
-    map.setPaintProperty(
-      'bg',
-      'background-color',
-
-      gelap
-        ? '#0E1720'
-        : '#E7EBF3'
-    );
-  }
-
-  if (
-    map.getLayer(
-      'bm-esri-streets'
-    )
-  ) {
-
-    map.setPaintProperty(
-      'bm-esri-streets',
-      'raster-brightness-max',
-
-      gelap
-        ? 0.84
-        : 1
-    );
-  }
-
-  /*
-   * Bidang outline
-   */
+  map.setPaintProperty(
+    'bm-esri-streets',
+    'raster-brightness-max',
+    gelap
+      ? 0.84
+      : 1
+  );
 
   if (
     map.getLayer(
       'bidang-ln'
     )
   ) {
-
     map.setPaintProperty(
       'bidang-ln',
       'line-color',
-
       [
         'case',
 
@@ -3752,16 +2683,11 @@ function warnaiTema(
     );
   }
 
-  /*
-   * Label bidang
-   */
-
   if (
     map.getLayer(
       'bidang-lb'
     )
   ) {
-
     map.setPaintProperty(
       'bidang-lb',
       'text-color',
