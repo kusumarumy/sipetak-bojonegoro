@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { auth } from '@/lib/auth';
+import { query } from '@/lib/db';
 
 const LAYER_FILES: Record<string, string> = {
   traseg: 'traseg.geojson',
@@ -27,13 +28,105 @@ export async function GET(
   const sesi = await auth();
 
   if (!sesi?.user) {
-    return new NextResponse('Belum masuk', { status: 401 });
+    return new NextResponse('Belum masuk', {
+      status: 401,
+    });
   }
 
   const { nama } = await params;
 
   try {
+
+    // =====================================================
+    // BANGUNAN
+    // Ambil langsung dari Supabase / PostGIS
+    // =====================================================
+
+    if (nama === 'bangunan') {
+
+      const [row] = await query<{ fc: any }>(`
+        SELECT json_build_object(
+          'type',
+          'FeatureCollection',
+
+          'features',
+          COALESCE(
+            json_agg(
+              json_build_object(
+                'type',
+                'Feature',
+
+                'id',
+                b.fid,
+
+                'geometry',
+                CASE
+                  WHEN b.geometry IS NOT NULL
+                  THEN ST_AsGeoJSON(b.geometry, 6)::json
+                  ELSE NULL
+                END,
+
+                'properties',
+                jsonb_build_object(
+                  'fid',
+                  b.fid,
+
+                  'id',
+                  b.id,
+
+                  'jenis_bgn',
+                  b.jenis_bgn,
+
+                  'fungsi_bgn',
+                  b.fungsi_bgn,
+
+                  'jml_bgn',
+                  b.jml_bgn,
+
+                  'jml_lnt',
+                  b.jml_lnt,
+
+                  'luas_bgn',
+                  b.luas_bgn,
+
+                  'alamat_bgn',
+                  b.alamat_bgn,
+
+                  'update',
+                  b.update,
+
+                  'date_updt',
+                  b.date_updt,
+
+                  'foto_bgn',
+                  b.foto_bgn
+                )
+              )
+            ),
+            '[]'::json
+          )
+        ) AS fc
+
+        FROM public.bangunan b
+
+        WHERE b.geometry IS NOT NULL
+      `);
+
+      return NextResponse.json(row.fc, {
+        headers: {
+          'Cache-Control': 'private, max-age=60',
+        },
+      });
+    }
+
+
+    // =====================================================
+    // LAYER LAIN
+    // Tetap ambil dari GitHub
+    // =====================================================
+
     const file = LAYER_FILES[nama];
+
     if (!file) {
       return new NextResponse('Layer tidak dikenal', {
         status: 404,
@@ -57,7 +150,9 @@ export async function GET(
 
       return new NextResponse(
         `GeoJSON layer "${file}" tidak ditemukan`,
-        { status: 404 }
+        {
+          status: 404,
+        }
       );
     }
 
@@ -68,15 +163,25 @@ export async function GET(
         'Cache-Control': 'private, max-age=3600',
       },
     });
+
   } catch (error) {
+
     console.error(
       `Gagal mengambil layer ${nama}:`,
       error
     );
 
-    return new NextResponse(
-      `Gagal mengambil GeoJSON layer "${nama}"`,
-      { status: 500 }
+    return NextResponse.json(
+      {
+        pesan: `Gagal mengambil layer "${nama}"`,
+        error:
+          error instanceof Error
+            ? error.message
+            : String(error),
+      },
+      {
+        status: 500,
+      }
     );
   }
 }
