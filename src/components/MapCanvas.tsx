@@ -1322,6 +1322,10 @@ map.addSource(
           }
         });
 
+        // Bangunan berada di atas bidang tanah.
+        // Style layer lain tetap tidak diubah.
+        posisikanBangunanDiAtasBidang(map);
+
         warnaiTema(map);
 
         pasangInteraksi(map);
@@ -1962,6 +1966,7 @@ map.setTerrain({
     }
 
     posisikanTraseDiBawahLayerData(map);
+    posisikanBangunanDiAtasBidang(map);
   }, [
     layerAktif
   ]);
@@ -2242,6 +2247,41 @@ const fmt = (
   (n ?? 0).toLocaleString(
     'id-ID'
   );
+
+function posisikanBangunanDiAtasBidang(
+  map: MLMap
+) {
+  if (
+    !map.getLayer('bangunan') ||
+    !map.getLayer('bangunan-ln') ||
+    !map.getLayer('bidang')
+  ) {
+    return;
+  }
+
+  // Bangunan berada di atas seluruh layer bidang tanah.
+  // Tidak mengubah warna, opacity, atau style layer lain.
+  const target =
+    map.getLayer('bidang-filter-ln')
+      ? 'bidang-filter-ln'
+      : map.getLayer('bidang-filter')
+        ? 'bidang-filter'
+        : map.getLayer('bidang-lb')
+          ? 'bidang-lb'
+          : map.getLayer('bidang-ln')
+            ? 'bidang-ln'
+            : 'bidang';
+
+  map.moveLayer(
+    'bangunan',
+    target
+  );
+
+  map.moveLayer(
+    'bangunan-ln',
+    target
+  );
+}
 
 function posisikanTraseDiBawahLayerData(
   map: MLMap
