@@ -42,7 +42,7 @@ export const LAYERS: DefLayer[] = [
   nama: 'Bangunan',
   sumber: 'bangunan',
   tipe: 'fill',
-  warna: '#8df2ff',
+  warna: '#E85D04',
   opasitas: 0.50,
   bawaan: true,
   grup: 'Bangunan'
