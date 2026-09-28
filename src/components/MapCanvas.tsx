@@ -2186,6 +2186,20 @@ return (
       <aside
         className="kartu open kb-modern kb-bangunan-modern"
         aria-label="Kartu bangunan"
+        style={{
+          position: 'fixed',
+          top: 130,
+          right: 24,
+          left: 'auto',
+          bottom: 24,
+          width: 'min(500px, calc(100vw - 48px))',
+          maxWidth: '500px',
+          height: 'calc(100vh - 154px)',
+          maxHeight: 'calc(100vh - 154px)',
+          zIndex: 9999,
+          transform: 'none',
+          margin: 0,
+        }}
       >
         <header className="kb-header">
           <div className="kb-header-top">
