@@ -860,7 +860,7 @@ map.addControl(
             L.id === 'bidang'
           ) {
             continue;
-          };
+          }
 map.addSource(
   L.id,
   {
@@ -1128,27 +1128,7 @@ map.addSource(
           }
         });
 
-        if (
-          map.getLayer(
-            'traseg_halo'
-          ) &&
-          map.getLayer(
-            'traseg'
-          ) &&
-          map.getLayer(
-            'bidang'
-          )
-        ) {
-          map.moveLayer(
-            'traseg_halo',
-            'bidang'
-          );
-
-          map.moveLayer(
-            'traseg',
-            'bidang'
-          );
-        }
+        posisikanTraseDiBawahLayerData(map);
 
         map.addLayer({
           id: 'bidang-ln',
@@ -1341,53 +1321,6 @@ map.addSource(
             'line-opacity': 1
           }
         });
-
-        // =====================================================
-        // URUTAN LAYER
-        // Bangunan di atas bidang tanah,
-        // tetapi tetap di bawah garis batas bidang.
-        // Trase tetap berada paling atas.
-        // =====================================================
-
-        if (
-          map.getLayer('bangunan') &&
-          map.getLayer('bidang-ln')
-        ) {
-          map.moveLayer(
-            'bangunan',
-            'bidang-ln'
-          );
-        }
-
-        if (
-          map.getLayer('bangunan-ln') &&
-          map.getLayer('bidang-ln')
-        ) {
-          map.moveLayer(
-            'bangunan-ln',
-            'bidang-ln'
-          );
-        }
-
-        if (
-          map.getLayer('traseg_halo') &&
-          map.getLayer('bidang-ln')
-        ) {
-          map.moveLayer(
-            'traseg_halo',
-            'bangunan'
-          );
-        }
-
-        if (
-          map.getLayer('traseg') &&
-          map.getLayer('traseg_halo')
-        ) {
-          map.moveLayer(
-            'traseg',
-            'traseg_halo'
-          );
-        }
 
         warnaiTema(map);
 
@@ -2028,27 +1961,7 @@ map.setTerrain({
       );
     }
 
-    if (
-      map.getLayer(
-        'traseg_halo'
-      ) &&
-      map.getLayer(
-        'traseg'
-      ) &&
-      map.getLayer(
-        'bidang'
-      )
-    ) {
-      map.moveLayer(
-        'traseg_halo',
-        'bidang'
-      );
-
-      map.moveLayer(
-        'traseg',
-        'bidang'
-      );
-    }
+    posisikanTraseDiBawahLayerData(map);
   }, [
     layerAktif
   ]);
@@ -2329,6 +2242,44 @@ const fmt = (
   (n ?? 0).toLocaleString(
     'id-ID'
   );
+
+function posisikanTraseDiBawahLayerData(
+  map: MLMap
+) {
+  if (
+    !map.getLayer('traseg_halo') ||
+    !map.getLayer('traseg')
+  ) {
+    return;
+  }
+
+  // Trase berada di atas basemap, tetapi di bawah seluruh layer data.
+  const layerPertama = LAYERS.find(
+    (L) =>
+      L.id !== 'traseg' &&
+      map.getLayer(L.id)
+  )?.id;
+
+  const target =
+    layerPertama ??
+    (map.getLayer('bidang')
+      ? 'bidang'
+      : undefined);
+
+  if (!target) {
+    return;
+  }
+
+  map.moveLayer(
+    'traseg_halo',
+    target
+  );
+
+  map.moveLayer(
+    'traseg',
+    target
+  );
+}
 
 function warnaiTema(
   map: MLMap
