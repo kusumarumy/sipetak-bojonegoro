@@ -30,6 +30,28 @@ class AppScaleControl extends maplibregl.ScaleControl {
 const TRASEG_URL =
   'https://raw.githubusercontent.com/kusumarumy/sipetak-bojonegoro/main/data/wgs84/traseg.geojson';
 
+function safeImageUrl(value: unknown): string | null {
+  if (typeof value !== 'string') {
+    return null;
+  }
+
+  const url = value.trim();
+
+  if (!url) {
+    return null;
+  }
+
+  if (
+    url.startsWith('https://') ||
+    url.startsWith('http://') ||
+    url.startsWith('/')
+  ) {
+    return url;
+  }
+
+  return null;
+}
+
 export default function MapCanvas() {
 const ref =
   useRef<HTMLDivElement>(null);
