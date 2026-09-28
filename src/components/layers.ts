@@ -38,6 +38,17 @@ export const LAYERS: DefLayer[] = [
 },
 
 {
+  id: 'bangunan',
+  nama: 'Bangunan',
+  sumber: 'bangunan',
+  tipe: 'fill',
+  warna: '#8df2ff',
+  opasitas: 0.50,
+  bawaan: true,
+  grup: 'Bangunan'
+},
+
+{
   id: 'sungai',
   nama: 'Sungai',
   sumber: 'sungai',
