@@ -1,3 +1,4 @@
+```tsx
 'use client';
 
 import { useState } from 'react';
@@ -7,12 +8,14 @@ import { LAYERS } from './layers';
 const GROUP_ORDER = [
   'Rencana Trase',
   'Bidang Tanah',
+  'Bangunan',
   'Hipsografi',
   'Jaringan Irigasi',
   'Jaringan Transportasi',
   'Tutupan Lahan',
   'Utilitas',
 ];
+
 const GROUP_ICONS: Record<
   string,
   { path: string; color: string }
@@ -24,6 +27,11 @@ const GROUP_ICONS: Record<
 
   'Bidang Tanah': {
     path: 'M5 5H19V19H5Z M9 5V19 M15 5V19 M5 9H19 M5 15H19',
+    color: '#8df2ff',
+  },
+
+  'Bangunan': {
+    path: 'M4 20V9L12 3L20 9V20H4Z M9 20V14H15V20 M8 10H10 M14 10H16',
     color: '#8df2ff',
   },
 
@@ -65,10 +73,12 @@ export default function ControlPanel({
   const s = useApp();
 
   const grup = GROUP_ORDER.filter((g) =>
-  LAYERS.some((l) => l.grup === g)
-);
-const [grupTerbuka, setGrupTerbuka] =
-  useState<Record<string, boolean>>({});
+    LAYERS.some((l) => l.grup === g)
+  );
+
+  const [grupTerbuka, setGrupTerbuka] =
+    useState<Record<string, boolean>>({});
+
   const toggleGrup = (nama: string) => {
     setGrupTerbuka((prev) => ({
       ...prev,
@@ -125,31 +135,34 @@ const [grupTerbuka, setGrupTerbuka] =
 
           ) : (
 
-  <div className="layer-panel-heading">
+            <div className="layer-panel-heading">
 
-    <div className="layer-panel-icon">
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M12 3l9 5-9 5-9-5 9-5z" />
-        <path d="M4 12l8 4 8-4" />
-        <path d="M4 16l8 5 8-5" />
-      </svg>
-    </div>
+              <div className="layer-panel-icon">
+                <svg
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path d="M12 3l9 5-9 5-9-5 9-5z" />
+                  <path d="M4 12l8 4 8-4" />
+                  <path d="M4 16l8 5 8-5" />
+                </svg>
+              </div>
 
-    <div className="layer-panel-text">
+              <div className="layer-panel-text">
 
-      <div className="layer-panel-title">
-        LAYER
-      </div>
+                <div className="layer-panel-title">
+                  LAYER
+                </div>
 
-      <div className="layer-panel-subtitle">
-        Kelola tampilan dan data peta
-      </div>
+                <div className="layer-panel-subtitle">
+                  Kelola tampilan dan data peta
+                </div>
 
-    </div>
+              </div>
 
-  </div>
+            </div>
 
-)}
+          )}
 
         </div>
 
@@ -191,7 +204,6 @@ const [grupTerbuka, setGrupTerbuka] =
                 </span>
               </button>
 
-
               {/* DTM RENCANA TRACE */}
 
               <button
@@ -228,7 +240,7 @@ const [grupTerbuka, setGrupTerbuka] =
                 <span className="terrain-option-name">
                   AWS Terrarium
                 </span>
-              
+
                 <span className="terrain-option-resolution">
                   30 m
                 </span>
@@ -250,17 +262,17 @@ const [grupTerbuka, setGrupTerbuka] =
 
             <div className="layer-groups">
 
-{grup.map((g) => {
+              {grup.map((g) => {
 
-  const layers = LAYERS
-    .filter((l) => l.grup === g)
-    .sort((a, b) =>
-      a.nama.localeCompare(
-        b.nama,
-        'id',
-        { sensitivity: 'base' }
-      )
-    );
+                const layers = LAYERS
+                  .filter((l) => l.grup === g)
+                  .sort((a, b) =>
+                    a.nama.localeCompare(
+                      b.nama,
+                      'id',
+                      { sensitivity: 'base' }
+                    )
+                  );
 
                 const terbukaGrup =
                   grupTerbuka[g];
@@ -290,63 +302,76 @@ const [grupTerbuka, setGrupTerbuka] =
 
                       <div className="layer-group-left">
 
-                     <span
-  className={
-    'group-chevron' +
-    (terbukaGrup ? ' expanded' : '')
-  }
->
-  <svg viewBox="0 0 16 16" aria-hidden="true">
-    <path
-      d="M6 3l5 5-5 5"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.7"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </svg>
-</span>
+                        <span
+                          className={
+                            'group-chevron' +
+                            (
+                              terbukaGrup
+                                ? ' expanded'
+                                : ''
+                            )
+                          }
+                        >
+                          <svg
+                            viewBox="0 0 16 16"
+                            aria-hidden="true"
+                          >
+                            <path
+                              d="M6 3l5 5-5 5"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="1.7"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                          </svg>
+                        </span>
 
-<span
-  className="group-icon"
-  style={{
-    color:
-      GROUP_ICONS[g]?.color ?? 'currentColor',
-  }}
->
-  {GROUP_ICONS[g] ? (
-    <svg
-      viewBox="0 0 24 24"
-      aria-hidden="true"
-    >
-      {GROUP_ICONS[g].path
-        .split(' M')
-        .map((path, i) => (
-          <path
-            key={i}
-            d={(i === 0 ? path : `M${path}`)}
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.8"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        ))}
-    </svg>
-  ) : (
-    '•'
-  )}
-</span>
+                        <span
+                          className="group-icon"
+                          style={{
+                            color:
+                              GROUP_ICONS[g]?.color ??
+                              'currentColor',
+                          }}
+                        >
+                          {GROUP_ICONS[g] ? (
+                            <svg
+                              viewBox="0 0 24 24"
+                              aria-hidden="true"
+                            >
+                              {GROUP_ICONS[g].path
+                                .split(' M')
+                                .map((path, i) => (
+                                  <path
+                                    key={i}
+                                    d={
+                                      i === 0
+                                        ? path
+                                        : `M${path}`
+                                    }
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth="1.8"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                  />
+                                ))}
+                            </svg>
+                          ) : (
+                            '•'
+                          )}
+                        </span>
+
                         <span className="layer-group-title">
                           {g}
                         </span>
 
                       </div>
 
-<span className="group-count">
-  {layers.length}
-</span>
+                      <span className="group-count">
+                        {layers.length}
+                      </span>
 
                     </button>
 
@@ -420,7 +445,6 @@ const [grupTerbuka, setGrupTerbuka] =
 
                               </label>
 
-
                             </div>
 
                           );
@@ -457,3 +481,4 @@ const [grupTerbuka, setGrupTerbuka] =
     </aside>
   );
 }
+```
