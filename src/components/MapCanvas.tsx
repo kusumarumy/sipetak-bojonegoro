@@ -868,7 +868,7 @@ map.addSource(
     data:
       L.id === 'traseg'
         ? TRASEG_URL
-        : `/api/layers/${L.sumber}`
+        : `/api/layers/${L.sumber ?? L.id}`
   }
 );
           const vis =
@@ -2253,32 +2253,38 @@ function posisikanTraseDiBawahLayerData(
     return;
   }
 
-  // Trase berada di atas basemap, tetapi di bawah seluruh layer data.
-  const layerPertama = LAYERS.find(
-    (L) =>
-      L.id !== 'traseg' &&
-      L.id !== 'bidang' &&
-      map.getLayer(L.id)
-  )?.id;
+  // Trase harus berada di bawah SEMUA layer data,
+  // tetapi tetap berada di atas basemap.
+  // Ambil layer data paling bawah dari urutan style MapLibre.
+  const layerDataIds = new Set<string>([
+    ...LAYERS.map((L) => L.id),
+    'bidang',
+    'bidang-ln',
+    'bidang-lb',
+    'bidang-filter',
+    'bidang-filter-ln'
+  ]);
 
-  const target =
-    layerPertama ??
-    (map.getLayer('bidang')
-      ? 'bidang'
-      : undefined);
+  const layerPertamaData =
+    map.getStyle().layers?.find(
+      (layer) =>
+        layer.id !== 'traseg' &&
+        layer.id !== 'traseg_halo' &&
+        layerDataIds.has(layer.id)
+    )?.id;
 
-  if (!target) {
+  if (!layerPertamaData) {
     return;
   }
 
   map.moveLayer(
     'traseg_halo',
-    target
+    layerPertamaData
   );
 
   map.moveLayer(
     'traseg',
-    target
+    layerPertamaData
   );
 }
 
