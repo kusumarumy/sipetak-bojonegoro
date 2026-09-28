@@ -2210,14 +2210,14 @@ return (
         aria-label="Kartu bangunan"
         style={{
           position: 'fixed',
-          top: 130,
+          top: 120,
           right: 24,
           left: 'auto',
           bottom: 24,
-          width: 'min(500px, calc(100vw - 48px))',
-          maxWidth: '500px',
-          height: 'calc(100vh - 154px)',
-          maxHeight: 'calc(100vh - 154px)',
+          width: 'min(430px, calc(100vw - 48px))',
+          maxWidth: '430px',
+          height: 'auto',
+          maxHeight: 'calc(100vh - 144px)',
           zIndex: 9999,
           transform: 'none',
           margin: 0,
@@ -2236,18 +2236,7 @@ return (
 
             <div className="kb-title">
               <span className="kb-eyebrow">
-                Kartu bangunan
-              </span>
-
-              <strong>
-                {bangunanTerpilih.id ??
-                  bangunanTerpilih.fid ??
-                  'ID bangunan belum diisi'}
-              </strong>
-
-              <span className="kb-owner">
-                {bangunanTerpilih.jenis_bgn ??
-                  'Jenis bangunan belum diisi'}
+                Informasi bangunan
               </span>
             </div>
 
@@ -2257,7 +2246,10 @@ return (
           </div>
         </header>
 
-        <div className="kb-scroll kb-bangunan-scroll">
+        <div
+          className="kb-scroll kb-bangunan-scroll"
+          style={{ fontSize: 14 }}
+        >
           {(() => {
             const foto = safeImageUrl(
               bangunanTerpilih.foto_bgn
@@ -2293,7 +2285,7 @@ return (
 
                 <section className="kb-section">
                   <div className="kb-section-head">
-                    <h3>Informasi bangunan</h3>
+                    <h3 style={{ fontSize: 17 }}>Informasi bangunan</h3>
                     <p>
                       Identitas dan data bangunan hasil inventarisasi
                     </p>
@@ -2302,56 +2294,80 @@ return (
                   <div className="kb-grid two">
                     <div className="kb-field">
                       <label>FID</label>
-                      <div className="kb-value">
+                      <div
+                        className="kb-value"
+                        style={{ fontSize: 14 }}
+                      >
                         {bangunanTerpilih.fid ?? '—'}
                       </div>
                     </div>
 
                     <div className="kb-field">
                       <label>ID</label>
-                      <div className="kb-value">
+                      <div
+                        className="kb-value"
+                        style={{ fontSize: 14 }}
+                      >
                         {bangunanTerpilih.id ?? '—'}
                       </div>
                     </div>
 
                     <div className="kb-field">
                       <label>Jenis bangunan</label>
-                      <div className="kb-value">
+                      <div
+                        className="kb-value"
+                        style={{ fontSize: 14 }}
+                      >
                         {bangunanTerpilih.jenis_bgn ?? '—'}
                       </div>
                     </div>
 
                     <div className="kb-field">
                       <label>Fungsi bangunan</label>
-                      <div className="kb-value">
+                      <div
+                        className="kb-value"
+                        style={{ fontSize: 14 }}
+                      >
                         {bangunanTerpilih.fungsi_bgn ?? '—'}
                       </div>
                     </div>
 
                     <div className="kb-field">
                       <label>Jumlah bangunan</label>
-                      <div className="kb-value">
+                      <div
+                        className="kb-value"
+                        style={{ fontSize: 14 }}
+                      >
                         {fmt(bangunanTerpilih.jml_bgn)}
                       </div>
                     </div>
 
                     <div className="kb-field">
                       <label>Jumlah lantai</label>
-                      <div className="kb-value">
+                      <div
+                        className="kb-value"
+                        style={{ fontSize: 14 }}
+                      >
                         {fmt(bangunanTerpilih.jml_lnt)}
                       </div>
                     </div>
 
                     <div className="kb-field">
                       <label>Luas bangunan</label>
-                      <div className="kb-value">
+                      <div
+                        className="kb-value"
+                        style={{ fontSize: 14 }}
+                      >
                         {fmt(bangunanTerpilih.luas_bgn)} m²
                       </div>
                     </div>
 
                     <div className="kb-field">
                       <label>Tanggal update</label>
-                      <div className="kb-value">
+                      <div
+                        className="kb-value"
+                        style={{ fontSize: 14 }}
+                      >
                         {formatTanggal(bangunanTerpilih.date_updt)}
                       </div>
                     </div>
@@ -2383,7 +2399,10 @@ return (
                       style={{ marginTop: 10 }}
                     >
                       <label>Foto bangunan</label>
-                      <div className="kb-value">
+                      <div
+                        className="kb-value"
+                        style={{ fontSize: 14 }}
+                      >
                         {bangunanTerpilih.foto_bgn}
                       </div>
                     </div>
