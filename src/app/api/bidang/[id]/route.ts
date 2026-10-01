@@ -240,7 +240,7 @@ export async function GET(
 
         FROM public.lampiran
 
-        WHERE fid = $1
+        WHERE id = $1
 
         ORDER BY
           diunggah_pada DESC,
@@ -880,7 +880,7 @@ export async function PATCH(
               `
                 SELECT DISTINCT kategori
                 FROM public.lampiran
-                WHERE fid = $1
+                WHERE id = $1
               `,
               [baru.fid]
             );
