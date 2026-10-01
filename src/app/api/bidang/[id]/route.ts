@@ -157,7 +157,7 @@ export async function GET(
           created_at
 
         FROM public.bidang_tanah
-        WHERE fid = $1
+        WHERE id = $1
       `,
       [id]
     );
@@ -662,7 +662,7 @@ export async function PATCH(
             fid,
             status
           FROM public.bidang_tanah
-          WHERE fid = $1
+          WHERE id = $1
         `,
         [id]
       );
@@ -759,7 +759,7 @@ export async function PATCH(
             `
               SELECT *
               FROM public.bidang_tanah
-              WHERE fid = $1
+              WHERE id = $1
               FOR UPDATE
             `,
             [id]
@@ -794,7 +794,7 @@ export async function PATCH(
           `
             UPDATE public.bidang_tanah
             SET ${set}
-            WHERE fid = $1
+            WHERE id = $1
           `,
           [
             id,
@@ -831,7 +831,7 @@ export async function PATCH(
                 jml_bgn,
                 status
               FROM public.bidang_tanah
-              WHERE fid = $1
+              WHERE id = $1
             `,
             [id]
           );
@@ -911,7 +911,7 @@ export async function PATCH(
                 SET
                   status = 'terkirim',
                   verif_at = NULL
-                WHERE fid = $1
+                WHERE id = $1
               `,
               [id]
             );
