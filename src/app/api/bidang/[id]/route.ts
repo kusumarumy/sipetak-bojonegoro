@@ -956,8 +956,8 @@ export async function PATCH(
             `,
             [
               "bidang_tanah",
-              id,
               lama.fid,
+              id,
               "UPDATE",
               "status",
               lama.status,
@@ -1056,8 +1056,8 @@ export async function PATCH(
             `,
             [
               "bidang_tanah",
-              id,
               lama.fid,
+              id,
               aksi,
               kolomApi,
               lamaText,
