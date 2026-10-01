@@ -157,7 +157,7 @@ export async function GET(
           created_at
 
         FROM public.bidang_tanah
-        WHERE id = $1
+        WHERE fid = $1
       `,
       [id]
     );
@@ -240,7 +240,7 @@ export async function GET(
 
         FROM public.lampiran
 
-        WHERE id = $1
+        WHERE fid = $1
 
         ORDER BY
           diunggah_pada DESC,
@@ -662,7 +662,7 @@ export async function PATCH(
             fid,
             status
           FROM public.bidang_tanah
-          WHERE id = $1
+          WHERE fid = $1
         `,
         [id]
       );
@@ -759,7 +759,7 @@ export async function PATCH(
             `
               SELECT *
               FROM public.bidang_tanah
-              WHERE id = $1
+              WHERE fid = $1
               FOR UPDATE
             `,
             [id]
@@ -794,7 +794,7 @@ export async function PATCH(
           `
             UPDATE public.bidang_tanah
             SET ${set}
-            WHERE id = $1
+            WHERE fid = $1
           `,
           [
             id,
@@ -831,7 +831,7 @@ export async function PATCH(
                 jml_bgn,
                 status
               FROM public.bidang_tanah
-              WHERE id = $1
+              WHERE fid = $1
             `,
             [id]
           );
@@ -880,7 +880,7 @@ export async function PATCH(
               `
                 SELECT DISTINCT kategori
                 FROM public.lampiran
-                WHERE id = $1
+                WHERE fid = $1
               `,
               [baru.fid]
             );
@@ -911,7 +911,7 @@ export async function PATCH(
                 SET
                   status = 'terkirim',
                   verif_at = NULL
-                WHERE id = $1
+                WHERE fid = $1
               `,
               [id]
             );
