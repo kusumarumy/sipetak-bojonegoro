@@ -211,7 +211,10 @@ export async function GET(
           al.pada DESC,
           al.id DESC
       `,
-      [String(b.id)]
+      [
+        String(b.fid),
+        String(b.id),
+      ]
     );
 
 
@@ -953,8 +956,8 @@ export async function PATCH(
             `,
             [
               "bidang_tanah",
-              lama.fid,
               id,
+              lama.fid,
               "UPDATE",
               "status",
               lama.status,
@@ -1053,8 +1056,8 @@ export async function PATCH(
             `,
             [
               "bidang_tanah",
-              lama.fid,
               id,
+              lama.fid,
               aksi,
               kolomApi,
               lamaText,
