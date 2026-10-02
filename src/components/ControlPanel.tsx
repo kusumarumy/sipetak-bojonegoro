@@ -31,7 +31,7 @@ const GROUP_ICONS: Record<
 
   'Bangunan': {
     path: 'M4 20V9L12 3L20 9V20H4Z M9 20V14H15V20 M8 10H10 M14 10H16',
-    color: '#8df2ff',
+    color: '#E85D04',
   },
 
   'Hipsografi': {
