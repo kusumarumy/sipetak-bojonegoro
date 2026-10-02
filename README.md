@@ -13,8 +13,3 @@ Dokumen perencanaan pengadaan tanah, Kabupaten Bojonegoro.
 | Masuk | Auth.js v5, credentials, peran di JWT |
 | Foto & dokumen | Cloudflare R2, bucket privat, unggah lewat presigned URL |
 | Ortho / DTM / kontur | PMTiles di R2 |
-
-## Alur verifikasi
-draft ──kirim──▶ terkirim ──setujui──▶ terverifikasi
-  ▲                  │                        │
-  └──── revisi ◀─────┘◀───────koreksi─────────┘
